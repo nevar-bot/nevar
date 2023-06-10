@@ -21,15 +21,16 @@ import * as fs from "fs";
 import giveawaysHandler from "@handlers/giveaway";
 import Logger from "@helpers/Logger";
 
-import * as emotes from "../../assets/emojis.json";
+// @ts-ignore - File 'emojis.json' is not under 'rootDir' 'src/'
+import * as emotes from "@assets/emojis.json";
 import * as permissions from "@helpers/Permissions";
 import Utils from "@helpers/Utils";
 
-import * as logSchema from "@schemas/Log";
-import * as guildSchema from "@schemas/Guild";
-import * as userSchema from "@schemas/User";
-import * as memberSchema from "@schemas/Member";
-import * as giveawaySchema from "@schemas/Giveaway";
+import logSchema from "@schemas/Log";
+import guildSchema from "@schemas/Guild";
+import userSchema from "@schemas/User";
+import memberSchema from "@schemas/Member";
+import giveawaySchema from "@schemas/Giveaway";
 
 export default class BaseClient extends DiscordClient {
     public wait: (ms: number) => Promise<void>;

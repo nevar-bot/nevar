@@ -5,7 +5,7 @@ import {
     ContextMenuCommandBuilder
 } from "discord.js";
 
-async function init(client: any): Promise<any> {
+async function registerInteractions(client: any): Promise<any> {
     client.logger.log("Start registering interactions...");
 
     const rest: REST = new REST({ version: "10" }).setToken(client.token);
@@ -75,4 +75,4 @@ async function init(client: any): Promise<any> {
     return response;
 }
 
-export default init;
+export default registerInteractions;

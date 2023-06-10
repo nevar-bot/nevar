@@ -36,7 +36,7 @@
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
     "canvacord": "^5.4.9",
-    "chalk": "^5.2.0",
+    "chalk": "^4.1.2",
     "cors": "^2.8.5",
     "discord-giveaways": "github:nevar-bot/discord-giveaways#feat/button-support",
     "discord-xp": "^1.1.16",

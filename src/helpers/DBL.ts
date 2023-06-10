@@ -6,7 +6,7 @@ import {
 } from "discordbotlist";
 
 export = {
-    init(client: any){
+    init(client: any): void {
         if (client.config.apikeys["DBL"] && client.config.apikeys["DBL"] !== "" && client.config.channels["VOTE_ANNOUNCEMENT_ID"] && client.config.channels["VOTE_ANNOUNCEMENT_ID"] !== "") {
             const dbl: DBLClient<any> = createDjsClient(client.config.apikeys["DBL"], client);
             dbl.startPosting(10 * 60 * 1000);

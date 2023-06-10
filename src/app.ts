@@ -2,7 +2,7 @@ import "module-alias/register";
 import "@helpers/extenders/Guild";
 
 import BaseClient from "@structures/BaseClient";
-import { initializeMongoose } from "@database/mongoose";
+import mongoose from "@database/mongoose";
 import Validator from "@helpers/Validator";
 import Loader from "@helpers/Loader";
 
@@ -17,7 +17,7 @@ process.on("unhandledRejection", (e: any) => {
 });
 
 (async () => {
-    await initializeMongoose(client);
+    await mongoose.init(client);
     await Loader.loadCommands(client);
     await Loader.loadContexts(client);
     await Loader.loadEvents(client);

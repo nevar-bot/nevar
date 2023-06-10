@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Language and Environment */
+    "baseUrl": ".",
     "target": "es2021",
     "lib": ["es2021"],
     "skipLibCheck": true,

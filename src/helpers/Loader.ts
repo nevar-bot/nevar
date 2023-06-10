@@ -31,26 +31,28 @@ export default class Loader {
         client.logger.log("Loaded " + (success + failed) + " commands. Success (" + success + ") Failed (" + failed + ")");
     }
 
-    static loadEvents(client: BaseClient): void {
+    static async loadEvents(client: BaseClient): Promise<void> {
         client.logger.log("Loading events...");
-        const directory = "src/events";
+        const directory = "build/events";
         let success: number = 0;
         let failed: number = 0;
 
-        Utils.recursiveReadDirSync(directory).forEach((filePath: string) => {
+        for (const filePath of Utils.recursiveReadDirSync(directory)) {
             const file = path.basename(filePath);
             try {
                 const eventName: string = path.basename(file, ".js");
-                const event = new(require(filePath))(client);
+                const event = new (await import(filePath)).default(client);
                 // @ts-ignore - Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'typeof Events'
                 if(!Events[eventName]) Events[eventName] = eventName;
+                // @ts-ignore - Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'typeof Events'
+                client.on(Events[eventName], (...args) => event.dispatch(...args));
                 success++;
                 delete require.cache[require.resolve(filePath)];
             }catch(e: any){
                 failed++;
                 client.logger.error("Couldn't load event " + file + ": " + e);
             }
-        });
+        }
         client.logger.log("Loaded " + (success + failed) + " events. Success (" + success + ") Failed (" + failed + ")");
     }
 
@@ -65,7 +67,7 @@ export default class Loader {
         for(const context of directory){
             if(context.split(".")[1] === "js"){
                 try {
-                    const props = new (require("@contexts/" + context))(client);
+                    const props = new (await import("@contexts/" + context)).default(client)
                     if(props.init){
                         props.init(client);
                     }

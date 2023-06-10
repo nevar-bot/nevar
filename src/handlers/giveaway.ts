@@ -3,7 +3,7 @@ import {
     GiveawayData,
     GiveawaysManager
 } from "discord-giveaways";
-import * as Model from "@schemas/Giveaway";
+import Model from "@schemas/Giveaway";
 import BaseClient from "@structures/BaseClient";
 
 class MongooseGiveaways extends GiveawaysManager {
@@ -22,7 +22,7 @@ class MongooseGiveaways extends GiveawaysManager {
         }, false);
     }
 
-    async getAllGiveaways(): Promise<Giveaway[]> {
+    async getAllGiveaways(): Promise<any> {
         return await Model.find().lean().exec();
     }
 
