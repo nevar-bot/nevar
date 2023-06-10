@@ -1,0 +1,80 @@
+{
+  "name": "nevar-typescript",
+  "description": "Nevar is a simple, lightweight, and fast discord bot built with discord.js and typescript",
+  "version": "5.2.0-typescript1.0",
+  "homepage": "https://nevar.eu",
+  "main": "build/app.js",
+  "license": "AGPL-3.0",
+  "repository": "github:nevar-bot/nevar",
+  "readme": "./README.md",
+  "author": "1887jonas <admin@nevar.eu> (https://github.com/1887jonas)",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://prohosting24.net/cp/donate/nevar"
+  },
+  "bugs": {
+    "url": "https://github.com/nevar-bot/nevar/issues",
+    "email": "other@nevar.eu"
+  },
+  "scripts": {
+    "build": "rimraf build/ && tsc && node assets/install.js",
+    "dev": "node build/app.js --dev",
+    "start": "node build/app.js"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/moment": "^2.13.0",
+    "@types/node": "^14.11.2",
+    "@types/node-schedule": "^2.1.0",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
+    "canvacord": "^5.4.9",
+    "chalk": "^5.2.0",
+    "cors": "^2.8.5",
+    "discord-giveaways": "github:nevar-bot/discord-giveaways#feat/button-support",
+    "discord-xp": "^1.1.16",
+    "discord.js": "^14.11.0",
+    "discordbotlist": "^1.1.1",
+    "enhanced-ms": "^2.3.0",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "jimp": "^0.22.8",
+    "mathjs": "^11.8.0",
+    "module-alias": "^2.2.3",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
+    "mongoose": "^7.2.2",
+    "node-emoji": "^2.0.2",
+    "node-schedule": "^2.1.1",
+    "toml": "^3.0.0"
+  },
+  "keywords": [
+    "discord",
+    "discord.js",
+    "discord-bot",
+    "open-source",
+    "bot",
+    "multipurpose"
+  ],
+  "_moduleAliases": {
+    "@root": ".",
+    "@assets": "./assets/",
+    "@src": "./build/",
+    "@commands": "./build/commands/",
+    "@contexts": "./build/contexts/",
+    "@database": "./build/database/",
+    "@events": "./build/events/",
+    "@handlers": "./build/handlers/",
+    "@helpers": "./build/helpers/",
+    "@structures": "./build/structures/",
+    "@schemas": "./build/database/schemas",
+    "@api": "./build/api/"
+  }
+}

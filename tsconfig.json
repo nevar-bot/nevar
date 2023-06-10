@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2021",
+    "lib": ["es2021"],
+    "skipLibCheck": true,
+    /* Modules */
+    "module": "commonjs",
+    "rootDir": "src",
+
+    /* Paths */
+     "paths": {
+       "@root/*": ["./*"],
+       "@assets/*": ["./assets/*"],
+       "@src/*": ["./src/*"],
+       "@commands/*": ["./src/commands/*"],
+       "@contexts/*": ["./src/contexts/*"],
+       "@database/*": ["./src/database/*"],
+       "@events/*": ["./src/events/*"],
+       "@handlers/*": ["./src/handlers/*"],
+       "@helpers/*": ["./src/helpers/*"],
+       "@structures/*": ["./src/structures/*"],
+       "@schemas/*": ["./src/database/schemas/*"],
+       "@api/*": ["./src/api/*"]
+     },
+
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "outDir": "build",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true
+  },
+  "exclude": [
+    "node_modules",
+    "assets"
+  ]
+}
