@@ -23,7 +23,8 @@ import Logger from "@helpers/Logger";
 
 // @ts-ignore - File 'emojis.json' is not under 'rootDir' 'src/'
 import * as emotes from "@assets/emojis.json";
-import * as permissions from "@helpers/Permissions";
+import { permissions } from "@helpers/Permissions";
+import { ChannelTypes } from "@helpers/ChannelTypes";
 import Utils from "@helpers/Utils";
 
 import logSchema from "@schemas/Log";
@@ -35,9 +36,10 @@ import giveawaySchema from "@schemas/Giveaway";
 export default class BaseClient extends DiscordClient {
     public wait: (ms: number) => Promise<void>;
     public config: any;
-    public emotes: Record<string, any>;
+    public emotes: any;
     public support: string;
-    public permissions: Object;
+    public permissions: any;
+    public channelTypes: any;
     public commands: Collection<string, any>;
     public contextMenus: Collection<string, any>;
     public giveawayManager: any;
@@ -85,6 +87,7 @@ export default class BaseClient extends DiscordClient {
         this.emotes = emotes;
         this.support = this.config.support["INVITE"];
         this.permissions = permissions;
+        this.channelTypes = ChannelTypes;
 
         this.commands = new Collection();
         this.contextMenus = new Collection();
@@ -153,7 +156,7 @@ export default class BaseClient extends DiscordClient {
             }else{
                 memberData = new this.membersData({ id: memberID, guildID: guildID });
                 await memberData.save();
-                const guild: any = await this.findOrCreateGuild({ id: guildID });
+                const guild: any = await this.findOrCreateGuild(guildID);
                 if(guild){
                     guild.members.push(memberData._id);
                     await guild.save().catch((e: any) => {
@@ -179,7 +182,7 @@ export default class BaseClient extends DiscordClient {
         }
     }
 
-    async findOrCreateGuild(guildID: any, isLean: boolean = false): Promise<any> {
+    async findOrCreateGuild( guildID: string, isLean: boolean = false): Promise<any> {
         if(this.databaseCache.guilds.get(guildID)){
             return isLean ? this.databaseCache.guilds.get(guildID).toJSON() : this.databaseCache.guilds.get(guildID);
         }else{
@@ -238,7 +241,7 @@ export default class BaseClient extends DiscordClient {
         return new Intl.NumberFormat("de-DE").format(integer);
     }
 
-    createEmbed(message: string, emote: string|null, type: string, ...args:any): EmbedBuilder {
+    createEmbed(message: string, emote: string|null, type: "normal"|"success"|"warning"|"error"|"transparent", ...args:any): EmbedBuilder {
         const color: any = type
             .replace("normal", this.config.embeds["DEFAULT_COLOR"])
             .replace("success", this.config.embeds["SUCCESS_COLOR"])
@@ -322,7 +325,7 @@ export default class BaseClient extends DiscordClient {
         return errorLogChannel.send({ embeds: [exceptionEmbed] }).catch(() => {});
     }
 
-    alert(text: string, color: string){
+    alert(text: string, color:"normal"|"success"|"warning"|"error"|"transparent"){
         const supportGuild: Guild|undefined = this.guilds.cache.get(this.config.support["ID"]);
         if(!supportGuild) return;
         const logChannel: any = supportGuild.channels.cache.get(this.config.support["BOT_LOG"]);

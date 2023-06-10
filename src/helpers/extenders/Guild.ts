@@ -4,7 +4,7 @@ import {
     Collection,
     GuildBasedChannel,
     Role,
-    GuildMember
+    GuildMember, EmbedBuilder
 } from "discord.js";
 
 const ROLE_MENTION: RegExp = /<?@?&?(\d{17,20})>?/;
@@ -17,7 +17,7 @@ declare module "discord.js" {
         findMatchingRoles(query: string): any;
         resolveMember(query: string, exact?: boolean): Promise<any>;
         fetchMemberStats(): Promise<any>;
-        logAction(log: string, logType: string, emoji: string, embedType: string, thumbnail: string|null): Promise<any>;
+        logAction(embed: EmbedBuilder, type: "moderation"|"member"|"guild"|"role"|"thread"|"channel"): Promise<any>;
     }
 }
 
@@ -120,15 +120,12 @@ Guild.prototype.fetchMemberStats = async function (): Promise<any> {
     return [total, bots, members];
 };
 
-Guild.prototype.logAction = async function(log: string, logType: string, emoji: string, embedType: string, thumbnail: string|null = null): Promise<any> {
+Guild.prototype.logAction = async function(embed: EmbedBuilder, type: "moderation"|"member"|"guild"|"role"|"thread"|"channel"): Promise<any> {
     const { client } = this;
     // @ts-ignore - Property 'findOrCreateGuild' does not exist on type 'Client'
-    const guildData: any = await client.findOrCreateGuild({ id: this.id });
-    if(!guildData.settings?.logs?.channels[logType]) return;
-    const logChannel: any = this.channels.cache.get(guildData.settings?.logs?.channels[logType]);
+    const guildData: any = await client.findOrCreateGuild(this.id);
+    if(!guildData.settings?.logs?.channels[type]) return;
+    const logChannel: any = this.channels.cache.get(guildData.settings?.logs?.channels[type]);
     if(!logChannel) return;
-    // @ts-ignore - Property 'createEmbed' does not exist on type 'Client'
-    const logEmbed = client.createEmbed(emoji + " " + log, null, embedType);
-    logEmbed.setThumbnail(thumbnail)
-    return logChannel.send({ embeds: [logEmbed]}).catch((e: Error) => {});
+    return logChannel.send({ embeds: [embed] }).catch((e: Error) => {});
 }

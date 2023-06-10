@@ -7,9 +7,7 @@ export default {
 
         try {
             mongoose.set("strictQuery", false);
-            await mongoose.connect(client.config.general["MONGO_CONNECTION"], {
-                keepAlive: true
-            });
+            await mongoose.connect(client.config.general["MONGO_CONNECTION"]);
             Logger.success("MongoDB connection established");
         }catch(e: any) {
             Logger.error("Failed establishing MongoDB connection", e);
