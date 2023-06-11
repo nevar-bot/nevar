@@ -18,15 +18,15 @@ export default class Loader {
         const directories: string[] = await readdir("./src/commands/");
         for(const directory of directories){
             const commands = await readdir("./src/commands/" + directory + "/");
-            commands.forEach((command) => {
+            for (const command of commands) {
                 if(command.split(".")[1] === "js"){
-                    const response = client.loadCommand("../commands/" + directory, command);
+                    const response = await client.loadCommand("../commands/" + directory, command);
                     if(response){
                         failed++;
                         client.logger.error("Couldn't load command " + command + ": " + response);
                     }else success++;
                 }
-            })
+            }
         }
         client.logger.log("Loaded " + (success + failed) + " commands. Success (" + success + ") Failed (" + failed + ")");
     }

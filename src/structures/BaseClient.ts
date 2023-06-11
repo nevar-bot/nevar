@@ -17,6 +17,7 @@ import {
 import * as path from "path";
 import * as toml from "toml";
 import * as fs from "fs";
+import * as util from "util";
 
 import giveawaysHandler from "@handlers/giveaway";
 import Logger from "@helpers/Logger";
@@ -82,7 +83,7 @@ export default class BaseClient extends DiscordClient {
             }
         });
 
-        this.wait = require("util").promisify(setTimeout);
+        this.wait = util.promisify(setTimeout);
         this.config = toml.parse(fs.readFileSync("./config.toml", "utf8"));
         this.emotes = emotes;
         this.support = this.config.support["INVITE"];
@@ -214,9 +215,9 @@ export default class BaseClient extends DiscordClient {
     }
 
     // Command methods
-    loadCommand(commandPath: string, name: string): boolean|any {
+    async loadCommand(commandPath: string, name: string): Promise<boolean | any> {
         try {
-            const props = new (require(commandPath + "/" + name))(this);
+            const props = new (await import(commandPath + "/" + name)).default(this)
             props.conf.location = commandPath;
             if(props.init) props.init(this);
             this.commands.set(props.help.name, props);
