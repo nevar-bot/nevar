@@ -115,7 +115,7 @@ export default class BaseClient extends DiscordClient {
         this.invites = new Collection();
     }
 
-    async findOrCreateUser(userID: string, isLean: boolean): Promise<any> {
+    async findOrCreateUser(userID: string, isLean: boolean = false): Promise<any> {
         if(this.databaseCache.users.get(userID)){
             return isLean ? this.databaseCache.users.get(userID).toJSON() : this.databaseCache.users.get(userID);
         }else{
@@ -146,7 +146,7 @@ export default class BaseClient extends DiscordClient {
         }
     }
 
-    async findOrCreateMember(memberID: string, guildID: string, isLean: boolean): Promise<any> {
+    async findOrCreateMember(memberID: string, guildID: string, isLean: boolean = false): Promise<any> {
         if(this.databaseCache.members.get(`${memberID}${guildID}`)){
             return isLean ? this.databaseCache.members.get(`${memberID}${guildID}`).toJSON() : this.databaseCache.members.get(`${memberID}${guildID}`);
         }else{

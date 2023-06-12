@@ -1,4 +1,7 @@
-import {EmbedBuilder, PermissionsBitField} from "discord.js";
+import {
+    EmbedBuilder,
+    PermissionsBitField
+} from "discord.js";
 import * as fs from "fs";
 import BaseClient from "@structures/BaseClient";
 
