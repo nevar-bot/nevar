@@ -1,4 +1,5 @@
 import "module-alias/register";
+import "source-map-support/register";
 import "@helpers/extenders/Guild";
 
 import BaseClient from "@structures/BaseClient";
