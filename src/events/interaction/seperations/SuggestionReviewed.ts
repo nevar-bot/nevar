@@ -7,14 +7,17 @@ import {
     TextInputStyle
 } from "discord.js";
 
-export default class {
+export default class
+{
     public client: BaseClient;
 
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(interaction: any, customId: any, data: any, guild: any): Promise<any> {
+    async dispatch(interaction: any, customId: any, data: any, guild: any): Promise<any>
+    {
 
         /* Get message id, channel id and type */
         const messageId: string = customId[2];

@@ -1,13 +1,16 @@
 import BaseClient from "@structures/BaseClient";
 
-export default class {
+export default class
+{
     public client: BaseClient;
 
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(interaction: any, customId: any, data: any): Promise<any> {
+    async dispatch(interaction: any, customId: any, data: any): Promise<any>
+    {
 
         /* Get type of vote */
         const type: any = customId[2];

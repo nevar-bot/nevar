@@ -5,7 +5,8 @@ import {
     ContextMenuCommandBuilder
 } from "discord.js";
 
-async function registerInteractions(client: any): Promise<any> {
+async function registerInteractions(client: any): Promise<any>
+{
     client.logger.log("Start registering interactions...");
 
     const rest: REST = new REST({ version: "10" }).setToken(client.token);
@@ -27,7 +28,7 @@ async function registerInteractions(client: any): Promise<any> {
                 // @ts-ignore - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
                 PermissionsField.add(PermissionsBitField.Flags[neededMemberPermission]);
             }
-            await slashData.setDefaultMemberPermissions(PermissionsField.bitfield);
+            slashData.setDefaultMemberPermissions(PermissionsField.bitfield);
         }
 
         interactions.push(slashData.toJSON());
@@ -48,7 +49,7 @@ async function registerInteractions(client: any): Promise<any> {
                 // @ts-ignore - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
                 PermissionsField.add(PermissionsBitField.Flags[neededMemberPermission]);
             }
-            await contextData.setDefaultMemberPermissions(PermissionsField.bitfield);
+            contextData.setDefaultMemberPermissions(PermissionsField.bitfield);
         }
 
         interactions.push(contextData.toJSON());

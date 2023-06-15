@@ -2,14 +2,17 @@ import BaseClient from "@structures/BaseClient";
 import { EmbedBuilder } from "discord.js";
 import moment from "moment";
 
-export default class {
+export default class
+{
     public client: BaseClient;
 
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(oldScheduledEvent: any, newScheduledEvent: any): Promise<any> {
+    async dispatch(oldScheduledEvent: any, newScheduledEvent: any): Promise<any>
+    {
         if(!oldScheduledEvent || !newScheduledEvent || !newScheduledEvent.guild) return;
         const { guild } = newScheduledEvent;
 

@@ -6,14 +6,17 @@ import {
     EmbedBuilder
 } from "discord.js";
 
-export default class {
+export default class
+{
     public client: BaseClient;
 
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(interaction: any, data: any, guild: any, suggestion: any, image: any = null): Promise<any> {
+    async dispatch(interaction: any, data: any, guild: any, suggestion: any, image: any = null): Promise<any>
+    {
         /* Send suggestion to suggestion channel */
         const suggestionVoteEmbed: EmbedBuilder = this.client.createEmbed(suggestion, "arrow", "normal");
         suggestionVoteEmbed.setTitle("Idee von " + interaction.member.user.username);

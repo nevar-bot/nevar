@@ -7,14 +7,17 @@ import {
 } from "discord.js";
 import moment from "moment";
 
-export default class {
+export default class
+{
     public client: BaseClient;
 
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(guild: any): Promise<any> {
+    async dispatch(guild: any): Promise<any>
+    {
         await guild.fetch().catch((e: any): void => {});
         if(!guild || !guild.available || !guild.id) return;
 

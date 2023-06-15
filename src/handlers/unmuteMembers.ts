@@ -1,9 +1,11 @@
 import {EmbedBuilder, Guild} from "discord.js";
 import BaseClient from "@structures/BaseClient";
 
-export default {
-    init(client: BaseClient): void {
-        client.membersData.find({ "muted.state": true }).then((members: any) => {
+export default
+{
+    init(client: BaseClient): void
+    {
+        client.membersData.find({ "muted.state": true }).then((members: any): void => {
             members.forEach((member: any): void => {
                 client.databaseCache.mutedUsers.set(member.id + member.guildID, member);
             });

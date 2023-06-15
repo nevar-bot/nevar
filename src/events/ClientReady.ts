@@ -16,13 +16,16 @@ import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";
 import api from "@api/app";
 
-export default class {
+export default class
+{
     public client: any;
-    constructor(client: any){
+    constructor(client: any)
+    {
         this.client = client;
     }
 
-    async dispatch(): Promise<any> {
+    async dispatch(): Promise<any>
+    {
         const client: any = this.client;
         const config = client.config;
 

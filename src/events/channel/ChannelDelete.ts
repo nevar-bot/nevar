@@ -1,13 +1,16 @@
 import BaseClient from "@structures/BaseClient";
 import { EmbedBuilder } from "discord.js";
 
-export default class {
+export default class
+{
     public client: BaseClient;
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(channel: any): Promise<any> {
+    async dispatch(channel: any): Promise<any>
+    {
         if(!channel || !channel.guild) return;
         const { guild } = channel;
 

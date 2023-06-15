@@ -1,7 +1,7 @@
 {
   "name": "nevar-typescript",
   "description": "Nevar is a simple, lightweight, and fast discord bot built with discord.js and typescript",
-  "version": "5.2.0-typescript1.0",
+  "version": "5.2.0-ts1.0",
   "homepage": "https://nevar.eu",
   "main": "build/app.js",
   "license": "AGPL-3.0",

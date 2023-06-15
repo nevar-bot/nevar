@@ -1,18 +1,18 @@
 import BaseClient from "@structures/BaseClient";
-import {
-    EmbedBuilder,
-    ChannelType
-} from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import moment from "moment";
 
-export default class {
+export default class
+{
     public client: BaseClient;
 
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(guild: any): Promise<any> {
+    async dispatch(guild: any): Promise<any>
+    {
         if(!guild || !guild.ownerId || !guild.id) return;
 
         /* Delete guild invites from invite cache */

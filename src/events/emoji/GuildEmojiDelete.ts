@@ -1,14 +1,17 @@
 import BaseClient from "@structures/BaseClient";
 import { EmbedBuilder } from "discord.js";
 
-export default class {
+export default class
+{
     public client: BaseClient;
 
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(emoji: any): Promise<any> {
+    async dispatch(emoji: any): Promise<any>
+    {
         if(!emoji || !emoji.guild) return;
         const { guild } = emoji;
 

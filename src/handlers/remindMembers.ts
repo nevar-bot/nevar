@@ -4,9 +4,11 @@ import {
     GuildMember
 } from "discord.js";
 
-export default {
-    init(client: any): void {
-        client.membersData.find({ "reminders.0": { $exists: true } }).then((members: any) => {
+export default
+{
+    init(client: any): void
+    {
+        client.membersData.find({ "reminders.0": { $exists: true } }).then((members: any): void => {
             members.forEach((member: any): void => {
                 client.databaseCache.reminders.set(member.id + member.guildID, member);
             });
@@ -16,7 +18,7 @@ export default {
             for(const memberData of [...client.databaseCache.reminders.values()]) {
                 for(const reminder of memberData.reminders){
                     if(reminder.endDate <= Date.now()){
-                        const guild: Guild = client.guilds.cache.get(memberData.guildID);
+                        const guild: Guild|undefined = client.guilds.cache.get(memberData.guildID);
                         if(!guild) continue;
 
                         const channel: any = guild.channels.cache.get(reminder.channel);

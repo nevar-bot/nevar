@@ -3,17 +3,19 @@ import {
     Guild
 } from "discord.js";
 
-function updatePresence(client: any): void {
-    const presences = client.config.presence;
-    let presenceIndicator = 0;
+function updatePresence(client: any): void
+{
+    const presences: any = client.config.presence;
+    let presenceIndicator: number = 0;
 
-    function update(): void {
+    function update(): void
+    {
         if(presenceIndicator === presences.length) presenceIndicator = 0;
         const presence = presences[presenceIndicator];
 
-        const message = presence["MESSAGE"]
+        const message: string = presence["MESSAGE"]
             .replaceAll("{guilds}", client.format(client.guilds.cache.size))
-            .replaceAll("{users}", client.format(client.guilds.cache.map((g: Guild) => g.memberCount).reduce((partial_sum: any, a: any) => partial_sum + a, 0)));
+            .replaceAll("{users}", client.format(client.guilds.cache.map((g: Guild): number => g.memberCount).reduce((partial_sum: any, a: any) => partial_sum + a, 0)));
 
         client.user.setPresence({
             status: presence["STATUS"],
@@ -35,6 +37,7 @@ function updatePresence(client: any): void {
     }, 30 * 1000);
 }
 
-export default function handlePresence(client: any): void {
+export default function handlePresence(client: any): void
+{
     updatePresence(client);
 }

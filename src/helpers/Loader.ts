@@ -1,16 +1,15 @@
 import * as fs from "fs";
 import * as util from "util";
 import * as path from "path";
-import {
-    ApplicationCommandType,
-    Events
-} from "discord.js";
+import {ApplicationCommandType, Events } from "discord.js";
 const readdir = util.promisify(fs.readdir);
 import Utils from "@helpers/Utils";
 import BaseClient from "@structures/BaseClient";
 
-export default class Loader {
-    static async loadCommands(client: BaseClient): Promise<void> {
+export default class Loader
+{
+    static async loadCommands(client: BaseClient): Promise<void>
+    {
         let success: number = 0;
         let failed: number = 0;
         client.logger.log("Loading commands...");
@@ -31,7 +30,8 @@ export default class Loader {
         client.logger.log("Loaded " + (success + failed) + " commands. Success (" + success + ") Failed (" + failed + ")");
     }
 
-    static async loadEvents(client: BaseClient): Promise<void> {
+    static async loadEvents(client: BaseClient): Promise<void>
+    {
         client.logger.log("Loading events...");
         const directory = "build/events";
         let success: number = 0;
@@ -56,7 +56,8 @@ export default class Loader {
         client.logger.log("Loaded " + (success + failed) + " events. Success (" + success + ") Failed (" + failed + ")");
     }
 
-    static async loadContexts(client: BaseClient): Promise<void> {
+    static async loadContexts(client: BaseClient): Promise<void>
+    {
         let success: number = 0;
         let failed: number = 0;
         let userContexts: number = 0;

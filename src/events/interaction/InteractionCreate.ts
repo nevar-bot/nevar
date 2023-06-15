@@ -7,14 +7,17 @@ import BaseClient from "@structures/BaseClient";
 
 const interactionCooldowns: any = {};
 
-export default class {
+export default class
+{
     public client: BaseClient;
 
-    constructor(client: BaseClient) {
+    constructor(client: BaseClient)
+    {
         this.client = client;
     }
 
-    async dispatch(interaction: any): Promise<any> {
+    async dispatch(interaction: any): Promise<any>
+    {
         if(!interaction || !interaction.type || !interaction.member || !interaction.guildId) return;
 
         /* Basic information */

@@ -1,12 +1,10 @@
 import axios from "axios";
 import { scheduleJob } from "node-schedule";
-import {
-    createDjsClient,
-    DBLClient
-} from "discordbotlist";
+import { createDjsClient, DBLClient } from "discordbotlist";
 
 export = {
-    init(client: any): void {
+    init(client: any): void
+    {
         if (client.config.apikeys["DBL"] && client.config.apikeys["DBL"] !== "" && client.config.channels["VOTE_ANNOUNCEMENT_ID"] && client.config.channels["VOTE_ANNOUNCEMENT_ID"] !== "") {
             const dbl: DBLClient<any> = createDjsClient(client.config.apikeys["DBL"], client);
             dbl.startPosting(10 * 60 * 1000);
@@ -29,8 +27,7 @@ export = {
                 };
 
                 await axios(config).catch((e: Error) => console.log(e));
-            })
-
+            });
         }
     }
 }

@@ -1,9 +1,11 @@
-import {EmbedBuilder, Guild} from "discord.js";
+import { EmbedBuilder, Guild } from "discord.js";
 import BaseClient from "@structures/BaseClient";
 
-export default {
-    init(client: BaseClient): void {
-        client.membersData.find({ "banned.state": true }).then((members: any) => {
+export default
+{
+    init(client: BaseClient): void
+    {
+        client.membersData.find({ "banned.state": true }).then((members: any): void => {
             members.forEach((member: any): void => {
                 client.databaseCache.bannedUsers.set(member.id + member.guildID, member);
             });
@@ -16,7 +18,7 @@ export default {
 
                 guild.members.unban(memberData.id, "Ban-Dauer abgelaufen")
                     .then(async (): Promise<void> => {
-                        const user = await client.users.fetch(memberData.id).catch((): void => {});
+                        const user: any = await client.users.fetch(memberData.id).catch((): void => {});
                         const unbanMessage: string =
                             client.emotes.user + " Nutzer: " + (user ? user.tag : memberData.id) + "\n" +
                             client.emotes.arrow + " Begründung: Ban-Dauer ist abgelaufen";
@@ -28,13 +30,13 @@ export default {
 
                     })
                     .catch(async (e: any): Promise<void> => {
-                        const user = await client.users.fetch(memberData.id).catch((): void => {});
+                        const user: any = await client.users.fetch(memberData.id).catch((): void => {});
                         const errorMessage: string =
                             client.emotes.user + " Nutzer: " + (user ? user.tag : memberData.id);
 
                         const errorEmbed: EmbedBuilder = client.createEmbed(errorMessage, null, "error");
                         errorEmbed.setTitle("Auto-Unban fehlgeschlagen");
-                        errorEmbed.setThumbnail(user!.displayAvatarURL());
+                        errorEmbed.setThumbnail(user.displayAvatarURL());
                         await guild.logAction(errorEmbed, "moderation");
                     });
 

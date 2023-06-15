@@ -11,8 +11,10 @@ const ROLE_MENTION: RegExp = /<?@?&?(\d{17,20})>?/;
 const CHANNEL_MENTION: RegExp = /<?#?(\d{17,20})>?/;
 const MEMBER_MENTION: RegExp = /<?@?!?(\d{17,20})>?/;
 
-declare module "discord.js" {
-    interface Guild {
+declare module "discord.js"
+{
+    interface Guild
+    {
         findMatchingChannels(query: string, type?: ChannelType[]): any;
         findMatchingRoles(query: string): any;
         resolveMember(query: string, exact?: boolean): Promise<any>;
@@ -21,23 +23,24 @@ declare module "discord.js" {
     }
 }
 
-Guild.prototype.findMatchingChannels = function (query: string, type: ChannelType[]): any {
+Guild.prototype.findMatchingChannels = function (query: string, type: ChannelType[]): any
+{
     if (!this || !query) return [];
 
     // @ts-ignore - Property 'channels' does not exist on type 'never'
-    const channelManager: Collection<any, any> = this!.channels.cache.filter((ch: GuildBasedChannel) => type.includes(ch.type));
+    const channelManager: Collection<any, any> = this.channels.cache.filter((ch: GuildBasedChannel): any => type.includes(ch.type));
 
-    const patternMatch = RegExp(CHANNEL_MENTION).exec(query);
+    const patternMatch: RegExpExecArray|null = RegExp(CHANNEL_MENTION).exec(query);
     if (patternMatch) {
         const id: string = patternMatch[1];
-        const channel: GuildBasedChannel = channelManager.find((r) => r.id === id);
+        const channel: GuildBasedChannel = channelManager.find((r): boolean => r.id === id);
         if (channel) return [channel];
     }
 
     const exact: Array<any> = [];
     const startsWith: Array<any> = [];
     const includes: Array<any> = [];
-    channelManager.forEach((ch) => {
+    channelManager.forEach((ch: any): void => {
         const lowerName: string = ch.name.toLowerCase();
         if (ch.name === query) exact.push(ch);
         if (lowerName.startsWith(query.toLowerCase())) startsWith.push(ch);
@@ -51,22 +54,21 @@ Guild.prototype.findMatchingChannels = function (query: string, type: ChannelTyp
 };
 
 
-Guild.prototype.findMatchingRoles = function (query: string): any {
+Guild.prototype.findMatchingRoles = function (query: string): any
+{
     if (!this || !query) return [];
 
-    const patternMatch = RegExp(ROLE_MENTION).exec(query);
+    const patternMatch: RegExpExecArray|null = RegExp(ROLE_MENTION).exec(query);
     if (patternMatch) {
-        const id = patternMatch[1];
-        // @ts-ignore - Property 'roles' does not exist on type 'never'
-        const role: any = this!.roles.cache.find((r: Role) => r.id === id);
+        const id: string = patternMatch[1];
+        const role: any = this.roles.cache.find((r: Role): boolean => r.id === id);
         if (role) return [role];
     }
 
     const exact: Array<any> = [];
     const startsWith: Array<any> = [];
     const includes: Array<any> = [];
-    // @ts-ignore - Property 'roles' does not exist on type 'never'
-    this.roles.cache.forEach((role: Role) => {
+    this.roles.cache.forEach((role: Role): void => {
         const lowerName: string = role.name.toLowerCase();
         if (role.name === query) exact.push(role);
         if (lowerName.startsWith(query.toLowerCase())) startsWith.push(role);
@@ -79,21 +81,22 @@ Guild.prototype.findMatchingRoles = function (query: string): any {
 };
 
 
-Guild.prototype.resolveMember = async function (query: string, exact: boolean = false): Promise<any> {
+Guild.prototype.resolveMember = async function (query: string, exact: boolean = false): Promise<any>
+{
     if (!query) return;
     const { client } = this;
 
-    const patternMatch = RegExp(MEMBER_MENTION).exec(query);
+    const patternMatch: RegExpExecArray|null = RegExp(MEMBER_MENTION).exec(query);
     if (patternMatch) {
         const id: string = patternMatch[1];
-        const fetched = await this.members.fetch({ user: id }).catch((e) => {
+        const fetched: any = await this.members.fetch({ user: id }).catch((e) => {
             // @ts-ignore - Property 'alertException' does not exist on type 'Client'
             client.alertException(e, this.name, null, "<Guild||Prototype>.resolveMember(\"" + query + "\", " + exact + ")")
         });
         if (fetched) return fetched;
     }
 
-    await this.members.fetch({ query }).catch((e) => {
+    await this.members.fetch({ query }).catch((e): void  => {
         // @ts-ignore - Property 'alertException' does not exist on type 'Client'
         client.alertException(e, this.name, null, "<Guild||Prototype>.resolveMember(\"" + query + "\", " + exact + ")")
     });
@@ -103,7 +106,7 @@ Guild.prototype.resolveMember = async function (query: string, exact: boolean = 
 
     if (!exact) {
         return this.members.cache.find(
-            (x) =>
+            (x: any) =>
                 x.user.username === query ||
                 x.user.username.toLowerCase().includes(query.toLowerCase()) ||
                 x.displayName.toLowerCase().includes(query.toLowerCase())
@@ -112,7 +115,8 @@ Guild.prototype.resolveMember = async function (query: string, exact: boolean = 
 };
 
 
-Guild.prototype.fetchMemberStats = async function (): Promise<any> {
+Guild.prototype.fetchMemberStats = async function (): Promise<any>
+{
     const all: Collection<string, GuildMember>|null = await this.members.fetch().catch(() => { return null });
     const total: number = all!.size;
     const bots: number = all!.filter((mem) => mem.user.bot).size;
@@ -120,12 +124,13 @@ Guild.prototype.fetchMemberStats = async function (): Promise<any> {
     return [total, bots, members];
 };
 
-Guild.prototype.logAction = async function(embed: EmbedBuilder, type: "moderation"|"member"|"guild"|"role"|"thread"|"channel"): Promise<any> {
+Guild.prototype.logAction = async function(embed: EmbedBuilder, type: "moderation"|"member"|"guild"|"role"|"thread"|"channel"): Promise<any>
+{
     const { client } = this;
     // @ts-ignore - Property 'findOrCreateGuild' does not exist on type 'Client'
     const guildData: any = await client.findOrCreateGuild(this.id);
     if(!guildData.settings?.logs?.channels[type]) return;
     const logChannel: any = this.channels.cache.get(guildData.settings?.logs?.channels[type]);
     if(!logChannel) return;
-    return logChannel.send({ embeds: [embed] }).catch((e: Error) => {});
+    return logChannel.send({ embeds: [embed] }).catch((e: any): void => {});
 }

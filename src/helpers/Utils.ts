@@ -1,33 +1,24 @@
-import {
-    readdirSync,
-    lstatSync,
-    Stats
-} from "fs";
-import {
-    join,
-    extname
-} from "path";
-import {
-    ActionRowBuilder,
-    ButtonBuilder,
-    EmbedBuilder
-} from "discord.js";
+import { readdirSync, lstatSync, Stats } from "fs";
+import { join, extname } from "path";
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
 import moment from "moment";
 
-export default class Utils {
-    static recursiveReadDirSync(directory: string, allowedExtensions: Array<string> = [".js"]): any {
+export default class Utils
+{
+    static recursiveReadDirSync(directory: string, allowedExtensions: Array<string> = [".js"]): any
+    {
         const filePaths: Array<any> = [];
 
         const readCommands = (dir: string): void => {
-            const files = readdirSync(join(process.cwd(), dir));
+            const files: any = readdirSync(join(process.cwd(), dir));
             files.forEach((file: string): void => {
                 const stat: Stats = lstatSync(join(process.cwd(), dir, file));
                 if(stat.isDirectory()){
                     readCommands(join(dir, file));
                 }else{
-                    const extension = extname(file);
+                    const extension: string = extname(file);
                     if(!allowedExtensions.includes(extension)) return;
-                    const filePath = join(process.cwd(), dir, file);
+                    const filePath: string = join(process.cwd(), dir, file);
                     filePaths.push(filePath);
                 }
             });
@@ -36,7 +27,8 @@ export default class Utils {
         return filePaths;
     }
 
-    static getRandomKey(length: number): string {
+    static getRandomKey(length: number): string
+    {
         let result: string = "";
         const characters: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         const charactersLength: number = characters.length;
@@ -46,11 +38,13 @@ export default class Utils {
         return result;
     }
 
-    static getRandomInt(min: number, max: number): number {
+    static getRandomInt(min: number, max: number): number
+    {
         return Math.floor(Math.random() * (max -min + 1) + min);
     }
 
-    static stringIsUrl(str: string): boolean {
+    static stringIsUrl(str: string): boolean
+    {
         const pattern: RegExp = new RegExp('^(https?:\\/\\/)?'+ // protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
             '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
@@ -60,27 +54,32 @@ export default class Utils {
         return !!pattern.test(str);
     }
 
-    static urlIsImage(str: string): boolean {
+    static urlIsImage(str: string): boolean
+    {
         return(str.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gmi) != null);
     }
 
-    static stringIsCustomEmoji(str: string): boolean {
+    static stringIsCustomEmoji(str: string): boolean
+    {
         const pattern: RegExp = new RegExp(/<?(a)?:?(\w{2,32}):(\d{17,19})>?/);
         return pattern.test(str);
     }
 
-    static stringIsHexColor(str: string): boolean {
+    static stringIsHexColor(str: string): boolean
+    {
         if(!str.startsWith("#")) str = "#" + str;
         const pattern: RegExp = new RegExp(/^#[0-9A-F]{6}$/i);
         return pattern.test(str);
     }
 
-    static stringIsEmoji(str: string): boolean {
+    static stringIsEmoji(str: string): boolean
+    {
         const pattern: RegExp = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
         return pattern.test(str);
     }
 
-    static async sendPaginatedEmbed(interaction: any, entriesPerPage: number, data: Array<any>, title: string, empty: string, emote: string): Promise<any> {
+    static async sendPaginatedEmbed(interaction: any, entriesPerPage: number, data: Array<any>, title: string, empty: string, emote: string): Promise<any>
+    {
         const { client } = interaction;
 
         const backId: string = interaction.member!.user.id + "_back";
@@ -90,7 +89,8 @@ export default class Utils {
         // @ts-ignore - Property 'createButton' does not exist on type 'Client'
         const forwardButton: ButtonBuilder = client.createButton(forwardId, "Weiter", "Secondary", client.emotes.arrows.right);
 
-        async function generatePaginateEmbed(start: number): Promise<any> {
+        async function generatePaginateEmbed(start: number): Promise<any>
+        {
             const current: any[] = data.slice(start, start + entriesPerPage);
             // @ts-ignore - Property 'emotes' does not exist on type 'Client'
             let text: string = current.map(item => "\n" + (emote ? client.emotes[emote] + " " : "") + item).join("");
@@ -138,7 +138,8 @@ export default class Utils {
             })
     }
 
-    static async sendPaginatedEmbedMessage(message: any, entriesPerPage: number, data: Array<any>, title: string, empty: string, emote: string): Promise<void> {
+    static async sendPaginatedEmbedMessage(message: any, entriesPerPage: number, data: Array<any>, title: string, empty: string, emote: string): Promise<void>
+    {
         const { client } = message;
 
         const backId: string = message.member.user.id + "_back";
@@ -146,7 +147,8 @@ export default class Utils {
         const backButton: ButtonBuilder = client.createButton(backId, "Zurück", "Secondary", client.emotes.arrows.left);
         const forwardButton: ButtonBuilder = client.createButton(forwardId, "Weiter", "Secondary", client.emotes.arrows.right);
 
-        async function generatePaginateEmbed(start: number): Promise<any>{
+        async function generatePaginateEmbed(start: number): Promise<any>
+        {
             const current: any[] = data.slice(start, start + entriesPerPage);
             let text: string = current.map(item => "\n" + (emote ? client.emotes[emote] + " " : "") + item).join("");
 
@@ -191,15 +193,18 @@ export default class Utils {
             })
     }
 
-    static shuffleArray(array: Array<any>): Array<any> {
+    static shuffleArray(array: Array<any>): Array<any>
+    {
         return array.sort(() => Math.random() - 0.5);
     }
 
-    static getFlagFromCountryCode(countryCode: string): string {
+    static getFlagFromCountryCode(countryCode: string): string
+    {
         return String.fromCodePoint(...[...countryCode.toUpperCase()].map(x=>0x1f1a5+x.charCodeAt(0)))
     }
 
-    static getRelativeTime(time: string): string|any {
+    static getRelativeTime(time: string): string|any
+    {
         // @ts-ignore - Property '_data' does not exist on type 'Duration'
         const momentDuration: any = moment.duration(moment(Date.now()).diff(time))._data;
         const relativeTime: any[] = [];

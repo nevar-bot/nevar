@@ -1,27 +1,26 @@
 #####################################################################################
-
-#             _______ _______ ___ ___ _______ ______
-#             |    |  |    ___|   |   |   _   |   __ \
-#             |       |    ___|   |   |       |      <
-#             |__|____|_______|\_____/|___|___|___|__|
+#
+#                  _______ _______ ___ ___ _______ ______
+#                  |    |  |    ___|   |   |   _   |   __ \
+#                  |    |  |    ___|   |   |       |   |  <
+#                  |__|____|_______|\_____/|___|___|___|__|
 #
 #####################################################################################
-## Automatically generated config for Nevar-{version}
+## Automatically created config for Nevar-{version}
+## Regenerate this file via "npm run build" or "node assets/install"
 #####################################################################################
 
-# Don't change anything here except the necessary data
-# If you change the wrong things, the bot will not start
-# All fields with an * behind are absolutely necessary, all fields without can be left blank
+# All fields with an * behind are necessary, all fields without can be left blank
 
 #####################################################################################
 #####################################################################################
-#####################################################################################
+
 [ general ]
 # Enter your bot token here*
 BOT_TOKEN = ""
 # Your MongoDB login url*
 MONGO_CONNECTION = ""
-# Just a url to whatever you want*
+# Used as embed author url*
 WEBSITE = ""
 # All the IDs of the owners of the bot*
 OWNER_IDS = []
@@ -50,7 +49,7 @@ TRANSPARENT_COLOR = "#36393F"
 # Whether the API should be enabled*
 ENABLED = true
 # If so, a port must be specified
-PORT = 3432
+PORT = 80
 
 [ channels ]
 # ID and design of the channel where the current number of servers is displayed (the already existing variable in {} is automatically replaced)
@@ -81,7 +80,7 @@ WEATHER = ""
 [[ presence ]]
 STATUS = "online" # The bot's status [online, idle, dnd, invisible]
 TYPE = "Competing" # Status type for the bot [Playing | Listening | Watching | Competing]
-MESSAGE = "{guilds} Servern"
+MESSAGE = "{guilds} Servern" # The message that is displayed
 
 [[ presence]]
 STATUS = "online"

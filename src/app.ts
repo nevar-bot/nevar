@@ -8,15 +8,15 @@ import Loader from "@helpers/Loader";
 
 Validator.configValidator();
 
-// Initialize client
+/* Initialize client */
 const client: BaseClient = new BaseClient();
 
-process.on("unhandledRejection", (e: any) => {
+process.on("unhandledRejection", (e: any): any => {
     console.error(e);
     return client.alertException(e);
 });
 
-(async () => {
+(async (): Promise<void> => {
     await mongoose.init(client);
     await Loader.loadCommands(client);
     await Loader.loadContexts(client);
