@@ -3,14 +3,14 @@ import BaseClient from "@structures/BaseClient";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(oldMember: any, newMember: any): Promise<any>
+    public async dispatch(oldMember: any, newMember: any): Promise<any>
     {
         if(oldMember.pending && !newMember.pending) this.client.emit("guildMemberAdd", newMember);
         if(!oldMember || !newMember || !newMember.guild || oldMember.partial) return;

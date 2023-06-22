@@ -4,14 +4,14 @@ import moment from "moment";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(guild: any): Promise<any>
+    public async dispatch(guild: any): Promise<any>
     {
         if(!guild || !guild.ownerId || !guild.id) return;
 

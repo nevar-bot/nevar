@@ -3,13 +3,13 @@ import { EmbedBuilder } from "discord.js";
 
 export default class
 {
-    public client: BaseClient;
-    constructor(client: BaseClient)
+    private client: BaseClient;
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(oldChannel: any, newChannel: any): Promise<any>
+    public async dispatch(oldChannel: any, newChannel: any): Promise<any>
     {
         if(!oldChannel || !newChannel || !newChannel.guild) return;
         const { guild } = newChannel;

@@ -1,9 +1,9 @@
 import BaseClient from "@structures/BaseClient";
 
 export default class {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient) {
+    public constructor(client: BaseClient) {
         this.client = client;
     }
 

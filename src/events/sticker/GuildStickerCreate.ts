@@ -3,14 +3,14 @@ import { EmbedBuilder } from "discord.js";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(sticker: any): Promise<any>
+    public async dispatch(sticker: any): Promise<any>
     {
         await sticker.fetchUser().catch((e: any): void => {});
         if(!sticker || !sticker.user || !sticker.guild) return;

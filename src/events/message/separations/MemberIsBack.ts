@@ -3,14 +3,14 @@ import { EmbedBuilder } from "discord.js";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(message: any, data: any, guild: any): Promise<void> {
+    public async dispatch(message: any, data: any, guild: any): Promise<void> {
         const since: any = data.user.afk.since;
         const afkReason: any = data.user.afk.reason;
 

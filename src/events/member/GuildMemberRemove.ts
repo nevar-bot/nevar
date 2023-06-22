@@ -3,14 +3,14 @@ import BaseClient from "@structures/BaseClient";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(member: any): Promise<any>
+    public async dispatch(member: any): Promise<any>
     {
         if(!member || !member.id || !member.guild) return;
         const { guild } = member;

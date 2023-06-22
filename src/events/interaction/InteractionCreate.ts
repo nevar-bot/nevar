@@ -9,14 +9,14 @@ const interactionCooldowns: any = {};
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(interaction: any): Promise<any>
+    public async dispatch(interaction: any): Promise<any>
     {
         if(!interaction || !interaction.type || !interaction.member || !interaction.guildId) return;
 

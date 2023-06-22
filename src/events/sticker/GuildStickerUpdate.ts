@@ -3,14 +3,14 @@ import { EmbedBuilder } from "discord.js";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(oldSticker: any, newSticker: any): Promise<any>
+    public async dispatch(oldSticker: any, newSticker: any): Promise<any>
     {
         if(!newSticker || !oldSticker || !newSticker.guild) return;
         if(oldSticker.name === newSticker.name) return;

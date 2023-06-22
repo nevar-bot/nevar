@@ -3,14 +3,14 @@ import { EmbedBuilder, PermissionsBitField } from "discord.js";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(oldRole: any, newRole: any): Promise<any>
+    public async dispatch(oldRole: any, newRole: any): Promise<any>
     {
         if(!oldRole || !newRole || !newRole.guild) return;
         const { guild } = newRole;

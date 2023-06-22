@@ -4,14 +4,14 @@ import moment from "moment";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(invite: any): Promise<any>
+    public async dispatch(invite: any): Promise<any>
     {
         if(!invite || !invite.guild || !invite.inviter) return;
         const { guild, inviter } = invite;

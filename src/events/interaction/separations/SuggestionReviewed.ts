@@ -9,14 +9,14 @@ import {
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(interaction: any, customId: any, data: any, guild: any): Promise<any>
+    public async dispatch(interaction: any, customId: any, data: any, guild: any): Promise<any>
     {
 
         /* Get message id, channel id and type */

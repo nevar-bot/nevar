@@ -5,16 +5,16 @@ import Levels from "discord-xp";
 
 export default class
 {
-    public client: BaseClient;
-    public timeouts: any;
+    private client: BaseClient;
+    private timeouts: any;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
         this.timeouts = new Set();
     }
 
-    async dispatch(message: any): Promise<any>
+    public async dispatch(message: any): Promise<any>
     {
         if(!message || !message.member || !message.guild || !message.guild.available) return;
 

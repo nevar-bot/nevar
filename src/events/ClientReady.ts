@@ -20,15 +20,17 @@ import BaseClient from "@structures/BaseClient";
 export default class
 {
     public client: BaseClient;
-    constructor(client: any)
+    public constructor(client: any)
     {
         this.client = client;
     }
 
-    async dispatch(): Promise<any>
+    public async dispatch(): Promise<any>
     {
         const client: any = this.client;
         const config = client.config;
+
+        console.log(client.user.username);
 
         /* Initialize levels */
         await levels.setURL(config.general["MONGO_CONNECTION"]);

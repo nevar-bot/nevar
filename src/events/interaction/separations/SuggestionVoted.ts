@@ -2,14 +2,14 @@ import BaseClient from "@structures/BaseClient";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(interaction: any, customId: any, data: any): Promise<any>
+    public async dispatch(interaction: any, customId: any, data: any): Promise<any>
     {
 
         /* Get type of vote */

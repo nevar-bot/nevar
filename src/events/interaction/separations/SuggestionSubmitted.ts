@@ -8,14 +8,14 @@ import {
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(interaction: any, data: any, guild: any, suggestion: any, image: any = null): Promise<any>
+    public async dispatch(interaction: any, data: any, guild: any, suggestion: any, image: any = null): Promise<any>
     {
         /* Send suggestion to suggestion channel */
         const suggestionVoteEmbed: EmbedBuilder = this.client.createEmbed(suggestion, "arrow", "normal");

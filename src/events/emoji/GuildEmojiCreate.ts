@@ -3,14 +3,14 @@ import { EmbedBuilder } from "discord.js";
 
 export default class
 {
-    public client: BaseClient;
+    private client: BaseClient;
 
-    constructor(client: BaseClient)
+    public constructor(client: BaseClient)
     {
         this.client = client;
     }
 
-    async dispatch(emoji: any): Promise<any>
+    public async dispatch(emoji: any): Promise<any>
     {
         await emoji.fetchAuthor().catch((e: any): void => {});
         if(!emoji || !emoji.author || !emoji.guild) return;
