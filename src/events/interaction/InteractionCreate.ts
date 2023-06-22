@@ -21,9 +21,7 @@ export default class
         if(!interaction || !interaction.type || !interaction.member || !interaction.guildId) return;
 
         /* Basic information */
-        const guild: any = interaction.guild;
-        const member = interaction.member;
-        const channel = interaction.channel;
+        const { guild, member, channel }: any = interaction;
 
         const data: any = {
             guild: await this.client.findOrCreateGuild(guild.id),
