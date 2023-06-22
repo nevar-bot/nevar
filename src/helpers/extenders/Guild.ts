@@ -101,8 +101,8 @@ Guild.prototype.resolveMember = async function (query: string, exact: boolean = 
         client.alertException(e, this.name, null, "<Guild||Prototype>.resolveMember(\"" + query + "\", " + exact + ")")
     });
 
-    const matchingTags: Collection<string, GuildMember> = this.members.cache.filter((mem) => mem.user.tag === query);
-    if (matchingTags.size === 1) return matchingTags.first();
+    const matchingUsernames: Collection<string, GuildMember> = this.members.cache.filter((mem: any): boolean => mem.user.username === query);
+    if (matchingUsernames.size === 1) return matchingUsernames.first();
 
     if (!exact) {
         return this.members.cache.find(

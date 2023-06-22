@@ -17,7 +17,7 @@ export default class
         const { guild } = ban;
 
         const banLogMessage: string =
-            this.client.emotes.user + " Nutzer: " + ban.user.tag + " (" + ban.user.id + ")\n" +
+            this.client.emotes.user + " Nutzer: " + ban.user.username + " (" + ban.user.id + ")\n" +
             this.client.emotes.text + " Begründung: " + (ban.reason ? ban.reason : "N/A");
 
         const banLogEmbed: EmbedBuilder = this.client.createEmbed(banLogMessage, null, "error");

@@ -17,7 +17,7 @@ export default class
         const { guild } = ban;
 
         const banLogMessage: string =
-            this.client.emotes.user + " Nutzer: " + ban.user.tag + " (" + ban.user.id + ")";
+            this.client.emotes.user + " Nutzer: " + ban.user.username + " (" + ban.user.id + ")";
 
         const banLogEmbed: EmbedBuilder = this.client.createEmbed(banLogMessage, null, "success");
         banLogEmbed.setTitle(this.client.emotes.events.member.unban + " Nutzer entbannt");

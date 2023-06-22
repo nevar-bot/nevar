@@ -90,7 +90,7 @@ export default class
                 type: (interaction.isUserContextMenuCommand() ? "User Context Menu" : "Message Context Menu"),
                 arguments: [],
                 user: {
-                    tag: member.user.tag,
+                    tag: member.user.username,
                     id: member.user.id,
                     createdAt: member.user.createdAt,
                 },
@@ -227,7 +227,7 @@ export default class
                 type: "Slash command",
                 arguments: args,
                 user: {
-                    tag: member.user.tag,
+                    tag: member.user.username,
                     id: member.user.id,
                     createdAt: member.user.createdAt,
                 },

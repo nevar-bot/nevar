@@ -405,7 +405,7 @@ export default class BaseClient extends DiscordClient
                 "\n" +
                 this.emotes.arrow +
                 " Nutzer: " +
-                user.tag +
+                user.username +
                 " (" +
                 user.id +
                 ")";
@@ -435,28 +435,27 @@ export default class BaseClient extends DiscordClient
 
     async resolveUser(query: string, exact: boolean = false): Promise<any>
     {
-        const USER_MENTION = /<?@?!?(\d{17,20})>?/;
+        const USER_MENTION: RegExp = /<?@?!?(\d{17,20})>?/;
         if (!query) return;
 
         const patternMatch: RegExpExecArray | null =
             RegExp(USER_MENTION).exec(query);
         if (patternMatch) {
-            const id = patternMatch[1];
-            const fetchedUser = await this.users
+            const id: string = patternMatch[1];
+            const fetchedUser: any = await this.users
                 .fetch(id, { cache: true })
-                .catch(() => {});
+                .catch((): void => {});
             if (fetchedUser) return fetchedUser;
         }
 
-        const matchingTags = this.users.cache.filter((user) => user.tag === query);
-        if (matchingTags.size === 1) return matchingTags.first();
+        const matchingUsernames: any = this.users.cache.filter((user: any): boolean => user.username === query);
+        if (matchingUsernames.size === 1) return matchingUsernames.first();
 
         if (!exact) {
             return this.users.cache.find(
-                (x) =>
+                (x: any): any =>
                     x.username === query ||
-                    x.username.toLowerCase().includes(query.toLowerCase()) ||
-                    x.tag.toLowerCase().includes(query.toLowerCase())
+                    x.username.toLowerCase().includes(query.toLowerCase())
             );
         }
     }

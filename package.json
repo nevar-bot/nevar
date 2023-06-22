@@ -41,7 +41,7 @@
     "cors": "^2.8.5",
     "discord-giveaways": "github:nevar-bot/discord-giveaways#feat/button-support",
     "discord-xp": "^1.1.16",
-    "discord.js": "^14.11.0",
+    "discord.js": "^14.11.1-dev.1687435451-75d91b5.0",
     "discordbotlist": "^1.1.1",
     "enhanced-ms": "^2.3.0",
     "express": "^4.18.2",

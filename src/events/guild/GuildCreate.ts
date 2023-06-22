@@ -64,7 +64,7 @@ export default class
 
         const supportGuildLogMessage: string =
             "Name: **" + guild.name + "**\n" +
-            this.client.emotes.crown + " Eigentümer: **" + owner.user.tag + "**\n" +
+            this.client.emotes.crown + " Eigentümer: **" + owner.user.username + "**\n" +
             this.client.emotes.id + " ID: **" + guild.id + "**\n" +
             this.client.emotes.users + " Mitglieder: **" + guild.memberCount + "**\n" +
             this.client.emotes.calendar + " Erstellt am: **" + createdAt + "**\n" +

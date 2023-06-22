@@ -102,16 +102,14 @@ export default class {
                 return str
                     .replaceAll(/{user}/g, member)
                     .replaceAll(/{user:username}/g, member.user.username)
-                    // bis discord.js es supported, undefined
-                    .replaceAll(/{user:displayname}/g, "undefined")
+                    .replaceAll(/{user:displayname}/g, member.user.displayName)
                     .replaceAll(/{user:id}/g, member.user.id)
                     .replaceAll(/{server:name}/g, guild.name)
                     .replaceAll(/{server:id}/g, guild.id)
                     .replaceAll(/{server:membercount}/g, guild.memberCount)
                     .replaceAll(/{inviter}/g, inviteData.inviter || "Unbekannt")
                     .replaceAll(/{inviter:username}/g, inviteData.inviter?.username || "Unbekannt")
-                    .replaceAll(/{inviter:tag}/g, inviteData.inviter?.tag || "Unbekannt#0000")
-                    .replaceAll(/{inviter:discriminator}/g, inviteData.inviter?.discriminator || "0000")
+                    .replaceAll(/{inviter:displayname}/g, inviteData.inviter?.displayName || "Unbekannt")
                     .replaceAll(/{inviter:id}/g, inviteData.inviter?.id || "000000000000000000")
                     .replaceAll(/{inviter:invites}/g, inviteData.totalInvites || 0)
                     .replaceAll(/{newline}/g, "\n");
