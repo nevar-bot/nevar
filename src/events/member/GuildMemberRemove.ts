@@ -49,8 +49,8 @@ export default class
                 return str
                     .replaceAll(/{user}/g, member)
                     .replaceAll(/{user:username}/g, member.user.username)
-                    .replaceAll(/{user:tag}/g, member.user.tag)
-                    .replaceAll(/{user:discriminator}/g, member.user.discriminator)
+                    // bis discord.js es supported, undefined
+                    .replaceAll(/{user:displayname}/g, "undefined")
                     .replaceAll(/{user:id}/g, member.user.id)
                     .replaceAll(/{server:name}/g, guild.name)
                     .replaceAll(/{server:id}/g, guild.id)
