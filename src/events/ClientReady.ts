@@ -30,8 +30,6 @@ export default class
         const client: any = this.client;
         const config = client.config;
 
-        console.log(client.user.username);
-
         /* Initialize levels */
         await levels.setURL(config.general["MONGO_CONNECTION"]);
 

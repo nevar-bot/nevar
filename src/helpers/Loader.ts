@@ -64,7 +64,7 @@ export default class Loader
         let messageContexts: number = 0;
         client.logger.log("Loading context menus...");
 
-        const directory = await readdir("./src/contexts");
+        const directory = await readdir("./build/contexts");
         for(const context of directory){
             if(context.split(".")[1] === "js"){
                 try {

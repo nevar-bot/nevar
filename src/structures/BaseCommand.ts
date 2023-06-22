@@ -22,7 +22,21 @@ export default class BaseCommand
                 addCommand: true,
                 options: [],
             },
-        }
+        }: {
+            name?: string | null,
+            description?: string | null,
+            dirname?: string | null,
+            botPermissions?: string[],
+            memberPermissions?: string[],
+            nsfw?: boolean,
+            ownerOnly?: boolean,
+            staffOnly?: boolean,
+            cooldown?: number,
+            slashCommand?: {
+                addCommand: boolean,
+                options: object[],
+            }
+    }
     ) {
         const category = dirname
             ? (dirname as string).split(path.sep)[

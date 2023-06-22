@@ -1,4 +1,5 @@
 import BaseClient from "@structures/BaseClient";
+import {ApplicationCommandType} from "discord.js";
 
 export default class BaseContext
 {
@@ -12,7 +13,13 @@ export default class BaseContext
             memberPermissions = [],
             botPermissions = [],
             cooldown = 0,
-        }
+        }: {
+            name?: string | null,
+            type?: ApplicationCommandType | null,
+            memberPermissions?: string[],
+            botPermissions?: string[],
+            cooldown?: number,
+    }
     ) {
         this.client = client;
         this.conf = { memberPermissions, botPermissions, cooldown, type };
