@@ -19,7 +19,7 @@ export default class
         const emojiLogMessage: string =
             this.client.emotes.edit + " Name: " + emoji.name + "\n" +
             this.client.emotes.id + " ID: "+ emoji.id + "\n" +
-            this.client.emotes.user + " Ersteller: " + emoji.author.tag;
+            this.client.emotes.user + " Ersteller: " + emoji.author.username;
 
         const emojiLogEmbed: EmbedBuilder = this.client.createEmbed(emojiLogMessage, null, "success");
         emojiLogEmbed.setTitle(this.client.emotes.events.emoji.create + " Emoji erstellt");
