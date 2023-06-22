@@ -10,6 +10,4 @@ export const ChannelTypes = {
     12: "Privater Thread",
     13: "Stage-Kanal",
     15: "Forum",
-
-
 }
