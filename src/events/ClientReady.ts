@@ -15,10 +15,11 @@ import unbanMembers from "@handlers/unbanMembers";
 import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";
 import api from "@api/app";
+import BaseClient from "@structures/BaseClient";
 
 export default class
 {
-    public client: any;
+    public client: BaseClient;
     constructor(client: any)
     {
         this.client = client;
