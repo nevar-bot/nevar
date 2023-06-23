@@ -73,7 +73,8 @@ export default class
 
             if(guildData.settings.farewell.type === "embed"){
                 const farewellEmbed: EmbedBuilder = this.client.createEmbed(farewellMessage, null, "normal");
-                farewellEmbed.setThumbnail(member.user.displayAvatarURL());
+                farewellEmbed.setColor(guildData.settings.farewell.color || this.client.config.embeds["DEFAULT_COLOR"]);
+                if(guildData.settings.farewell?.thumbnail) farewellEmbed.setThumbnail(member.user.displayAvatarURL());
                 return farewellChannel.send({ embeds: [farewellEmbed] }).catch((e: any): void => {
                     const errorText: string =
                         this.client.emotes.user + " Mitglied: " + member.user.username + "\n" +
