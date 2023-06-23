@@ -132,16 +132,7 @@ export default class AutodeleteCommand extends BaseCommand {
         for(let i: number = 0; i < response.length; i++){
             if(typeof response[i] !== "object") continue;
             const cachedChannel: any = this.interaction.guild.channels.cache.get(response[i].channel);
-            if(!cachedChannel){
-                response.splice(i, 1);
-            }else{
-                autodeleteArray.push(" Channel: " + cachedChannel.toString() + "\n" + this.client.emotes.reminder + " Zeit: " + ms(response[i].time) + "\n");
-            }
-        }
-        if(data.guild.settings.autodelete !== response){
-            data.guild.settings.autodelete = response;
-            data.guild.markModified("settings.autodelete");
-            await data.guild.save();
+            if(cachedChannel) autodeleteArray.push(" Channel: " + cachedChannel.toString() + "\n" + this.client.emotes.reminder + " Zeit: " + ms(response[i].time) + "\n");
         }
 
         await this.client.utils.sendPaginatedEmbed(this.interaction, 5, autodeleteArray, "Autodelete", "Es ist kein Autodelete eingestellt", "channel");

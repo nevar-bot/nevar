@@ -145,9 +145,7 @@ export default class AutoreactCommand extends BaseCommand {
         for(let i: number = 0; i < response.length; i++){
             if(typeof response[i] !== "object") continue;
             const cachedChannel: any = this.interaction.guild.channels.cache.get(response[i].channel);
-            if(!cachedChannel){
-                response.splice(i, 1);
-            }else{
+            if(cachedChannel){
                 const cachedEmoji: any = this.client.emojis.cache.get(response[i].emoji);
                 if(!sortedAutoReactArray[cachedChannel.toString()]) sortedAutoReactArray[cachedChannel.toString()] = [];
                 sortedAutoReactArray[cachedChannel.toString()].push(cachedEmoji ? cachedEmoji.toString() : response[i].emoji)
@@ -156,11 +154,6 @@ export default class AutoreactCommand extends BaseCommand {
 
         for(let item in sortedAutoReactArray){
             finalSortedAutoReactArray.push(" Channel: " + item + "\n" + this.client.emotes.arrow + " Emojis: " + sortedAutoReactArray[item].join(", ") + "\n")
-        }
-        if(data.guild.settings.autoreact !== response){
-            data.guild.settings.autoreact = response;
-            data.guild.markModified("settings.autoreact");
-            await data.guild.save();
         }
 
         await this.client.utils.sendPaginatedEmbed(this.interaction, 5, finalSortedAutoReactArray, "Autoreact", "Es ist kein Autoreact eingestellt", "channel");
