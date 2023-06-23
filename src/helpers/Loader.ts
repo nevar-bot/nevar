@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as util from "util";
 import * as path from "path";
-import {ApplicationCommandType, Events } from "discord.js";
+import { ApplicationCommandType, Events } from "discord.js";
 const readdir = util.promisify(fs.readdir);
 import Utils from "@helpers/Utils";
 import BaseClient from "@structures/BaseClient";
@@ -16,15 +16,14 @@ export default class Loader
 
         const directories: string[] = await readdir("./src/commands/");
         for(const directory of directories){
-            const commands = await readdir("./src/commands/" + directory + "/");
+            const commands: string[] = await readdir("./src/commands/" + directory + "/");
             for (const command of commands) {
-                if(command.split(".")[1] === "js"){
-                    const response = await client.loadCommand("../commands/" + directory, command);
-                    if(response){
-                        failed++;
-                        client.logger.error("Couldn't load command " + command + ": " + response);
-                    }else success++;
-                }
+                if(path.extname(command) !== ".js") continue;
+                const response = await client.loadCommand("../commands/" + directory, command);
+                if(response){
+                    failed++;
+                    client.logger.error("Couldn't load command " + command + ": " + response);
+                }else success++;
             }
         }
         client.logger.log("Loaded " + (success + failed) + " commands. Success (" + success + ") Failed (" + failed + ")");
@@ -38,7 +37,7 @@ export default class Loader
         let failed: number = 0;
 
         for (const filePath of Utils.recursiveReadDirSync(directory)) {
-            const file = path.basename(filePath);
+            const file: string = path.basename(filePath);
             try {
                 const eventName: string = path.basename(file, ".js");
                 const event = new (await import(filePath)).default(client);
@@ -64,22 +63,21 @@ export default class Loader
         let messageContexts: number = 0;
         client.logger.log("Loading context menus...");
 
-        const directory = await readdir("./build/contexts");
+        const directory: any = await readdir("./build/contexts");
         for(const context of directory){
-            if(context.split(".")[1] === "js"){
-                try {
-                    const props = new (await import("@contexts/" + context)).default(client)
-                    if(props.init){
-                        props.init(client);
-                    }
-                    client.contextMenus.set(props.help.name, props);
-                    if(props.help.type === ApplicationCommandType.User) userContexts++;
-                    else if(props.help.type === ApplicationCommandType.Message) messageContexts++;
-                    success++;
-                }catch(e: any){
-                    failed++;
-                    client.logger.error("Couldn't load context menu " + context + ": " + e);
+            if(path.extname(context) !== ".js") continue;
+            try {
+                const props = new (await import("@contexts/" + context)).default(client)
+                if(props.init){
+                    props.init(client);
                 }
+                client.contextMenus.set(props.help.name, props);
+                if(props.help.type === ApplicationCommandType.User) userContexts++;
+                else if(props.help.type === ApplicationCommandType.Message) messageContexts++;
+                success++;
+            }catch(e: any){
+                failed++;
+                client.logger.error("Couldn't load context menu " + context + ": " + e);
             }
         }
         client.logger.log("Loaded " + (success + failed) + " context menus (" + userContexts + " user, " + messageContexts + " message). Success (" + success + ") Failed (" + failed + ")");
