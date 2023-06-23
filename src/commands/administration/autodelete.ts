@@ -46,7 +46,7 @@ export default class AutodeleteCommand extends BaseCommand {
     public async dispatch(interaction: any, data: any): Promise<void> {
         this.interaction = interaction;
 
-        const action = interaction.options.getString("aktion");
+        const action: string = interaction.options.getString("aktion");
         switch (action){
             case "add":
                 await this.addAutodelete(interaction.options.getChannel("channel"), interaction.options.getString("zeit"), data);
@@ -135,7 +135,7 @@ export default class AutodeleteCommand extends BaseCommand {
             if(!cachedChannel){
                 response.splice(i, 1);
             }else{
-                autodeleteArray.push(" Channel: " + cachedChannel.toString() + "\n" + this.client.emotes.reminder + " Zeit: " + ms(response[i].time) + "\n\n");
+                autodeleteArray.push(" Channel: " + cachedChannel.toString() + "\n" + this.client.emotes.reminder + " Zeit: " + ms(response[i].time) + "\n");
             }
         }
         if(data.guild.settings.autodelete !== response){
