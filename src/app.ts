@@ -12,17 +12,19 @@ Validator.configValidator();
 /* Initialize client */
 const client: BaseClient = new BaseClient();
 
-process.on("unhandledRejection", (e: any): any => {
-    console.error(e);
-    return client.alertException(e);
+process.on("unhandledRejection", (e: any): any =>
+{
+	console.error(e);
+	return client.alertException(e);
 });
 
-(async (): Promise<void> => {
-    await mongoose.init(client);
-    await Loader.loadCommands(client);
-    await Loader.loadContexts(client);
-    await Loader.loadEvents(client);
-    await client.login(client.config.general["BOT_TOKEN"]);
+(async (): Promise<void> =>
+{
+	await mongoose.init(client);
+	await Loader.loadCommands(client);
+	await Loader.loadContexts(client);
+	await Loader.loadEvents(client);
+	await client.login(client.config.general["BOT_TOKEN"]);
 })();
 
 export { client };

@@ -1,5 +1,6 @@
 export default {
-    init(client: any): void {
-        console.log("test");
-    }
+	init(client: any): void
+	{
+		console.log("test");
+	}
 }
