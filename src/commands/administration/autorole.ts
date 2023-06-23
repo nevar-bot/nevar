@@ -3,7 +3,7 @@ import BaseClient from "@structures/BaseClient";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 export default class AutoroleCommand extends BaseCommand {
-    constructor(client: BaseClient) {
+    public constructor(client: BaseClient) {
         super(client, {
             name: "autorole",
             description: "Verwaltet die Rollen, welche neuen Mitgliedern automatisch gegeben werden",

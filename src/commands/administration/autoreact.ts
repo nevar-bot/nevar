@@ -4,7 +4,7 @@ import { SlashCommandBuilder, ChannelType, EmbedBuilder } from "discord.js";
 import Utils from "@helpers/Utils";
 
 export default class AutoreactCommand extends BaseCommand {
-    constructor(client: BaseClient) {
+    public constructor(client: BaseClient) {
         super(client, {
             name: "autoreact",
             description: "Verwaltet das automatische Reagieren auf Nachrichten",
