@@ -20,7 +20,7 @@ export default class BaseCommand
             cooldown = 0,
             slashCommand = {
                 addCommand: true,
-                options: [],
+                data: [],
             },
         }: {
             name?: string | null,
@@ -34,11 +34,11 @@ export default class BaseCommand
             cooldown?: number,
             slashCommand?: {
                 addCommand: boolean,
-                options: object[],
+                data: any,
             }
     }
     ) {
-        const category = dirname
+        const category: string = dirname
             ? (dirname as string).split(path.sep)[
                 parseInt(String((dirname as string).split(path.sep).length - 1), 10)
                 ]

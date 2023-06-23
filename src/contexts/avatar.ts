@@ -2,7 +2,7 @@ import { ApplicationCommandType, EmbedBuilder } from "discord.js";
 import BaseContext from "@structures/BaseContext";
 import BaseClient from "@structures/BaseClient";
 
-export default class Avatar extends BaseContext {
+export default class AvatarContext extends BaseContext {
     constructor(client: BaseClient){
         super(client, {
             name: "avatar",

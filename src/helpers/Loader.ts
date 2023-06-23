@@ -14,9 +14,9 @@ export default class Loader
         let failed: number = 0;
         client.logger.log("Loading commands...");
 
-        const directories: string[] = await readdir("./src/commands/");
+        const directories: string[] = await readdir("./build/commands/");
         for(const directory of directories){
-            const commands: string[] = await readdir("./src/commands/" + directory + "/");
+            const commands: string[] = await readdir("./build/commands/" + directory + "/");
             for (const command of commands) {
                 if(path.extname(command) !== ".js") continue;
                 const response = await client.loadCommand("../commands/" + directory, command);
