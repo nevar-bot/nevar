@@ -1,5 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder } from "discord.js";
+import { AuditLogEvent, EmbedBuilder } from "discord.js";
 
 export default class
 {
@@ -24,8 +24,17 @@ export default class
         if(channel.videoQualityMode) properties.push(this.client.emotes.monitor + " Videoqualität: " + (channel.videoQualityMode === 1 ? "automatisch" : "720p"));
         if(properties.length < 1) return;
 
-        const channelLogMessage: string =
+        let channelLogMessage: string =
             properties.join("\n");
+
+        const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["ChannelDelete"], limit: 1 }).catch((e: any): void => {});
+        if(auditLogs){
+            const auditLogEntry: any = auditLogs.entries.first();
+            if(auditLogEntry){
+                const moderator: any = auditLogEntry.executor;
+                if(moderator) channelLogMessage += "\n\n" + this.client.emotes.user + " Moderator: " + moderator.toString();
+            }
+        }
 
         const channelLogEmbed: EmbedBuilder = this.client.createEmbed(channelLogMessage, null, "error");
         channelLogEmbed.setTitle(this.client.emotes.events.channel.delete + " " + this.client.channelTypes[channel.type] + " gelöscht");

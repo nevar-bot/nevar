@@ -1,5 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder } from "discord.js";
+import {AuditLogEvent, EmbedBuilder} from "discord.js";
 
 export default class
 {
@@ -23,9 +23,18 @@ export default class
 
         if(properties.length < 1) return;
 
-        const threadLogMessage: string =
+        let threadLogMessage: string =
             this.client.emotes.channel + " Thread: " + newThread.toString() + "\n" +
             properties.join("\n");
+
+        const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["ThreadUpdate"], limit: 1 }).catch((e: any): void => {});
+        if(auditLogs){
+            const auditLogEntry: any = auditLogs.entries.first();
+            if(auditLogEntry){
+                const moderator: any = auditLogEntry.executor;
+                if(moderator) threadLogMessage += "\n\n" + this.client.emotes.user + " Moderator: " + moderator.toString();
+            }
+        }
 
         const threadLogEmbed: EmbedBuilder = this.client.createEmbed(threadLogMessage, null, "warning");
         threadLogEmbed.setTitle(this.client.emotes.events.thread.update + " " + this.client.channelTypes[newThread.type] + " bearbeitet");

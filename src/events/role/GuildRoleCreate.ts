@@ -1,5 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder } from "discord.js";
+import {AuditLogEvent, EmbedBuilder} from "discord.js";
 
 export default class
 {
@@ -16,9 +16,18 @@ export default class
 
         const { guild } = role;
 
-        const roleLogMessage: string =
+        let roleLogMessage: string =
             this.client.emotes.edit + " Name: " + role.name + "\n" +
             this.client.emotes.id + " ID: "+ role.id;
+
+        const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["RoleCreate"], limit: 1 }).catch((e: any): void => {});
+        if(auditLogs){
+            const auditLogEntry: any = auditLogs.entries.first();
+            if(auditLogEntry){
+                const moderator: any = auditLogEntry.executor;
+                if(moderator) roleLogMessage += "\n\n" + this.client.emotes.user + " Moderator: " + moderator.toString();
+            }
+        }
 
         const roleLogEmbed: EmbedBuilder = this.client.createEmbed(roleLogMessage, null, "success");
         roleLogEmbed.setTitle(this.client.emotes.events.role.create + " Rolle erstellt");

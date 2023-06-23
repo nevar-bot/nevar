@@ -1,5 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder, Collection } from "discord.js";
+import {EmbedBuilder, Collection, AuditLogEvent} from "discord.js";
 import moment from "moment";
 
 export default class
@@ -35,11 +35,20 @@ export default class
         memberData.markModified("invites");
         await memberData.save();
 
-        const inviteCreateText: string =
+        let inviteCreateText: string =
             this.client.emotes.link + " Link: " + invite.url + "\n" +
             this.client.emotes.user + " Ersteller: " + inviter.username + "\n" +
             this.client.emotes.reload + " Max. Verwendungen: " + (invite.maxUses === 0 ? "Unbegrenzt" : invite.maxUses) + "\n" +
             (invite.expiresTimestamp ? this.client.emotes.reminder + " Ablaufdatum: **" + moment(invite.expiresTimestamp).format("DD.MM.YYYY HH:mm") + "**" : "");
+
+        const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["InviteCreate"], limit: 1 }).catch((e: any): void => {});
+        if(auditLogs){
+            const auditLogEntry: any = auditLogs.entries.first();
+            if(auditLogEntry){
+                const moderator: any = auditLogEntry.executor;
+                if(moderator) inviteCreateText += "\n\n" + this.client.emotes.user + " Moderator: " + moderator.toString();
+            }
+        }
 
         const inviteCreateEmbed: EmbedBuilder = this.client.createEmbed(inviteCreateText, null, "success");
         inviteCreateEmbed.setTitle(this.client.emotes.invite + " Einladung erstellt");

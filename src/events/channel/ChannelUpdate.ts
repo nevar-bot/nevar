@@ -1,5 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder } from "discord.js";
+import {AuditLogEvent, EmbedBuilder} from "discord.js";
 
 export default class
 {
@@ -25,9 +25,18 @@ export default class
         if(oldChannel.videoQualityMode !== newChannel.videoQualityMode) properties.push(this.client.emotes.monitor + " Videoqualität: ~~" + (oldChannel.videoQualityMode === 1 ? "automatisch" : "720p") + "~~ **" + (newChannel.videoQualityMode === 1 ? "automatisch" : "720p") + "**");
         if(properties.length < 1) return;
 
-        const channelLogMessage: string =
+        let channelLogMessage: string =
             this.client.emotes.channel + " Kanal: " + newChannel.toString() + "\n" +
             properties.join("\n");
+
+        const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["ChannelUpdate"], limit: 1 }).catch((e: any): void => {});
+        if(auditLogs){
+            const auditLogEntry: any = auditLogs.entries.first();
+            if(auditLogEntry){
+                const moderator: any = auditLogEntry.executor;
+                if(moderator) channelLogMessage += "\n\n" + this.client.emotes.user + " Moderator: " + moderator.toString();
+            }
+        }
 
         const channelLogEmbed: EmbedBuilder = this.client.createEmbed(channelLogMessage, null, "warning");
         channelLogEmbed.setTitle(this.client.emotes.events.channel.update + " " + this.client.channelTypes[newChannel.type] + " bearbeitet");

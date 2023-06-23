@@ -1,5 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder } from "discord.js";
+import {AuditLogEvent, EmbedBuilder} from "discord.js";
 import moment from "moment";
 
 export default class
@@ -23,8 +23,17 @@ export default class
         if(oldScheduledEvent.scheduledEndTimestamp !== newScheduledEvent.scheduledEndTimestamp) properties.push(this.client.emotes.reminder + " Startzeit: ~~" + (oldScheduledEvent.scheduledEndTimestamp ? moment(oldScheduledEvent.scheduledEndTimestamp).format("DD.MM.YYYY HH:mm") : "/") + "~~ **" + (newScheduledEvent.scheduledEndTimestamp ? moment(newScheduledEvent.scheduledEndTimestamp).format("DD.MM.YYYY HH:mm") : "/") + "**");
         if(properties.length < 1) return;
 
-        const scheduledEventLogMessage: string =
+        let scheduledEventLogMessage: string =
             properties.join("\n");
+
+        const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["GuildScheduledEventUpdate"], limit: 1 }).catch((e: any): void => {});
+        if(auditLogs){
+            const auditLogEntry: any = auditLogs.entries.first();
+            if(auditLogEntry){
+                const moderator: any = auditLogEntry.executor;
+                if(moderator) scheduledEventLogMessage += "\n\n" + this.client.emotes.user + " Moderator: " + moderator.toString();
+            }
+        }
 
         const scheduledEventLogEmbed: EmbedBuilder = this.client.createEmbed(scheduledEventLogMessage, null, "warning");
         scheduledEventLogEmbed.setTitle(this.client.emotes.events.event.update + "Event bearbeitet");

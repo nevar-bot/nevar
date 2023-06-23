@@ -1,5 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder, PermissionsBitField } from "discord.js";
+import {AuditLogEvent, EmbedBuilder, PermissionsBitField} from "discord.js";
 
 export default class
 {
@@ -46,6 +46,15 @@ export default class
 
         if(removedPermissions.length > 0){
             roleLogMessage += "\n" + this.client.emotes.error + " " + removedPermissions.join("\n" + this.client.emotes.error + " ");
+        }
+
+        const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["RoleUpdate"], limit: 1 }).catch((e: any): void => {});
+        if(auditLogs){
+            const auditLogEntry: any = auditLogs.entries.first();
+            if(auditLogEntry){
+                const moderator: any = auditLogEntry.executor;
+                if(moderator) roleLogMessage += "\n\n" + this.client.emotes.user + " Moderator: " + moderator.toString();
+            }
         }
 
         if(properties.length === 0 && addedPermissions.length === 0 && removedPermissions.length === 0) return;
