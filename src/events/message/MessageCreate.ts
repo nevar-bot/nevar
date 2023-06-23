@@ -1,6 +1,7 @@
 import BaseClient from "@structures/BaseClient";
 import { ButtonBuilder, EmbedBuilder } from "discord.js";
 import ems from "enhanced-ms";
+const ms: any = ems("de");
 import Levels from "discord-xp";
 
 export default class
@@ -113,7 +114,7 @@ export default class
                         message.delete().catch((e: any): void => {
                             const errorText: string =
                                 this.client.emotes.channel + " Channel: " + message.channel + "\n" +
-                                this.client.emotes.reminder + " Löschen nach: " + ems(Number(time), "de");
+                                this.client.emotes.reminder + " Löschen nach: " + ms(Number(time));
 
                             const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
                             errorEmbed.setTitle(this.client.emotes.error + " Löschen von Nachricht durch Autodelete fehlgeschlagen");
