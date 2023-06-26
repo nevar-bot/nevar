@@ -2,7 +2,6 @@ import BaseClient from "@structures/BaseClient";
 import { ButtonBuilder, EmbedBuilder } from "discord.js";
 import ems from "enhanced-ms";
 const ms: any = ems("de");
-import Levels from "discord-xp";
 
 export default class
 {
@@ -183,8 +182,8 @@ export default class
 
 			// check if user leveled up
 			if (!this.timeouts.has(message.author.id)) {
-				const hasLeveledUp: boolean = await Levels.appendXp(message.author.id, message.guild.id, xp);
-				const levelUser: any = await Levels.fetch(message.author.id, message.guild.id, true);
+				const hasLeveledUp: boolean = await this.client.levels.appendXp(message.author.id, message.guild.id, xp);
+				const levelUser: any = await this.client.levels.fetch(message.author.id, message.guild.id, true);
 
 				if (hasLeveledUp) {
 					const newLevel: number = Number(levelUser.level);
@@ -216,8 +215,7 @@ export default class
 							.replaceAll(/{level}/g, String(newLevel))
 							.replaceAll(/{user}/g, message.author)
 							.replaceAll(/{user:username}/g, message.author.username)
-							// bis discord.js es supported, undefined
-							.replaceAll(/{user:displayname}/g, "undefined")
+							.replaceAll(/{user:displayname}/g, message.author.displayName)
 							.replaceAll(/{user:id}/g, message.author.id)
 							.replaceAll(/{server:name}/g, message.guild.name)
 							.replaceAll(/{server:id}/g, message.guild.id)

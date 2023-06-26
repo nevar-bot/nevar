@@ -28,12 +28,14 @@ import * as emotes from "@assets/emojis.json";
 import { permissions } from "@helpers/Permissions";
 import { ChannelTypes } from "@helpers/ChannelTypes";
 import Utils from "@helpers/Utils";
+import Levels from "@helpers/Levels";
 
 import logSchema from "@schemas/Log";
 import guildSchema from "@schemas/Guild";
 import userSchema from "@schemas/User";
 import memberSchema from "@schemas/Member";
 import giveawaySchema from "@schemas/Giveaway";
+
 
 export default class BaseClient extends DiscordClient
 {
@@ -48,6 +50,7 @@ export default class BaseClient extends DiscordClient
 	public giveawayManager: any;
 	public logger: any;
 	public utils: any;
+	public levels: any;
 	public logs: any;
 	public guildsData: any;
 	public usersData: any;
@@ -99,6 +102,7 @@ export default class BaseClient extends DiscordClient
 		this.giveawayManager = giveawaysHandler(this);
 		this.logger = Logger;
 		this.utils = Utils;
+		this.levels = Levels;
 
 		this.logs = logSchema;
 		this.guildsData = guildSchema;

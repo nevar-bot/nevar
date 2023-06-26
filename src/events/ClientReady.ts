@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import { scheduleJob } from "node-schedule";
 import moment from "moment";
-import levels from "discord-xp";
 import
 {
 	Collection,
@@ -32,7 +31,7 @@ export default class
 		const config = client.config;
 
 		/* Initialize levels */
-		await levels.setURL(config.general["MONGO_CONNECTION"]);
+		await this.client.levels.setURL(config.general["MONGO_CONNECTION"]);
 
 		/* Initialize giveaways manager */
 		client.logger.log("Initializing giveaways manager...");
