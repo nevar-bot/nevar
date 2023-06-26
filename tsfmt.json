@@ -1,5 +1,4 @@
 {
-  "files": ["src/**/*.ts"],
   "baseIndentSize": 0,
   "indentSize": 4,
   "tabSize": 4,
