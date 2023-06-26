@@ -310,7 +310,7 @@ export default class BaseClient extends DiscordClient
 		return new Intl.NumberFormat("de-DE").format(integer);
 	}
 
-	createEmbed(message: string|null, emote: string|null, type: "normal" | "success" | "warning" | "error" | "transparent", ...args: any): EmbedBuilder
+	createEmbed(message: string | null, emote: string | null, type: "normal" | "success" | "warning" | "error" | "transparent", ...args: any): EmbedBuilder
 	{
 		const color: any = type
 			.replace("normal", this.config.embeds["DEFAULT_COLOR"])
@@ -319,7 +319,7 @@ export default class BaseClient extends DiscordClient
 			.replace("transparent", this.config.embeds["TRANSPARENT_COLOR"])
 			.replace("error", this.config.embeds["ERROR_COLOR"]);
 
-		let formattedMessage: string|null = message;
+		let formattedMessage: string | null = message;
 		for (let i: number = 0; i < args.length; i++) {
 			formattedMessage = formattedMessage!.replaceAll("{" + i + "}", args[i]);
 		}
