@@ -1,7 +1,7 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import BaseGame from "@structures/BaseGame";
-import { SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 
 export default class FloodCommand extends BaseCommand {
     public constructor(client: BaseClient) {
