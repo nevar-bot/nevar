@@ -77,6 +77,18 @@ const Schema = new mongoose.Schema({
 				type: null,
 				message: null,
 			},
+			aiModeration: {
+				enabled: false,
+				excludedChannels: [],
+				excludedRoles: [],
+				threshold: 0.6,
+				alertChannel: null,
+			},
+			aiChat: {
+				enabled: false,
+				channel: null,
+				mode: "normal"
+			},
 			muterole: null,
 			autodelete: [],
 			autoreact: [],
