@@ -26,7 +26,7 @@ export default class
 		const afkSinceString: string = this.client.utils.getRelativeTime(since);
 
 		const backText: string =
-			this.client.emotes.arrow + " Du warst **" + afkSinceString + "** weg: " + (afkReason || "Kein Grund angegeben");
+			"Du warst **" + afkSinceString + "** abwesend: " + (afkReason || "Kein Grund angegeben");
 
 		const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed("{0}", "reminder", "normal", backText);
 		welcomeBackEmbed.setTitle(this.client.emotes.shine2 + " Willkommen zurück!");

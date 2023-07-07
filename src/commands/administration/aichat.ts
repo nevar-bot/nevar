@@ -1,13 +1,13 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import
-	{
-		EmbedBuilder,
-		SlashCommandBuilder,
-		ChannelType,
-		StringSelectMenuBuilder,
-		StringSelectMenuOptionBuilder
-	} from "discord.js";
+{
+	EmbedBuilder,
+	SlashCommandBuilder,
+	ChannelType,
+	StringSelectMenuBuilder,
+	StringSelectMenuOptionBuilder
+} from "discord.js";
 
 export default class AimodCommand extends BaseCommand
 {
