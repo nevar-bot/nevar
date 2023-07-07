@@ -5,20 +5,23 @@ const ms: any = ems("de");
 // @ts-ignore - Could not find a declaration file for module 'perspective-api-client'
 import Perspective from "perspective-api-client";
 import axios from "axios";
-export default class {
+export default class
+{
 	private client: BaseClient;
 	private timeouts: any;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: BaseClient)
+	{
 		this.client = client;
 		this.timeouts = new Set();
 	}
 
-	public async dispatch(message: any): Promise<any> {
+	public async dispatch(message: any): Promise<any>
+	{
 		if (!message || !message.member || !message.guild || !message.guild.available) return;
 
 		/* Basic information */
-		const {guild, member, channel}: any = message;
+		const { guild, member, channel }: any = message;
 
 		const data: any = {
 			guild: await this.client.findOrCreateGuild(guild.id),
@@ -70,7 +73,7 @@ export default class {
 			const inviteButton: ButtonBuilder = this.client.createButton(null, "Einladen", "Link", null, false, this.client.createInvite());
 			const buttonRow: any = this.client.createMessageComponentsRow(inviteButton);
 
-			return message.reply({embeds: [helpEmbed], components: [buttonRow]});
+			return message.reply({ embeds: [helpEmbed], components: [buttonRow] });
 		} else if (message.content) {
 			/* split message into parts */
 			const splittedMessage: string[] = message.content.split(" ");
@@ -103,14 +106,13 @@ export default class {
 		/* AI Moderation */
 		if (data.guild.settings.aiModeration?.enabled) {
 			if (!message.author.bot) {
-				const perspective: Perspective = new Perspective({apiKey: this.client.config.apikeys["GOOGLE"]});
+				const perspective: Perspective = new Perspective({ apiKey: this.client.config.apikeys["GOOGLE"] });
 
 				const result = await perspective.analyze(message.content, {
 					attributes: ["TOXICITY", "INSULT", "PROFANITY", "THREAT", "SEVERE_TOXICITY"],
 					languages: ["de"],
 					doNotStore: true
-				}).catch((e: any): void => {
-				})
+				}).catch((e: any): void => { })
 
 				if (result?.attributeScores) {
 					const attributeScores: any = result.attributeScores;
@@ -142,7 +144,8 @@ export default class {
 
 							const attributes: string[] = Object.keys(attributeScores)
 								.sort((a: string, b: string) => attributeScores[b].summaryScore.value - attributeScores[a].summaryScore.value) // Sortiere die Attribute basierend auf den Werten absteigend
-								.map((key: string): string => {
+								.map((key: string): string =>
+								{
 									const value: string = (Math.floor(attributeScores[key].summaryScore.value * 100) / 100).toFixed(2);
 									return this.client.emotes.search + " " + attributeStrings[key] + ": **" + value + "**";
 								});
@@ -158,10 +161,11 @@ export default class {
 							const embed: EmbedBuilder = this.client.createEmbed(alertMessage, null, "warning");
 							embed.setTitle(this.client.emotes.warning + " Potenziell beleidigende Nachricht");
 
-							const deleteButton: ButtonBuilder = this.client.createButton(message.id + "_delete", "Nachricht löschen", "Secondary", "delete", false);
-							const row: any = this.client.createMessageComponentsRow(deleteButton);
+							const deleteButton: ButtonBuilder = this.client.createButton("aimod_" + message.channel.id + "_" + message.id + "_delete", "Nachricht löschen", "Secondary", "delete", false);
+							const warnButton: ButtonBuilder = this.client.createButton("aimod_" + message.channel.id + "_" + message.id + "_warn", "Verwarnen", "Secondary", "warning", true);
+							const row: any = this.client.createMessageComponentsRow(deleteButton, warnButton);
 
-							alertChannel.send({embeds: [embed], components: [row]});
+							alertChannel.send({ embeds: [embed], components: [row] });
 						}
 					}
 				}
@@ -171,18 +175,14 @@ export default class {
 		/* AI Chat */
 		if (data.guild.settings.aiChat?.enabled && data.guild.settings.aiChat?.channel === message.channel.id && !message.author.bot && !message.content.startsWith("//")) {
 			if (!this.client.aiChat.has(message.guild.id)) {
-				this.client.aiChat.set(message.guild.id, []);
-
 				/* set ai mode */
-				let prompt: string = this.client.aiChatTypes["default"];
-				prompt += this.client.aiChatTypes[data.guild.settings.aiChat.mode];
+				this.client.aiChat.set(message.guild.id, []);
+				const prompt: string = this.client.aiChatPrompts.default + this.client.aiChatPrompts.prompts[data.guild.settings.aiChat.mode].prompt;
 				this.client.aiChat.get(message.guild.id)!.push({ role: "system", content: prompt });
-
-				console.log(prompt);
 			}
 
-			/* add user message */
-			this.client.aiChat.get(message.guild.id)!.push({role: "user", content: message.author.username + ": " + message.content});
+			await message.channel.sendTyping();
+			this.client.aiChat.get(message.guild.id)!.push({ role: "user", content: message.author.username + ": " + message.content });
 
 			/* send request */
 			const body: any = {
@@ -191,14 +191,21 @@ export default class {
 				model: "gpt-3.5-turbo-16k"
 			}
 
-			const res: any = await axios.post("https://purgpt.xyz/v1/chat/completions", body, {validateStatus: (): boolean => true});
+			const axiosInstace = axios.create({
+				timeout: 5000,
+			});
 
-			if (res.data?.choices[0]) {
+			const res: any = await axiosInstace.post("https://purgpt.xyz/v1/chat/completions", body, { validateStatus: (): boolean => true })
+				.catch((e: any): void => { });
+
+			if (res?.data?.choices[0]) {
 				this.client.aiChat.get(message.guild.id)!.push({
 					role: "assistant",
 					content: res.data.choices[0].message.content
 				});
-				message.reply({content: res.data.choices[0].message.content})
+				message.reply({ content: res.data.choices[0].message.content })
+			} else {
+				message.reply({ content: this.client.emotes.error + " Leider ist ein **unerwarteter Fehler** aufgetreten. Bitte versuche es später erneut." });
 			}
 		}
 
@@ -209,9 +216,11 @@ export default class {
 				const time: any = autodelete.time;
 				if ((channelId !== message.channel.id && message.channel.type !== 11) || (message.channel.type === 11 && (message.channel.parentId !== channelId && message.channel.id !== channelId))) continue;
 
-				this.client.wait(Number(time)).then((): void => {
+				this.client.wait(Number(time)).then((): void =>
+				{
 					if (!message.pinned) {
-						message.delete().catch((e: any): void => {
+						message.delete().catch((e: any): void =>
+						{
 							const errorText: string =
 								this.client.emotes.channel + " Channel: " + message.channel + "\n" +
 								this.client.emotes.reminder + " Löschen nach: " + ms(Number(time));
@@ -222,9 +231,7 @@ export default class {
 							guild.logAction(errorEmbed, "guild");
 						});
 					}
-				}).catch((e: any): void => {
-
-				});
+				}).catch((e: any): void => { });
 			}
 		}
 
@@ -234,7 +241,8 @@ export default class {
 				const channelId = autoreact.channel;
 				const emoji = autoreact.emoji;
 				if ((channelId !== message.channel.id && message.channel.type !== 11) || (message.channel.type === 11 && (message.channel.parentId !== channelId && message.channel.id !== channelId))) continue;
-				message.react(emoji).catch((e: any): void => {
+				message.react(emoji).catch((e: any): void =>
+				{
 					const errorText: string =
 						this.client.emotes.channel + " Channel: " + message.channel + "\n" +
 						this.client.emotes.reminder + " Emoji: " + emoji;
@@ -290,7 +298,8 @@ export default class {
 							const roleId: any = levelRole.role;
 							const level: any = levelRole.level;
 							if (Number(level) === newLevel || Number(level) < newLevel) {
-								message.member.roles.add(roleId).catch((e: any): void => {
+								message.member.roles.add(roleId).catch((e: any): void =>
+								{
 									const errorText: string =
 										this.client.emotes.strike + " Level: " + level + "\n" +
 										this.client.emotes.ping + " Rolle: <@&" + roleId + ">";
@@ -305,7 +314,8 @@ export default class {
 					}
 
 					/* send level up message */
-					function parseMessage(str: string): string {
+					function parseMessage(str: string): string
+					{
 						return str
 							.replaceAll(/{level}/g, String(newLevel))
 							.replaceAll(/{user}/g, message.author)
@@ -322,7 +332,8 @@ export default class {
 					const channel: any = message.guild.channels.cache.get(data.guild.settings.levels.channel) || message.channel;
 					if (!channel) return;
 
-					channel.send({content: parsedMessage}).catch((e: any): void => {
+					channel.send({ content: parsedMessage }).catch((e: any): void =>
+					{
 						const errorText: string =
 							this.client.emotes.channel + " Channel: " + channel;
 

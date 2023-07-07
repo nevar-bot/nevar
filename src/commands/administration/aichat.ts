@@ -1,152 +1,179 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder, SlashCommandBuilder, ChannelType } from "discord.js";
+import
+	{
+		EmbedBuilder,
+		SlashCommandBuilder,
+		ChannelType,
+		StringSelectMenuBuilder,
+		StringSelectMenuOptionBuilder
+	} from "discord.js";
 
-export default class AimodCommand extends BaseCommand {
-    public constructor(client: BaseClient) {
-        super(client, {
-            name: "aichat",
-            description: "Stellt den KI-Chat des Servers ein",
-            memberPermissions: ["ManageGuild"],
-            cooldown: 2 * 1000,
-            dirname: __dirname,
-            slashCommand: {
-                addCommand: true,
-                data: new SlashCommandBuilder()
-                    .addStringOption((option: any) => option
-                        .setName("modus")
-                        .setDescription("Wähle, welchen Modus der KI-Chat haben soll")
-                        .setRequired(false)
-                        .addChoices(
-                            {
-                                name: "normal",
-                                value: "normal",
-                            },
-                            {
-                                name: "frech",
-                                value: "cheeky",
-                            },
-                            {
-                                name: "aggressiv",
-                                value: "angry",
-                            },
-                            {
-                                name: "schüchtern",
-                                value: "shy",
-                            },
-                            {
-                                name: "tiefgründig",
-                                value: "deep",
-                            },
-                            {
-                                name: "invasion",
-                                value: "invasion",
-                            },
-                            {
-                                name: "anzüglich",
-                                value: "spicy",
-                            },
-                            {
-                                name: "nerdy",
-                                value: "nerdy",
-                            }
-                        )
-                    )
-                    .addChannelOption((option: any) => option
-                        .setName("channel")
-                        .setDescription("Wähle den Kanal, in dem der KI-Chat aktiv sein soll")
-                        .setRequired(false)
-                        .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
-                    )
-                    .addStringOption((option: any) => option
-                        .setName("status")
-                        .setDescription("Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll")
-                        .setRequired(false)
-                        .addChoices(
-                            {
-                                name: "aktiviert",
-                                value: "on",
-                            },
-                            {
-                                name: "deaktiviert",
-                                value: "off",
-                            }
-                        )
-                    )
-            }
-        })
-    }
+export default class AimodCommand extends BaseCommand
+{
+	public constructor(client: BaseClient)
+	{
+		super(client, {
+			name: "aichat",
+			description: "Stellt den KI-Chat des Servers ein",
+			memberPermissions: ["ManageGuild"],
+			cooldown: 2 * 1000,
+			dirname: __dirname,
+			slashCommand: {
+				addCommand: true,
+				data: new SlashCommandBuilder()
+					.addStringOption((option: any) => option
+						.setName("aktion")
+						.setDescription("Wähle aus den folgenden Aktionen")
+						.setRequired(true)
+						.addChoices(
+							{
+								name: "status",
+								value: "status"
+							},
+							{
+								name: "kanal",
+								value: "channel"
+							},
+							{
+								name: "modus",
+								value: "mode"
+							}
+						)
+					)
+					.addChannelOption((option: any) => option
+						.setName("channel")
+						.setDescription("Wähle den Kanal, in dem der KI-Chat aktiv sein soll")
+						.setRequired(false)
+						.addChannelTypes(ChannelType.GuildText, ChannelType.GuildNews, ChannelType.GuildForum, ChannelType.GuildPublicThread)
+					)
+					.addStringOption((option: any) => option
+						.setName("status")
+						.setDescription("Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll")
+						.setRequired(false)
+						.addChoices(
+							{
+								name: "aktiviert",
+								value: "on",
+							},
+							{
+								name: "deaktiviert",
+								value: "off",
+							}
+						)
+					)
+			}
+		})
+	}
 
-    private interaction: any;
+	private interaction: any;
 
-    public async dispatch(interaction: any, data: any): Promise<void> {
-        this.interaction = interaction;
+	public async dispatch(interaction: any, data: any): Promise<void>
+	{
+		this.interaction = interaction;
 
-        if(!data.guild.settings.aiChat){
-            data.guild.settings.aiChat = {
-                enabled: false,
-                channel: null,
-                mode: "normal"
-            }
-            data.guild.markModified("settings.aiChat");
-            await data.guild.save();
-        }
+		if (!data.guild.settings.aiChat) {
+			data.guild.settings.aiChat = {
+				enabled: false,
+				channel: null,
+				mode: "normal"
+			}
+			data.guild.markModified("settings.aiChat");
+			await data.guild.save();
+		}
 
-        const mode: string = interaction.options.getString("modus");
-        const channel: string = interaction.options.getChannel("channel");
-        const status: string = interaction.options.getString("status");
+		const action: string = interaction.options.getString("aktion");
+		switch (action) {
+			case "status":
+				await this.setStatus(interaction.options.getString("status"), data);
+				break;
+			case "channel":
+				await this.setChannel(interaction.options.getChannel("channel"), data);
+				break;
+			case "mode":
+				await this.setMode(data);
+				break;
+		}
+	}
 
-        if(mode) await this.setMode(mode, data);
-        if(channel) await this.setChannel(channel, data);
-        if(status) await this.setStatus(status, data);
+	private async setMode(data: any): Promise<void>
+	{
+		const availableModes = Object.entries(this.client.aiChatPrompts.prompts).map(([key, prompt]: any): any => ({
+			mode: key,
+			name: prompt.name
+		}));
 
-    }
+		const selectNameMenu: StringSelectMenuBuilder = new StringSelectMenuBuilder()
+			.setCustomId(`${this.interaction.user.id}-aichat-mode`)
+			.setPlaceholder("Wähle einen Verhaltensmodus");
 
-    private async setMode(mode: string, data: any): Promise<void> {
-        data.guild.settings.aiChat.mode = mode;
-        data.guild.markModified("settings.aiChat");
-        await data.guild.save();
-        const modes: any = {
-            normal: "normal",
-            cheeky: "frech",
-            angry: "aggressiv",
-            shy: "schüchtern",
-            deep: "tiefgründig",
-            invasion: "invasiv",
-            spicy: "anzüglich",
-            nerdy: "nerdy"
-        }
+		for (const mode of availableModes) {
+			selectNameMenu.addOptions(
+				new StringSelectMenuOptionBuilder()
+					.setLabel(mode.name)
+					.setDescription(`Setze den Verhaltensmodus auf ${mode.name}`)
+					.setValue(mode.mode)
+					.setEmoji(this.client.emotes.arrow)
+					.setDefault(mode.mode === data.guild.settings.aiChat.mode)
+			);
+		}
 
-        const embed: EmbedBuilder = this.client.createEmbed("Die künstliche Intelligenz verhält sich ab jetzt " + modes[mode] + ".", "success", "normal");
-        this.interaction.followUp({embeds: [embed]});
+		const row: any = this.client.createMessageComponentsRow(selectNameMenu);
 
-        this.client.aiChat.set(this.interaction.guild.id, []);
-        let prompt: string = this.client.aiChatTypes["default"];
-        prompt += this.client.aiChatTypes[mode];
-        this.client.aiChat.get(this.interaction.guild.id)!.push({role: "system", content: prompt});
-        console.log(prompt);
-    }
+		const embed: EmbedBuilder = this.client.createEmbed("Wähle aus den folgenden Verhaltensmodi.", "arrow", "normal");
+		const message: any = await this.interaction.followUp({ embeds: [embed], components: [row] });
 
-    private async setChannel(channel: any, data: any): Promise<void> {
-        data.guild.settings.aiChat.channel = channel.id;
-        data.guild.markModified("settings.aiChat");
-        await data.guild.save();
+		const collectedMode: any = await message.awaitMessageComponent({ filter: (i: any): boolean => i.user.id === this.interaction.user.id, time: 120 * 1000 }).catch((): void => { });
 
-        const embed: EmbedBuilder = this.client.createEmbed("Der KI-Chat ist jetzt in " + channel.toString() + " aktiv.", "success", "normal");
-        this.interaction.followUp({embeds: [embed]});
-    }
+		if (collectedMode?.values[0]) {
+			const chosenMode = this.client.aiChatPrompts.prompts[collectedMode.values[0]].name;
 
-    private async setStatus(status: string, data: any): Promise<void> {
-        const statuses: any = {
-            on: true,
-            off: false
-        }
-        data.guild.settings.aiChat.enabled = statuses[status];
-        data.guild.markModified("settings.aiChat");
-        await data.guild.save();
+			data.guild.settings.aiChat.mode = collectedMode.values[0];
+			data.guild.markModified("settings.aiChat");
+			await data.guild.save();
 
-        const statusString: string = statuses[status] ? "aktiviert" : "deaktiviert";
-        const embed: EmbedBuilder = this.client.createEmbed("Der KI-Chat ist jetzt " + statusString + ".", "success", "normal");
-        this.interaction.followUp({embeds: [embed]});
-    }
+			const confirmationEmbed = this.client.createEmbed(`Der Verhaltensmodus wurde auf ${chosenMode} gesetzt.`, "success", "normal");
+			await collectedMode.update({ embeds: [confirmationEmbed], components: [] });
+
+			/* Reset the AI chat, set mode */
+			this.client.aiChat.set(this.interaction.guild.id, []);
+			const prompt = this.client.aiChatPrompts.default + this.client.aiChatPrompts.prompts[collectedMode.values[0]].prompt;
+			this.client.aiChat.get(this.interaction.guild.id)!.push({ role: "system", content: prompt });
+		}
+	}
+
+	private async setChannel(channel: any, data: any): Promise<void>
+	{
+		if (!channel) {
+			const missingOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst einen Channel auswählen.", "error", "error");
+			return this.interaction.followUp({ embeds: [missingOptionsEmbed] });
+		}
+
+		data.guild.settings.aiChat.channel = channel.id;
+		data.guild.markModified("settings.aiChat");
+		await data.guild.save();
+
+		const embed: EmbedBuilder = this.client.createEmbed("Der KI-Chat ist jetzt in " + channel.toString() + " aktiv.", "success", "normal");
+		return this.interaction.followUp({ embeds: [embed] });
+	}
+
+	private async setStatus(status: string, data: any): Promise<void>
+	{
+		if (!status) {
+			const missingOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst einen Status auswählen.", "error", "error");
+			return this.interaction.followUp({ embeds: [missingOptionsEmbed] });
+		}
+
+		const statuses: any = {
+			on: true,
+			off: false
+		};
+		data.guild.settings.aiChat.enabled = statuses[status];
+		data.guild.markModified("settings.aiChat");
+		await data.guild.save();
+
+		const statusString: "aktiviert" | "deaktiviert" = statuses[status] ? "aktiviert" : "deaktiviert";
+		const embed: EmbedBuilder = this.client.createEmbed(`Der KI-Chat ist jetzt ${statusString}.`, "success", "normal");
+		return this.interaction.followUp({ embeds: [embed] });
+	}
 }

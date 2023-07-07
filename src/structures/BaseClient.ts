@@ -27,7 +27,7 @@ import Logger from "@helpers/Logger";
 import * as emotes from "@assets/emojis.json";
 import { permissions } from "@helpers/Permissions";
 import { ChannelTypes } from "@helpers/ChannelTypes";
-import { AiChatTypes } from "@helpers/AiChatTypes";
+import { AiChatPrompts } from "@helpers/AiChatPrompts";
 import Utils from "@helpers/Utils";
 import Levels from "@helpers/Levels";
 
@@ -46,7 +46,7 @@ export default class BaseClient extends DiscordClient
 	public support: string;
 	public permissions: any;
 	public channelTypes: any;
-	public aiChatTypes: any;
+	public aiChatPrompts: any;
 	public commands: Collection<string, any>;
 	public contextMenus: Collection<string, any>;
 	public giveawayManager: any;
@@ -81,7 +81,7 @@ export default class BaseClient extends DiscordClient
 				GatewayIntentBits.MessageContent
 			],
 			partials: Object.values(Partials).filter(
-				(partial: string|Partials): partial is Partials => typeof partial === "object"
+				(partial: string | Partials): partial is Partials => typeof partial === "object"
 			),
 			allowedMentions: {
 				parse: ["users"],
@@ -94,7 +94,7 @@ export default class BaseClient extends DiscordClient
 		this.support = this.config.support["INVITE"];
 		this.permissions = permissions;
 		this.channelTypes = ChannelTypes;
-		this.aiChatTypes = AiChatTypes;
+		this.aiChatPrompts = AiChatPrompts;
 
 		this.commands = new Collection();
 		this.contextMenus = new Collection();

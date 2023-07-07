@@ -131,6 +131,11 @@ export default class
 			if (buttonIdSplitted[0] === "review") {
 				this.client.emit("SuggestionReviewed", interaction, buttonIdSplitted, data, guild);
 			}
+
+			/* Moderator wants to handle an AI detected message */
+			if (buttonIdSplitted[0] === "aimod") {
+				this.client.emit("AiMessageHandled", interaction, buttonIdSplitted, data, guild);
+			}
 		}
 
 		/* Handle slash commands */
