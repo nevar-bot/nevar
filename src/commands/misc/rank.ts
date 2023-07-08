@@ -32,7 +32,8 @@ export default class RankCommand extends BaseCommand
 		await this.showRank()
 	}
 
-	private async showRank(): Promise<void> {
+	private async showRank(): Promise<void>
+	{
 		const user: any = this.interaction.options.getUser("mitglied") || this.interaction.user;
 
 		const userData: any = {
