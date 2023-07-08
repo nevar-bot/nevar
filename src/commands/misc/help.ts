@@ -1,14 +1,14 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import
-	{
-		ActionRowBuilder,
-		SlashCommandBuilder,
-		ComponentType,
-		StringSelectMenuBuilder,
-		EmbedBuilder,
-		ButtonBuilder
-	} from "discord.js";
+{
+	ActionRowBuilder,
+	SlashCommandBuilder,
+	ComponentType,
+	StringSelectMenuBuilder,
+	EmbedBuilder,
+	ButtonBuilder
+} from "discord.js";
 import moment from "moment";
 import fs from "fs";
 
