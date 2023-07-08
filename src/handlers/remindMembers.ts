@@ -35,11 +35,11 @@ export default
 									const reminderStarted = moment(reminder.startDate).format("DD.MM.YYYY HH:mm");
 
 									const text: string =
-										"Hier ist deine Erinnerung, die du vor " + reminderAgo + " erstellt hast!\n" +
+										"### " + client.emotes.reminder + " Hier ist deine Erinnerung, die du vor " + reminderAgo + " erstellt hast!\n" +
 										client.emotes.arrow + " Erstellt am: " + reminderStarted + "\n" +
 										client.emotes.arrow + " Erinnerung: " + reminder.reason;
 
-									const remindEmbed = client.createEmbed(text, "reminder", "normal");
+									const remindEmbed = client.createEmbed(text, null, "normal");
 
 									channel.send({ content: member.toString(), embeds: [remindEmbed] });
 
@@ -47,7 +47,7 @@ export default
 									memberData.markModified("reminders");
 									memberData.save();
 								})
-								.catch(() => { });
+								.catch((): void => { });
 						}
 					}
 				}
