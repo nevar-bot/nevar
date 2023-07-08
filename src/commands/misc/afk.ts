@@ -62,10 +62,4 @@ export default class AfkCommand extends BaseCommand
 		const afkEmbed: EmbedBuilder = this.client.createEmbed("Bis später! Du bist jetzt abwesend: {0}.", "reminder", "normal", reason || "Kein Grund angegeben");
 		return this.interaction.followUp({ embeds: [afkEmbed] });
 	}
-
-
-
-
-
-
 }
