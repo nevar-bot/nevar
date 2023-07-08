@@ -29,12 +29,15 @@ export default class RankCommand extends BaseCommand
 	public async dispatch(interaction: any, data: any): Promise<void>
 	{
 		this.interaction = interaction;
+		await this.showRank()
+	}
 
-		const user: any = interaction.options.getUser("mitglied") || interaction.user;
+	private async showRank(): Promise<void> {
+		const user: any = this.interaction.options.getUser("mitglied") || this.interaction.user;
 
 		const userData: any = {
 			user: user,
-			level: await this.client.levels.fetch(user.id, interaction.guild.id, true),
+			level: await this.client.levels.fetch(user.id, this.interaction.guild.id, true),
 		}
 
 		const rank: any = new canvacord.Rank()
@@ -62,7 +65,7 @@ export default class RankCommand extends BaseCommand
 			.then((data: any): void =>
 			{
 				const attachment: AttachmentBuilder = new AttachmentBuilder(data, { name: "level-" + userData.user.id + ".png" })
-				return interaction.followUp({ files: [attachment] });
+				return this.interaction.followUp({ files: [attachment] });
 			});
 	}
 }
