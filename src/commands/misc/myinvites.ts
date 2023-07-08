@@ -41,9 +41,9 @@ export default class MyinvitesCommand extends BaseCommand
 		const invites = memberData.invites;
 		const invitesData: any[] = [];
 		for (const invite of invites) {
-			invitesData.push("**discord.gg/" + invite.code + "**\n" + this.client.emotes.users + " Verwendungen: **" + invite.uses + "**\n" + this.client.emotes.leave + " Server verlassen: **" + (invite.left || 0) + "**\n" + this.client.emotes.error + " Gefälscht: **" + (invite.fake || 0) + "**\n");
+			invitesData.push("### " + this.client.emotes.invite + " discord.gg/" + invite.code + "\n" + this.client.emotes.users + " Verwendungen: **" + invite.uses + "**\n" + this.client.emotes.leave + " Server verlassen: **" + (invite.left || 0) + "**\n" + this.client.emotes.error + " Gefälscht: **" + (invite.fake || 0) + "**\n");
 		}
 
-		await this.client.utils.sendPaginatedEmbed(this.interaction, 5, invitesData, "Deine Einladungen", "Du hast noch keine Nutzer eingeladen", "invite");
+		await this.client.utils.sendPaginatedEmbed(this.interaction, 5, invitesData, "Deine Einladungen", "Du hast noch keine Nutzer eingeladen", null);
 	}
 }
