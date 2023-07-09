@@ -1,7 +1,7 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import { EmbedBuilder } from "discord.js";
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 export default class CommandstatsCommand extends BaseCommand
 {
