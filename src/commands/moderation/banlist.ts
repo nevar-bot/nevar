@@ -39,10 +39,11 @@ export default class BanlistCommand extends BaseCommand
 				// Mit Nevar gebannt
 				const duration: string = memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000 ? "Permanent" : this.client.utils.getRelativeTime(Date.now() - memberData.banned.duration);
 				const bannedUntil: string = memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000 ? "/" : moment(memberData.banned.bannedUntil).format("DD.MM.YYYY, HH:mm");
+				const moderator: any = await this.client.users.fetch(memberData.banned.moderator.id).catch((): void => {});
 				const text: string =
-					"**" + ban[1].user.tag + "**\n" +
+					"### " + this.client.emotes.ban + " " + ban[1].user.username + "\n" +
 					this.client.emotes.arrow + " Grund: " + memberData.banned.reason + "\n" +
-					this.client.emotes.arrow + " Moderator: " + memberData.banned.moderator.name + "\n" +
+					this.client.emotes.arrow + " Moderator: " + (moderator ? moderator.username : memberData.banned.moderator.name) + "\n" +
 					this.client.emotes.arrow + " Dauer: " + duration + "\n" +
 					this.client.emotes.arrow + " Gebannt am: " + moment(memberData.banned.bannedAt).format("DD.MM.YYYY, HH:mm") + "\n" +
 					this.client.emotes.arrow + " Gebannt bis: " + bannedUntil + "\n";
@@ -50,11 +51,11 @@ export default class BanlistCommand extends BaseCommand
 			} else {
 				// Nicht mit Nevar gebannt
 				const text: string =
-					"**" + ban[1].user.tag + "**\n" +
+					"### " + this.client.emotes.ban + " " + ban[1].user.tag + "\n" +
 					this.client.emotes.arrow + " Grund: " + ban[1].reason + "\n";
 				bannedUsers.push(text)
 			}
 		}
-		await this.client.utils.sendPaginatedEmbed(this.interaction, 3, bannedUsers, "Gebannte Nutzer", "Es sind keine Nutzer gebannt", "timeout");
+		await this.client.utils.sendPaginatedEmbed(this.interaction, 3, bannedUsers, "Gebannte Nutzer", "Es sind keine Nutzer gebannt", null);
 	}
 }

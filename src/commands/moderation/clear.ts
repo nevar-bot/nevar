@@ -53,14 +53,18 @@ export default class ClearCommand extends BaseCommand
 
 		this.interaction.channel.bulkDelete(messages, true).catch((): void => { });
 
-		const string: string = user ? "von " + user.tag : "";
+		const string: string = user ? "von " + user.username : "";
 		const deletedEmbed: EmbedBuilder = this.client.createEmbed("Ich habe {0} Nachrichten {1} gelöscht.", "success", "success", messages.length, string);
 		const embedSent = await this.interaction.followUp({ embeds: [deletedEmbed] });
 
-		const logText: string =
-			" **" + messages.length + " Nachrichten gelöscht**\n\n" +
-			this.client.emotes.arrow + " Moderator: " + this.interaction.user.tag;
-		await this.interaction.guild.logAction(logText, "moderation", this.client.emotes.delete, "normal");
+		const text: string =
+			this.client.emotes.arrow + " Anzahl: " + messages.length + "\n" +
+			this.client.emotes.user + " Moderator: " + this.interaction.user.username;
+
+		const logEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
+		logEmbed.setTitle(this.client.emotes.delete + " Nachrichten gelöscht");
+		logEmbed.setThumbnail(this.interaction.user.displayAvatarURL());
+		await this.interaction.guild.logAction(logEmbed, "moderation");
 
 		await this.client.wait(7000);
 		embedSent.delete().catch((): void => { });
