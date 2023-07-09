@@ -75,13 +75,13 @@ export default class AutodeleteCommand extends BaseCommand
 		}
 
 		/* Already exists for this channel */
-		if (data.guild.settings.autodelete.find((x: any): boolean => x.channel === channel.id)) {
+		if (data.guild.settings.autodelete.find((x: any): boolean => x?.channel === channel.id)) {
 			const alreadyExistsEmbed: EmbedBuilder = this.client.createEmbed("Für {0} ist bereits ein Autodelete eingerichtet.", "error", "error", channel);
 			return this.interaction.followUp({ embeds: [alreadyExistsEmbed] });
 		}
 
-		const timeInMs = ms(time);
-		const msInTime = ms(ms(time));
+		const timeInMs: any = ms(time);
+		const msInTime: any = ms(ms(time));
 
 		/* Time is too short */
 		if (timeInMs < 1000) {
@@ -116,7 +116,7 @@ export default class AutodeleteCommand extends BaseCommand
 		}
 
 		/* No autodelete for this channel */
-		if (!data.guild.settings.autodelete.find((x: any): boolean => x.channel === channel.id)) {
+		if (!data.guild.settings.autodelete.find((x: any): boolean => x?.channel === channel.id)) {
 			const doesntExistEmbed: EmbedBuilder = this.client.createEmbed("In {0} ist kein Autodelete eingerichtet.", "error", "error", channel);
 			return this.interaction.followUp({ embeds: [doesntExistEmbed] });
 		}
@@ -135,10 +135,10 @@ export default class AutodeleteCommand extends BaseCommand
 		let response: any = data.guild.settings.autodelete;
 		const autodeleteArray: any[] = [];
 
-		for (let i: number = 0; i < response.length; i++) {
-			if (typeof response[i] !== "object") continue;
-			const cachedChannel: any = this.interaction.guild.channels.cache.get(response[i].channel);
-			if (cachedChannel) autodeleteArray.push(" Channel: " + cachedChannel.toString() + "\n" + this.client.emotes.reminder + " Zeit: " + ms(response[i].time) + "\n");
+		for (const element of response) {
+			if (typeof element !== "object") continue;
+			const cachedChannel: any = this.interaction.guild.channels.cache.get(element.channel);
+			if (cachedChannel) autodeleteArray.push(" Channel: " + cachedChannel.toString() + "\n" + this.client.emotes.reminder + " Zeit: " + ms(element.time) + "\n");
 		}
 
 		await this.client.utils.sendPaginatedEmbed(this.interaction, 5, autodeleteArray, "Autodelete", "Es ist kein Autodelete eingestellt", "channel");
