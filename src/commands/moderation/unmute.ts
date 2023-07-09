@@ -1,6 +1,6 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
-import { SlashCommandBuilder, EmbedBuilder, Embed } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 export default class UnmuteCommand extends BaseCommand
 {
