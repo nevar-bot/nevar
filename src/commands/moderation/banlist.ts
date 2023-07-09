@@ -42,7 +42,7 @@ export default class BanlistCommand extends BaseCommand
 				const moderator: any = await this.client.users.fetch(memberData.banned.moderator.id).catch((): void => { });
 				const text: string =
 					"### " + this.client.emotes.ban + " " + ban[1].user.username + "\n" +
-					this.client.emotes.arrow + " Grund: " + memberData.banned.reason + "\n" +
+					this.client.emotes.arrow + " Begründung: " + memberData.banned.reason + "\n" +
 					this.client.emotes.arrow + " Moderator: " + (moderator ? moderator.username : memberData.banned.moderator.name) + "\n" +
 					this.client.emotes.arrow + " Dauer: " + duration + "\n" +
 					this.client.emotes.arrow + " Gebannt am: " + moment(memberData.banned.bannedAt).format("DD.MM.YYYY, HH:mm") + "\n" +
@@ -51,8 +51,8 @@ export default class BanlistCommand extends BaseCommand
 			} else {
 				// Nicht mit Nevar gebannt
 				const text: string =
-					"### " + this.client.emotes.ban + " " + ban[1].user.tag + "\n" +
-					this.client.emotes.arrow + " Grund: " + ban[1].reason + "\n";
+					"### " + this.client.emotes.ban + " " + ban[1].user.username + "\n" +
+					this.client.emotes.arrow + " Begründung: " + ban[1].reason + "\n";
 				bannedUsers.push(text)
 			}
 		}

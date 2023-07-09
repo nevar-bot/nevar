@@ -51,7 +51,7 @@ export default class
 
 		for (let afkUser of afkUsers) {
 			const awayText: string =
-				this.client.emotes.text + " Grund: " + afkUser.reason + "\n" +
+				this.client.emotes.text + " Begründung: " + afkUser.reason + "\n" +
 				this.client.emotes.reminder + " Abwesend seit: " + afkUser.since;
 
 			const isAwayEmbed: EmbedBuilder = this.client.createEmbed("{0}", "reminder", "normal", awayText);

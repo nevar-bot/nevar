@@ -61,7 +61,7 @@ export default class PartnersCommand extends BaseCommand
 		userdata.markModified("partner");
 		await userdata.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde als Partner hinzugefügt.", "success", "success", member.user.tag);
+		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde als Partner hinzugefügt.", "success", "success", member.user.username);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
 
@@ -85,7 +85,7 @@ export default class PartnersCommand extends BaseCommand
 		userdata.markModified("partner");
 		await userdata.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde als Partner entfernt.", "success", "success", member.user.tag);
+		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde als Partner entfernt.", "success", "success", member.user.username);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
 

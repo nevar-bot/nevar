@@ -120,7 +120,7 @@ export default class MuteCommand extends BaseCommand
 
 			switch (confirmation) {
 				case "confirm":
-					mute.victim.roles.add(data.guild.settings.muterole, "MUTE - Dauer: " + relativeTime + " | Grund: " + mute.reason + " | Moderator: " + this.interaction.user.username + " | Unmute am: " + unmuteDate)
+					mute.victim.roles.add(data.guild.settings.muterole, "MUTE - Dauer: " + relativeTime + " | Begründung: " + mute.reason + " | Moderator: " + this.interaction.user.username + " | Unmute am: " + unmuteDate)
 						.then(async (): Promise<void> =>
 						{
 							const victimData = await this.client.findOrCreateMember(mute.victim.user.id, this.interaction.guild.id);
@@ -141,7 +141,7 @@ export default class MuteCommand extends BaseCommand
 
 							const privateText: string =
 								"### " + this.client.emotes.timeout + " Du wurdest auf {0} gemutet.\n\n" +
-								this.client.emotes.arrow + " Grund: " + mute.reason + "\n" +
+								this.client.emotes.arrow + " Begründung: " + mute.reason + "\n" +
 								this.client.emotes.arrow + " Dauer: " + relativeTime + "\n" +
 								this.client.emotes.arrow + " Moderator: " + this.interaction.user.username + "\n" +
 								this.client.emotes.arrow + " Unmute am: " + unmuteDate;
@@ -158,7 +158,7 @@ export default class MuteCommand extends BaseCommand
 
 							const publicText: string =
 								"### " + this.client.emotes.timeout + " {0} wurde gemutet.\n\n" +
-								this.client.emotes.arrow + " Grund: " + mute.reason + "\n" +
+								this.client.emotes.arrow + " Begründung: " + mute.reason + "\n" +
 								this.client.emotes.arrow + " Dauer: " + relativeTime + "\n" +
 								this.client.emotes.arrow + " Moderator: " + this.interaction.user.username + "\n" +
 								this.client.emotes.arrow + " Unmute am: " + unmuteDate;

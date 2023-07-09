@@ -101,13 +101,13 @@ export default class BlockCommand extends BaseCommand
 			state: true,
 			reason: reason,
 			date: Date.now(),
-			moderator: this.message.author.tag,
-			name: type === "user" ? target.tag : target.name
+			moderator: this.message.author.username,
+			name: type === "user" ? target.username : target.name
 		};
 		targetData.markModified("blocked");
 		await targetData.save();
 
-		const message: string = type === "user" ? "Nutzer " + target.tag : "Server " + target.name;
+		const message: string = type === "user" ? "Nutzer " + target.username : "Server " + target.name;
 		const successEmbed: EmbedBuilder = this.client.createEmbed("Der " + message + " wurde blockiert.", "success", "success");
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -163,9 +163,9 @@ export default class BlockCommand extends BaseCommand
 		for (let userData of blockedUsers) {
 			const user: any = await this.client.users.fetch(userData.id).catch(() => { });
 			const text: string =
-				" **" + (user ? user.tag : userData.blocked.name) + "** (" + (user ? user.id : userData.id) + ")\n" +
+				" **" + (user ? user.username : userData.blocked.name) + "** (" + (user ? user.id : userData.id) + ")\n" +
 				this.client.emotes.arrow + " Typ: Nutzer\n" +
-				this.client.emotes.arrow + " Grund: " + userData.blocked.reason + "\n" +
+				this.client.emotes.arrow + " Begründung: " + userData.blocked.reason + "\n" +
 				this.client.emotes.arrow + " Blockiert am: " + moment(userData.blocked.date).format("DD.MM.YYYY HH:mm") + "\n" +
 				this.client.emotes.arrow + " Blockiert von: " + userData.blocked.moderator + "\n";
 			blocked.push(text);
@@ -178,7 +178,7 @@ export default class BlockCommand extends BaseCommand
 			const text: string =
 				" **" + (guild ? guild.name : guildData.blocked.name) + "** (" + (guild ? guild.id : guildData.id) + ")\n" +
 				this.client.emotes.arrow + " Typ: Server\n" +
-				this.client.emotes.arrow + " Grund: " + guildData.blocked.reason + "\n" +
+				this.client.emotes.arrow + " Begründung: " + guildData.blocked.reason + "\n" +
 				this.client.emotes.arrow + " Blockiert am: " + moment(guildData.blocked.date).format("DD.MM.YYYY HH:mm") + "\n" +
 				this.client.emotes.arrow + " Blockiert von: " + guildData.blocked.moderator + "\n";
 			blocked.push(text);

@@ -46,7 +46,7 @@ export default class ServerinfoCommand extends BaseCommand
 		const text: string =
 			" Name: **" + name + "**\n" +
 			this.client.emotes.id + " ID: **" + id + "**\n" +
-			this.client.emotes.crown + " Eigentümer: **" + owner.user.tag + "**\n" +
+			this.client.emotes.crown + " Eigentümer: **" + owner.user.username + "**\n" +
 			this.client.emotes.users + " Mitglieder: **" + memberCount + "**\n\n" +
 			this.client.emotes.list + " Channel: **" + channelCount + "**\n" +
 			this.client.emotes.folder + " davon Kategorien: **" + categoryCount + "**\n" +

@@ -56,14 +56,14 @@ export default class
 			/* User is blocked */
 			if (data.user.blocked.state) {
 				const reason = data.user.blocked.reason || "Kein Grund angegeben";
-				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Grund: {1}", "error", "error", this.client.emotes.arrow, reason);
+				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}", "error", "error", this.client.emotes.arrow, reason);
 				return interaction.followUp({ embeds: [blockedMessageEmbed], ephemeral: true });
 			}
 
 			/* Guild is blocked */
 			if (data.guild.blocked.state) {
 				const reason = data.guild.blocked.reason || "Kein Grund angegeben";
-				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Grund: {1}", "error", "error", this.client.emotes.arrow, reason);
+				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}", "error", "error", this.client.emotes.arrow, reason);
 				return interaction.followUp({ embeds: [blockedMessageEmbed] });
 			}
 
@@ -167,14 +167,14 @@ export default class
 			/* User is blocked */
 			if (data.user.blocked.state) {
 				const reason = data.user.blocked.reason || "Kein Grund angegeben";
-				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Grund: {1}", "error", "error", this.client.emotes.arrow, reason);
+				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}", "error", "error", this.client.emotes.arrow, reason);
 				return interaction.followUp({ embeds: [blockedMessageEmbed], ephemeral: true });
 			}
 
 			/* Guild is blocked */
 			if (data.guild.blocked.state) {
 				const reason = data.guild.blocked.reason || "Kein Grund angegeben";
-				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Grund: {1}", "error", "error", this.client.emotes.arrow, reason);
+				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}", "error", "error", this.client.emotes.arrow, reason);
 				return interaction.followUp({ embeds: [blockedMessageEmbed] });
 			}
 

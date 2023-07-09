@@ -121,7 +121,7 @@ export default class DeletedataCommand extends BaseCommand
 				const successEmbed: EmbedBuilder = this.client.createEmbed("Deine Nutzerdaten wurden erfolgreich gelöscht.", "success", "success");
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
-				return this.client.alert(this.interaction.user.tag + " hat seine Nutzerdaten gelöscht" + (reason ? " mit dem Grund: " + reason : "") + ".", "warning");
+				return this.client.alert(this.interaction.user.username + " hat seine Nutzerdaten gelöscht" + (reason ? " mit dem Grund: " + reason : "") + ".", "warning");
 			}
 			if (type === "member") {
 				const warningsOld = data.member.warnings;
@@ -144,7 +144,7 @@ export default class DeletedataCommand extends BaseCommand
 				const successEmbed: EmbedBuilder = this.client.createEmbed("Deine Mitgliedsdaten wurden erfolgreich gelöscht.", "success", "success");
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
-				return this.client.alert(this.interaction.user.tag + " hat seine Mitgliedsdaten auf " + this.interaction.guild.name + " gelöscht" + (reason ? " mit dem Grund: " + reason : ""), "warning");
+				return this.client.alert(this.interaction.user.username + " hat seine Mitgliedsdaten auf " + this.interaction.guild.name + " gelöscht" + (reason ? " mit dem Grund: " + reason : ""), "warning");
 			}
 			if (type === "guild") {
 				const blockedOld: any = data.guild.blocked;
@@ -162,7 +162,7 @@ export default class DeletedataCommand extends BaseCommand
 				const successEmbed: EmbedBuilder = this.client.createEmbed("Die Serverdaten wurden erfolgreich gelöscht.", "success", "success");
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
-				return this.client.alert(this.interaction.user.tag + " hat die Serverdaten von " + this.interaction.guild.name + " gelöscht" + (reason ? " mit dem Grund: " + reason : ""), "warning");
+				return this.client.alert(this.interaction.user.username + " hat die Serverdaten von " + this.interaction.guild.name + " gelöscht" + (reason ? " mit dem Grund: " + reason : ""), "warning");
 			}
 		});
 	}

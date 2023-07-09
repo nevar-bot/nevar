@@ -41,7 +41,7 @@ export default class ReportbugCommand extends BaseCommand
 		successEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 		await this.interaction.followUp({ embeds: [successEmbed] });
 
-		const supportEmbed: EmbedBuilder = this.client.createEmbed("{0} ({1}) hat einen Fehler gemeldet: {2}", "information", "warning", this.interaction.user.tag, this.interaction.user.id, bug);
+		const supportEmbed: EmbedBuilder = this.client.createEmbed("{0} ({1}) hat einen Fehler gemeldet: {2}", "information", "warning", this.interaction.user.username, this.interaction.user.id, bug);
 		supportEmbed.setFooter({ text: "Server-ID: " + this.interaction.guild.id + " | " + date });
 
 		const errorLogChannel: any = await supportGuild.channels.fetch(this.client.config.support["ERROR_LOG"]);

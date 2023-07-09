@@ -37,8 +37,8 @@ export default class MutelistCommand extends BaseCommand
 				const victimData: any = memberData[1];
 				const member: any = await this.interaction.guild.resolveMember(victimData.id);
 				const text: string =
-					member.user.tag + "\n" +
-					this.client.emotes.arrow + "Grund: " + victimData.muted.reason + "\n" +
+					member.user.username + "\n" +
+					this.client.emotes.arrow + "Begründung: " + victimData.muted.reason + "\n" +
 					this.client.emotes.arrow + "Moderator: " + victimData.muted.moderator.name + "\n" +
 					this.client.emotes.arrow + "Dauer: " + this.client.utils.getRelativeTime(Date.now() - victimData.muted.duration) + "\n" +
 					this.client.emotes.arrow + "Gemutet am: " + moment(victimData.muted.mutedAt).format("DD.MM.YYYY, HH:mm") + "\n" +

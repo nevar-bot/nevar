@@ -110,14 +110,14 @@ export default class BanCommand extends BaseCommand
 				case "confirm":
 					const privateText: string =
 						"### " + this.client.emotes.ban + " Du wurdest auf {0} gebannt.\n\n" +
-						this.client.emotes.arrow + " Grund: " + ban.reason + "\n" +
+						this.client.emotes.arrow + " Begründung: " + ban.reason + "\n" +
 						this.client.emotes.arrow + " Dauer: " + relativeTime + "\n" +
 						this.client.emotes.arrow + " Moderator: " + this.interaction.user.username + "\n" +
 						this.client.emotes.arrow + " Unban am: " + unbanDate;
 					const privateBanEmbed: EmbedBuilder = this.client.createEmbed(privateText, null, "error", this.interaction.guild.name);
 					const privateMessage = await ban.victim.send({ embeds: [privateBanEmbed] }).catch((): void => { });
 					try {
-						await ban.victim.ban({ reason: "BAN - Dauer: " + relativeTime + " | Grund: " + ban.reason + " | Moderator: " + this.interaction.user.username + " | Unban am: " + unbanDate });
+						await ban.victim.ban({ reason: "BAN - Dauer: " + relativeTime + " | Begründung: " + ban.reason + " | Moderator: " + this.interaction.user.username + " | Unban am: " + unbanDate });
 						const victimData = await this.client.findOrCreateMember(ban.victim.user.id, this.interaction.guild.id);
 
 						victimData.banned = {
@@ -137,7 +137,7 @@ export default class BanCommand extends BaseCommand
 
 						const publicText: string =
 							"### " + this.client.emotes.ban + " {0} wurde gebannt.\n\n" +
-							this.client.emotes.arrow + " Grund: " + ban.reason + "\n" +
+							this.client.emotes.arrow + " Begründung: " + ban.reason + "\n" +
 							this.client.emotes.arrow + " Dauer: " + relativeTime + "\n" +
 							this.client.emotes.arrow + " Moderator: " + this.interaction.user.username + "\n" +
 							this.client.emotes.arrow + " Unban am: " + unbanDate;

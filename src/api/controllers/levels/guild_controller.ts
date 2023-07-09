@@ -34,7 +34,7 @@ export async function get(req: Request, res: Response)
 			xp: entry.xp,
 			neededXp: client.levels.xpFor(entry.level + 1),
 			position: levelUser.position,
-			tag: client.users.cache.get(entry.userID)?.tag || 'Unknown#0000',
+			tag: client.users.cache.get(entry.userID)?.username || 'Unbekannt',
 			userID: entry.userID,
 			guildID: entry.guildID,
 			avatar: client.users.cache.get(entry.userID)?.displayAvatarURL({ size: 2048 }) || 'https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png'

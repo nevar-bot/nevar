@@ -41,7 +41,8 @@ export async function get(req: Request, res: Response)
 			xp: levelUser.xp,
 			neededXp: client.levels.xpFor(levelUser.level + 1),
 			position: levelUser.position,
-			tag: member.user.tag,
+			username: member.user.username,
+			displayName: member.user.displayName,
 			userID: userId,
 			guildID: guildId,
 			avatar: member.user?.displayAvatarURL({ size: 2048 }) || 'https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png'

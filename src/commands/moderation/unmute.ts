@@ -43,11 +43,11 @@ export default class UnmuteCommand extends BaseCommand
 
 		const memberData: any = await this.client.findOrCreateMember(user.id, this.interaction.guild.id);
 		if (!memberData.muted.state) {
-			const isNotMutedEmbed: EmbedBuilder = this.client.createEmbed("{0} ist nicht gemutet.", "error", "error", user.tag);
+			const isNotMutedEmbed: EmbedBuilder = this.client.createEmbed("{0} ist nicht gemutet.", "error", "error", user.username);
 			return this.interaction.followUp({ embeds: [isNotMutedEmbed] });
 		}
 
-		member.roles.remove(data.guild.settings.muterole, "Vorzeitiger Unmute durch " + this.interaction.user.tag).catch(() => { });
+		member.roles.remove(data.guild.settings.muterole, "Vorzeitiger Unmute durch " + this.interaction.user.username).catch((): void => { });
 		memberData.muted = {
 			state: false,
 			reason: null,

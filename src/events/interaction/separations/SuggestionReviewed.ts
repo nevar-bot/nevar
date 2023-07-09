@@ -63,11 +63,11 @@ export default class
 
 			if (type === "accept") {
 				embedData.title = "Angenommene " + suggestionEmbedTitle;
-				embedData.description = suggestionEmbedDescription + "\n\n" + this.client.emotes.user + " Moderator: " + user.username + "\n" + this.client.emotes.arrow + " Grund: " + givenReason;
+				embedData.description = suggestionEmbedDescription + "\n\n" + this.client.emotes.user + " Moderator: " + user.username + "\n" + this.client.emotes.arrow + " Begründung: " + givenReason;
 				embedData.color = 5763719;
 			} else if (type === "decline") {
 				embedData.title = "Abgelehnte " + suggestionEmbedTitle;
-				embedData.description = suggestionEmbedDescription + "\n\n" + this.client.emotes.arrow + " Moderator: " + user.username + "\n" + this.client.emotes.arrow + " Grund: " + givenReason;
+				embedData.description = suggestionEmbedDescription + "\n\n" + this.client.emotes.arrow + " Moderator: " + user.username + "\n" + this.client.emotes.arrow + " Begründung: " + givenReason;
 				embedData.color = 15548997;
 			}
 

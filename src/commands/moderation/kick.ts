@@ -58,7 +58,7 @@ export default class KickCommand extends BaseCommand
 		}
 		if (!reason) reason = "Kein Grund angegeben";
 
-		member.kick("Gekickt von " + this.interaction.member.user.username + " - Grund: " + reason)
+		member.kick("Gekickt von " + this.interaction.member.user.username + " - Begründung: " + reason)
 			.then(async (): Promise<void> =>
 			{
 				const privateText: string =
@@ -78,7 +78,7 @@ export default class KickCommand extends BaseCommand
 
 				const publicText: string =
 					"### " + this.client.emotes.leave + " " + member.user.username + " wurde gekickt.\n\n" +
-					this.client.emotes.arrow + " Grund: " + reason + "\n" +
+					this.client.emotes.arrow + " Begründung: " + reason + "\n" +
 					this.client.emotes.arrow + " Moderator: " + this.interaction.member.user.username;
 				const publicEmbed: EmbedBuilder = this.client.createEmbed(publicText, null, "error");
 				return this.interaction.followUp({ embeds: [publicEmbed] });
