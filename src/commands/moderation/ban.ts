@@ -94,7 +94,7 @@ export default class BanCommand extends BaseCommand
 			unbanDate = "/";
 		}
 
-		const areYouSureEmbed: EmbedBuilder = this.client.createEmbed("Bist du dir sicher, dass du {0} bannen möchtest?", "arrow", "warning", member.user.tag);
+		const areYouSureEmbed: EmbedBuilder = this.client.createEmbed("Bist du dir sicher, dass du {0} bannen möchtest?", "arrow", "warning", member.user.username);
 		const buttonYes: ButtonBuilder = this.client.createButton("confirm", "Ja", "Secondary", "success");
 		const buttonNo: ButtonBuilder = this.client.createButton("decline", "Nein", "Secondary", "error");
 		const buttonRow: any = this.client.createMessageComponentsRow(buttonYes, buttonNo);
@@ -109,22 +109,22 @@ export default class BanCommand extends BaseCommand
 			switch (confirmation) {
 				case "confirm":
 					const privateText: string =
-						"Du wurdest auf {0} gebannt.\n\n" +
+						"### " + this.client.emotes.ban + " Du wurdest auf {0} gebannt.\n\n" +
 						this.client.emotes.arrow + " Grund: " + ban.reason + "\n" +
 						this.client.emotes.arrow + " Dauer: " + relativeTime + "\n" +
-						this.client.emotes.arrow + " Moderator: " + this.interaction.user.tag + "\n" +
+						this.client.emotes.arrow + " Moderator: " + this.interaction.user.username + "\n" +
 						this.client.emotes.arrow + " Unban am: " + unbanDate;
-					const privateBanEmbed: EmbedBuilder = this.client.createEmbed(privateText, "timeout", "error", this.interaction.guild.name);
+					const privateBanEmbed: EmbedBuilder = this.client.createEmbed(privateText, null, "error", this.interaction.guild.name);
 					const privateMessage = await ban.victim.send({ embeds: [privateBanEmbed] }).catch((): void => { });
 					try {
-						await ban.victim.ban({ reason: "BAN - Dauer: " + relativeTime + " | Grund: " + ban.reason + " | Moderator: " + this.interaction.user.tag + " | Unban am: " + unbanDate });
+						await ban.victim.ban({ reason: "BAN - Dauer: " + relativeTime + " | Grund: " + ban.reason + " | Moderator: " + this.interaction.user.username + " | Unban am: " + unbanDate });
 						const victimData = await this.client.findOrCreateMember(ban.victim.user.id, this.interaction.guild.id);
 
 						victimData.banned = {
 							state: true,
 							reason: ban.reason,
 							moderator: {
-								name: this.interaction.user.tag,
+								name: this.interaction.user.username,
 								id: this.interaction.user.id
 							},
 							duration: ban.duration,
@@ -136,23 +136,23 @@ export default class BanCommand extends BaseCommand
 						this.client.databaseCache.bannedUsers.set(ban.victim.user.id + this.interaction.guild.id, victimData);
 
 						const publicText: string =
-							"{0} wurde gebannt.\n\n" +
+							"### " + this.client.emotes.ban + " {0} wurde gebannt.\n\n" +
 							this.client.emotes.arrow + " Grund: " + ban.reason + "\n" +
 							this.client.emotes.arrow + " Dauer: " + relativeTime + "\n" +
-							this.client.emotes.arrow + " Moderator: " + this.interaction.user.tag + "\n" +
+							this.client.emotes.arrow + " Moderator: " + this.interaction.user.username + "\n" +
 							this.client.emotes.arrow + " Unban am: " + unbanDate;
-						const publicBanEmbed: EmbedBuilder = this.client.createEmbed(publicText, "timeout", "error", ban.victim.user.tag);
+						const publicBanEmbed: EmbedBuilder = this.client.createEmbed(publicText, null, "error", ban.victim.user.username);
 						publicBanEmbed.setImage("https://media4.giphy.com/media/H99r2HtnYs492/giphy.gif");
 						await clicked.update({ embeds: [publicBanEmbed], components: [] });
 					} catch (exc) {
-						console.log(exc);
+						//console.log(exc);
 						privateMessage.delete().catch((): void => { });
-						const cantBanEmbed: EmbedBuilder = this.client.createEmbed("Ich konnte {0} nicht bannen.", "error", "error", ban.victim.user.tag);
+						const cantBanEmbed: EmbedBuilder = this.client.createEmbed("Ich konnte {0} nicht bannen.", "error", "error", ban.victim.user.username);
 						await clicked.update({ embeds: [cantBanEmbed], components: [] });
 					}
 					break;
 				case "decline":
-					const declineEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde nicht gebannt.", "error", "error", ban.victim.user.tag);
+					const declineEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde nicht gebannt.", "error", "error", ban.victim.user.username);
 					await clicked.update({ embeds: [declineEmbed], components: [] });
 					break;
 			}
