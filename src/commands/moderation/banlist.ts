@@ -39,7 +39,7 @@ export default class BanlistCommand extends BaseCommand
 				// Mit Nevar gebannt
 				const duration: string = memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000 ? "Permanent" : this.client.utils.getRelativeTime(Date.now() - memberData.banned.duration);
 				const bannedUntil: string = memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000 ? "/" : moment(memberData.banned.bannedUntil).format("DD.MM.YYYY, HH:mm");
-				const moderator: any = await this.client.users.fetch(memberData.banned.moderator.id).catch((): void => {});
+				const moderator: any = await this.client.users.fetch(memberData.banned.moderator.id).catch((): void => { });
 				const text: string =
 					"### " + this.client.emotes.ban + " " + ban[1].user.username + "\n" +
 					this.client.emotes.arrow + " Grund: " + memberData.banned.reason + "\n" +
