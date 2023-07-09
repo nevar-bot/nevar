@@ -2,14 +2,14 @@ import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import moment from "moment";
 import
-	{
-		EmbedBuilder,
-		ActionRowBuilder,
-		ModalBuilder,
-		TextInputBuilder,
-		TextInputStyle,
-		ButtonBuilder
-	} from "discord.js";
+{
+	EmbedBuilder,
+	ActionRowBuilder,
+	ModalBuilder,
+	TextInputBuilder,
+	TextInputStyle,
+	ButtonBuilder
+} from "discord.js";
 
 export default class ChangelogCommand extends BaseCommand
 {
