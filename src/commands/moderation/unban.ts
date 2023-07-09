@@ -42,7 +42,7 @@ export default class UnbanCommand extends BaseCommand
 
 		const guildBans: any = await this.interaction.guild.bans.fetch();
 		if (!guildBans.some((u: any): boolean => u.user.id === user.id)) {
-			const isNotBannedEmbed: EmbedBuilder = this.client.createEmbed("{0} ist nicht gebannt.", "error", "error", user.tag);
+			const isNotBannedEmbed: EmbedBuilder = this.client.createEmbed("{0} ist nicht gebannt.", "error", "error", user.username);
 			return this.interaction.followUp({ embeds: [isNotBannedEmbed] });
 		}
 
@@ -64,10 +64,10 @@ export default class UnbanCommand extends BaseCommand
 			await memberData.save();
 			this.client.databaseCache.bannedUsers.delete(memberData.id + memberData.guildID);
 
-			const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde entbannt.", "success", "success", user.tag);
+			const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde entbannt.", "success", "success", user.username);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} catch (e) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed("Ich konnte {0} nicht entbannen.", "error", "error", user.tag);
+			const errorEmbed: EmbedBuilder = this.client.createEmbed("Ich konnte {0} nicht entbannen.", "error", "error", user.username);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 	}
