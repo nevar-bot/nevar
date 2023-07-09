@@ -2,7 +2,7 @@ import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
-export default class RemoveWarn extends BaseCommand
+export default class RemoveWarnCommand extends BaseCommand
 {
 	public constructor(client: BaseClient)
 	{
