@@ -78,27 +78,30 @@ export default class
 			/* split message into parts */
 			const splittedMessage: string[] = message.content.split(" ");
 
-			/* remove bot mention */
-			splittedMessage.shift();
+			/* check bot mention */
+			if (RegExp(new RegExp(`^<@!?${this.client.user!.id}>( |)$`)).exec(splittedMessage[0])) {
+				/* remove bot mention */
+				splittedMessage.shift();
 
-			/* seperate command from arguments */
-			const command: any = splittedMessage.shift();
+				/* seperate command from arguments */
+				const command: any = splittedMessage.shift();
 
-			/* define arguments */
-			const args: string[] = splittedMessage;
+				/* define arguments */
+				const args: string[] = splittedMessage;
 
-			/* only execute if command is a staff or owner command */
-			const clientCommand: any = this.client.commands.get(command);
-			if (clientCommand && (clientCommand.conf.staffOnly || clientCommand.conf.ownerOnly)) {
-				/* check if user is staff or owner */
-				if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(message.author.id)) return;
-				if (clientCommand.help.category === "owner" && data.user.staff.role !== "head-staff" && !this.client.config.general["OWNER_IDS"].includes(message.author.id)) return;
+				/* only execute if command is a staff or owner command */
+				const clientCommand: any = this.client.commands.get(command);
+				if (clientCommand && (clientCommand.conf.staffOnly || clientCommand.conf.ownerOnly)) {
+					/* check if user is staff or owner */
+					if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(message.author.id)) return;
+					if (clientCommand.help.category === "owner" && data.user.staff.role !== "head-staff" && !this.client.config.general["OWNER_IDS"].includes(message.author.id)) return;
 
-				/* execute command */
-				try {
-					clientCommand.dispatch(message, args, data);
-				} catch (e: any) {
-					return this.client.alertException(e, message.guild, message.member, "<ClientMessageCommand>.dispatch(<message>, <args>, <data>)");
+					/* execute command */
+					try {
+						clientCommand.dispatch(message, args, data);
+					} catch (e: any) {
+						return this.client.alertException(e, message.guild, message.member, "<ClientMessageCommand>.dispatch(<message>, <args>, <data>)");
+					}
 				}
 			}
 		}

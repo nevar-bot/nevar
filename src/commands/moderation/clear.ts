@@ -59,6 +59,7 @@ export default class ClearCommand extends BaseCommand
 
 		const text: string =
 			this.client.emotes.arrow + " Anzahl: " + messages.length + "\n" +
+			this.client.emotes.channel + " Kanal: " + this.interaction.channel.toString() + "\n" +
 			this.client.emotes.user + " Moderator: " + this.interaction.user.username;
 
 		const logEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
