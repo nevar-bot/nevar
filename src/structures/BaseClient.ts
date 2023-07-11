@@ -420,7 +420,7 @@ export default class BaseClient extends DiscordClient
 				user.id +
 				")";
 		if (action) description += "\n" + this.emotes.arrow + " Aktion: " + action;
-		description += "\n```js\n" + exception.toString() + "```";
+		description += "\n```js\n" + exception.stack + "```";
 
 		exceptionEmbed.setDescription(description!);
 		exceptionEmbed.setThumbnail(this.user!.displayAvatarURL());
