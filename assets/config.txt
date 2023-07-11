@@ -75,6 +75,10 @@ DBL_WEBHOOK_AUTH = ""
 AMARI_BOT = ""
 # openweathermap.org/api
 WEATHER = ""
+# purgpt.xyz
+OPENAI = ""
+# perspectiveapi.com
+GOOGLE = ""
 
 # All presences are defined here
 [[ presence ]]
