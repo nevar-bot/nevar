@@ -20,10 +20,11 @@
     "email": "other@nevar.eu"
   },
   "scripts": {
-    "build": "rimraf build/ && tsc --sourceMap && node assets/install.js",
+    "build": "rimraf build/ && tsc --sourceMap",
     "dev": "node build/app.js --dev",
     "start": "node build/app.js",
-    "lint": "tsfmt --replace"
+    "lint": "tsfmt --replace",
+    "config": "node assets/install.js"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",

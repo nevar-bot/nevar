@@ -7,7 +7,7 @@
 #
 #####################################################################################
 ## Automatically created config for Nevar-{version}
-## Regenerate this file via "npm run build" or "node assets/install"
+## Regenerate this file via "npm run config" or "node assets/install"
 #####################################################################################
 
 # All fields with an * behind are necessary, all fields without can be left blank

@@ -31,6 +31,7 @@ Install dependencies
 Compile typescript and create all necessary files
 ```bash
   npm run build
+  npm run config
 ```
 Rename the `config-sample.toml` to `config.toml` and fill in with your data
 
