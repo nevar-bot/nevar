@@ -19,8 +19,8 @@ export default class
 		if (!guild.available) return;
 
 		/* Guild and member data */
-		const guildData = await this.client.findOrCreateGuild(guild.id);
-		const memberData = await this.client.findOrCreateMember(member.id, guild.id);
+		const guildData: any = await this.client.findOrCreateGuild(guild.id);
+		const memberData: any = await this.client.findOrCreateMember(member.id, guild.id);
 
 		/* Invite data */
 		const [fetchedInvites, cachedInvites] = await Promise.all([
@@ -68,7 +68,7 @@ export default class
 		await guild.logAction(memberJoinEmbed, "member");
 
 		/* Check member mute state */
-		if (memberData.muted?.state) {
+		if (memberData?.muted?.state) {
 			member.roles.add(guildData.settings.muterole).catch((e: any): void =>
 			{
 				const errorText: string =
