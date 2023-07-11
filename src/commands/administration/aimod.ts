@@ -104,6 +104,18 @@ export default class AimodCommand extends BaseCommand
 		this.interaction = interaction;
 		const subcommand: string = interaction.options.getSubcommand();
 
+		if (!data.guild.settings.aiModeration) {
+			data.guild.settings.aiModeration = {
+				enabled: false,
+				excludedChannels: [],
+				excludedRoles: [],
+				threshold: 0.6,
+				alertChannel: null,
+			};
+			data.guild.markModified("settings.aiModeration");
+			await data.guild.save();
+		}
+
 		switch (subcommand) {
 			case "status":
 				await this.setStatus(interaction.options.getString("status"), data);
