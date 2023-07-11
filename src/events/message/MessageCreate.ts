@@ -195,7 +195,7 @@ export default class
 			}
 
 			const axiosInstace = axios.create({
-				timeout: 5000,
+				timeout: 10 * 1000,
 			});
 
 			const res: any = await axiosInstace.post("https://purgpt.xyz/v1/chat/completions", body, { validateStatus: (): boolean => true })
