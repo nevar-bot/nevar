@@ -8,7 +8,7 @@ export default class PullCommand extends BaseCommand
 	public constructor(client: BaseClient)
 	{
 		super(client, {
-			name: "pull",
+			name: "update",
 			description: "Bringt den Bot auf den aktuellen Stand des GitHub Repositories",
 			staffOnly: true,
 			dirname: __dirname,
