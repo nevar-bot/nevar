@@ -46,7 +46,7 @@ export async function post(req: Request, res: Response)
 		const voteEmbed: EmbedBuilder = client.createEmbed(text, 'shine', 'normal');
 		voteEmbed.setThumbnail(user.displayAvatarURL());
 
-		const voteNowButton: ButtonBuilder = client.createButton(null, 'Jetzt voten', 'Link', 'rocket', false, 'https://top.gg' + client.user!.id + '/vote');
+		const voteNowButton: ButtonBuilder = client.createButton(null, 'Jetzt voten', 'Link', 'rocket', false, 'https://top.gg/' + client.user!.id + '/vote');
 		const buttonRow: any = client.createMessageComponentsRow(voteNowButton);
 
 		// @ts-ignore - Property 'send' does not exist on type 'Channel'
