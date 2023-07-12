@@ -13,8 +13,8 @@ export async function post(req: Request, res: Response)
 		return res.sendStatus(401);
 	}
 
-	if (authorizationHeader === client.config.apikeys['DBL_WEBHOOK_AUTH']) {
-		const userId = req.body.id;
+	if (authorizationHeader === client.config.apikeys['TOP_GG_AUTH']) {
+		const userId = req.body.user;
 		if (!userId) {
 			return res.sendStatus(400);
 		}
@@ -42,7 +42,7 @@ export async function post(req: Request, res: Response)
 		const voteCount = userData ? userData.voteCount : null;
 		const text: string =
 			'**' + user.username + '** hat gerade ' + (voteCount ? 'zum **' + voteCount + '. Mal** ' : '') + 'für uns gevotet!\n' +
-			client.emotes.arrow + " Auf **[discordbotlist.com](https://discordbotlist.com/bots/" + client.user!.id + "/upvote)** könnt ihr alle 12 Stunden für " + client.user!.username + " voten.";
+			client.emotes.arrow + " Auf **[TOP.GG](https://top.gg/bot/" + client.user!.id + "/vote)** könnt ihr alle 12 Stunden für " + client.user!.username + " voten.";
 		const voteEmbed: EmbedBuilder = client.createEmbed(text, 'shine', 'normal');
 		voteEmbed.setThumbnail(user.displayAvatarURL());
 

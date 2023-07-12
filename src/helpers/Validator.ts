@@ -88,12 +88,16 @@ export default class Validator
 			Logger.warn("TOML: channels.VOTE_ANNOUNCEMENT_ID is empty");
 		if (!config.apikeys["AMARI_BOT"])
 			Logger.warn("TOML: apikeys.AMARI_BOT is empty. Amari level as a giveaway requirement won't work");
-		if (!config.apikeys["DBL"])
-			Logger.warn("TOML: apikeys.DBL is empty. Posting stats to discordbotlist.com and receiving votes won't work");
-		if (!config.apikeys["DBL_WEBHOOK_AUTH"])
-			Logger.warn("TOML: apikeys.DBL_WEBHOOK_AUTH is empty. Receiving votes from discordbotlist.com won't work");
+		if (!config.apikeys["TOP_GG"])
+			Logger.warn("TOML: apikeys.TOP_GG is empty. Posting stats to discordbotlist.com and receiving votes won't work");
+		if (!config.apikeys["TOP_GG_AUTH"])
+			Logger.warn("TOML: apikeys.TOP_GG_AUTH is empty. Receiving votes from discordbotlist.com won't work");
 		if (!config.apikeys["WEATHER"])
 			Logger.warn("TOML: apikeys.WEATHER is empty. Weather command won't work");
+		if (!config.apikeys["OPENAI"])
+			Logger.warn("TOML: apikeys.OPENAI is empty. Weather command won't work");
+		if (!config.apikeys["GOOGLE"])
+			Logger.warn("TOML: apikeys.GOOGLE is empty. Weather command won't work");
 
 		Logger.success("TOML: Validated config file");
 	}

@@ -10,7 +10,7 @@ import
 
 import handlePresence from "@handlers/presence";
 import registerInteractions from "@handlers/registerInteractions";
-import DBL from "@helpers/DBL";
+import TOPGG from "@helpers/TOP.GG";
 import unbanMembers from "@handlers/unbanMembers";
 import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";
@@ -47,7 +47,7 @@ export default class
 		handlePresence(client);
 
 		/* Initiate handlers */
-		DBL.init(client);
+		TOPGG.init(client);
 		unbanMembers.init(client);
 		unmuteMembers.init(client);
 		remindMembers.init(client);

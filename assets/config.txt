@@ -69,8 +69,8 @@ VOTE_ANNOUNCEMENT_ID = ""
 [ apikeys ]
 # All of the following APIs offer a free API key and no paid subscription is required
 # discordbotlist.com
-DBL = ""
-DBL_WEBHOOK_AUTH = ""
+TOP_GG = ""
+TOP_GG_AUTH = ""
 # Amari bot
 AMARI_BOT = ""
 # openweathermap.org/api
