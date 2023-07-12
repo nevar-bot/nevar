@@ -34,7 +34,7 @@ export default class InviteCommand extends BaseCommand
 		const supportButton: ButtonBuilder = this.client.createButton(null, "Support", "Link", this.client.emotes.discord, false, this.client.config.support["INVITE"]);
 		const websiteButton: ButtonBuilder = this.client.createButton(null, "Website", "Link", this.client.emotes.text, false, this.client.config.general["WEBSITE"]);
 		const voteButton: ButtonBuilder = this.client.createButton(null, "Voten", "Link", this.client.emotes.heart, false, "https://top.gg/" + this.client!.user!.id + "/vote");
-		const buttonRow: any = this.client.createMessageComponentsRow(inviteButton, supportButton, websiteButton, voteButton);
+		const buttonRow: any = this.client.createMessageComponentsRow(inviteButton, supportButton, websiteButton, voteButton); // test
 
 		// Second row
 		const twitterButton: ButtonBuilder = this.client.createButton(null, "Twitter", "Link", this.client.emotes.socials.twitter, false, "https://twitter.com/nevar_eu");
