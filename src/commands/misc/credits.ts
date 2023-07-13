@@ -43,7 +43,7 @@ export default class CreditsCommand extends BaseCommand
 			this.client.emotes.arrow + " [discord.js](https://npmjs.com/package/discord.js) - Discord Client\n" +
 			this.client.emotes.arrow + " [discord-giveaways](https://npmjs.com/package/discord-giveaways) - Discord Gewinnspiele\n" +
 			this.client.emotes.arrow + " [@top-gg/sdk](https://www.npmjs.com/package/@top-gg/sdk) - Vote Webhook TOP.GG\n" +
-			this.client.emotes.arrow + " [topgg-autoposter](https://www.npmjs.com/package/topgg-autoposter) - TOP.GG Bot-Statistiken"
+			this.client.emotes.arrow + " [topgg-autoposter](https://www.npmjs.com/package/topgg-autoposter) - TOP.GG Bot-Statistiken" +
 		"## Bildverarbeitung und -manipulation\n" +
 			this.client.emotes.arrow + " [blablacord](https://npmjs.com/package/canvacord) - Bildmanipulation für Discord\n" +
 			this.client.emotes.arrow + " [jimp](https://npmjs.com/package/jimp) - Bildverarbeitung\n" +
