@@ -100,7 +100,7 @@ export default class BughuntersCommand extends BaseCommand
 		}
 		if (bughunters.length === 0) bughunters = ["Keine Bug-Hunter vorhanden"];
 
-		const embed: EmbedBuilder = this.client.createEmbed("Folgend sind alle Bot-Partner aufgelistet:\n\n{0} {1}", "arrow", "normal", this.client.emotes.shine2, bughunters.join("\n" + this.client.emotes.shine2 + " "));
+		const embed: EmbedBuilder = this.client.createEmbed("Folgend sind alle Bughunter aufgelistet:\n\n{0} {1}", "arrow", "normal", this.client.emotes.shine2, bughunters.join("\n" + this.client.emotes.shine2 + " "));
 
 		return this.message.reply({ embeds: [embed] });
 	}
