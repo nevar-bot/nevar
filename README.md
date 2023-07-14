@@ -11,6 +11,7 @@ Nevar is a simple, lightweight, and fast discord bot built with discord.js and t
 
 ## Authors
 - [@1887jonas](https://www.github.com/1887jonas)
+- [@Fedox-die-Ente](https://www.github.com/Fedox-die-Ente)
 
 ## Run
 Clone the project

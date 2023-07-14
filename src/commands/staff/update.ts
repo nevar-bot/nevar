@@ -38,6 +38,13 @@ export default class PullCommand extends BaseCommand
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``, "error", "error",);
 				return repliedMessage.edit({ embeds: [errorEmbed] });
 			}
+			exec("npm run build", (err: any, stdout: string, stderr: string): void =>
+			{
+				if (err) {
+					const errorEmbed: EmbedBuilder = this.client.createEmbed(`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``, "error", "error",);
+					return repliedMessage.edit({ embeds: [errorEmbed] });
+				}
+			});
 			const successEmbed: EmbedBuilder = this.client.createEmbed("Aktualisierung erfolgreich, starte neu...", "success", "success");
 			repliedMessage.edit({ embeds: [successEmbed] })
 				.then((): void =>
