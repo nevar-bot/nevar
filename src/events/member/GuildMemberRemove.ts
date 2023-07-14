@@ -19,7 +19,7 @@ export default class
 		const memberData = await this.client.findOrCreateMember(member.id, guild.id);
 
 		/* Update invite cache */
-		if (memberData.inviteUsed) {
+		if (memberData?.inviteUsed) {
 			const invite: any = await guild.invites.fetch(memberData.inviteUsed).catch((e: any): void => { });
 			if (invite) {
 				const inviterData = await this.client.findOrCreateMember(invite.inviterId, guild.id);
