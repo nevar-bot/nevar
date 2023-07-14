@@ -62,6 +62,6 @@ export default
 						})
 						.catch((): void => { });
 				}
-			})
+			}, 1000)
 		}
 	}

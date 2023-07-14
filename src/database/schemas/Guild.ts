@@ -89,6 +89,13 @@ const Schema = new mongoose.Schema({
 				channel: null,
 				mode: "normal"
 			},
+			notifiers: {
+				youtube: {
+					enabled: false,
+					channels: [],
+					announcementChannel: null
+				}
+			},
 			muterole: null,
 			autodelete: [],
 			autoreact: [],

@@ -22,7 +22,7 @@ export default class Loader
 				const response = await client.loadCommand("../commands/" + directory, command);
 				if (response) {
 					failed++;
-					client.logger.error("Couldn't load command " + command + ": " + response);
+					client.logger.error("Couldn't load command " + command + ": " + response.stack);
 				} else success++;
 			}
 		}

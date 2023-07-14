@@ -14,6 +14,7 @@ import TOPGG from "@helpers/TOP.GG";
 import unbanMembers from "@handlers/unbanMembers";
 import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";
+import youtubeNotifier from "@handlers/youtubeNotifier";
 import api from "@api/app";
 import BaseClient from "@structures/BaseClient";
 
@@ -51,6 +52,7 @@ export default class
 		unbanMembers.init(client);
 		unmuteMembers.init(client);
 		remindMembers.init(client);
+		youtubeNotifier.init(client);
 		if (config.api["ENABLED"]) api.init(client);
 
 		/* Support server stats channels */

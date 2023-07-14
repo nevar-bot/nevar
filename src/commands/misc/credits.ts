@@ -59,7 +59,8 @@ export default class CreditsCommand extends BaseCommand
 			this.client.emotes.arrow + " [rimraf](https://npmjs.com/package/rimraf) - Entfernen von Dateien und Ordnern\n" +
 			this.client.emotes.arrow + " [source-map-support](https://npmjs.com/package/source-map-support) - Source-Map-Unterstützung\n" +
 			this.client.emotes.arrow + " [node-emoji](https://npmjs.com/package/node-emoji) - Emoji-Konvertierung\n" +
-			this.client.emotes.arrow + " [perspective-api-client](https://npmjs.com/package/perspective-api-client) - Google Perspective API\n" +
+			this.client.emotes.arrow + " [perspective-api-client](https://npmjs.com/package/perspective-api-client) - Google Perspective API Client\n" +
+			this.client.emotes.arrow + " [googleapis](https://npmjs.com/package/googleapis) - Google APIs\n" +
 			this.client.emotes.arrow + " [toml](https://npmjs.com/package/toml) - TOML-Parser und -Encoder\n" +
 			this.client.emotes.arrow + " [module-alias](https://npmjs.com/package/module-alias) - Erstellung von Aliasen für Module\n" +
 			this.client.emotes.arrow + " [typescript](https://npmjs.com/package/typescript) - Typisierter JavaScript-Compiler\n" +
