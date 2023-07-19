@@ -61,6 +61,21 @@ export default
 								});
 						})
 						.catch((): void => { });
+
+					memberData.muted = {
+						state: false,
+						reason: null,
+						moderator: {
+							name: null,
+							id: null
+						},
+						duration: null,
+						mutedAt: null,
+						mutedUntil: null
+					};
+					memberData.markModified("muted");
+					memberData.save();
+					client.databaseCache.mutedUsers.delete(memberData.id + memberData.guildID);
 				}
 			}, 1000)
 		}
