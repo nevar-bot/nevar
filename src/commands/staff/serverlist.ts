@@ -32,7 +32,7 @@ export default class ServerlistCommand extends BaseCommand
 		for (let guild of this.client.guilds.cache) {
 			const text: string =
 				"### " + this.client.emotes.discord + " " + guild[1].name + "\n" +
-				this.client.emotes.arrow + " Mitglieder: " + guild[1].memberCount + "\n" +
+				this.client.emotes.arrow + " Mitglieder: " + this.client.format(guild[1].memberCount) + "\n" +
 				this.client.emotes.arrow + " ID: " + guild[1].id + "\n";
 			servers.push({ guild: guild[1], text: text });
 		}
