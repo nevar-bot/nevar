@@ -177,6 +177,12 @@ export default class
 
 		/* AI Chat */
 		if (data.guild.settings.aiChat?.enabled && data.guild.settings.aiChat?.channel === message.channel.id && !message.author.bot && !message.content.startsWith("//")) {
+    /* User is blocked */
+			if (data.user.blocked.state) {
+				const reason = data.user.blocked.reason || "Kein Grund angegeben";
+				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed("Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}", "error", "error", this.client.emotes.arrow, reason);
+				return message.reply({ embeds: [blockedMessageEmbed] });
+			}
 			if (!this.client.aiChat.has(message.guild.id)) {
 				/* set ai mode */
 				this.client.aiChat.set(message.guild.id, []);
