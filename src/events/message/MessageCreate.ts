@@ -204,7 +204,7 @@ export default class
 				timeout: 10 * 1000,
 			});
 
-			const res: any = await axiosInstace.post("https://beta.purgpt.xyz/openai/chat/completions", body, { validateStatus: (): boolean => true })
+			const res: any = await axiosInstace.post("https://purgpt.xyz/v1/chat/completions", body, { validateStatus: (): boolean => true })
 				.catch((e: any): void => { });
 
 			if (res?.data?.choices[0]) {
