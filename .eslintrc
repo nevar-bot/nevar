@@ -11,7 +11,7 @@
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-ts-comment": "warn",
     "@typescript-eslint/prefer-as-const": "warn",
     "@typescript-eslint/no-this-alias": "off",
     "@typescript-eslint/ban-types": "off",
@@ -20,9 +20,10 @@
     "no-unused-vars": "off",
     "no-case-declarations": "off",
     "prefer-const": "warn",
-    "no-useless-escape": "off",
+    "no-useless-escape": "warn",
     "no-inner-declarations": "off",
     "no-extra-semi": "warn",
-    "no-mixed-spaces-and-tabs": ["warn", "smart-tabs"]
+    "no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
+    "no-console": "warn"
   }
 }

@@ -356,9 +356,9 @@ export default class {
 				const permissions: any = channel.permissionsFor(
 					guild.members.me
 				);
-				// @ts-ignore - TS7053: Element implicitly has an 'any' type
 				if (
 					!permissions.has(
+						// @ts-ignore - TS7053: Element implicitly has an 'any' type
 						PermissionsBitField.Flags[neededBotPermission]
 					)
 				) {
