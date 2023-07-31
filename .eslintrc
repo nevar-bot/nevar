@@ -1,0 +1,28 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/prefer-as-const": "warn",
+    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "no-unused-vars": "off",
+    "no-case-declarations": "off",
+    "prefer-const": "warn",
+    "no-useless-escape": "off",
+    "no-inner-declarations": "off",
+    "no-extra-semi": "warn",
+    "no-mixed-spaces-and-tabs": ["warn", "smart-tabs"]
+  }
+}

@@ -1,34 +1,38 @@
+/** @format */
+
 import { Request, Response } from 'express';
 import { client } from '@src/app';
 import mongoose from 'mongoose';
 
-export async function get(req: Request, res: Response)
-{
+export async function get(req: Request, res: Response) {
 	const { app } = req;
 
 	const headStaffs: any[] = [];
 	const normalStaffs: any[] = [];
 
 	for (const ownerId of client.config.general['OWNER_IDS']) {
-		const user: any = await client.users.fetch(ownerId).catch((): void =>
-		{
-		});
+		const user: any = await client.users
+			.fetch(ownerId)
+			.catch((): void => {});
 		if (!user) continue;
 		headStaffs.push({
 			username: user.username,
 			displayName: user.displayName,
 			avatar: user.displayAvatarURL(),
 			id: user.id,
-			role: 'Head-Staff',
+			role: 'Head-Staff'
 		});
 	}
 
-	const staffsData: any = await mongoose.connection.db.collection('users').find({ 'staff.state': true }).toArray();
+	const staffsData: any = await mongoose.connection.db
+		.collection('users')
+		.find({ 'staff.state': true })
+		.toArray();
 
 	for (const staffData of staffsData) {
-		const user: any = await client.users.fetch(staffData.id).catch(() =>
-		{
-		});
+		const user: any = await client.users
+			.fetch(staffData.id)
+			.catch(() => {});
 		if (!user) continue;
 		if (headStaffs.find((s: any): boolean => s.id === user.id)) continue;
 		const staffToPush: any = {
@@ -36,7 +40,7 @@ export async function get(req: Request, res: Response)
 			displayName: user.displayName,
 			avatar: user.displayAvatarURL(),
 			id: user.id,
-			role: staffData.staff.role === 'head-staff' ? 'Head-Staff' : 'Staff',
+			role: staffData.staff.role === 'head-staff' ? 'Head-Staff' : 'Staff'
 		};
 
 		if (staffData.staff.role === 'head-staff') headStaffs.push(staffToPush);
@@ -50,8 +54,8 @@ export async function get(req: Request, res: Response)
 		status_message: null,
 		res: {
 			staff_count: staffs.length,
-			staffs,
-		},
+			staffs
+		}
 	};
 	res.setHeader('Content-Type', 'application/json');
 	return res.end(JSON.stringify(json, null, 4));

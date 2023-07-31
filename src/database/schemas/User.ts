@@ -1,5 +1,7 @@
-import * as mongoose from "mongoose";
-import { Model } from "mongoose";
+/** @format */
+
+import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
 
 const Schema = new mongoose.Schema({
 	id: { type: String },
@@ -18,7 +20,7 @@ const Schema = new mongoose.Schema({
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null,
+			name: null
 		}
 	},
 	staff: {
@@ -37,12 +39,12 @@ const Schema = new mongoose.Schema({
 	bughunter: {
 		type: Object,
 		default: {
-			state: false,
+			state: false
 		}
 	},
 
 	voteCount: { type: Number, default: 0 }
 });
 
-const User: Model<any> = mongoose.model("User", Schema);
+const User: Model<any> = mongoose.model('User', Schema);
 export default User;

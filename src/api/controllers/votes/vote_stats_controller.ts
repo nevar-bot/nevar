@@ -1,16 +1,19 @@
+/** @format */
+
 import { Request, Response } from 'express';
 import { client } from '@src/app';
 import fs from 'fs';
 import moment from 'moment';
 
-export async function get(req: Request, res: Response)
-{
+export async function get(req: Request, res: Response) {
 	const { app } = req;
 
 	const month: string = req.params.month;
 
 	if (!month) {
-		const votes = JSON.parse(fs.readFileSync('./assets/votes.json').toString());
+		const votes = JSON.parse(
+			fs.readFileSync('./assets/votes.json').toString()
+		);
 		const json: any = {
 			status_code: 200,
 			status_message: null,
@@ -20,7 +23,7 @@ export async function get(req: Request, res: Response)
 		return res.end(JSON.stringify(json, null, 4));
 	}
 
-	const months: string[] = moment.months().map(m => m.toLowerCase());
+	const months: string[] = moment.months().map((m) => m.toLowerCase());
 	let requestedMonth: string | undefined;
 
 	if (months.includes(month.toLowerCase())) {
@@ -32,7 +35,9 @@ export async function get(req: Request, res: Response)
 	}
 
 	if (requestedMonth) {
-		const votes = JSON.parse(fs.readFileSync('./assets/votes.json').toString());
+		const votes = JSON.parse(
+			fs.readFileSync('./assets/votes.json').toString()
+		);
 		const json: any = {
 			status_code: 200,
 			status_message: null,

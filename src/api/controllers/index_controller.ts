@@ -1,7 +1,8 @@
+/** @format */
+
 import { Request, Response } from 'express';
 
-export async function get(req: Request, res: Response)
-{
+export async function get(req: Request, res: Response) {
 	const { app } = req;
 
 	const json: any = {
@@ -10,8 +11,7 @@ export async function get(req: Request, res: Response)
 		routes: []
 	};
 
-	app._router.stack.forEach(function(r: any)
-	{
+	app._router.stack.forEach(function (r: any) {
 		if (!r || !r.route) return;
 		if (r.route.path === '*' || r.route.path === '/') return;
 

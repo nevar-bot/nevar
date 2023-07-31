@@ -1,5 +1,7 @@
-import * as mongoose from "mongoose";
-import { Model } from "mongoose";
+/** @format */
+
+import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
 
 const Schema = new mongoose.Schema({
 	id: { type: String },
@@ -18,7 +20,7 @@ const Schema = new mongoose.Schema({
 			reason: null,
 			moderator: {
 				name: null,
-				id: null,
+				id: null
 			},
 			duration: null,
 			bannedAt: null,
@@ -51,5 +53,5 @@ const Schema = new mongoose.Schema({
 	}
 });
 
-const Member: Model<any> = mongoose.model("Member", Schema);
+const Member: Model<any> = mongoose.model('Member', Schema);
 export default Member;

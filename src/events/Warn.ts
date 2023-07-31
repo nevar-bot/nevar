@@ -1,17 +1,16 @@
-import BaseClient from "@structures/BaseClient";
+/** @format */
 
-export default class
-{
+import BaseClient from '@structures/BaseClient';
+
+export default class {
 	private client: BaseClient;
 
-	public constructor(client: BaseClient)
-	{
+	public constructor(client: BaseClient) {
 		this.client = client;
 	}
 
-	public async dispatch(e: any): Promise<void>
-	{
+	public async dispatch(e: any): Promise<void> {
 		console.warn(e);
-		await this.client.alert(e, "warning");
+		await this.client.alert(e, 'warning');
 	}
 }

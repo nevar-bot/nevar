@@ -1,5 +1,7 @@
-import * as mongoose from "mongoose";
-import { Model } from "mongoose";
+/** @format */
+
+import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
 
 const Schema = new mongoose.Schema({
 	userID: { type: String },
@@ -9,5 +11,5 @@ const Schema = new mongoose.Schema({
 	lastUpdated: { type: Number, default: new Date() }
 });
 
-const Levels: Model<any> = mongoose.model("Levels", Schema);
+const Levels: Model<any> = mongoose.model('Levels', Schema);
 export default Levels;

@@ -1,8 +1,9 @@
+/** @format */
+
 import { Request, Response } from 'express';
 import { client } from '@src/app';
 
-export async function get(req: Request, res: Response)
-{
+export async function get(req: Request, res: Response) {
 	const { app } = req;
 
 	const guildId: string = req.params.guildID;
@@ -21,7 +22,7 @@ export async function get(req: Request, res: Response)
 	}
 
 	if (!guild.members.cache.get(userId)) {
-		await guild.members.fetch(userId).catch((): void => { });
+		await guild.members.fetch(userId).catch((): void => {});
 	}
 	const member: any = guild.members.cache.get(userId);
 	if (!member) {
@@ -45,7 +46,9 @@ export async function get(req: Request, res: Response)
 			displayName: member.user.displayName,
 			userID: userId,
 			guildID: guildId,
-			avatar: member.user?.displayAvatarURL({ size: 2048 }) || 'https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png'
+			avatar:
+				member.user?.displayAvatarURL({ size: 2048 }) ||
+				'https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png'
 		}
 	};
 

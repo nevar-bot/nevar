@@ -1,8 +1,9 @@
+/** @format */
+
 import { Request, Response } from 'express';
 import { client } from '@src/app';
 
-export async function get(req: Request, res: Response)
-{
+export async function get(req: Request, res: Response) {
 	const { app } = req;
 
 	const commands: any[] = [];

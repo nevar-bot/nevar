@@ -1,13 +1,17 @@
-import * as mongoose from "mongoose";
-import { Model } from "mongoose";
+/** @format */
 
-const Schema = new mongoose.Schema({
+import * as mongoose from 'mongoose';
+import { Model, Schema, model, Document } from 'mongoose';
+
+const GuildSchema: Schema = new mongoose.Schema({
 	id: { type: String },
 	membersData: { type: Object, default: {} },
-	members: [{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Member"
-	}],
+	members: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Member'
+		}
+	],
 	blocked: {
 		type: Object,
 		default: {
@@ -15,7 +19,7 @@ const Schema = new mongoose.Schema({
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null,
+			name: null
 		}
 	},
 	settings: {
@@ -29,7 +33,7 @@ const Schema = new mongoose.Schema({
 					guild: null,
 					role: null,
 					thread: null,
-					channel: null,
+					channel: null
 				}
 			},
 			joinToCreate: {
@@ -47,47 +51,47 @@ const Schema = new mongoose.Schema({
 				review_channel: null
 			},
 			invites: {
-				enabled: false,
+				enabled: false
 			},
 			levels: {
 				enabled: false,
 				channel: null,
-				message: "GG {user:username}, du bist jetzt Level {level}!",
+				message: 'GG {user:username}, du bist jetzt Level {level}!',
 				roles: [],
 				doubleXP: [],
 				exclude: {
 					channels: [],
-					roles: [],
+					roles: []
 				},
 				xp: {
 					min: 1,
 					max: 30
-				},
+				}
 			},
 			welcome: {
 				enabled: false,
 				channel: null,
 				type: null,
 				message: null,
-				autoroles: [],
+				autoroles: []
 			},
 			farewell: {
 				enabled: false,
 				channel: null,
 				type: null,
-				message: null,
+				message: null
 			},
 			aiModeration: {
 				enabled: false,
 				excludedChannels: [],
 				excludedRoles: [],
 				threshold: 0.6,
-				alertChannel: null,
+				alertChannel: null
 			},
 			aiChat: {
 				enabled: false,
 				channel: null,
-				mode: "normal"
+				mode: 'normal'
 			},
 			notifiers: {
 				youtube: {
@@ -99,10 +103,10 @@ const Schema = new mongoose.Schema({
 			muterole: null,
 			autodelete: [],
 			autoreact: [],
-			reactionroles: [],
+			reactionroles: []
 		}
 	}
 });
 
-const Guild: Model<any> = mongoose.model("Guild", Schema);
+const Guild: Model<any> = model('Guild', GuildSchema);
 export default Guild;

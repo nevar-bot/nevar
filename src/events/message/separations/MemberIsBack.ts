@@ -1,17 +1,16 @@
-import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder } from "discord.js";
+/** @format */
 
-export default class
-{
+import BaseClient from '@structures/BaseClient';
+import { EmbedBuilder } from 'discord.js';
+
+export default class {
 	private client: BaseClient;
 
-	public constructor(client: BaseClient)
-	{
+	public constructor(client: BaseClient) {
 		this.client = client;
 	}
 
-	public async dispatch(message: any, data: any, guild: any): Promise<void>
-	{
+	public async dispatch(message: any, data: any, guild: any): Promise<void> {
 		const since: any = data.user.afk.since;
 		const afkReason: any = data.user.afk.reason;
 
@@ -20,16 +19,28 @@ export default class
 			reason: null,
 			since: null
 		};
-		data.user.markModified("afk");
+		data.user.markModified('afk');
 		await data.user.save();
 
 		const afkSinceString: string = this.client.utils.getRelativeTime(since);
 
 		const backText: string =
-			"Du warst **" + afkSinceString + "** abwesend: " + (afkReason || "Kein Grund angegeben");
+			'Du warst **' +
+			afkSinceString +
+			'** abwesend: ' +
+			(afkReason || 'Kein Grund angegeben');
 
-		const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed("{0}", "reminder", "normal", backText);
-		welcomeBackEmbed.setTitle(this.client.emotes.shine2 + " Willkommen zurück!");
-		return message.reply({ embeds: [welcomeBackEmbed] }).catch((): void => { });
+		const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
+			'{0}',
+			'reminder',
+			'normal',
+			backText
+		);
+		welcomeBackEmbed.setTitle(
+			this.client.emotes.shine2 + ' Willkommen zurück!'
+		);
+		return message
+			.reply({ embeds: [welcomeBackEmbed] })
+			.catch((): void => {});
 	}
 }
