@@ -96,9 +96,8 @@ export default class {
 						)
 					);
 
-				// @ts-ignore - Argument of type 'Buffer' is not assignable to parameter of type 'string'
 				let votes: any = JSON.parse(
-					fs.readFileSync('./assets/votes.json')
+					fs.readFileSync('./assets/votes.json').toString()
 				);
 
 				const date: Date = new Date();
