@@ -47,8 +47,8 @@ export async function post(req: Request, res: Response) {
 		const voteCount = userData ? userData.voteCount : null;
 		const text: string =
 			'**' +
-			user.username +
-			'** hat gerade ' +
+			user.displayName +
+			'** (@' + user.username + ') hat gerade ' +
 			(voteCount ? 'zum **' + voteCount + '. Mal** ' : '') +
 			'für uns gevotet!\n' +
 			client.emotes.arrow +
