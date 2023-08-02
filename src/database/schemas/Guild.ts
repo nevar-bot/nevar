@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import { Model, Schema, model, Document } from 'mongoose';
 
 const GuildSchema: Schema = new mongoose.Schema({
-	id: { type: String },
+	id: { type: String, default: null },
 	membersData: { type: Object, default: {} },
 	members: [
 		{

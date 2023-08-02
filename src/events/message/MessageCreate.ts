@@ -5,7 +5,7 @@ const ms: any = ems('de');
 // @ts-ignore - Could not find a declaration file for module 'perspective-api-client'
 import Perspective from 'perspective-api-client';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import updateGuildSchema from '@database/UpdateGuildSchema';
+
 export default class {
 	private client: BaseClient;
 	private timeouts: any;
@@ -32,8 +32,6 @@ export default class {
 			member: await this.client.findOrCreateMember(member.id, guild.id),
 			user: await this.client.findOrCreateUser(member.user.id)
 		};
-
-		updateGuildSchema(this.client, guild.id);
 
 		/* Afk system */
 
