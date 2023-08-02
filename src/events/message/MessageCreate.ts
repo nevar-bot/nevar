@@ -68,7 +68,8 @@ export default class {
 			for (const element of greetings) {
 				// @ts-ignore - Operator '>=' cannot be applied to types 'number' and 'string | number'
 				if (currentHour >= element[0] && currentHour <= element[1]) {
-					greeting = element[2] + ' ' + message.author.displayName + '!';
+					greeting =
+						element[2] + ' ' + message.author.displayName + '!';
 				}
 			}
 

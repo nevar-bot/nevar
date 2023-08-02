@@ -140,7 +140,13 @@ export default class {
 		});
 
 		client.logger.log('Loaded ' + client.guilds.cache.size + ' guilds');
-		client.logger.success('Logged in as ' + client.user.displayName + " (@" + client.user.username + ")");
+		client.logger.success(
+			'Logged in as ' +
+				client.user.displayName +
+				' (@' +
+				client.user.username +
+				')'
+		);
 
 		/* Register interactions, if bot is running on development mode */
 		if (process.argv.slice(2)[0] === '--dev') {

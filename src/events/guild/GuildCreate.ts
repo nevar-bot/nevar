@@ -148,7 +148,10 @@ export default class {
 			'**\n' +
 			this.client.emotes.crown +
 			' Eigentümer: **' +
-			owner.user.displayName + " (@" + owner.user.username + ")" +
+			owner.user.displayName +
+			' (@' +
+			owner.user.username +
+			')' +
 			'**\n' +
 			this.client.emotes.id +
 			' ID: **' +

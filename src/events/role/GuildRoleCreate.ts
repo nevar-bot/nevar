@@ -34,7 +34,11 @@ export default class {
 						'\n\n' +
 						this.client.emotes.user +
 						' Nutzer: ' +
-						"**" + moderator.displayName + "** (@" + moderator.username + ")";
+						'**' +
+						moderator.displayName +
+						'** (@' +
+						moderator.username +
+						')';
 			}
 		}
 

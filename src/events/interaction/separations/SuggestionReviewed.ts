@@ -82,7 +82,10 @@ export default class {
 					'\n\n' +
 					this.client.emotes.user +
 					' Moderator: ' +
-					user.displayName + " (@" + user.username + ")" +
+					user.displayName +
+					' (@' +
+					user.username +
+					')' +
 					'\n' +
 					this.client.emotes.arrow +
 					' Begründung: ' +
@@ -95,7 +98,10 @@ export default class {
 					'\n\n' +
 					this.client.emotes.arrow +
 					' Moderator: ' +
-					user.displayName + " (@" + user.username + ")" +
+					user.displayName +
+					' (@' +
+					user.username +
+					')' +
 					'\n' +
 					this.client.emotes.arrow +
 					' Begründung: ' +

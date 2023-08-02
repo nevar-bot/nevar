@@ -16,7 +16,10 @@ export default class {
 		let banLogMessage: string =
 			this.client.emotes.user +
 			' Nutzer: ' +
-			ban.user.displayName + " (@" + ban.user.username + ")" +
+			ban.user.displayName +
+			' (@' +
+			ban.user.username +
+			')' +
 			' (' +
 			ban.user.id +
 			')';
@@ -36,7 +39,11 @@ export default class {
 						'\n\n' +
 						this.client.emotes.user +
 						' Nutzer: ' +
-						"**" + moderator.displayName + "** (@" + moderator.username + ")";
+						'**' +
+						moderator.displayName +
+						'** (@' +
+						moderator.username +
+						')';
 			}
 		}
 

@@ -78,7 +78,10 @@ export default class {
 			isAwayEmbed.setTitle(
 				this.client.emotes.status.idle +
 					' ' +
-					afkUser.displayName + " (@" + afkUser.name + ")" +
+					afkUser.displayName +
+					' (@' +
+					afkUser.name +
+					')' +
 					' ist aktuell abwesend!'
 			);
 			await message

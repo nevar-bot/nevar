@@ -43,7 +43,10 @@ export default class {
 							'>\n' +
 							this.client.emotes.user +
 							' Nutzer: ' +
-							user.displayName + " (@" + user.username + ")";
+							user.displayName +
+							' (@' +
+							user.username +
+							')';
 
 						const errorEmbed: EmbedBuilder =
 							this.client.createEmbed(errorText, null, 'error');

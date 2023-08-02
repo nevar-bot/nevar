@@ -42,7 +42,7 @@ export default class {
 			'**\n' +
 			this.client.emotes.crown +
 			' Eigentümer: **' +
-			(owner ? (owner.displayName + " (@" + owner.username + ")") : 'N/A') +
+			(owner ? owner.displayName + ' (@' + owner.username + ')' : 'N/A') +
 			'**\n' +
 			this.client.emotes.id +
 			' ID: **' +

@@ -59,7 +59,10 @@ export default class {
 						const errorText: string =
 							this.client.emotes.channel +
 							' Nutzer: ' +
-							newMember.user.displayName + " (@" + newMember.user.username + ")";
+							newMember.user.displayName +
+							' (@' +
+							newMember.user.username +
+							')';
 
 						const errorEmbed: EmbedBuilder =
 							this.client.createEmbed(errorText, null, 'error');
