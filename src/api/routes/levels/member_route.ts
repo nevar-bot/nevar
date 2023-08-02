@@ -1,5 +1,3 @@
-/** @format */
-
 import { Express, Request, Response } from 'express';
 import { get as getMemberLevel } from '@api/controllers/levels/member_controller';
 

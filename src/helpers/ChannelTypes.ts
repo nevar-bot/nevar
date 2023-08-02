@@ -1,5 +1,3 @@
-/** @format */
-
 export const ChannelTypes = {
 	0: 'Text-Kanal',
 	1: 'Privat-DM',

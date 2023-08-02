@@ -1,5 +1,3 @@
-/** @format */
-
 import guildSchema from '@schemas/Guild';
 import BaseClient from '@structures/BaseClient';
 

@@ -1,5 +1,3 @@
-/** @format */
-
 import { Express, Request, Response } from 'express';
 import { get as getStaffs } from '@api/controllers/client/staffs_controller';
 

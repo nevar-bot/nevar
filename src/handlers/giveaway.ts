@@ -1,5 +1,3 @@
-/** @format */
-
 import { Giveaway, GiveawayData, GiveawaysManager } from 'discord-giveaways';
 import Model from '@schemas/Giveaway';
 import BaseClient from '@structures/BaseClient';

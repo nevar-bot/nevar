@@ -1,5 +1,3 @@
-/** @format */
-
 import moment from 'moment';
 import { Guild, GuildMember } from 'discord.js';
 

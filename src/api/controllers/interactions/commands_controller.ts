@@ -1,5 +1,3 @@
-/** @format */
-
 import { Request, Response } from 'express';
 import { client } from '@src/app';
 

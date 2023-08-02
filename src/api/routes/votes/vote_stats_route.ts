@@ -1,5 +1,3 @@
-/** @format */
-
 import { Express, Request, Response } from 'express';
 import { get as getVoteStats } from '@api/controllers/votes/vote_stats_controller';
 

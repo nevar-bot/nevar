@@ -1,5 +1,3 @@
-/** @format */
-
 import BaseCommand from '@structures/BaseCommand';
 import { ButtonBuilder, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import BaseClient from '@structures/BaseClient';

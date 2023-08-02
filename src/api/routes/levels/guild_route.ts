@@ -1,5 +1,3 @@
-/** @format */
-
 import { Express, Request, Response } from 'express';
 import { get as getGuildLevels } from '@api/controllers/levels/guild_controller';
 

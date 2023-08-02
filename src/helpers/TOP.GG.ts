@@ -1,5 +1,3 @@
-/** @format */
-
 import { AutoPoster } from 'topgg-autoposter';
 
 export = {

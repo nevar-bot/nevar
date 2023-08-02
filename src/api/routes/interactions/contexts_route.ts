@@ -1,5 +1,3 @@
-/** @format */
-
 import { Express, Request, Response } from 'express';
 import { get as getContexts } from '@api/controllers/interactions/contexts_controller';
 

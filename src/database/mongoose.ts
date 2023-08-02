@@ -1,5 +1,3 @@
-/** @format */
-
 import * as mongoose from 'mongoose';
 import Logger from '@helpers/Logger';
 

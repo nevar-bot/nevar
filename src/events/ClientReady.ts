@@ -1,5 +1,3 @@
-/** @format */
-
 import * as fs from 'fs';
 import { scheduleJob } from 'node-schedule';
 import moment from 'moment';

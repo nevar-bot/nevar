@@ -1,5 +1,3 @@
-/** @format */
-
 import { lstatSync, readdirSync, Stats } from 'fs';
 import { extname, join } from 'path';
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from 'discord.js';

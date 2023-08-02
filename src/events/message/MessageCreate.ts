@@ -1,5 +1,3 @@
-/** @format */
-
 import BaseClient from '@structures/BaseClient';
 import { ButtonBuilder, EmbedBuilder } from 'discord.js';
 import ems from 'enhanced-ms';

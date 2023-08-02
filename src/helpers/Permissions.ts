@@ -1,5 +1,3 @@
-/** @format */
-
 export const permissions = {
 	AddReactions: 'Reaktionen hinzufügen',
 	Administrator: 'Administrator',

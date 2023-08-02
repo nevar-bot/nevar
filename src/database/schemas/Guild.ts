@@ -1,5 +1,3 @@
-/** @format */
-
 import * as mongoose from 'mongoose';
 import { Model, Schema, model, Document } from 'mongoose';
 

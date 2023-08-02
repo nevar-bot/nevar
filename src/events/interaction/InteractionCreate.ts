@@ -1,5 +1,3 @@
-/** @format */
-
 import { EmbedBuilder, GuildMember, PermissionsBitField } from 'discord.js';
 import * as fs from 'fs';
 import BaseClient from '@structures/BaseClient';

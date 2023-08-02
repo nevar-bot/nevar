@@ -1,5 +1,3 @@
-/** @format */
-
 import BaseClient from '@structures/BaseClient';
 import {
 	ActionRowBuilder,

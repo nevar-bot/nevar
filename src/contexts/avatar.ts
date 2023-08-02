@@ -1,5 +1,3 @@
-/** @format */
-
 import { ApplicationCommandType, EmbedBuilder } from 'discord.js';
 import BaseContext from '@structures/BaseContext';
 import BaseClient from '@structures/BaseClient';

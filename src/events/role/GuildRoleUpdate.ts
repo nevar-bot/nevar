@@ -1,5 +1,3 @@
-/** @format */
-
 import BaseClient from '@structures/BaseClient';
 import { AuditLogEvent, EmbedBuilder, PermissionsBitField } from 'discord.js';
 

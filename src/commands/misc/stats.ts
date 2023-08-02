@@ -1,5 +1,3 @@
-/** @format */
-
 import BaseClient from '@structures/BaseClient';
 import BaseCommand from '@structures/BaseCommand';
 import moment from 'moment';

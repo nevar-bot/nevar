@@ -1,5 +1,3 @@
-/** @format */
-
 import {
 	PermissionsBitField,
 	REST,

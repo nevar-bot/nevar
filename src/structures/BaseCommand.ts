@@ -1,5 +1,3 @@
-/** @format */
-
 import * as path from 'path';
 import BaseClient from '@structures/BaseClient';
 

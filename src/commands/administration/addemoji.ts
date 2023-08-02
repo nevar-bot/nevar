@@ -1,5 +1,3 @@
-/** @format */
-
 import BaseCommand from '@structures/BaseCommand';
 import { EmbedBuilder, parseEmoji, SlashCommandBuilder } from 'discord.js';
 import Utils from '@helpers/Utils';

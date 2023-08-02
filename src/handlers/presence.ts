@@ -1,5 +1,3 @@
-/** @format */
-
 import { ActivityType, Guild } from 'discord.js';
 
 function updatePresence(client: any): void {

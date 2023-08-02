@@ -1,5 +1,3 @@
-/** @format */
-
 import { Express, Request, Response } from 'express';
 import { get as getCommands } from '@api/controllers/interactions/commands_controller';
 

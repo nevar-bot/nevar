@@ -1,5 +1,3 @@
-/** @format */
-
 import * as fs from 'fs';
 import * as toml from 'toml';
 import Logger from '@helpers/Logger';

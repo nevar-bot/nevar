@@ -1,5 +1,3 @@
-/** @format */
-
 import BaseCommand from '@structures/BaseCommand';
 import BaseClient from '@structures/BaseClient';
 import { SlashCommandBuilder, EmbedBuilder, ChannelType } from 'discord.js';

@@ -1,5 +1,3 @@
-/** @format */
-
 import { ChannelType, EmbedBuilder } from 'discord.js';
 import BaseClient from '@structures/BaseClient';
 

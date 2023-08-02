@@ -1,5 +1,3 @@
-/** @format */
-
 export const AiChatPrompts: any = {
 	default:
 		'Du bist Nevar/NevAI, und schreibst aus der Sicht eines Discord-Bots.\n' +

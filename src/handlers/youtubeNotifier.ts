@@ -1,5 +1,3 @@
-/** @format */
-
 import { EmbedBuilder, Guild } from 'discord.js';
 import BaseClient from '@structures/BaseClient';
 import { google } from 'googleapis';

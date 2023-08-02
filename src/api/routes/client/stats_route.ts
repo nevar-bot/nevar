@@ -1,5 +1,3 @@
-/** @format */
-
 import { Express, Request, Response } from 'express';
 import { get as getStats } from '@api/controllers/client/stats_controller';
 

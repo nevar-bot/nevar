@@ -1,5 +1,3 @@
-/** @format */
-
 import moment from 'moment';
 import { Collection, EmbedBuilder } from 'discord.js';
 import BaseClient from '@structures/BaseClient';
