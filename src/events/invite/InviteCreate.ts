@@ -45,10 +45,6 @@ export default class {
 			' Link: ' +
 			invite.url +
 			'\n' +
-			this.client.emotes.user +
-			' Ersteller: ' +
-			inviter.username +
-			'\n' +
 			this.client.emotes.reload +
 			' Max. Verwendungen: ' +
 			(invite.maxUses === 0 ? 'Unbegrenzt' : invite.maxUses) +
@@ -71,8 +67,8 @@ export default class {
 					inviteCreateText +=
 						'\n\n' +
 						this.client.emotes.user +
-						' Moderator: ' +
-						moderator.toString();
+						' Nutzer: ' +
+						"**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 

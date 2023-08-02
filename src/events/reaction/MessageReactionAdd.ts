@@ -34,7 +34,7 @@ export default class {
 			) {
 				const member = await reaction.message.guild.members
 					.fetch(user.id)
-					.catch(() => {});
+					.catch((): void => {});
 				member.roles
 					.add(roleId, 'REACTION ROLE')
 					.catch((e: any): void => {
@@ -45,7 +45,7 @@ export default class {
 							'>\n' +
 							this.client.emotes.user +
 							' Nutzer: ' +
-							user;
+							user.displayName + " (@" + user.username + ")";
 
 						const errorEmbed: EmbedBuilder =
 							this.client.createEmbed(errorText, null, 'error');

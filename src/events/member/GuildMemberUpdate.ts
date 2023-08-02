@@ -65,7 +65,7 @@ export default class {
 		memberUpdateEmbed.setTitle(
 			this.client.emotes.events.member.update +
 				' ' +
-				newMember.user.username +
+				newMember.user.displayName + " (@" + newMember.user.username + ")" +
 				' wurde aktualisiert'
 		);
 		memberUpdateEmbed.setThumbnail(newMember.user.displayAvatarURL());

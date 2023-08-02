@@ -22,11 +22,7 @@ export default class {
 			'\n' +
 			this.client.emotes.id +
 			' ID: ' +
-			sticker.id +
-			'\n' +
-			this.client.emotes.user +
-			' Ersteller: ' +
-			sticker.user.username;
+			sticker.id;
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent['StickerCreate'], limit: 1 })
@@ -39,8 +35,8 @@ export default class {
 					stickerLogMessage +=
 						'\n\n' +
 						this.client.emotes.user +
-						' Moderator: ' +
-						moderator.toString();
+						' Nutzer: ' +
+						"**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 

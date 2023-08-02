@@ -72,7 +72,7 @@ export default class {
 			for (const element of greetings) {
 				// @ts-ignore - Operator '>=' cannot be applied to types 'number' and 'string | number'
 				if (currentHour >= element[0] && currentHour <= element[1]) {
-					greeting = element[2] + ' ' + message.author.username + '!';
+					greeting = element[2] + ' ' + message.author.displayName + '!';
 				}
 			}
 
@@ -372,7 +372,7 @@ export default class {
 			await message.channel.sendTyping();
 			this.client.aiChat.get(message.guild.id)!.push({
 				role: 'user',
-				content: message.author.username + ': ' + message.content
+				content: message.author.displayName + ': ' + message.content
 			});
 
 			/* send request */

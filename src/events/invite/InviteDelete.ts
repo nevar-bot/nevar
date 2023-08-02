@@ -43,8 +43,8 @@ export default class {
 					inviteDeleteText +=
 						'\n\n' +
 						this.client.emotes.user +
-						' Moderator: ' +
-						moderator.toString();
+						' Nutzer: ' +
+						"**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 

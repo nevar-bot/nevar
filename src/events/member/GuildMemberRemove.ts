@@ -91,7 +91,7 @@ export default class {
 						const errorText: string =
 							this.client.emotes.user +
 							' Mitglied: ' +
-							member.user.username +
+							member.user.displayName + " (@" + member.user.username + ")" +
 							'\n' +
 							this.client.emotes.arrow +
 							' Kanal: ' +
@@ -126,7 +126,7 @@ export default class {
 						const errorText: string =
 							this.client.emotes.user +
 							' Mitglied: ' +
-							member.user.username +
+							member.user.displayName + " (@" + member.user.username + ")" +
 							'\n' +
 							this.client.emotes.arrow +
 							' Kanal: ' +
@@ -149,7 +149,7 @@ export default class {
 						const errorText: string =
 							this.client.emotes.user +
 							' Mitglied: ' +
-							member.user.username +
+							member.user.displayName + " (@" + member.user.username + ")" +
 							'\n' +
 							this.client.emotes.arrow +
 							' Kanal: ' +

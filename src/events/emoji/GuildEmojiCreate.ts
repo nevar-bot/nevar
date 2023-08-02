@@ -22,11 +22,7 @@ export default class {
 			'\n' +
 			this.client.emotes.id +
 			' ID: ' +
-			emoji.id +
-			'\n' +
-			this.client.emotes.user +
-			' Ersteller: ' +
-			emoji.author.username;
+			emoji.id;
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent['EmojiCreate'], limit: 1 })
@@ -39,8 +35,8 @@ export default class {
 					emojiLogMessage +=
 						'\n\n' +
 						this.client.emotes.user +
-						' Moderator: ' +
-						moderator.toString();
+						' Nutzer: ' +
+						"**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 

@@ -25,11 +25,7 @@ export default class {
 			'\n' +
 			this.client.emotes.list +
 			' Typ: ' +
-			this.client.channelTypes[thread.type] +
-			'\n' +
-			this.client.emotes.user +
-			' Ersteller: ' +
-			(await thread.fetchOwner()).user.username;
+			this.client.channelTypes[thread.type];
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent['ThreadCreate'], limit: 1 })
@@ -42,8 +38,8 @@ export default class {
 					threadLogMessage +=
 						'\n\n' +
 						this.client.emotes.user +
-						' Moderator: ' +
-						moderator.toString();
+						' Nutzer: ' +
+						"**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(

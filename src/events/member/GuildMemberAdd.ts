@@ -46,7 +46,7 @@ export default class {
 				.catch((e: any): void => {});
 			inviteData.totalInvites = [...fetchedInvites.values()]
 				.filter(
-					(invite) => invite?.inviterId === inviteData.inviter?.id
+					(invite): boolean => invite?.inviterId === inviteData.inviter?.id
 				)
 				.reduce(
 					(total: any, invite: any): any => total + invite.uses,
@@ -96,7 +96,7 @@ export default class {
 			(inviteData.inviter
 				? this.client.emotes.invite +
 				  ' Eingeladen von: ' +
-				  inviteData.inviter.username
+				  inviteData.inviter.displayName + " (@" + inviteData.inviter.username + ")"
 				: '');
 
 		const memberJoinEmbed: EmbedBuilder = this.client.createEmbed(
@@ -120,7 +120,7 @@ export default class {
 					const errorText: string =
 						this.client.emotes.user +
 						' Mitglied: ' +
-						member.user.username;
+						member.user.displayName + " (@" + member.user.username + ")";
 
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(
 						errorText,
@@ -148,7 +148,7 @@ export default class {
 				const errorText: string =
 					this.client.emotes.user +
 					' Mitglied: ' +
-					member.user.username +
+					member.user.displayName + " (@" + member.user.username + ")" +
 					'\n' +
 					this.client.emotes.arrow +
 					' Rolle: ' +
@@ -211,7 +211,7 @@ export default class {
 						const errorText: string =
 							this.client.emotes.user +
 							' Mitglied: ' +
-							member.user.username +
+							member.user.displayName + " (@" + member.user.username + ")" +
 							'\n' +
 							this.client.emotes.arrow +
 							' Kanal: ' +
@@ -242,7 +242,7 @@ export default class {
 							const errorText: string =
 								this.client.emotes.user +
 								' Mitglied: ' +
-								member.user.username +
+								member.user.displayName + " (@" + member.user.username + ")" +
 								'\n' +
 								this.client.emotes.arrow +
 								' Kanal: ' +
@@ -271,7 +271,7 @@ export default class {
 							const errorText: string =
 								this.client.emotes.user +
 								' Mitglied: ' +
-								member.user.username +
+								member.user.displayName + " (@" + member.user.username + ")" +
 								'\n' +
 								this.client.emotes.arrow +
 								' Kanal: ' +
@@ -324,6 +324,7 @@ export default class {
 					inviterData.invites.find(
 						(i: any): boolean => i.code === inviteData.invite.code
 					).fake++;
+				if(!memberData.inviteUsed) memberData.inviteUsed = null;
 				if (memberData.inviteUsed === inviteData.invite.code)
 					inviterData.invites.find(
 						(i: any): boolean => i.code === inviteData.invite.code

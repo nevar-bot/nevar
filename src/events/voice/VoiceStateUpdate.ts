@@ -35,7 +35,7 @@ export default class {
 						'{count}',
 						guildData.settings.joinToCreate.channels?.length || 1
 					)
-					.replaceAll('{user}', user.username);
+					.replaceAll('{user}', user.displayName);
 
 			/* Create temp channel */
 			if (
@@ -61,7 +61,7 @@ export default class {
 						const errorText: string =
 							this.client.emotes.channel +
 							' Nutzer: ' +
-							newMember;
+							newMember.user.displayName + " (@" + newMember.user.username + ")";
 
 						const errorEmbed: EmbedBuilder =
 							this.client.createEmbed(errorText, null, 'error');
@@ -90,7 +90,7 @@ export default class {
 
 					await newMember.member.voice
 						.setChannel(tempChannel)
-						.catch(() => {
+						.catch((): void => {
 							tempChannel.delete().catch((e: any): void => {});
 						})
 						.then(async (e: any): Promise<void> => {

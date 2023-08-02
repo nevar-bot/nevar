@@ -75,7 +75,7 @@ export default class {
 			'arrow',
 			'normal'
 		);
-		reviewEmbed.setTitle('Idee von ' + interaction.member.user.username);
+		reviewEmbed.setTitle('Idee von ' + interaction.member.user.displayName + " (@" + interaction.member.user.username + ")");
 		reviewEmbed.setThumbnail(
 			interaction.member.user.displayAvatarURL({ dynamic: true })
 		);

@@ -1,5 +1,3 @@
-/** @format */
-
 import BaseClient from '@structures/BaseClient';
 import { EmbedBuilder, AuditLogEvent } from 'discord.js';
 
@@ -62,8 +60,8 @@ export default class {
 					channelLogMessage +=
 						'\n\n' +
 						this.client.emotes.user +
-						' Moderator: ' +
-						moderator.toString();
+						' Nutzer: ' +
+						"**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 

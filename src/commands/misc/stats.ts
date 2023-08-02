@@ -41,7 +41,7 @@ export default class StatsCommand extends BaseCommand {
 			const headStaff: any = await this.client.users
 				.fetch(ownerId)
 				.catch((): void => {});
-			head_staffs.push(headStaff.username);
+			head_staffs.push("**" + headStaff.displayName + "** (@" + headStaff.username + ")");
 		}
 
 		for (let userdata of staffsdata) {
@@ -49,14 +49,14 @@ export default class StatsCommand extends BaseCommand {
 				.fetch(userdata.id)
 				.catch(() => {});
 			if (userdata.staff.role === 'head-staff') {
-				if (!head_staffs.includes(user.username))
-					head_staffs.push(user.username);
+				if (!head_staffs.includes("**" + user.displayName + "** (@" + user.username + ")"))
+					head_staffs.push("**" + user.displayName + "** (@" + user.username + ")");
 			} else if (userdata.staff.role === 'staff') {
 				if (
-					!head_staffs.includes(user.username) &&
-					!staffs.includes(user.username)
+					!head_staffs.includes("**" + user.displayName + "** (@" + user.username + ")") &&
+					!staffs.includes("**" + user.displayName + "** (@" + user.username + ")")
 				)
-					staffs.push(user.username);
+					staffs.push("**" + user.displayName +  "** (@" + user.username + ")");
 			}
 		}
 
@@ -91,8 +91,8 @@ export default class StatsCommand extends BaseCommand {
 		month = month.charAt(0).toUpperCase() + month.slice(1);
 
 		const text: string =
-			this.client.emotes.users +
-			' Staffs: **\n' +
+			"### " + this.client.emotes.users +
+			' Staffs:\n' +
 			this.client.emotes.shine +
 			' ' +
 			head_staffs.join('\n' + this.client.emotes.shine + ' ') +
@@ -100,8 +100,10 @@ export default class StatsCommand extends BaseCommand {
 			this.client.emotes.shine2 +
 			' ' +
 			staffs.join('\n' + this.client.emotes.shine2 + ' ') +
-			'**\n\n' +
-			this.client.emotes.rocket +
+			'\n\n' +
+			"### " + this.client.emotes.rocket +
+			" Statistiken:\n" +
+			this.client.emotes.discord +
 			' Server: **' +
 			this.client.format(serverCount) +
 			'**\n' +
@@ -131,6 +133,8 @@ export default class StatsCommand extends BaseCommand {
 			' Befehle ausgeführt: **' +
 			this.client.format(executedCommands) +
 			'**\n\n' +
+			"### " + this.client.emotes.label +
+			" Versionen:\n" +
 			this.client.emotes.code +
 			' Bot-Version: **' +
 			botVersion +

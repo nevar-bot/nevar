@@ -23,7 +23,7 @@ export default class {
 					mentionData.afk.since
 				);
 				afkUsers = afkUsers.filter(
-					(u) => u.id !== message.mentions.repliedUser.id
+					(u): boolean => u.id !== message.mentions.repliedUser.id
 				);
 
 				afkUsers.push({
@@ -52,6 +52,7 @@ export default class {
 					);
 					afkUsers.push({
 						name: user[1].username,
+						displayName: user[1].displayName,
 						id: user[1].id,
 						reason: mentionData.afk.reason,
 						since: afkSince
@@ -79,7 +80,7 @@ export default class {
 			isAwayEmbed.setTitle(
 				this.client.emotes.status.idle +
 					' ' +
-					afkUser.name +
+					afkUser.displayName + " (@" + afkUser.name + ")" +
 					' ist aktuell abwesend!'
 			);
 			await message

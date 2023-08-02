@@ -14,7 +14,6 @@ async function updateGuildSchema(
 			return await guildSchema.create({ id: guildId });
 		}
 
-		// @ts-ignore - Property 'tree' does not exist on type 'Schema'
 		const schemaTree: any = guildSchema.schema.tree;
 
 		//   console.log(guildData);

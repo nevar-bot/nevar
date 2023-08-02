@@ -31,8 +31,7 @@ async function registerInteractions(client: any): Promise<any> {
 		if (commandData.conf.memberPermissions.length >= 1) {
 			const PermissionsField: PermissionsBitField =
 				new PermissionsBitField();
-			for (const neededMemberPermission of commandData.conf
-				.memberPermissions) {
+			for (const neededMemberPermission of commandData.conf.memberPermissions) {
 				// @ts-ignore - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
 				PermissionsField.add(
 					PermissionsBitField.Flags[neededMemberPermission]
