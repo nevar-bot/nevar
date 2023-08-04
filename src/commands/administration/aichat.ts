@@ -8,7 +8,7 @@ import {
 	StringSelectMenuOptionBuilder
 } from 'discord.js';
 
-export default class AimodCommand extends BaseCommand {
+export default class AichatCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: 'aichat',
@@ -90,7 +90,7 @@ export default class AimodCommand extends BaseCommand {
 			await data.guild.save();
 		}
 
-		const action: string = interaction.options.getString('aktion');
+		const action: string = interaction.options.getString('action');
 		switch (action) {
 			case 'status':
 				await this.setStatus(

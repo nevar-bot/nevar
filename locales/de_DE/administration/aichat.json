@@ -30,7 +30,7 @@
     },
     "status": {
       "errors": {
-        "missingStatus": "Du musst einen Status auswählen.",
+        "missingStatus": "Du musst einen Status auswählen."
       },
       "set": "Der KI-Chat ist jetzt {{status}}."
     }
