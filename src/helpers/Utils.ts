@@ -103,14 +103,14 @@ export default class Utils {
 		// @ts-ignore - Property 'createButton' does not exist on type 'Client'
 		const backButton: ButtonBuilder = client.createButton(
 			backId,
-			'Zurück',
+			interaction.guild.translate("basics:back"),
 			'Secondary',
 			client.emotes.arrows.left
 		);
 		// @ts-ignore - Property 'createButton' does not exist on type 'Client'
 		const forwardButton: ButtonBuilder = client.createButton(
 			forwardId,
-			'Weiter',
+			interaction.guild.translate("basics:further"),
 			'Secondary',
 			client.emotes.arrows.right
 		);
@@ -141,7 +141,7 @@ export default class Utils {
 				'normal'
 			);
 			paginatedEmbed.setTitle(
-				title + ' ● Seite ' + pages.current + ' von ' + pages.total
+				title + ' ● ' + interaction.guild.translate("utils:pagination", { pages })
 			);
 			paginatedEmbed.setThumbnail(
 				interaction.guild!.iconURL({ size: 4096 })
@@ -201,13 +201,13 @@ export default class Utils {
 		const forwardId: string = message.member.user.id + '_forward';
 		const backButton: ButtonBuilder = client.createButton(
 			backId,
-			'Zurück',
+			message.guild.translate("basics:back"),
 			'Secondary',
 			client.emotes.arrows.left
 		);
 		const forwardButton: ButtonBuilder = client.createButton(
 			forwardId,
-			'Weiter',
+			message.guild.translate("basics:further"),
 			'Secondary',
 			client.emotes.arrows.right
 		);
@@ -235,7 +235,7 @@ export default class Utils {
 				'normal'
 			);
 			paginatedEmbed.setTitle(
-				title + ' ● Seite ' + pages.current + ' von ' + pages.total
+				title + ' ● ' + message.guild.translate("utils:pagination", { pages })
 			);
 			paginatedEmbed.setThumbnail(
 				message.guild.iconURL({ dynamic: true, size: 4096 })

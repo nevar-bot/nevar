@@ -24,7 +24,15 @@ async function registerInteractions(client: any): Promise<any> {
 		if (!slashData) continue;
 
 		await slashData.setName(commandData.help.name);
-		await slashData.setDescription(commandData.help.description);
+		await slashData.setDescription(client.getLocaleString(commandData.help.description, "de_DE"));
+		await slashData.setDescriptionLocalization("en-GB", client.getLocaleString(commandData.help.description, "en_GB"));
+		await slashData.setDescriptionLocalization("en-US", client.getLocaleString(commandData.help.description, "en_GB"));
+
+		for(let option of slashData.options){
+			option.setDescriptionLocalization("en-GB", client.getLocaleString(option.description, "en_GB"));
+			option.setDescriptionLocalization("en-US", client.getLocaleString(option.description, "en_GB"));
+			option.setDescription(client.getLocaleString(option.description, "de_DE"));
+		}
 
 		if (commandData.conf.memberPermissions.length >= 1) {
 			const PermissionsField: PermissionsBitField =

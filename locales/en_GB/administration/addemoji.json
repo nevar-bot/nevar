@@ -1,0 +1,24 @@
+{
+  "general": {
+    "description": "Creates a new emoji based on a given emoji or a link to an image"
+  },
+  "slash_command": {
+    "options": {
+      "1": {
+        "description": "Enter an emoji or a link to an image"
+      },
+      "2": {
+        "description": "Enter what you want the new emoji to be called"
+      }
+    }
+  },
+  "handling": {
+    "errors": {
+      "invalidEmojiOrLink": "You must specify an emoji or a link to an image.",
+      "invalidLinkExtension": "If you provide a link, it must lead to an image.",
+      "missingName": "If you specify a link, you must also specify a name for the new emoji.",
+      "errorWhileCreating": "An unexpected error occurred while creating the emoji."
+    },
+    "created": "The new emoji {{emoji}} was created."
+  }
+}

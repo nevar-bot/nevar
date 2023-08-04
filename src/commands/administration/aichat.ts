@@ -12,7 +12,7 @@ export default class AimodCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: 'aichat',
-			description: 'Stellt den KI-Chat des Servers ein',
+			description: 'administration/aichat:general:description',
 			memberPermissions: ['ManageGuild'],
 			cooldown: 2 * 1000,
 			dirname: __dirname,
@@ -21,8 +21,8 @@ export default class AimodCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
 						option
-							.setName('aktion')
-							.setDescription('Wähle aus den folgenden Aktionen')
+							.setName('action')
+							.setDescription('administration/aichat:slash_command:options:1:description')
 							.setRequired(true)
 							.addChoices(
 								{
@@ -30,11 +30,11 @@ export default class AimodCommand extends BaseCommand {
 									value: 'status'
 								},
 								{
-									name: 'kanal',
+									name: 'channel',
 									value: 'channel'
 								},
 								{
-									name: 'modus',
+									name: 'mode',
 									value: 'mode'
 								}
 							)
@@ -43,7 +43,7 @@ export default class AimodCommand extends BaseCommand {
 						option
 							.setName('channel')
 							.setDescription(
-								'Wähle den Kanal, in dem der KI-Chat aktiv sein soll'
+								'administration/aichat:slash_command:options:2:description'
 							)
 							.setRequired(false)
 							.addChannelTypes(
@@ -57,16 +57,16 @@ export default class AimodCommand extends BaseCommand {
 						option
 							.setName('status')
 							.setDescription(
-								'Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll'
+								'administration/aichat:slash_command:options:3:description'
 							)
 							.setRequired(false)
 							.addChoices(
 								{
-									name: 'aktiviert',
+									name: 'on',
 									value: 'on'
 								},
 								{
-									name: 'deaktiviert',
+									name: 'off',
 									value: 'off'
 								}
 							)
@@ -121,14 +121,14 @@ export default class AimodCommand extends BaseCommand {
 		const selectNameMenu: StringSelectMenuBuilder =
 			new StringSelectMenuBuilder()
 				.setCustomId(`${this.interaction.user.id}-aichat-mode`)
-				.setPlaceholder('Wähle einen Verhaltensmodus');
+				.setPlaceholder(this.interaction.guild.translate("administration/aichat:handling:mode:selectMenuDescription"));
 
 		for (const mode of availableModes) {
 			selectNameMenu.addOptions(
 				new StringSelectMenuOptionBuilder()
 					.setLabel(mode.name)
 					.setDescription(
-						`Setze den Verhaltensmodus auf ${mode.name}`
+						this.interaction.guild.translate("administration/aichat:handling:mode:selectMenuItem", { mode })
 					)
 					.setValue(mode.mode)
 					.setEmoji(this.client.emotes.arrow)
@@ -139,7 +139,7 @@ export default class AimodCommand extends BaseCommand {
 		const row: any = this.client.createMessageComponentsRow(selectNameMenu);
 
 		const embed: EmbedBuilder = this.client.createEmbed(
-			'Wähle aus den folgenden Verhaltensmodi.',
+			this.interaction.guild.translate("administration/aichat:handling:mode:chooseEmbedDescription"),
 			'arrow',
 			'normal'
 		);
@@ -165,7 +165,7 @@ export default class AimodCommand extends BaseCommand {
 			await data.guild.save();
 
 			const confirmationEmbed = this.client.createEmbed(
-				`Der Verhaltensmodus wurde auf ${chosenMode} gesetzt.`,
+				this.interaction.guild.translate("administration/aichat:handling:mode:set", { mode: chosenMode }),
 				'success',
 				'normal'
 			);
@@ -189,7 +189,7 @@ export default class AimodCommand extends BaseCommand {
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!channel) {
 			const missingOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Channel auswählen.',
+				this.interaction.guild.translate("administration/aichat:handling:channel:errors:missingChannel"),
 				'error',
 				'error'
 			);
@@ -201,7 +201,7 @@ export default class AimodCommand extends BaseCommand {
 		await data.guild.save();
 
 		const embed: EmbedBuilder = this.client.createEmbed(
-			'Der KI-Chat ist jetzt in ' + channel.toString() + ' aktiv.',
+			this.interaction.guild.translate("administration/aichat:handling:channel:set", { channel: channel.toString()}),
 			'success',
 			'normal'
 		);
@@ -211,7 +211,7 @@ export default class AimodCommand extends BaseCommand {
 	private async setStatus(status: string, data: any): Promise<void> {
 		if (!status) {
 			const missingOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Status auswählen.',
+				this.interaction.guild.translate("administration/aichat:handling:status:errors:missingStatus"),
 				'error',
 				'error'
 			);
@@ -226,11 +226,11 @@ export default class AimodCommand extends BaseCommand {
 		data.guild.markModified('settings.aiChat');
 		await data.guild.save();
 
-		const statusString: 'aktiviert' | 'deaktiviert' = statuses[status]
-			? 'aktiviert'
-			: 'deaktiviert';
+		const statusString: string = statuses[status]
+			? this.interaction.guild.translate("basics:enabled")
+			: this.interaction.guild.translate("basics:disabled");
 		const embed: EmbedBuilder = this.client.createEmbed(
-			`Der KI-Chat ist jetzt ${statusString}.`,
+			this.interaction.guild.translate("administration/aichat:handling:status:set", { status: statusString }),
 			'success',
 			'normal'
 		);

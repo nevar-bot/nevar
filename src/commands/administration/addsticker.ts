@@ -9,7 +9,7 @@ export default class AddstickerCommand extends BaseCommand {
 		super(client, {
 			name: 'addsticker',
 			description:
-				'Erstellt einen neuen Sticker anhand eines Links zu einem Bild',
+				'administration/addsticker:general:description',
 			memberPermissions: ['ManageGuildExpressions'],
 			botPermissions: ['ManageGuildExpressions'],
 			cooldown: 5 * 1000,
@@ -20,14 +20,14 @@ export default class AddstickerCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName('url')
-							.setDescription('Gib einen Link zu einem Bild ein')
+							.setDescription('administration/addsticker:slash_command:options:1:description')
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName('name')
 							.setDescription(
-								'Gib ein, wie der neue Sticker heißen soll'
+								'administration/addsticker:slash_command:options:2:description'
 							)
 							.setRequired(true)
 							.setMaxLength(32)
@@ -36,15 +36,15 @@ export default class AddstickerCommand extends BaseCommand {
 						option
 							.setName('emoji')
 							.setDescription(
-								'Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert'
+								'administration/addsticker:slash_command:options:3:description'
 							)
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName('beschreibung')
+							.setName('description')
 							.setDescription(
-								'Gib eine kurze Beschreibung für den Sticker ein'
+								'administration/addsticker:slash_command:options:4:description'
 							)
 							.setRequired(false)
 							.setMaxLength(100)
@@ -61,7 +61,7 @@ export default class AddstickerCommand extends BaseCommand {
 			interaction.options.getString('url'),
 			interaction.options.getString('name'),
 			interaction.options.getString('emoji'),
-			interaction.options.getString('beschreibung')
+			interaction.options.getString('description')
 		);
 	}
 
@@ -76,7 +76,7 @@ export default class AddstickerCommand extends BaseCommand {
 			name: undefined,
 			tags: undefined,
 			description: undefined,
-			reason: '/addsticker Befehl'
+			reason: '/addsticker Command'
 		};
 
 		const { stringIsUrl, urlIsImage, stringIsEmoji } = Utils;
@@ -87,7 +87,7 @@ export default class AddstickerCommand extends BaseCommand {
 			!nodeEmoji.find(emoji)
 		) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Link zu einem Bild und einen Standard-Emoji eingeben. Beachte zusätzlich, dass derzeit nicht alle Emojis unterstützt werden.',
+				this.interaction.guild.translate("administration/addsticker:handling:errors:invalidEmojiOrLink"),
 				'error',
 				'error'
 			);
@@ -102,17 +102,16 @@ export default class AddstickerCommand extends BaseCommand {
 		try {
 			await this.interaction.guild.stickers.create(sticker);
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				'Der neue Sticker {0} wurde erstellt.',
+				this.interaction.guild.translate("administration/addsticker:handling:created", { sticker: name }),
 				'success',
-				'success',
-				name
+				'success'
 			);
 			successEmbed.setThumbnail(url);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} catch (e) {
 			/* Error */
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				'Beim Erstellen des Stickers ist ein unerwarteter Fehler aufgetreten.',
+				this.interaction.guild.translate("administration/addsticker:handling:errors:errorWhileCreating"),
 				'error',
 				'error'
 			);

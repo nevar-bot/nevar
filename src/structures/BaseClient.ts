@@ -44,6 +44,7 @@ export default class BaseClient extends DiscordClient {
 	public permissions: any;
 	public channelTypes: any;
 	public aiChatPrompts: any;
+	public locales: any;
 	public commands: Collection<string, any>;
 	public contextMenus: Collection<string, any>;
 	public giveawayManager: any;
@@ -123,6 +124,11 @@ export default class BaseClient extends DiscordClient {
 
 		this.invites = new Collection();
 		this.aiChat = new Collection();
+	}
+
+	getLocaleString(key: string, locale: string, args: any[] = []): Promise<any>{
+		const language: any = this.locales.get(locale);
+		return language(key, args);
 	}
 
 	async findOrCreateUser(

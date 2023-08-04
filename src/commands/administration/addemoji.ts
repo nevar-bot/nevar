@@ -8,7 +8,7 @@ export default class AddemojiCommand extends BaseCommand {
 		super(client, {
 			name: 'addemoji',
 			description:
-				'Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild',
+				'administration/addemoji:general:description',
 			memberPermissions: ['ManageGuildExpressions'],
 			botPermissions: ['ManageGuildExpressions'],
 			cooldown: 5 * 1000,
@@ -21,7 +21,7 @@ export default class AddemojiCommand extends BaseCommand {
 							.setRequired(true)
 							.setName('emoji')
 							.setDescription(
-								'Gib einen Emoji oder einen Link zu einem Bild ein'
+								'administration/addemoji:slash_command:options:1:description'
 							)
 					)
 					.addStringOption((option: any) =>
@@ -29,7 +29,7 @@ export default class AddemojiCommand extends BaseCommand {
 							.setRequired(false)
 							.setName('name')
 							.setDescription(
-								'Gib ein, wie der neue Emoji heißen soll'
+								'administration/addemoji:slash_command:options:2:description'
 							)
 							.setMaxLength(32)
 					)
@@ -60,7 +60,7 @@ export default class AddemojiCommand extends BaseCommand {
 		const { stringIsCustomEmoji, stringIsUrl, urlIsImage } = Utils;
 		if (!stringIsCustomEmoji(emoji) && !stringIsUrl(emoji)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Emoji oder einen Link zu einem Bild angeben.',
+				guild.translate("administration/addemoji:handling:errors:invalidEmojiOrLink"),
 				'error',
 				'error'
 			);
@@ -68,7 +68,7 @@ export default class AddemojiCommand extends BaseCommand {
 		}
 		if (stringIsUrl(emoji) && !urlIsImage(emoji)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Wenn du einen Link angibst, muss dieser zu einem Bild führen.',
+				guild.translate("administration/addemoji:handling:errors:invalidLinkExtension"),
 				'error',
 				'error'
 			);
@@ -76,7 +76,7 @@ export default class AddemojiCommand extends BaseCommand {
 		}
 		if (stringIsUrl(emoji) && urlIsImage(emoji) && !name) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Wenn du einen Link angibst, musst du zusätzlich einen Namen für den neuen Emoji angeben.',
+				guild.translate("administration/addemoji:handling:errors:missingName"),
 				'error',
 				'error'
 			);
@@ -103,16 +103,15 @@ export default class AddemojiCommand extends BaseCommand {
 			});
 			/* Successfully created emoji */
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				'Der neue Emoji {0} wurde erstellt.',
+				guild.translate("administration/addemoji:handling:created", { emoji: createdEmote }),
 				'success',
-				'success',
-				createdEmote
+				'success'
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} catch (exception) {
 			/* Error while creating emoji */
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				'Beim Erstellen des Emojis ist ein unerwarteter Fehler aufgetreten.',
+				guild.translate("administration/addemoji:handling:errors:errorWhileCreating"),
 				'error',
 				'error'
 			);

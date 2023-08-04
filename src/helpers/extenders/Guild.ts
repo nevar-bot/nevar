@@ -7,6 +7,8 @@ import {
 	GuildMember,
 	EmbedBuilder
 } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import i18next from "i18next";
 
 const ROLE_MENTION: RegExp = /<?@?&?(\d{17,20})>?/;
 const CHANNEL_MENTION: RegExp = /<?#?(\d{17,20})>?/;
@@ -14,6 +16,7 @@ const MEMBER_MENTION: RegExp = /<?@?!?(\d{17,20})>?/;
 
 declare module 'discord.js' {
 	interface Guild {
+		translate(key: string): any;
 		findMatchingChannels(query: string, type?: ChannelType[]): any;
 		findMatchingRoles(query: string): any;
 		resolveMember(query: string, exact?: boolean): Promise<any>;
@@ -29,6 +32,14 @@ declare module 'discord.js' {
 				| 'channel'
 		): Promise<any>;
 	}
+}
+
+Guild.prototype.translate = function(key: string, args: any = null): any {
+	// @ts-ignore
+	const language: any = this.client.locales.get((this.data?.locale || "de_DE"));
+	console.log(this.data)
+	console.log(this.data.locale)
+	return language(key, args);
 }
 
 Guild.prototype.findMatchingChannels = function (
@@ -116,10 +127,10 @@ Guild.prototype.resolveMember = async function (
 					this.name,
 					null,
 					'<Guild||Prototype>.resolveMember("' +
-						query +
-						'", ' +
-						exact +
-						')'
+					query +
+					'", ' +
+					exact +
+					')'
 				);
 			});
 		if (fetched) return fetched;

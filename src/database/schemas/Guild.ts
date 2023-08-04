@@ -20,6 +20,7 @@ const GuildSchema: Schema = new mongoose.Schema({
 			name: null
 		}
 	},
+	locale: { type: String, default: "de_DE" },
 	settings: {
 		type: Object,
 		default: {

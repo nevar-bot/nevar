@@ -5,6 +5,7 @@ import { ApplicationCommandType, Events } from 'discord.js';
 const readdir = util.promisify(fs.readdir);
 import Utils from '@helpers/Utils';
 import BaseClient from '@structures/BaseClient';
+import { languages } from "@helpers/Language";
 
 export default class Loader {
 	static async loadCommands(client: BaseClient): Promise<void> {
@@ -123,5 +124,10 @@ export default class Loader {
 				failed +
 				')'
 		);
+	}
+
+	static async loadLanguages(client: BaseClient): Promise<void> {
+		client.locales = await languages();
+		client.logger.log('Loaded ' + client.locales.length + ' languages');
 	}
 }

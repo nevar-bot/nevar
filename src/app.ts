@@ -22,6 +22,7 @@ process.on('unhandledRejection', (e: any): any => {
 	await Loader.loadCommands(client);
 	await Loader.loadContexts(client);
 	await Loader.loadEvents(client);
+	await Loader.loadLanguages(client);
 	await client.login(client.config.general['BOT_TOKEN']);
 })();
 

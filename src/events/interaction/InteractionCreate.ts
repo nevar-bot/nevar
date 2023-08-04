@@ -28,6 +28,10 @@ export default class {
 			member: await this.client.findOrCreateMember(member.id, guild.id),
 			user: await this.client.findOrCreateUser(member.user.id)
 		};
+		guild.data = data.guild;
+		member.data = data.member;
+		member.user.data = data.user;
+
 
 		/* Handle context menus */
 		if (interaction.isContextMenuCommand()) {
