@@ -314,7 +314,7 @@ export default class {
 			}
 
 			/* Track invite stats */
-			if (inviteData.inviter && inviteData.invite) {
+			if (inviteData.inviter && inviteData.invite && memberData) {
 				const inviterData: any = await this.client.findOrCreateMember(
 					inviteData.inviter.id,
 					guild.id
