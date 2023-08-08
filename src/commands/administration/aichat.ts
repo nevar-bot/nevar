@@ -22,7 +22,7 @@ export default class AichatCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName('action')
-							.setDescription('administration/aichat:slash_command:options:1:description')
+							.setDescription('administration/aichat:slash_command:options:0:description')
 							.setRequired(true)
 							.addChoices(
 								{
@@ -43,7 +43,7 @@ export default class AichatCommand extends BaseCommand {
 						option
 							.setName('channel')
 							.setDescription(
-								'administration/aichat:slash_command:options:2:description'
+								'administration/aichat:slash_command:options:1:description'
 							)
 							.setRequired(false)
 							.addChannelTypes(
@@ -57,7 +57,7 @@ export default class AichatCommand extends BaseCommand {
 						option
 							.setName('status')
 							.setDescription(
-								'administration/aichat:slash_command:options:3:description'
+								'administration/aichat:slash_command:options:2:description'
 							)
 							.setRequired(false)
 							.addChoices(

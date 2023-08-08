@@ -3,17 +3,17 @@
     "description": "Stellt den KI-Chat des Servers ein"
   },
   "slash_command": {
-    "options": {
-      "1": {
+    "options": [
+      {
         "description": "Wähle aus den folgenden Aktionen"
       },
-      "2": {
+      {
         "description": "Wähle den Kanal, in dem der KI-Chat aktiv sein soll"
       },
-      "3": {
+      {
         "description": "Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll"
       }
-    }
+    ]
   },
   "handling": {
     "mode": {

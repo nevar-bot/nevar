@@ -2,7 +2,7 @@ import {
 	PermissionsBitField,
 	REST,
 	Routes,
-	ContextMenuCommandBuilder
+	ContextMenuCommandBuilder, SlashCommandSubcommandBuilder
 } from 'discord.js';
 
 async function registerInteractions(client: any): Promise<any> {
@@ -29,6 +29,21 @@ async function registerInteractions(client: any): Promise<any> {
 		await slashData.setDescriptionLocalization("en-US", client.getLocaleString(commandData.help.description, "en_GB"));
 
 		for(let option of slashData.options){
+			// option is subcommand
+			if(option instanceof SlashCommandSubcommandBuilder){
+				// loop through subcommand options
+				for(let subOption of option.options){
+					option.setDescriptionLocalization("en-GB", client.getLocaleString(option.description, "en_GB"));
+					option.setDescriptionLocalization("en-US", client.getLocaleString(option.description, "en_GB"));
+					option.setDescription(client.getLocaleString(option.description, "de_DE"));
+				}
+			}
+			// set option name
+			option.setNameLocalization("en-GB", client.getLocaleString(option.name, "en_GB"));
+			option.setNameLocalization("en-US", client.getLocaleString(option.name, "en_GB"));
+			option.setName(client.getLocaleString(option.name, "de_DE"));
+
+			// set option description
 			option.setDescriptionLocalization("en-GB", client.getLocaleString(option.description, "en_GB"));
 			option.setDescriptionLocalization("en-US", client.getLocaleString(option.description, "en_GB"));
 			option.setDescription(client.getLocaleString(option.description, "de_DE"));

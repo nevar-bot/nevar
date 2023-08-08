@@ -3,14 +3,14 @@
     "description": "Creates a new emoji based on a given emoji or a link to an image"
   },
   "slash_command": {
-    "options": {
-      "1": {
+    "options": [
+      {
         "description": "Enter an emoji or a link to an image"
       },
-      "2": {
+      {
         "description": "Enter what you want the new emoji to be called"
       }
-    }
+    ]
   },
   "handling": {
     "errors": {

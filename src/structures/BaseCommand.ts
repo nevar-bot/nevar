@@ -6,6 +6,7 @@ export default class BaseCommand {
 	public conf: object;
 	public help: object;
 	public slashCommand: object;
+	public guild: any;
 
 	constructor(
 		client: BaseClient,
@@ -58,5 +59,10 @@ export default class BaseCommand {
 		};
 		this.help = { name, category, description };
 		this.slashCommand = slashCommand;
+	}
+
+	protected translate(key: string, args?: any): string|undefined {
+		if(!this.guild) return undefined;
+		return this.guild.translate(key, args);
 	}
 }

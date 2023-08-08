@@ -20,14 +20,14 @@ export default class AddstickerCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName('url')
-							.setDescription('administration/addsticker:slash_command:options:1:description')
+							.setDescription('administration/addsticker:slash_command:options:0:description')
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName('name')
 							.setDescription(
-								'administration/addsticker:slash_command:options:2:description'
+								'administration/addsticker:slash_command:options:1:description'
 							)
 							.setRequired(true)
 							.setMaxLength(32)
@@ -36,7 +36,7 @@ export default class AddstickerCommand extends BaseCommand {
 						option
 							.setName('emoji')
 							.setDescription(
-								'administration/addsticker:slash_command:options:3:description'
+								'administration/addsticker:slash_command:options:2:description'
 							)
 							.setRequired(true)
 					)
@@ -44,7 +44,7 @@ export default class AddstickerCommand extends BaseCommand {
 						option
 							.setName('description')
 							.setDescription(
-								'administration/addsticker:slash_command:options:4:description'
+								'administration/addsticker:slash_command:options:3:description'
 							)
 							.setRequired(false)
 							.setMaxLength(100)

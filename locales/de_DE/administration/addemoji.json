@@ -3,14 +3,14 @@
     "description": "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild"
   },
   "slash_command": {
-    "options": {
-      "1": {
+    "options": [
+      {
         "description": "Gib einen Emoji oder einen Link zu einem Bild ein"
       },
-      "2": {
+      {
         "description": "Gib ein, wie der neue Emoji heißen soll"
       }
-    }
+    ]
   },
   "handling": {
     "errors": {
@@ -20,5 +20,10 @@
       "errorWhileCreating": "Beim Erstellen des Emojis ist ein unerwarteter Fehler aufgetreten."
     },
     "created": "Der neue Emoji {{emoji}} wurde erstellt."
-  }
+  },
+  "test": [
+    {
+      "description": "property im array"
+    }
+  ]
 }

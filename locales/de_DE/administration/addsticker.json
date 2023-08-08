@@ -3,20 +3,20 @@
     "description": "Erstellt einen neuen Sticker anhand eines Links zu einem Bild"
   },
   "slash_command": {
-    "options": {
-      "1": {
+    "options": [
+      {
         "description": "Gib einen Link zu einem Bild ein"
       },
-      "2": {
+      {
         "description": "Gib ein, wie der neue Sticker heißen soll"
       },
-      "3": {
+      {
         "description": "Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert"
       },
-      "4": {
+      {
         "description": "Gib eine kurze Beschreibung für den Sticker ein"
       }
-    }
+    ]
   },
   "handling": {
     "errors": {

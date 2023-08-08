@@ -19,17 +19,17 @@ export default class AddemojiCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setRequired(true)
-							.setName('emoji')
+							.setName("emoji")
 							.setDescription(
-								'administration/addemoji:slash_command:options:1:description'
+								'administration/addemoji:slash_command:options:0:description'
 							)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setRequired(false)
-							.setName('name')
+							.setName("name")
 							.setDescription(
-								'administration/addemoji:slash_command:options:2:description'
+								'administration/addemoji:slash_command:options:1:description'
 							)
 							.setMaxLength(32)
 					)
@@ -40,6 +40,8 @@ export default class AddemojiCommand extends BaseCommand {
 	private interaction: any;
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
+
 		await this.addEmoji(
 			interaction.options.getString('emoji'),
 			interaction.options.getString('name'),
