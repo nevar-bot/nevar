@@ -20,10 +20,5 @@
       "errorWhileCreating": "Beim Erstellen des Emojis ist ein unerwarteter Fehler aufgetreten."
     },
     "created": "Der neue Emoji {{emoji}} wurde erstellt."
-  },
-  "test": [
-    {
-      "description": "property im array"
-    }
-  ]
+  }
 }
