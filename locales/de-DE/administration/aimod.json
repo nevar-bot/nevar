@@ -1,44 +1,47 @@
 {
-  "general": {
-    "description": "Verwaltet die AI-gestützte Chatmoderation des Servers"
+  "status": {
+    "set": "Die AI-gestützte Chatmoderation wurde {{status}}."
   },
-  "slash_command": {
-    "subcommands": [
-      {
-        "description": "Aktiviert oder deaktiviert die AI-gestützte Chatmoderation",
-        "options": [
-          {
-            "description": "Wähle einen Status"
-          }
-        ]
-      }
-    ],
-    "subcommands": {
-      "1": {
-        "description": "Aktiviert oder deaktiviert die AI-gestützte Chatmoderation",
-        "options": {
-          "1": {
-            "description": "Wähle einen Status"
-          }
-        }
-      },
-      "2": {
-        "description": "Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation",
-        "options": {
-          "1": {
-            "description": "Wähle eine Aktion"
-          },
-          "2": {
-            "description": "Wähle eine Rolle"
-          },
-          "3": {
-            "description": "Wähle einen Channel"
-          }
-        }
-      },
-      "3": {
-        "description": "Wähle, ab welchem Wert gewarnt werden soll (0 = nicht unangemessen, 1 = sehr unangemessen)"
-      }
+  "exclude": {
+    "errors": {
+      "missingChannelOrRole": "Du musst einen Channel oder eine Rolle angeben.",
+      "isAlreadyDisabledInChannel": "In {{channel}} ist die AI-gestützte Chatmoderation bereits deaktiviert.",
+      "isNotDisabledInChannel": "In {{channel}} ist die AI-gestützte Chatmoderation nicht deaktiviert.",
+      "isAlreadyDisabledForRole": "Für {{role}} ist die AI-gestützte Chatmoderation bereits deaktiviert.",
+      "isNotDisabledForRole": "Für {{role}} ist die AI-gestützte Chatmoderation nicht deaktiviert."
+    },
+    "disabledInChannel": "In {{channel}} ist die AI-gestützte Chatmoderation ab sofort deaktiviert.",
+    "enabledInChannel": "In {{channel}} ist die AI-gestützte Chatmoderation ab sofort aktiviert.",
+    "disabledForRole": "Für {{role}} ist die AI-gestützte Chatmoderation ab sofort deaktiviert.",
+    "enabledForRole": "Für {{role}} ist die AI-gestützte Chatmoderation ab sofort aktiviert.",
+    "list": {
+      "title": "Deaktivierte Channel und Rollen",
+      "empty": "Es sind bisher keine Channel oder Rollen von der AI-gestützten Chatmoderation ausgeschlossen worden."
     }
+  },
+  "threshold": {
+    "set": "Die AI-gestützte Chatmoderation warnt nun ab einer Bewertung von {{threshold}}."
+  },
+  "channel": {
+    "set": "Die AI-gestützte Chatmoderation sendet Warnungen ab sofort in {{channel}}."
+  },
+  "explain": {
+    "title": "Erklärung der AI-gestützten Chatmoderation",
+    "text": [
+      "{{e.information}} Die **Chatmoderation** von {{clientname}} ist eine Funktion, welche Nachrichten auf **potenziell unangemessene Inhalte** überprüft.",
+      "{{e.search}} Dabei wird der Inhalt der gesendeten Nachrichten mit Hilfe einer **künstlichen Intelligenz** analysiert, und in verschiedenen Kategorien bewertet.\n",
+      "{{e.arrow}} Folgende Kategorien werden währenddessen überprüft, und bewertet:",
+      "{{e.folder}} **Unangemessenheit**",
+      "{{e.folder}} ** Schwere Unangemessenheit**",
+      "{{e.folder}} ** Beleidigung**",
+      "{{e.folder}} ** Vulgäre Inhalte**",
+      "{{e.folder}} ** Bedrohung**\n",
+      "{{e.bot}} Jeder Kategorie wird hierbei ein Wert zwischen **0 und 1** zugewiesen.",
+      "{{e.arrow}} Dabei steht 0 für **nicht unangemessen**, und 1 für **sehr unangemessen**.\n",
+      "{{e.search}} Abschließend wird der errechnete **Durchschnittswert** mit dem individuell festgelegten **Schwellenwert verglichen**.",
+      "{{e.arrows.up}} Ist der Durchschnittswert **höher** als der Schwellenwert, wird die Nachricht als **potenziell unangemessen** eingestuft und eine Warnung mit entsprechenden Handlungsmöglichkeiten wird an die Moderatoren gesendet.",
+      "{{e.arrows.down}} Ist der Durchschnittswert **niedriger** als der Schwellenwert, wird die Nachricht als **nicht unangemessen** eingestuft und es ist kein Eingreifen erforderlich.\n",
+      "{{e.beta}} **Hinweis:** Diese Funktion befindet sich derzeit noch in der **Beta-Phase** und kann daher Fehler enthalten. Die AI-gestützte Chatmoderation **handelt nicht selber**, sondern gibt lediglich Warnungen ab. Für jede Handlung ist **menschliches Eingreifen erforderlich**."
+    ]
   }
 }

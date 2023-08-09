@@ -1,0 +1,47 @@
+{
+  "status": {
+    "set": "AI-powered chat moderation was {{status}}."
+  },
+  "exclude": {
+    "errors": {
+      "missingChannelOrRole": "You must specify a channel or role.",
+      "isAlreadyDisabledInChannel": "In {{channel}}, AI-powered chat moderation is already disabled.",
+      "isNotDisabledInChannel": "In {{channel}}, AI-powered chat moderation is not disabled.",
+      "isAlreadyDisabledForRole": "AI-assisted chat moderation is already disabled for {{role}}.",
+      "isNotDisabledForRole": "AI-powered chat moderation is not disabled for {{role}}."
+    },
+    "disabledInChannel": "In {{channel}}, AI-powered chat moderation is now disabled.",
+    "enabledInChannel": "In {{channel}}, AI-powered chat moderation is now enabled.",
+    "disabledForRole": "AI-powered chat moderation is disabled for {{role}} as of now.",
+    "enabledForRole": "AI-powered chat moderation is now enabled for {{role}}.",
+    "list": {
+      "title": "Disabled channels and roles",
+      "empty": "No channels or roles have been excluded from AI-powered chat moderation yet."
+    }
+  },
+  "threshold": {
+    "set": "AI-powered chat moderation now warns from a rating of {{threshold}}."
+  },
+  "channel": {
+    "set": "AI-powered chat moderation sends alerts in {{channel}} from now on."
+  },
+  "explain": {
+    "title": "Explanation of AI-powered chat moderation",
+    "text": [
+      "{{e.information}} {{clientname}}'s **chat moderation** is a feature that checks messages for **potentially inappropriate content**.",
+      "{{e.search}} In this process, the content of the messages sent is analyzed with the help of **artificial intelligence**, and rated in various categories.\n",
+      "{{e.arrow}} The following categories will be reviewed, and evaluated during the process:",
+      "{{e.folder}} **Inappropriateness**",
+      "{{e.folder}} ** Severe inappropriateness**",
+      "{{e.folder}} ** Offense**",
+      "{{e.folder}} ** Vulgar content**",
+      "{{e.folder}} ** Threat**\n",
+      "{{e.bot}} Each category is assigned a value between **0 and 1**.",
+      "{{e.arrow}} Where 0 stands for **not inappropriate**, and 1 for **very inappropriate**.\n",
+      "{{e.search}} Finally, the calculated **average value** is compared with the individually defined **threshold value**.",
+      "{{e.arrows.up}} If the average value is **higher** than the threshold, the message is classified as **potentially inappropriate** and a warning with appropriate action options is sent to the moderators.",
+      "{{e.arrows.down}} If the average value is **lower** than the threshold, the message is considered **not inappropriate** and no intervention is required.\n",
+      "{{e.beta}} **Note:** This feature is currently still in **beta phase** and therefore may contain bugs. The AI-assisted chat moderation **does not act itself**, but only issues warnings. Any action requires **human intervention**."
+    ]
+  }
+}
