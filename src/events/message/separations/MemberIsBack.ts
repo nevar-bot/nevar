@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -17,25 +17,25 @@ export default class {
 			reason: null,
 			since: null
 		};
-		data.user.markModified('afk');
+		data.user.markModified("afk");
 		await data.user.save();
 
 		const afkSinceString: string = this.client.utils.getRelativeTime(since);
 
 		const backText: string =
-			'Du warst **' +
+			"Du warst **" +
 			afkSinceString +
-			'** abwesend: ' +
-			(afkReason || 'Kein Grund angegeben');
+			"** abwesend: " +
+			(afkReason || "Kein Grund angegeben");
 
 		const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
-			'{0}',
-			'reminder',
-			'normal',
+			"{0}",
+			"reminder",
+			"normal",
 			backText
 		);
 		welcomeBackEmbed.setTitle(
-			this.client.emotes.shine2 + ' Willkommen zurück!'
+			this.client.emotes.shine2 + " Willkommen zurück!"
 		);
 		return message
 			.reply({ embeds: [welcomeBackEmbed] })

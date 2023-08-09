@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -18,15 +18,15 @@ export default class {
 		const messageId = customId[2];
 		const action = customId[3];
 
-		if (action === 'delete') {
+		if (action === "delete") {
 			const channel: any = await guild.channels
 				.fetch(channelId)
 				.catch((e: any): void => {});
 			if (!channel) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					'Die Nachricht konnte nicht gelöscht werden.',
-					'error',
-					'error'
+					"Die Nachricht konnte nicht gelöscht werden.",
+					"error",
+					"error"
 				);
 				return interaction.reply({
 					embeds: [errorEmbed],
@@ -38,9 +38,9 @@ export default class {
 				.catch((e: any): void => {});
 			if (!message) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					'Die Nachricht konnte nicht gelöscht werden.',
-					'error',
-					'error'
+					"Die Nachricht konnte nicht gelöscht werden.",
+					"error",
+					"error"
 				);
 				return interaction.reply({
 					embeds: [errorEmbed],
@@ -50,9 +50,9 @@ export default class {
 			await message.delete();
 
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				'Die Nachricht wurde gelöscht.',
-				'success',
-				'success'
+				"Die Nachricht wurde gelöscht.",
+				"success",
+				"success"
 			);
 			await interaction.reply({
 				embeds: [successEmbed],
@@ -61,16 +61,16 @@ export default class {
 
 			const thread = await interaction.message
 				.startThread({
-					name: 'Nachricht von ' + message.author.username
+					name: "Nachricht von " + message.author.username
 				})
 				.catch((): void => {});
 
 			if (thread)
 				thread.send({
 					content:
-						'Die Nachricht wurde von ' +
+						"Die Nachricht wurde von " +
 						interaction.member.toString() +
-						' gelöscht.'
+						" gelöscht."
 				});
 		}
 	}

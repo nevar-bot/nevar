@@ -1,10 +1,10 @@
-import { EmbedBuilder, Guild } from 'discord.js';
-import BaseClient from '@structures/BaseClient';
+import { EmbedBuilder, Guild } from "discord.js";
+import BaseClient from "@structures/BaseClient";
 
 export default {
 	init(client: BaseClient): void {
 		client.membersData
-			.find({ 'banned.state': true })
+			.find({ "banned.state": true })
 			.then((members: any): void => {
 				members.forEach((member: any): void => {
 					client.databaseCache.bannedUsers.set(
@@ -24,27 +24,27 @@ export default {
 				if (!guild) continue;
 
 				guild.members
-					.unban(memberData.id, 'Ban-Dauer abgelaufen')
+					.unban(memberData.id, "Ban-Dauer abgelaufen")
 					.then(async (): Promise<void> => {
 						const user: any = await client.users
 							.fetch(memberData.id)
 							.catch((): void => {});
 						const unbanMessage: string =
 							client.emotes.user +
-							' Nutzer: ' +
+							" Nutzer: " +
 							(user ? user.username : memberData.id) +
-							'\n' +
+							"\n" +
 							client.emotes.arrow +
-							' Begründung: Ban-Dauer ist abgelaufen';
+							" Begründung: Ban-Dauer ist abgelaufen";
 
 						const unbanEmbed: EmbedBuilder = client.createEmbed(
 							unbanMessage,
 							null,
-							'success'
+							"success"
 						);
-						unbanEmbed.setTitle('Auto-Unban durchgeführt');
+						unbanEmbed.setTitle("Auto-Unban durchgeführt");
 						unbanEmbed.setThumbnail(user!.displayAvatarURL());
-						await guild.logAction(unbanEmbed, 'moderation');
+						await guild.logAction(unbanEmbed, "moderation");
 					})
 					.catch(async (e: any): Promise<void> => {
 						const user: any = await client.users
@@ -52,17 +52,17 @@ export default {
 							.catch((): void => {});
 						const errorMessage: string =
 							client.emotes.user +
-							' Nutzer: ' +
+							" Nutzer: " +
 							(user ? user.username : memberData.id);
 
 						const errorEmbed: EmbedBuilder = client.createEmbed(
 							errorMessage,
 							null,
-							'error'
+							"error"
 						);
-						errorEmbed.setTitle('Auto-Unban fehlgeschlagen');
+						errorEmbed.setTitle("Auto-Unban fehlgeschlagen");
 						errorEmbed.setThumbnail(user.displayAvatarURL());
-						await guild.logAction(errorEmbed, 'moderation');
+						await guild.logAction(errorEmbed, "moderation");
 					});
 
 				memberData.banned = {
@@ -76,7 +76,7 @@ export default {
 					bannedAt: null,
 					bannedUntil: null
 				};
-				memberData.markModified('banned');
+				memberData.markModified("banned");
 				memberData.save();
 				client.databaseCache.bannedUsers.delete(
 					memberData.id + memberData.guildID

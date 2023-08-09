@@ -1,15 +1,15 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import moment from 'moment';
-import ems from 'enhanced-ms';
-const ms: any = ems('de');
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import moment from "moment";
+import ems from "enhanced-ms";
+const ms: any = ems("de");
 
 export default class ReminderCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'reminder',
-			description: 'Verwaltet deine Erinnerungen',
+			name: "reminder",
+			description: "Verwaltet deine Erinnerungen",
 			cooldown: 2 * 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,29 +17,29 @@ export default class ReminderCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
 						option
-							.setName('aktion')
-							.setDescription('Wähle eine Aktion')
+							.setName("aktion")
+							.setDescription("Wähle eine Aktion")
 							.setRequired(true)
 							.addChoices(
-								{ name: 'erstellen', value: 'add' },
-								{ name: 'löschen', value: 'delete' },
-								{ name: 'liste', value: 'list' }
+								{ name: "erstellen", value: "add" },
+								{ name: "löschen", value: "delete" },
+								{ name: "liste", value: "list" }
 							)
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName('name')
+							.setName("name")
 							.setDescription(
-								'Woran soll ich dich erinnern? (beim löschen: Name der Erinnerung)'
+								"Woran soll ich dich erinnern? (beim löschen: Name der Erinnerung)"
 							)
 							.setRequired(false)
 							.setMaxLength(500)
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName('dauer')
+							.setName("dauer")
 							.setDescription(
-								'Wann soll ich dich erinnern? (z.B. 1h, 1w, 1w, 1h 30m)'
+								"Wann soll ich dich erinnern? (z.B. 1h, 1w, 1w, 1h 30m)"
 							)
 							.setRequired(false)
 					)
@@ -52,22 +52,22 @@ export default class ReminderCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 
-		const action = interaction.options.getString('aktion');
+		const action = interaction.options.getString("aktion");
 		switch (action) {
-			case 'add':
+			case "add":
 				await this.addReminder(
-					interaction.options.getString('name'),
-					interaction.options.getString('dauer'),
+					interaction.options.getString("name"),
+					interaction.options.getString("dauer"),
 					data
 				);
 				break;
-			case 'delete':
+			case "delete":
 				await this.deleteReminder(
-					interaction.options.getString('name'),
+					interaction.options.getString("name"),
 					data
 				);
 				break;
-			case 'list':
+			case "list":
 				await this.listReminders(data);
 				break;
 		}
@@ -80,9 +80,9 @@ export default class ReminderCommand extends BaseCommand {
 	): Promise<void> {
 		if (!name || !dauer || !ms(dauer)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Namen und eine Dauer angeben.',
-				'error',
-				'error'
+				"Du musst einen Namen und eine Dauer angeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -95,7 +95,7 @@ export default class ReminderCommand extends BaseCommand {
 		};
 
 		data.member.reminders.push(reminder);
-		data.member.markModified('reminders');
+		data.member.markModified("reminders");
 		await data.member.save();
 		this.client.databaseCache.reminders.set(
 			this.interaction.member.user.id + this.interaction.guild.id,
@@ -103,9 +103,9 @@ export default class ReminderCommand extends BaseCommand {
 		);
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'In {0} werde ich dich erinnern.',
-			'success',
-			'success',
+			"In {0} werde ich dich erinnern.",
+			"success",
+			"success",
 			ms(ms(dauer))
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
@@ -114,9 +114,9 @@ export default class ReminderCommand extends BaseCommand {
 	private async deleteReminder(name: string, data: any): Promise<void> {
 		if (!name) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Namen angeben.',
-				'error',
-				'error'
+				"Du musst einen Namen angeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -125,9 +125,9 @@ export default class ReminderCommand extends BaseCommand {
 		);
 		if (!reminder) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Mit dem Namen hab ich keine Erinnerung gefunden.',
-				'error',
-				'error'
+				"Mit dem Namen hab ich keine Erinnerung gefunden.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -136,13 +136,13 @@ export default class ReminderCommand extends BaseCommand {
 			data.member.reminders.indexOf(reminder),
 			1
 		);
-		data.member.markModified('reminders');
+		data.member.markModified("reminders");
 		await data.member.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'Die Erinnerung wurde gelöscht.',
-			'success',
-			'success'
+			"Die Erinnerung wurde gelöscht.",
+			"success",
+			"success"
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -151,21 +151,21 @@ export default class ReminderCommand extends BaseCommand {
 		const reminders: any[] = [];
 		for (let reminder of data.member.reminders) {
 			const text: string =
-				'### ' +
+				"### " +
 				this.client.emotes.reminder +
-				' ' +
+				" " +
 				reminder.reason +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				' Erstellt am: ' +
-				moment(reminder.startDate).format('DD.MM.YYYY, HH:mm') +
-				'\n' +
+				" Erstellt am: " +
+				moment(reminder.startDate).format("DD.MM.YYYY, HH:mm") +
+				"\n" +
 				this.client.emotes.arrow +
-				' Endet am: ' +
-				moment(reminder.endDate).format('DD.MM.YYYY, HH:mm') +
-				'\n' +
+				" Endet am: " +
+				moment(reminder.endDate).format("DD.MM.YYYY, HH:mm") +
+				"\n" +
 				this.client.emotes.arrow +
-				' Endet in: ' +
+				" Endet in: " +
 				this.client.utils.getRelativeTime(
 					Date.now() - (reminder.endDate - Date.now())
 				);
@@ -176,8 +176,8 @@ export default class ReminderCommand extends BaseCommand {
 			this.interaction,
 			5,
 			reminders,
-			'Erinnerungen',
-			'Du hast keine Erinnerungen erstellt',
+			"Erinnerungen",
+			"Du hast keine Erinnerungen erstellt",
 			null
 		);
 	}

@@ -12,29 +12,29 @@ import {
 	OAuth2Scopes,
 	PermissionsBitField,
 	User
-} from 'discord.js';
+} from "discord.js";
 
-import * as path from 'path';
-import * as toml from 'toml';
-import * as fs from 'fs';
-import * as util from 'util';
+import * as path from "path";
+import * as toml from "toml";
+import * as fs from "fs";
+import * as util from "util";
 
-import giveawaysHandler from '@handlers/giveaway';
-import Logger from '@helpers/Logger';
+import giveawaysHandler from "@handlers/giveaway";
+import Logger from "@helpers/Logger";
 
 // @ts-ignore - File 'emojis.json' is not under 'rootDir' 'src/'
-import * as emotes from '@assets/emojis.json';
-import { permissions } from '@helpers/Permissions';
-import { ChannelTypes } from '@helpers/ChannelTypes';
-import { AiChatPrompts } from '@helpers/AiChatPrompts';
-import Utils from '@helpers/Utils';
-import Levels from '@helpers/Levels';
+import * as emotes from "@assets/emojis.json";
+import { permissions } from "@helpers/Permissions";
+import { ChannelTypes } from "@helpers/ChannelTypes";
+import { AiChatPrompts } from "@helpers/AiChatPrompts";
+import Utils from "@helpers/Utils";
+import Levels from "@helpers/Levels";
 
-import logSchema from '@schemas/Log';
-import guildSchema from '@schemas/Guild';
-import userSchema from '@schemas/User';
-import memberSchema from '@schemas/Member';
-import giveawaySchema from '@schemas/Giveaway';
+import logSchema from "@schemas/Log";
+import guildSchema from "@schemas/Guild";
+import userSchema from "@schemas/User";
+import memberSchema from "@schemas/Member";
+import giveawaySchema from "@schemas/Giveaway";
 
 export default class BaseClient extends DiscordClient {
 	public wait: (ms: number) => Promise<void>;
@@ -84,17 +84,17 @@ export default class BaseClient extends DiscordClient {
 			],
 			partials: Object.values(Partials).filter(
 				(partial: string | Partials): partial is Partials =>
-					typeof partial === 'object'
+					typeof partial === "object"
 			),
 			allowedMentions: {
-				parse: ['users']
+				parse: ["users"]
 			}
 		});
 
 		this.wait = util.promisify(setTimeout);
-		this.config = toml.parse(fs.readFileSync('./config.toml', 'utf8'));
+		this.config = toml.parse(fs.readFileSync("./config.toml", "utf8"));
 		this.emotes = emotes;
-		this.support = this.config.support['INVITE'];
+		this.support = this.config.support["INVITE"];
 		this.permissions = permissions;
 		this.channelTypes = ChannelTypes;
 		this.aiChatPrompts = AiChatPrompts;
@@ -126,7 +126,11 @@ export default class BaseClient extends DiscordClient {
 		this.aiChat = new Collection();
 	}
 
-	getLocaleString(key: string, locale: string, args: any[] = []): Promise<any>{
+	getLocaleString(
+		key: string,
+		locale: string,
+		args: any[] = []
+	): Promise<any> {
 		const language: any = this.locales.get(locale);
 		return language(key, args);
 	}
@@ -216,7 +220,7 @@ export default class BaseClient extends DiscordClient {
 							e,
 							null,
 							null,
-							'<GuildData>.save()'
+							"<GuildData>.save()"
 						);
 					});
 				}
@@ -274,11 +278,11 @@ export default class BaseClient extends DiscordClient {
 			let guildData: any = isLean
 				? await this.guildsData
 						.findOne({ id: guildID })
-						.populate('members')
+						.populate("members")
 						.lean()
 				: await this.guildsData
 						.findOne({ id: guildID })
-						.populate('members');
+						.populate("members");
 			if (guildData) {
 				if (!isLean) this.databaseCache.guilds.set(guildID, guildData);
 				return guildData;
@@ -322,7 +326,7 @@ export default class BaseClient extends DiscordClient {
 		name: string
 	): Promise<boolean | any> {
 		try {
-			const props = new (await import(commandPath + '/' + name)).default(
+			const props = new (await import(commandPath + "/" + name)).default(
 				this
 			);
 			props.conf.location = commandPath;
@@ -340,37 +344,37 @@ export default class BaseClient extends DiscordClient {
 	): Promise<string | boolean> {
 		let command: any;
 		if (this.commands.has(name)) command = this.commands.get(name);
-		if (!command) return 'Command not found: ' + name;
+		if (!command) return "Command not found: " + name;
 		if (command.shutdown) await command.shutdown(this);
 
 		delete require.cache[
-			require.resolve(commandPath + path.sep + name + '.js')
+			require.resolve(commandPath + path.sep + name + ".js")
 		];
 		return false;
 	}
 
 	// Utility methods
 	format(integer: number): string {
-		return new Intl.NumberFormat('de-DE').format(integer);
+		return new Intl.NumberFormat("de-DE").format(integer);
 	}
 
 	createEmbed(
 		message: string | null,
 		emote: string | null,
-		type: 'normal' | 'success' | 'warning' | 'error' | 'transparent',
+		type: "normal" | "success" | "warning" | "error" | "transparent",
 		...args: any
 	): EmbedBuilder {
 		const color: any = type
-			.replace('normal', this.config.embeds['DEFAULT_COLOR'])
-			.replace('success', this.config.embeds['SUCCESS_COLOR'])
-			.replace('warning', this.config.embeds['WARNING_COLOR'])
-			.replace('transparent', this.config.embeds['TRANSPARENT_COLOR'])
-			.replace('error', this.config.embeds['ERROR_COLOR']);
+			.replace("normal", this.config.embeds["DEFAULT_COLOR"])
+			.replace("success", this.config.embeds["SUCCESS_COLOR"])
+			.replace("warning", this.config.embeds["WARNING_COLOR"])
+			.replace("transparent", this.config.embeds["TRANSPARENT_COLOR"])
+			.replace("error", this.config.embeds["ERROR_COLOR"]);
 
 		let formattedMessage: string | null = message;
 		for (let i: number = 0; i < args.length; i++) {
 			formattedMessage = formattedMessage!.replaceAll(
-				'{' + i + '}',
+				"{" + i + "}",
 				args[i]
 			);
 		}
@@ -379,14 +383,14 @@ export default class BaseClient extends DiscordClient {
 			.setAuthor({
 				name: this.user!.username,
 				iconURL: this.user!.displayAvatarURL(),
-				url: this.config.general['WEBSITE']
+				url: this.config.general["WEBSITE"]
 			})
 			.setDescription(
-				(emote ? this.emotes[emote] + ' ' : ' ') +
-					(formattedMessage ? formattedMessage : ' ')
+				(emote ? this.emotes[emote] + " " : " ") +
+					(formattedMessage ? formattedMessage : " ")
 			)
 			.setColor(color)
-			.setFooter({ text: this.config.embeds['FOOTER_TEXT'] });
+			.setFooter({ text: this.config.embeds["FOOTER_TEXT"] });
 	}
 
 	createButton(
@@ -398,7 +402,7 @@ export default class BaseClient extends DiscordClient {
 		url: string | null = null
 	): ButtonBuilder {
 		const button: ButtonBuilder = new ButtonBuilder()
-			.setLabel(label ? label : ' ')
+			.setLabel(label ? label : " ")
 			// @ts-ignore - Element implicitly has an 'any' type because index expression is not of type 'number'
 			.setStyle(ButtonStyle[style])
 			.setDisabled(disabled);
@@ -448,34 +452,34 @@ export default class BaseClient extends DiscordClient {
 		action: string | null = null
 	): any {
 		const supportGuild: Guild | undefined = this.guilds.cache.get(
-			this.config.support['ID']
+			this.config.support["ID"]
 		);
 		const errorLogChannel: any = supportGuild?.channels.cache.get(
-			this.config.support['ERROR_LOG']
+			this.config.support["ERROR_LOG"]
 		);
 		if (!supportGuild || !errorLogChannel) return;
 
 		const exceptionEmbed: EmbedBuilder = this.createEmbed(
-			'Ein Fehler ist aufgetreten',
-			'error',
-			'error'
+			"Ein Fehler ist aufgetreten",
+			"error",
+			"error"
 		);
 		let description: string | undefined = exceptionEmbed.data.description;
 
 		if (guild)
-			description += '\n' + this.emotes.arrow + ' Server: ' + guild;
+			description += "\n" + this.emotes.arrow + " Server: " + guild;
 		if (user)
 			description +=
-				'\n' +
+				"\n" +
 				this.emotes.arrow +
-				' Nutzer: ' +
+				" Nutzer: " +
 				user.username +
-				' (' +
+				" (" +
 				user.id +
-				')';
+				")";
 		if (action)
-			description += '\n' + this.emotes.arrow + ' Aktion: ' + action;
-		description += '\n```js\n' + exception.stack + '```';
+			description += "\n" + this.emotes.arrow + " Aktion: " + action;
+		description += "\n```js\n" + exception.stack + "```";
 
 		exceptionEmbed.setDescription(description!);
 		exceptionEmbed.setThumbnail(this.user!.displayAvatarURL());
@@ -486,18 +490,18 @@ export default class BaseClient extends DiscordClient {
 
 	alert(
 		text: string,
-		color: 'normal' | 'success' | 'warning' | 'error' | 'transparent'
+		color: "normal" | "success" | "warning" | "error" | "transparent"
 	): any {
 		const supportGuild: Guild | undefined = this.guilds.cache.get(
-			this.config.support['ID']
+			this.config.support["ID"]
 		);
 		if (!supportGuild) return;
 		const logChannel: any = supportGuild.channels.cache.get(
-			this.config.support['BOT_LOG']
+			this.config.support["BOT_LOG"]
 		);
 		if (!logChannel) return;
 
-		const embed = this.createEmbed(text, 'information', color);
+		const embed = this.createEmbed(text, "information", color);
 		embed.setThumbnail(this.user!.displayAvatarURL());
 		return logChannel.send({ embeds: [embed] });
 	}

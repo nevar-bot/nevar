@@ -1,41 +1,41 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
 import {
 	EmbedBuilder,
 	SlashCommandBuilder,
 	ButtonBuilder,
 	Attachment
-} from 'discord.js';
-import { AttachmentBuilder } from 'discord.js';
+} from "discord.js";
+import { AttachmentBuilder } from "discord.js";
 
 export default class ExportdataCommand extends BaseCommand {
 	constructor(client: BaseClient) {
 		super(client, {
-			name: 'exportdata',
-			description: 'Exportiert deine Daten als JSON Datei',
+			name: "exportdata",
+			description: "Exportiert deine Daten als JSON Datei",
 			cooldown: 5000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
 					option
-						.setName('daten')
+						.setName("daten")
 						.setDescription(
-							'Wähle, welche Daten du exportieren möchtest'
+							"Wähle, welche Daten du exportieren möchtest"
 						)
 						.setRequired(true)
 						.addChoices(
 							{
-								name: 'deine Nutzerdaten',
-								value: 'user'
+								name: "deine Nutzerdaten",
+								value: "user"
 							},
 							{
-								name: 'deine Mitgliedsdaten auf diesem Server',
-								value: 'member'
+								name: "deine Mitgliedsdaten auf diesem Server",
+								value: "member"
 							},
 							{
-								name: 'Daten dieses Servers',
-								value: 'guild'
+								name: "Daten dieses Servers",
+								value: "guild"
 							}
 						)
 				)
@@ -49,7 +49,7 @@ export default class ExportdataCommand extends BaseCommand {
 		this.interaction = interaction;
 		await this.exportData(
 			interaction.member,
-			interaction.options.getString('daten'),
+			interaction.options.getString("daten"),
 			data
 		);
 	}
@@ -59,22 +59,22 @@ export default class ExportdataCommand extends BaseCommand {
 		type: string,
 		data: any
 	): Promise<void> {
-		if (type === 'user') {
+		if (type === "user") {
 			const userData = data.user.toObject();
-			const fieldsToReplace: string[] = ['_id', '__v'];
+			const fieldsToReplace: string[] = ["_id", "__v"];
 			for (const field of fieldsToReplace) {
-				userData[field] = '-- aus Sicherheitsgründen entfernt --';
+				userData[field] = "-- aus Sicherheitsgründen entfernt --";
 			}
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
 				{
-					name: this.interaction.user.id + '.json'
+					name: this.interaction.user.id + ".json"
 				}
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
-				'Hier sind deine exportierten Nutzerdaten:',
-				'success',
-				'success'
+				"Hier sind deine exportierten Nutzerdaten:",
+				"success",
+				"success"
 			);
 			return this.interaction.followUp({
 				embeds: [embed],
@@ -82,22 +82,22 @@ export default class ExportdataCommand extends BaseCommand {
 			});
 		}
 
-		if (type === 'member') {
+		if (type === "member") {
 			const userData = data.member.toObject();
-			const fieldsToReplace: string[] = ['_id', '__v'];
+			const fieldsToReplace: string[] = ["_id", "__v"];
 			for (const field of fieldsToReplace) {
-				userData[field] = '-- aus Sicherheitsgründen entfernt --';
+				userData[field] = "-- aus Sicherheitsgründen entfernt --";
 			}
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
 				{
-					name: this.interaction.user.id + '.json'
+					name: this.interaction.user.id + ".json"
 				}
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
-				'Hier sind deine exportierten Nutzerdaten:',
-				'success',
-				'success'
+				"Hier sind deine exportierten Nutzerdaten:",
+				"success",
+				"success"
 			);
 			return this.interaction.followUp({
 				embeds: [embed],
@@ -105,39 +105,39 @@ export default class ExportdataCommand extends BaseCommand {
 			});
 		}
 
-		if (type === 'guild') {
+		if (type === "guild") {
 			if (
 				(await this.interaction.guild.fetchOwner()).user.id !==
 				this.interaction.user.id
 			) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					'Nur der Eigentümer dieses Servers kann die Serverdaten exportieren.',
-					'error',
-					'error'
+					"Nur der Eigentümer dieses Servers kann die Serverdaten exportieren.",
+					"error",
+					"error"
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
 
 			const userData = data.guild.toObject();
 			const fieldsToReplace: string[] = [
-				'_id',
-				'__v',
-				'members',
-				'membersData'
+				"_id",
+				"__v",
+				"members",
+				"membersData"
 			];
 			for (const field of fieldsToReplace) {
-				userData[field] = '-- aus Sicherheitsgründen entfernt --';
+				userData[field] = "-- aus Sicherheitsgründen entfernt --";
 			}
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
 				{
-					name: this.interaction.user.id + '.json'
+					name: this.interaction.user.id + ".json"
 				}
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
-				'Hier sind deine exportierten Nutzerdaten:',
-				'success',
-				'success'
+				"Hier sind deine exportierten Nutzerdaten:",
+				"success",
+				"success"
 			);
 			return this.interaction.followUp({
 				embeds: [embed],

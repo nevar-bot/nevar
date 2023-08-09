@@ -1,26 +1,26 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
 import {
 	SlashCommandBuilder,
 	AttachmentBuilder,
 	EmbedBuilder
-} from 'discord.js';
-import axios from 'axios';
-import Jimp from 'jimp';
+} from "discord.js";
+import axios from "axios";
+import Jimp from "jimp";
 
 export default class PrideCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'pride',
-			description: 'Sendet einen Avatar mit Pride-Filter',
+			name: "pride",
+			description: "Sendet einen Avatar mit Pride-Filter",
 			cooldown: 3 * 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
-						.setName('nutzer')
-						.setDescription('Wähle ein Mitglied')
+						.setName("nutzer")
+						.setDescription("Wähle ein Mitglied")
 						.setRequired(false)
 				)
 			}
@@ -32,8 +32,8 @@ export default class PrideCommand extends BaseCommand {
 		this.interaction = interaction;
 
 		let user: any = interaction.member.user;
-		if (interaction.options.getUser('nutzer'))
-			user = interaction.options.getUser('nutzer');
+		if (interaction.options.getUser("nutzer"))
+			user = interaction.options.getUser("nutzer");
 
 		return await this.getPrideAvatar(user);
 	}
@@ -42,26 +42,26 @@ export default class PrideCommand extends BaseCommand {
 		const avatarUrl = user.displayAvatarURL({
 			dynamic: true,
 			size: 4096,
-			extension: 'png'
+			extension: "png"
 		});
 
 		const response: any = await axios.get(avatarUrl, {
-			responseType: 'arraybuffer',
+			responseType: "arraybuffer",
 			validateStatus: (status: number): boolean => true
 		});
-		const buffer: Buffer = Buffer.from(response.data, 'binary');
+		const buffer: Buffer = Buffer.from(response.data, "binary");
 
 		const image: Jimp = await Jimp.read(buffer);
 		const width: number = image.getWidth();
 		const height: number = image.getHeight();
 
 		const rainbowColors: string[] = [
-			'#FF0018', // Rot
-			'#FFA52C', // Orange
-			'#FFFF41', // Gelb
-			'#008018', // Grün
-			'#0000F9', // Blau
-			'#86007D' // Violett
+			"#FF0018", // Rot
+			"#FFA52C", // Orange
+			"#FFFF41", // Gelb
+			"#008018", // Grün
+			"#0000F9", // Blau
+			"#86007D" // Violett
 		];
 
 		const step: number = width / rainbowColors.length;
@@ -87,17 +87,17 @@ export default class PrideCommand extends BaseCommand {
 		const attachment: AttachmentBuilder = new AttachmentBuilder(
 			editedBuffer,
 			{
-				name: 'pride.png'
+				name: "pride.png"
 			}
 		);
 
 		const prideAvatarEmbed: EmbedBuilder = this.client.createEmbed(
-			'',
-			'',
-			'normal'
+			"",
+			"",
+			"normal"
 		);
-		prideAvatarEmbed.setTitle('Pride-Avatar von ' + user.username);
-		prideAvatarEmbed.setImage('attachment://pride.png');
+		prideAvatarEmbed.setTitle("Pride-Avatar von " + user.username);
+		prideAvatarEmbed.setImage("attachment://pride.png");
 
 		return this.interaction.followUp({
 			embeds: [prideAvatarEmbed],

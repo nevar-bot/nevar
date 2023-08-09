@@ -1,0 +1,44 @@
+{
+  "general": {
+    "description": "Verwaltet die AI-gestützte Chatmoderation des Servers"
+  },
+  "slash_command": {
+    "subcommands": [
+      {
+        "description": "Aktiviert oder deaktiviert die AI-gestützte Chatmoderation",
+        "options": [
+          {
+            "description": "Wähle einen Status"
+          }
+        ]
+      }
+    ],
+    "subcommands": {
+      "1": {
+        "description": "Aktiviert oder deaktiviert die AI-gestützte Chatmoderation",
+        "options": {
+          "1": {
+            "description": "Wähle einen Status"
+          }
+        }
+      },
+      "2": {
+        "description": "Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation",
+        "options": {
+          "1": {
+            "description": "Wähle eine Aktion"
+          },
+          "2": {
+            "description": "Wähle eine Rolle"
+          },
+          "3": {
+            "description": "Wähle einen Channel"
+          }
+        }
+      },
+      "3": {
+        "description": "Wähle, ab welchem Wert gewarnt werden soll (0 = nicht unangemessen, 1 = sehr unangemessen)"
+      }
+    }
+  }
+}

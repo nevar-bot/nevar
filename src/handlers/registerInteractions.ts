@@ -2,13 +2,14 @@ import {
 	PermissionsBitField,
 	REST,
 	Routes,
-	ContextMenuCommandBuilder, SlashCommandSubcommandBuilder
-} from 'discord.js';
+	ContextMenuCommandBuilder,
+	SlashCommandSubcommandBuilder
+} from "discord.js";
 
 async function registerInteractions(client: any): Promise<any> {
-	client.logger.log('Start registering interactions...');
+	client.logger.log("Start registering interactions...");
 
-	const rest: REST = new REST({ version: '10' }).setToken(client.token);
+	const rest: REST = new REST({ version: "10" }).setToken(client.token);
 	const interactions: Array<any> = [];
 
 	/* Slash commands */
@@ -24,29 +25,13 @@ async function registerInteractions(client: any): Promise<any> {
 		if (!slashData) continue;
 
 		await slashData.setName(commandData.help.name);
-		await slashData.setDescription(client.getLocaleString(commandData.help.description, "de_DE"));
-		await slashData.setDescriptionLocalization("en-GB", client.getLocaleString(commandData.help.description, "en_GB"));
-		await slashData.setDescriptionLocalization("en-US", client.getLocaleString(commandData.help.description, "en_GB"));
-
-		for(let option of slashData.options){
-			// option is subcommand
-			if(option instanceof SlashCommandSubcommandBuilder){
-				// loop through subcommand options
-				for(let subOption of option.options){
-					option.setDescriptionLocalization("en-GB", client.getLocaleString(option.description, "en_GB"));
-					option.setDescriptionLocalization("en-US", client.getLocaleString(option.description, "en_GB"));
-					option.setDescription(client.getLocaleString(option.description, "de_DE"));
-				}
+		await slashData.setDescription(commandData.help.description);
+		for (const locale in commandData.help.localizedDescriptions) {
+			if (commandData.help.localizedDescriptions.hasOwnProperty(locale)) {
+				const description =
+					commandData.help.localizedDescriptions[locale];
+				slashData.setDescriptionLocalization(locale, description);
 			}
-			// set option name
-			option.setNameLocalization("en-GB", client.getLocaleString(option.name, "en_GB"));
-			option.setNameLocalization("en-US", client.getLocaleString(option.name, "en_GB"));
-			option.setName(client.getLocaleString(option.name, "de_DE"));
-
-			// set option description
-			option.setDescriptionLocalization("en-GB", client.getLocaleString(option.description, "en_GB"));
-			option.setDescriptionLocalization("en-US", client.getLocaleString(option.description, "en_GB"));
-			option.setDescription(client.getLocaleString(option.description, "de_DE"));
 		}
 
 		if (commandData.conf.memberPermissions.length >= 1) {
@@ -103,17 +88,17 @@ async function registerInteractions(client: any): Promise<any> {
 			response.success = true;
 			response.interactionsRegistered = interactions.length;
 			client.logger.success(
-				'Registered ' + interactions.length + ' interactions'
+				"Registered " + interactions.length + " interactions"
 			);
 		})
 		.catch(async (e: any) => {
 			response.callback = e;
-			client.logger.error('Error while registering interactions', e);
+			client.logger.error("Error while registering interactions", e);
 			client.alertException(
 				e,
 				null,
 				null,
-				'await <REST>.put(<Routes>.applicationCommands())'
+				"await <REST>.put(<Routes>.applicationCommands())"
 			);
 		});
 

@@ -1,17 +1,17 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder, SlashCommandBuilder, ChannelType } from 'discord.js';
-import ems from 'enhanced-ms';
-const ms: any = ems('de');
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder, SlashCommandBuilder, ChannelType } from "discord.js";
+import ems from "enhanced-ms";
+const ms: any = ems("de");
 
 export default class AutodeleteCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'autodelete',
+			name: "autodelete",
 			description:
-				'Verwaltet das automatische Löschen von Nachrichten auf dem Server',
-			memberPermissions: ['ManageGuild', 'ManageMessages'],
-			botPermissions: ['ManageMessages'],
+				"Verwaltet das automatische Löschen von Nachrichten auf dem Server",
+			memberPermissions: ["ManageGuild", "ManageMessages"],
+			botPermissions: ["ManageMessages"],
 			cooldown: 2 * 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -19,20 +19,20 @@ export default class AutodeleteCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
 						option
-							.setName('aktion')
-							.setDescription('Wähle aus den folgenden Aktionen')
+							.setName("aktion")
+							.setDescription("Wähle aus den folgenden Aktionen")
 							.setRequired(true)
 							.addChoices(
-								{ name: 'hinzufügen', value: 'add' },
-								{ name: 'entfernen', value: 'remove' },
-								{ name: 'liste', value: 'list' }
+								{ name: "hinzufügen", value: "add" },
+								{ name: "entfernen", value: "remove" },
+								{ name: "liste", value: "list" }
 							)
 					)
 					.addChannelOption((option: any) =>
 						option
-							.setName('channel')
+							.setName("channel")
 							.setDescription(
-								'Wähle, für welchen Channel du die Aktion ausführen möchtest'
+								"Wähle, für welchen Channel du die Aktion ausführen möchtest"
 							)
 							.setRequired(false)
 							.addChannelTypes(
@@ -44,10 +44,10 @@ export default class AutodeleteCommand extends BaseCommand {
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName('zeit')
+							.setName("zeit")
 							.setRequired(false)
 							.setDescription(
-								'Gib ein, nach welcher Zeit neue Nachrichten gelöscht werden sollen'
+								"Gib ein, nach welcher Zeit neue Nachrichten gelöscht werden sollen"
 							)
 					)
 			}
@@ -59,30 +59,30 @@ export default class AutodeleteCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 
-		const action: string = interaction.options.getString('aktion');
+		const action: string = interaction.options.getString("aktion");
 		switch (action) {
-			case 'add':
+			case "add":
 				await this.addAutodelete(
-					interaction.options.getChannel('channel'),
-					interaction.options.getString('zeit'),
+					interaction.options.getChannel("channel"),
+					interaction.options.getString("zeit"),
 					data
 				);
 				break;
-			case 'remove':
+			case "remove":
 				await this.removeAutodelete(
-					interaction.options.getChannel('channel'),
+					interaction.options.getChannel("channel"),
 					data
 				);
 				break;
-			case 'list':
+			case "list":
 				await this.showList(data);
 				break;
 			default:
 				const unexpectedErrorEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Ein unerwarteter Fehler ist aufgetreten.',
-						'error',
-						'error'
+						"Ein unerwarteter Fehler ist aufgetreten.",
+						"error",
+						"error"
 					);
 				return this.interaction.followUp({
 					embeds: [unexpectedErrorEmbed]
@@ -98,9 +98,9 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Invalid options */
 		if (!time || !ms(time) || !channel || !channel.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Channel und eine Zeit eingeben.',
-				'error',
-				'error'
+				"Du musst einen Channel und eine Zeit eingeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -112,9 +112,9 @@ export default class AutodeleteCommand extends BaseCommand {
 			)
 		) {
 			const alreadyExistsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Für {0} ist bereits ein Autodelete eingerichtet.',
-				'error',
-				'error',
+				"Für {0} ist bereits ein Autodelete eingerichtet.",
+				"error",
+				"error",
 				channel
 			);
 			return this.interaction.followUp({ embeds: [alreadyExistsEmbed] });
@@ -126,9 +126,9 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Time is too short */
 		if (timeInMs < 1000) {
 			const tooShortEmbed: EmbedBuilder = this.client.createEmbed(
-				'Die Zeit muss mindestens 1 Sekunde betragen.',
-				'error',
-				'error'
+				"Die Zeit muss mindestens 1 Sekunde betragen.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [tooShortEmbed] });
 		}
@@ -136,9 +136,9 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Time is too long */
 		if (timeInMs > 7 * 24 * 60 * 60 * 1000) {
 			const tooLongEmbed: EmbedBuilder = this.client.createEmbed(
-				'Die Zeit darf höchstens 7 Tage betragen.',
-				'error',
-				'error'
+				"Die Zeit darf höchstens 7 Tage betragen.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [tooLongEmbed] });
 		}
@@ -148,13 +148,13 @@ export default class AutodeleteCommand extends BaseCommand {
 			channel: channel.id,
 			time: timeInMs
 		});
-		data.guild.markModified('settings.autodelete');
+		data.guild.markModified("settings.autodelete");
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'In {0} werden neue Nachrichten absofort automatisch nach {1} gelöscht.',
-			'success',
-			'success',
+			"In {0} werden neue Nachrichten absofort automatisch nach {1} gelöscht.",
+			"success",
+			"success",
 			channel,
 			msInTime
 		);
@@ -165,9 +165,9 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Invalid options */
 		if (!channel || !channel.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Channel eingeben.',
-				'error',
-				'error'
+				"Du musst einen Channel eingeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -179,9 +179,9 @@ export default class AutodeleteCommand extends BaseCommand {
 			)
 		) {
 			const doesntExistEmbed: EmbedBuilder = this.client.createEmbed(
-				'In {0} ist kein Autodelete eingerichtet.',
-				'error',
-				'error',
+				"In {0} ist kein Autodelete eingerichtet.",
+				"error",
+				"error",
 				channel
 			);
 			return this.interaction.followUp({ embeds: [doesntExistEmbed] });
@@ -191,13 +191,13 @@ export default class AutodeleteCommand extends BaseCommand {
 		data.guild.settings.autodelete = data.guild.settings.autodelete.filter(
 			(x: any): boolean => x.channel !== channel.id
 		);
-		data.guild.markModified('settings.autodelete');
+		data.guild.markModified("settings.autodelete");
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'In {0} werden neue Nachrichten nicht mehr automatisch gelöscht.',
-			'success',
-			'success',
+			"In {0} werden neue Nachrichten nicht mehr automatisch gelöscht.",
+			"success",
+			"success",
 			channel
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
@@ -208,18 +208,18 @@ export default class AutodeleteCommand extends BaseCommand {
 		const autodeleteArray: any[] = [];
 
 		for (const element of response) {
-			if (typeof element !== 'object') continue;
+			if (typeof element !== "object") continue;
 			const cachedChannel: any =
 				this.interaction.guild.channels.cache.get(element.channel);
 			if (cachedChannel)
 				autodeleteArray.push(
-					' Channel: ' +
+					" Channel: " +
 						cachedChannel.toString() +
-						'\n' +
+						"\n" +
 						this.client.emotes.reminder +
-						' Zeit: ' +
+						" Zeit: " +
 						ms(element.time) +
-						'\n'
+						"\n"
 				);
 		}
 
@@ -227,9 +227,9 @@ export default class AutodeleteCommand extends BaseCommand {
 			this.interaction,
 			5,
 			autodeleteArray,
-			'Autodelete',
-			'Es ist kein Autodelete eingestellt',
-			'channel'
+			"Autodelete",
+			"Es ist kein Autodelete eingestellt",
+			"channel"
 		);
 	}
 }

@@ -1,14 +1,13 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder, SlashCommandBuilder, ChannelType } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder, SlashCommandBuilder, ChannelType } from "discord.js";
 
 export default class AimodCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'aimod',
-			description:
-				'Verwaltet die AI-gestützte Chatmoderation des Servers',
-			memberPermissions: ['ManageGuild'],
+			name: "aimod",
+			description: "administration/aimod:general:description",
+			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -16,63 +15,71 @@ export default class AimodCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('status')
+							.setName("status")
 							.setDescription(
-								'Aktiviert oder deaktiviert die AI-gestützte Chatmoderation'
+								"administration/aimod:slash_command:subcommands:0:description"
 							)
 							.addStringOption((option: any) =>
 								option
-									.setName('status')
-									.setDescription('Wähle einen Status')
+									.setName("status")
+									.setDescription(
+										"administration/aimod:slash_command:subcommands:0:options:0:description"
+									)
 									.setRequired(true)
 									.addChoices(
 										{
-											name: 'aktiv',
-											value: 'on'
+											name: "on",
+											value: "on"
 										},
 										{
-											name: 'inaktiv',
-											value: 'off'
+											name: "off",
+											value: "off"
 										}
 									)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('exclude')
+							.setName("exclude")
 							.setDescription(
-								'Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation'
+								"administration/aimod:slash_command:subcommands:2:description"
 							)
 							.addStringOption((option: any) =>
 								option
-									.setName('aktion')
-									.setDescription('Wähle eine Aktion')
+									.setName("aktion")
+									.setDescription(
+										"administration/aimod:slash_command:subcommands:2:options:1:description"
+									)
 									.setRequired(true)
 									.addChoices(
 										{
-											name: 'hinzufügen',
-											value: 'add'
+											name: "add",
+											value: "add"
 										},
 										{
-											name: 'entfernen',
-											value: 'remove'
+											name: "remove",
+											value: "remove"
 										},
 										{
-											name: 'liste',
-											value: 'list'
+											name: "list",
+											value: "list"
 										}
 									)
 							)
 							.addRoleOption((option: any) =>
 								option
-									.setName('rolle')
-									.setDescription('Wähle eine Rolle')
+									.setName("role")
+									.setDescription(
+										"administration/aimod:slash_command:subcommands:2:options:2:description"
+									)
 									.setRequired(false)
 							)
 							.addChannelOption((option: any) =>
 								option
-									.setName('channel')
-									.setDescription('Wähle einen Channel')
+									.setName("channel")
+									.setDescription(
+										"administration/aimod:slash_command:subcommands:2:options:3:description"
+									)
 									.setRequired(false)
 									.addChannelTypes(
 										ChannelType.GuildText,
@@ -84,14 +91,14 @@ export default class AimodCommand extends BaseCommand {
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('threshold')
+							.setName("threshold")
 							.setDescription(
-								'Wähle, ab welchem Wert gewarnt werden soll (0 = nicht unangemessen, 1 = sehr unangemessen)'
+								"administration/aimod:slash_command:subcommands:3:description"
 							)
 							.addNumberOption((option: any) =>
 								option
-									.setName('wert')
-									.setDescription('Wähle einen Wert')
+									.setName("wert")
+									.setDescription("Wähle einen Wert")
 									.setRequired(true)
 									.setMinValue(0)
 									.setMaxValue(1)
@@ -99,14 +106,14 @@ export default class AimodCommand extends BaseCommand {
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('channel')
+							.setName("channel")
 							.setDescription(
-								'Wähle den Kanal, in dem die AI-gestützte Chatmoderation warnen soll'
+								"Wähle den Kanal, in dem die AI-gestützte Chatmoderation warnen soll"
 							)
 							.addChannelOption((option: any) =>
 								option
-									.setName('channel')
-									.setDescription('Wähle einen Channel')
+									.setName("channel")
+									.setDescription("Wähle einen Channel")
 									.setRequired(true)
 									.addChannelTypes(
 										ChannelType.GuildText,
@@ -118,9 +125,9 @@ export default class AimodCommand extends BaseCommand {
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('explain')
+							.setName("explain")
 							.setDescription(
-								'Erklärt die AI-gestützte Chatmoderation'
+								"Erklärt die AI-gestützte Chatmoderation"
 							)
 					)
 			}
@@ -141,52 +148,52 @@ export default class AimodCommand extends BaseCommand {
 				threshold: 0.6,
 				alertChannel: null
 			};
-			data.guild.markModified('settings.aiModeration');
+			data.guild.markModified("settings.aiModeration");
 			await data.guild.save();
 		}
 
 		switch (subcommand) {
-			case 'status':
+			case "status":
 				await this.setStatus(
-					interaction.options.getString('status'),
+					interaction.options.getString("status"),
 					data
 				);
 				break;
-			case 'exclude':
+			case "exclude":
 				await this.exclude(
-					interaction.options.getString('aktion'),
-					interaction.options.getChannel('channel'),
-					interaction.options.getRole('rolle'),
+					interaction.options.getString("aktion"),
+					interaction.options.getChannel("channel"),
+					interaction.options.getRole("rolle"),
 					data
 				);
 				break;
-			case 'threshold':
+			case "threshold":
 				await this.setThreshold(
-					interaction.options.getNumber('wert'),
+					interaction.options.getNumber("wert"),
 					data
 				);
 				break;
-			case 'channel':
+			case "channel":
 				await this.setChannel(
-					interaction.options.getChannel('channel'),
+					interaction.options.getChannel("channel"),
 					data
 				);
 				break;
-			case 'explain':
+			case "explain":
 				await this.explain();
 		}
 	}
 
 	private async setStatus(status: string, data: any): Promise<void> {
-		data.guild.settings.aiModeration.enabled = status === 'on';
-		data.guild.markModified('settings.aiModeration.status');
+		data.guild.settings.aiModeration.enabled = status === "on";
+		data.guild.markModified("settings.aiModeration.status");
 		await data.guild.save();
 
 		const embed: EmbedBuilder = this.client.createEmbed(
-			'Die AI-gestützte Chatmoderation wurde {0}',
-			'success',
-			'normal',
-			status === 'on' ? 'aktiviert' : 'deaktiviert'
+			"Die AI-gestützte Chatmoderation wurde {0}",
+			"success",
+			"normal",
+			status === "on" ? "aktiviert" : "deaktiviert"
 		);
 		return this.interaction.followUp({ embeds: [embed] });
 	}
@@ -197,12 +204,12 @@ export default class AimodCommand extends BaseCommand {
 		role: any,
 		data: any
 	): Promise<void> {
-		if (action === 'add') {
+		if (action === "add") {
 			if (!channel && !role) {
 				const embed: EmbedBuilder = this.client.createEmbed(
-					'Du musst einen Channel oder eine Rolle angeben.',
-					'error',
-					'error'
+					"Du musst einen Channel oder eine Rolle angeben.",
+					"error",
+					"error"
 				);
 				return this.interaction.followUp({ embeds: [embed] });
 			}
@@ -213,9 +220,9 @@ export default class AimodCommand extends BaseCommand {
 					)
 				) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						'In {0} ist die AI-gestützte Chatmoderation bereits deaktiviert.',
-						'error',
-						'error',
+						"In {0} ist die AI-gestützte Chatmoderation bereits deaktiviert.",
+						"error",
+						"error",
 						channel.toString()
 					);
 					return this.interaction.followUp({ embeds: [embed] });
@@ -224,14 +231,14 @@ export default class AimodCommand extends BaseCommand {
 					channel.id
 				);
 				data.guild.markModified(
-					'settings.aiModeration.excludedChannels'
+					"settings.aiModeration.excludedChannels"
 				);
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					'In {0} ist die AI-gestützte Chatmoderation ab sofort deaktiviert.',
-					'success',
-					'success',
+					"In {0} ist die AI-gestützte Chatmoderation ab sofort deaktiviert.",
+					"success",
+					"success",
 					channel.toString()
 				);
 				return this.interaction.followUp({ embeds: [successEmbed] });
@@ -243,33 +250,33 @@ export default class AimodCommand extends BaseCommand {
 					)
 				) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						'Für {0} ist die AI-gestützte Chatmoderation bereits deaktiviert.',
-						'error',
-						'error',
+						"Für {0} ist die AI-gestützte Chatmoderation bereits deaktiviert.",
+						"error",
+						"error",
 						role.toString()
 					);
 					return this.interaction.followUp({ embeds: [embed] });
 				}
 				data.guild.settings.aiModeration.excludedRoles.push(role.id);
-				data.guild.markModified('settings.aiModeration.excludedRoles');
+				data.guild.markModified("settings.aiModeration.excludedRoles");
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					'Für {0} ist die AI-gestützte Chatmoderation ab sofort deaktiviert.',
-					'success',
-					'success',
+					"Für {0} ist die AI-gestützte Chatmoderation ab sofort deaktiviert.",
+					"success",
+					"success",
 					role.toString()
 				);
 				return this.interaction.followUp({ embeds: [successEmbed] });
 			}
 		}
 
-		if (action === 'remove') {
+		if (action === "remove") {
 			if (!channel && !role) {
 				const embed: EmbedBuilder = this.client.createEmbed(
-					'Du musst einen Channel oder eine Rolle angeben.',
-					'error',
-					'error'
+					"Du musst einen Channel oder eine Rolle angeben.",
+					"error",
+					"error"
 				);
 				return this.interaction.followUp({ embeds: [embed] });
 			}
@@ -280,9 +287,9 @@ export default class AimodCommand extends BaseCommand {
 					)
 				) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						'In {0} ist die AI-gestützte Chatmoderation nicht deaktiviert.',
-						'error',
-						'error',
+						"In {0} ist die AI-gestützte Chatmoderation nicht deaktiviert.",
+						"error",
+						"error",
 						channel.toString()
 					);
 					return this.interaction.followUp({ embeds: [embed] });
@@ -292,14 +299,14 @@ export default class AimodCommand extends BaseCommand {
 						(id: string): boolean => id !== channel.id
 					);
 				data.guild.markModified(
-					'settings.aiModeration.excludedChannels'
+					"settings.aiModeration.excludedChannels"
 				);
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					'In {0} ist die AI-gestützte Chatmoderation ab sofort aktiviert.',
-					'success',
-					'success',
+					"In {0} ist die AI-gestützte Chatmoderation ab sofort aktiviert.",
+					"success",
+					"success",
 					channel.toString()
 				);
 				return this.interaction.followUp({ embeds: [successEmbed] });
@@ -311,9 +318,9 @@ export default class AimodCommand extends BaseCommand {
 					)
 				) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						'Für {0} ist die AI-gestützte Chatmoderation bereits deaktiviert.',
-						'error',
-						'error',
+						"Für {0} ist die AI-gestützte Chatmoderation bereits deaktiviert.",
+						"error",
+						"error",
 						role.toString()
 					);
 					return this.interaction.followUp({ embeds: [embed] });
@@ -322,20 +329,20 @@ export default class AimodCommand extends BaseCommand {
 					data.guild.settings.aiModeration.excludedRoles.filter(
 						(id: string): boolean => id !== role.id
 					);
-				data.guild.markModified('settings.aiModeration.excludedRoles');
+				data.guild.markModified("settings.aiModeration.excludedRoles");
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					'Für {0} ist die AI-gestützte Chatmoderation ab sofort aktiviert.',
-					'success',
-					'success',
+					"Für {0} ist die AI-gestützte Chatmoderation ab sofort aktiviert.",
+					"success",
+					"success",
 					role.toString()
 				);
 				return this.interaction.followUp({ embeds: [successEmbed] });
 			}
 		}
 
-		if (action === 'list') {
+		if (action === "list") {
 			const excludedChannelsAndRoles: string[] = [];
 
 			for (const channelID of data.guild.settings.aiModeration
@@ -344,7 +351,7 @@ export default class AimodCommand extends BaseCommand {
 					await this.interaction.guild.channels.cache.get(channelID);
 				if (channel)
 					excludedChannelsAndRoles.push(
-						this.client.emotes.channel + ' ' + channel.toString()
+						this.client.emotes.channel + " " + channel.toString()
 					);
 			}
 
@@ -355,7 +362,7 @@ export default class AimodCommand extends BaseCommand {
 				);
 				if (role)
 					excludedChannelsAndRoles.push(
-						this.client.emotes.ping + ' ' + role.toString()
+						this.client.emotes.ping + " " + role.toString()
 					);
 			}
 
@@ -363,22 +370,22 @@ export default class AimodCommand extends BaseCommand {
 				this.interaction,
 				10,
 				excludedChannelsAndRoles,
-				'Deaktivierte Channel und Rollen',
-				'Es sind bisher keine Channel oder Rollen von der AI-gestützten Chatmoderation ausgeschlossen worden.',
-				''
+				"Deaktivierte Channel und Rollen",
+				"Es sind bisher keine Channel oder Rollen von der AI-gestützten Chatmoderation ausgeschlossen worden.",
+				""
 			);
 		}
 	}
 
 	private async setThreshold(number: any, data: any): Promise<void> {
 		data.guild.settings.aiModeration.threshold = number;
-		data.guild.markModified('settings.aiModeration.threshold');
+		data.guild.markModified("settings.aiModeration.threshold");
 		await data.guild.save();
 
 		const embed: EmbedBuilder = this.client.createEmbed(
-			'Die AI-gestützte Chatmoderation warnt nun ab einer Bewertung von {0}.',
-			'success',
-			'success',
+			"Die AI-gestützte Chatmoderation warnt nun ab einer Bewertung von {0}.",
+			"success",
+			"success",
 			number
 		);
 		return this.interaction.followUp({ embeds: [embed] });
@@ -386,13 +393,13 @@ export default class AimodCommand extends BaseCommand {
 
 	private async setChannel(channel: any, data: any): Promise<void> {
 		data.guild.settings.aiModeration.alertChannel = channel.id;
-		data.guild.markModified('settings.aiModeration.alertChannel');
+		data.guild.markModified("settings.aiModeration.alertChannel");
 		await data.guild.save();
 
 		const embed: EmbedBuilder = this.client.createEmbed(
-			'Die AI-gestützte Chatmoderation sendet Warnungen ab sofort in {0}.',
-			'success',
-			'success',
+			"Die AI-gestützte Chatmoderation sendet Warnungen ab sofort in {0}.",
+			"success",
+			"success",
 			channel.toString()
 		);
 		return this.interaction.followUp({ embeds: [embed] });
@@ -401,44 +408,44 @@ export default class AimodCommand extends BaseCommand {
 	private async explain(): Promise<void> {
 		const explainText: string =
 			this.client.emotes.information +
-			' Die **Chatmoderation** von ' +
+			" Die **Chatmoderation** von " +
 			this.client.user!.username +
-			' ist eine Funktion, welche Nachrichten auf **potenziell unangemessene Inhalte** überprüft.\n' +
+			" ist eine Funktion, welche Nachrichten auf **potenziell unangemessene Inhalte** überprüft.\n" +
 			this.client.emotes.search +
-			' Dabei wird der Inhalt der gesendeten Nachrichten mit Hilfe einer **künstlichen Intelligenz** analysiert, und in verschiedenen Kategorien bewertet.\n\n' +
+			" Dabei wird der Inhalt der gesendeten Nachrichten mit Hilfe einer **künstlichen Intelligenz** analysiert, und in verschiedenen Kategorien bewertet.\n\n" +
 			this.client.emotes.arrow +
-			' Folgende Kategorien werden währenddessen überprüft, und bewertet:\n' +
+			" Folgende Kategorien werden währenddessen überprüft, und bewertet:\n" +
 			this.client.emotes.folder +
-			' **Unangemessenheit**\n' +
+			" **Unangemessenheit**\n" +
 			this.client.emotes.folder +
-			' **Schwere Unangemessenheit**\n' +
+			" **Schwere Unangemessenheit**\n" +
 			this.client.emotes.folder +
-			' **Beleidigung**\n' +
+			" **Beleidigung**\n" +
 			this.client.emotes.folder +
-			' **Vulgäre Inhalte**\n' +
+			" **Vulgäre Inhalte**\n" +
 			this.client.emotes.folder +
-			' **Bedrohung**\n\n' +
+			" **Bedrohung**\n\n" +
 			this.client.emotes.bot +
-			' Jeder Kategorie wird hierbei ein Wert zwischen **0 und 1** zugewiesen.\n' +
+			" Jeder Kategorie wird hierbei ein Wert zwischen **0 und 1** zugewiesen.\n" +
 			this.client.emotes.arrow +
-			' Dabei steht 0 für **nicht unangemessen**, und 1 für **sehr unangemessen**.\n\n' +
+			" Dabei steht 0 für **nicht unangemessen**, und 1 für **sehr unangemessen**.\n\n" +
 			this.client.emotes.search +
-			' Abschließend wird der errechnete **Durchschnittswert** mit dem individuell festgelegten **Schwellenwert verglichen**.\n' +
+			" Abschließend wird der errechnete **Durchschnittswert** mit dem individuell festgelegten **Schwellenwert verglichen**.\n" +
 			this.client.emotes.arrows.up +
-			' Ist der Durchschnittswert **höher** als der Schwellenwert, wird die Nachricht als **potenziell unangemessen** eingestuft und eine Warnung mit entsprechenden Handlungsmöglichkeiten wird an die Moderatoren gesendet.\n' +
+			" Ist der Durchschnittswert **höher** als der Schwellenwert, wird die Nachricht als **potenziell unangemessen** eingestuft und eine Warnung mit entsprechenden Handlungsmöglichkeiten wird an die Moderatoren gesendet.\n" +
 			this.client.emotes.arrows.down +
-			' Ist der Durchschnittswert **niedriger** als der Schwellenwert, wird die Nachricht als **nicht unangemessen** eingestuft und es ist kein Eingreifen erforderlich.\n\n' +
+			" Ist der Durchschnittswert **niedriger** als der Schwellenwert, wird die Nachricht als **nicht unangemessen** eingestuft und es ist kein Eingreifen erforderlich.\n\n" +
 			this.client.emotes.beta +
-			' **Hinweis:** Diese Funktion befindet sich derzeit noch in der **Beta-Phase** und kann daher Fehler enthalten. Die AI-gestützte Chatmoderation **handelt nicht selber**, sondern gibt lediglich Warnungen ab. Für jede Handlung ist **menschliches Eingreifen erforderlich**.';
+			" **Hinweis:** Diese Funktion befindet sich derzeit noch in der **Beta-Phase** und kann daher Fehler enthalten. Die AI-gestützte Chatmoderation **handelt nicht selber**, sondern gibt lediglich Warnungen ab. Für jede Handlung ist **menschliches Eingreifen erforderlich**.";
 
 		const embed: EmbedBuilder = this.client.createEmbed(
 			explainText,
 			null,
-			'normal'
+			"normal"
 		);
 		embed.setTitle(
 			this.client.emotes.flags.CertifiedModerator +
-				' Erklärung der AI-gestützten Chatmoderation'
+				" Erklärung der AI-gestützten Chatmoderation"
 		);
 		return this.interaction.followUp({ embeds: [embed] });
 	}

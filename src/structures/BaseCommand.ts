@@ -1,5 +1,5 @@
-import * as path from 'path';
-import BaseClient from '@structures/BaseClient';
+import * as path from "path";
+import BaseClient from "@structures/BaseClient";
 
 export default class BaseCommand {
 	public client: BaseClient;
@@ -7,12 +7,14 @@ export default class BaseCommand {
 	public help: object;
 	public slashCommand: object;
 	public guild: any;
+	public interaction: any;
 
 	constructor(
 		client: BaseClient,
 		{
 			name = null,
 			description = null,
+			localizedDescriptions = {},
 			dirname = null,
 			botPermissions = [],
 			memberPermissions = [],
@@ -27,6 +29,7 @@ export default class BaseCommand {
 		}: {
 			name?: string | null;
 			description?: string | null;
+			localizedDescriptions?: any | null;
 			dirname?: string | null;
 			botPermissions?: string[];
 			memberPermissions?: string[];
@@ -47,7 +50,7 @@ export default class BaseCommand {
 						10
 					)
 			  ]
-			: 'Misc';
+			: "Misc";
 		this.client = client;
 		this.conf = {
 			memberPermissions,
@@ -57,12 +60,12 @@ export default class BaseCommand {
 			staffOnly,
 			cooldown
 		};
-		this.help = { name, category, description };
+		this.help = { name, category, description, localizedDescriptions };
 		this.slashCommand = slashCommand;
 	}
 
-	protected translate(key: string, args?: any): string|undefined {
-		if(!this.guild) return undefined;
+	protected translate(key: string, args?: any): any {
+		if (!this.guild) return null;
 		return this.guild.translate(key, args);
 	}
 }

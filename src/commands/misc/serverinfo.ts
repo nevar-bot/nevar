@@ -1,13 +1,13 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, EmbedBuilder, ChannelType } from 'discord.js';
-import moment from 'moment';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, EmbedBuilder, ChannelType } from "discord.js";
+import moment from "moment";
 
 export default class ServerinfoCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'serverinfo',
-			description: 'Zeigt allgemeine Informationen über den Server an',
+			name: "serverinfo",
+			description: "Zeigt allgemeine Informationen über den Server an",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -52,70 +52,70 @@ export default class ServerinfoCommand extends BaseCommand {
 			).size;
 		const createdAt: string = moment(
 			this.interaction.guild.createdTimestamp
-		).format('DD.MM.YYYY HH:mm');
+		).format("DD.MM.YYYY HH:mm");
 		const createdAgo: string = this.client.utils.getRelativeTime(
 			this.interaction.guild.createdTimestamp
 		);
 
 		const text: string =
-			' Name: **' +
+			" Name: **" +
 			name +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.id +
-			' ID: **' +
+			" ID: **" +
 			id +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.crown +
-			' Eigentümer: **' +
+			" Eigentümer: **" +
 			owner.user.username +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.users +
-			' Mitglieder: **' +
+			" Mitglieder: **" +
 			memberCount +
-			'**\n\n' +
+			"**\n\n" +
 			this.client.emotes.list +
-			' Channel: **' +
+			" Channel: **" +
 			channelCount +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.folder +
-			' davon Kategorien: **' +
+			" davon Kategorien: **" +
 			categoryCount +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.channel +
-			' davon Text: **' +
+			" davon Text: **" +
 			textCount +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.voice +
-			' davon Sprache: **' +
+			" davon Sprache: **" +
 			voiceCount +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.thread +
-			' davon Threads: **' +
+			" davon Threads: **" +
 			threadCount +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.forum +
-			' davon Foren: **' +
+			" davon Foren: **" +
 			forumCount +
-			'**\n\n' +
+			"**\n\n" +
 			this.client.emotes.calendar +
-			' Erstellt am: **' +
+			" Erstellt am: **" +
 			createdAt +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.reminder +
-			' Erstellt vor: **' +
+			" Erstellt vor: **" +
 			createdAgo +
-			'**';
+			"**";
 
 		const serverInfoEmbed: EmbedBuilder = this.client.createEmbed(
-			'{0}',
-			'discord',
-			'normal',
+			"{0}",
+			"discord",
+			"normal",
 			text
 		);
 
 		serverInfoEmbed.setTitle(
 			this.client.emotes.shine +
-				' Informationen zu ' +
+				" Informationen zu " +
 				this.interaction.guild.name
 		);
 		serverInfoEmbed.setThumbnail(

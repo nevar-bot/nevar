@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { client } from '@src/app';
+import { Request, Response } from "express";
+import { client } from "@src/app";
 
 export async function get(req: Request, res: Response) {
 	const { app } = req;
@@ -10,8 +10,8 @@ export async function get(req: Request, res: Response) {
 	if (
 		!guildId ||
 		!amount ||
-		typeof guildId !== 'string' ||
-		typeof amount !== 'number'
+		typeof guildId !== "string" ||
+		typeof amount !== "number"
 	) {
 		return res.sendStatus(400);
 	}
@@ -45,14 +45,14 @@ export async function get(req: Request, res: Response) {
 			xp: entry.xp,
 			neededXp: client.levels.xpFor(entry.level + 1),
 			position: levelUser.position,
-			tag: client.users.cache.get(entry.userID)?.username || 'Unbekannt',
+			tag: client.users.cache.get(entry.userID)?.username || "Unbekannt",
 			userID: entry.userID,
 			guildID: entry.guildID,
 			avatar:
 				client.users.cache
 					.get(entry.userID)
 					?.displayAvatarURL({ size: 2048 }) ||
-				'https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png'
+				"https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png"
 		});
 	}
 
@@ -67,6 +67,6 @@ export async function get(req: Request, res: Response) {
 		}
 	};
 
-	res.setHeader('Content-Type', 'application/json');
+	res.setHeader("Content-Type", "application/json");
 	return res.end(JSON.stringify(json, null, 4));
 }

@@ -1,4 +1,4 @@
-import BaseClient from '@structures/BaseClient';
+import BaseClient from "@structures/BaseClient";
 
 export default class {
 	private client: BaseClient;
@@ -20,7 +20,7 @@ export default class {
 
 		if (!data.member?.suggestions) {
 			data.member.suggestions = [];
-			data.member.markModified('suggestion');
+			data.member.markModified("suggestion");
 			await data.member.save();
 		}
 
@@ -33,13 +33,13 @@ export default class {
 		if (
 			userHasAlreadyVoted &&
 			userHasAlreadyVoted.type === 1 &&
-			type === 'yes'
+			type === "yes"
 		)
 			return interaction.deferUpdate();
 		if (
 			userHasAlreadyVoted &&
 			userHasAlreadyVoted.type === 0 &&
-			type === 'no'
+			type === "no"
 		)
 			return interaction.deferUpdate();
 
@@ -49,11 +49,11 @@ export default class {
 
 		/* Get current votes */
 		const currentUpvotes: any = currentEmbedFooter
-			.split(' • ')[0]
-			.split(' ')[1];
+			.split(" • ")[0]
+			.split(" ")[1];
 		const currentDownVotes: any = currentEmbedFooter
-			.split(' • ')[1]
-			.split(' ')[1];
+			.split(" • ")[1]
+			.split(" ")[1];
 
 		/* Save to database */
 		data.member.suggestions = data.member.suggestions.filter(
@@ -61,16 +61,16 @@ export default class {
 		);
 		data.member.suggestions.push({
 			id: suggestionEmbedMessage.id,
-			type: type === 'yes' ? 1 : 0
+			type: type === "yes" ? 1 : 0
 		});
-		data.member.markModified('suggestion');
+		data.member.markModified("suggestion");
 		await data.member.save();
 
 		/* Update embed */
 		let newUpVotes: number = 0;
 		let newDownVotes: number = 0;
 
-		if (type === 'yes') {
+		if (type === "yes") {
 			newUpVotes = parseInt(String(Number(currentUpvotes) + 1));
 			newDownVotes = parseInt(
 				String(
@@ -79,7 +79,7 @@ export default class {
 						: parseInt(currentDownVotes)
 				)
 			);
-		} else if (type === 'no') {
+		} else if (type === "no") {
 			newUpVotes = parseInt(
 				String(
 					userHasAlreadyVoted
@@ -94,7 +94,7 @@ export default class {
 		if (newDownVotes < 0) newDownVotes = 0;
 
 		suggestionEmbedMessage.embeds[0].data.footer.text =
-			'👍 ' + newUpVotes + ' • 👎 ' + newDownVotes;
+			"👍 " + newUpVotes + " • 👎 " + newDownVotes;
 
 		/* Edit embed message */
 		suggestionEmbedMessage.edit({

@@ -1,4 +1,4 @@
-import { ActivityType, Guild } from 'discord.js';
+import { ActivityType, Guild } from "discord.js";
 
 function updatePresence(client: any): void {
 	const presences: any = client.config.presence;
@@ -8,10 +8,10 @@ function updatePresence(client: any): void {
 		if (presenceIndicator === presences.length) presenceIndicator = 0;
 		const presence = presences[presenceIndicator];
 
-		const message: string = presence['MESSAGE']
-			.replaceAll('{guilds}', client.format(client.guilds.cache.size))
+		const message: string = presence["MESSAGE"]
+			.replaceAll("{guilds}", client.format(client.guilds.cache.size))
 			.replaceAll(
-				'{users}',
+				"{users}",
 				client.format(
 					client.guilds.cache
 						.map((g: Guild): number => g.memberCount)
@@ -23,12 +23,12 @@ function updatePresence(client: any): void {
 			);
 
 		client.user.setPresence({
-			status: presence['STATUS'],
+			status: presence["STATUS"],
 			activities: [
 				{
 					name: message,
-					type: ActivityType[presence['TYPE']],
-					url: presence['URL'] ? presence['URL'] : null
+					type: ActivityType[presence["TYPE"]],
+					url: presence["URL"] ? presence["URL"] : null
 				}
 			]
 		});

@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -35,28 +35,28 @@ export default class {
 					.catch(() => {});
 				if (!member) return;
 				member.roles
-					.remove(roleId, 'REACTION ROLE')
+					.remove(roleId, "REACTION ROLE")
 					.catch((e: any): void => {
 						const errorText: string =
 							this.client.emotes.ping +
-							' Rolle: <@&' +
+							" Rolle: <@&" +
 							roleId +
-							'>\n' +
+							">\n" +
 							this.client.emotes.user +
-							' Nutzer: ' +
+							" Nutzer: " +
 							user.displayName +
-							' (@' +
+							" (@" +
 							user.username +
-							')';
+							")";
 
 						const errorEmbed: EmbedBuilder =
-							this.client.createEmbed(errorText, null, 'error');
+							this.client.createEmbed(errorText, null, "error");
 						errorEmbed.setTitle(
 							this.client.emotes.error +
-								' Entziehen von Reaction-Rolle fehlgeschlagen'
+								" Entziehen von Reaction-Rolle fehlgeschlagen"
 						);
 
-						reaction.guild.logAction(errorEmbed, 'moderation');
+						reaction.guild.logAction(errorEmbed, "moderation");
 					});
 			}
 		}

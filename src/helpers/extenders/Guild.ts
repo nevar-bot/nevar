@@ -6,7 +6,7 @@ import {
 	Role,
 	GuildMember,
 	EmbedBuilder
-} from 'discord.js';
+} from "discord.js";
 import BaseClient from "@structures/BaseClient";
 import i18next from "i18next";
 
@@ -14,7 +14,7 @@ const ROLE_MENTION: RegExp = /<?@?&?(\d{17,20})>?/;
 const CHANNEL_MENTION: RegExp = /<?#?(\d{17,20})>?/;
 const MEMBER_MENTION: RegExp = /<?@?!?(\d{17,20})>?/;
 
-declare module 'discord.js' {
+declare module "discord.js" {
 	interface Guild {
 		translate(key: string): any;
 		findMatchingChannels(query: string, type?: ChannelType[]): any;
@@ -24,21 +24,21 @@ declare module 'discord.js' {
 		logAction(
 			embed: EmbedBuilder,
 			type:
-				| 'moderation'
-				| 'member'
-				| 'guild'
-				| 'role'
-				| 'thread'
-				| 'channel'
+				| "moderation"
+				| "member"
+				| "guild"
+				| "role"
+				| "thread"
+				| "channel"
 		): Promise<any>;
 	}
 }
 
-Guild.prototype.translate = function(key: string, args: any = null): any {
+Guild.prototype.translate = function (key: string, args: any = null): any {
 	// @ts-ignore
-	const language: any = this.client.locales.get((this.data?.locale || "de_DE"));
+	const language: any = this.client.locales.get(this.data?.locale || "de-DE");
 	return language(key, args);
-}
+};
 
 Guild.prototype.findMatchingChannels = function (
 	query: string,
@@ -125,10 +125,10 @@ Guild.prototype.resolveMember = async function (
 					this.name,
 					null,
 					'<Guild||Prototype>.resolveMember("' +
-					query +
-					'", ' +
-					exact +
-					')'
+						query +
+						'", ' +
+						exact +
+						")"
 				);
 			});
 		if (fetched) return fetched;
@@ -140,7 +140,7 @@ Guild.prototype.resolveMember = async function (
 			e,
 			this.name,
 			null,
-			'<Guild||Prototype>.resolveMember("' + query + '", ' + exact + ')'
+			'<Guild||Prototype>.resolveMember("' + query + '", ' + exact + ")"
 		);
 	});
 
@@ -174,7 +174,7 @@ Guild.prototype.fetchMemberStats = async function (): Promise<any> {
 
 Guild.prototype.logAction = async function (
 	embed: EmbedBuilder,
-	type: 'moderation' | 'member' | 'guild' | 'role' | 'thread' | 'channel'
+	type: "moderation" | "member" | "guild" | "role" | "thread" | "channel"
 ): Promise<any> {
 	const { client } = this;
 	// @ts-ignore - Property 'findOrCreateGuild' does not exist on type 'Client'

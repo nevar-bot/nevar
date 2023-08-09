@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { AuditLogEvent, EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { AuditLogEvent, EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -15,20 +15,20 @@ export default class {
 
 		let banLogMessage: string =
 			this.client.emotes.user +
-			' Nutzer: ' +
+			" Nutzer: " +
 			ban.user.displayName +
-			' (@' +
+			" (@" +
 			ban.user.username +
-			')' +
-			' (' +
+			")" +
+			" (" +
 			ban.user.id +
-			')\n' +
+			")\n" +
 			this.client.emotes.text +
-			' Begründung: ' +
-			(ban.reason ? ban.reason : 'N/A');
+			" Begründung: " +
+			(ban.reason ? ban.reason : "N/A");
 
 		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent['MemberBanAdd'], limit: 1 })
+			.fetchAuditLogs({ type: AuditLogEvent["MemberBanAdd"], limit: 1 })
 			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
@@ -36,27 +36,27 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					banLogMessage +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
 		const banLogEmbed: EmbedBuilder = this.client.createEmbed(
 			banLogMessage,
 			null,
-			'error'
+			"error"
 		);
 		banLogEmbed.setTitle(
-			this.client.emotes.events.member.ban + ' Nutzer gebannt'
+			this.client.emotes.events.member.ban + " Nutzer gebannt"
 		);
 		banLogEmbed.setThumbnail(ban.user.displayAvatarURL());
 
-		await guild.logAction(banLogEmbed, 'moderation');
+		await guild.logAction(banLogEmbed, "moderation");
 	}
 }

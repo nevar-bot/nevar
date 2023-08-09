@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { client } from '@src/app';
+import { Request, Response } from "express";
+import { client } from "@src/app";
 
 export async function get(req: Request, res: Response) {
 	const { app } = req;
@@ -7,10 +7,10 @@ export async function get(req: Request, res: Response) {
 	const guildId: string = req.params.guildID;
 	const userId: string = req.params.memberID;
 
-	if (!guildId || typeof guildId !== 'string') {
+	if (!guildId || typeof guildId !== "string") {
 		return res.sendStatus(400);
 	}
-	if (!userId || typeof userId !== 'string') {
+	if (!userId || typeof userId !== "string") {
 		return res.sendStatus(400);
 	}
 
@@ -46,10 +46,10 @@ export async function get(req: Request, res: Response) {
 			guildID: guildId,
 			avatar:
 				member.user?.displayAvatarURL({ size: 2048 }) ||
-				'https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png'
+				"https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png"
 		}
 	};
 
-	res.setHeader('Content-Type', 'application/json');
+	res.setHeader("Content-Type", "application/json");
 	return res.end(JSON.stringify(jsonUser, null, 4));
 }

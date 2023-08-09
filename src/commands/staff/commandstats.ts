@@ -1,13 +1,13 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder } from 'discord.js';
-import mongoose from 'mongoose';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder } from "discord.js";
+import mongoose from "mongoose";
 
 export default class CommandstatsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'commandstats',
-			description: 'Zeigt wie oft ein Befehl ausgeführt wurde',
+			name: "commandstats",
+			description: "Zeigt wie oft ein Befehl ausgeführt wurde",
 			staffOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -27,9 +27,9 @@ export default class CommandstatsCommand extends BaseCommand {
 	private async sendStats(args: any[]): Promise<void> {
 		if (!args[0]) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Befehl angeben.',
-				'error',
-				'normal'
+				"Du musst einen Befehl angeben.",
+				"error",
+				"normal"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -37,9 +37,9 @@ export default class CommandstatsCommand extends BaseCommand {
 		const command: any = this.client.commands.get(args[0]);
 		if (!command) {
 			const invalidCommandEmbed: EmbedBuilder = this.client.createEmbed(
-				'Der Befehl existiert nicht.',
-				'error',
-				'normal'
+				"Der Befehl existiert nicht.",
+				"error",
+				"normal"
 			);
 			return this.message.reply({ embeds: [invalidCommandEmbed] });
 		}
@@ -47,15 +47,15 @@ export default class CommandstatsCommand extends BaseCommand {
 		const executedCommands: any = (
 			await (
 				await mongoose.connection.db
-					.collection('logs')
+					.collection("logs")
 					.find({ command: command.help.name })
 			).toArray()
 		).length;
 
 		const statsEmbed: EmbedBuilder = this.client.createEmbed(
-			'Der {0}-Command wurde {1}x ausgeführt.',
-			'arrow',
-			'normal',
+			"Der {0}-Command wurde {1}x ausgeführt.",
+			"arrow",
+			"normal",
 			command.help.name,
 			executedCommands
 		);

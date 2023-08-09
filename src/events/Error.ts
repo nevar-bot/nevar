@@ -1,4 +1,4 @@
-import BaseClient from '@structures/BaseClient';
+import BaseClient from "@structures/BaseClient";
 
 export default class {
 	private client: BaseClient;

@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { client } from '@src/app';
-import fs from 'fs';
-import moment from 'moment';
+import { Request, Response } from "express";
+import { client } from "@src/app";
+import fs from "fs";
+import moment from "moment";
 
 export async function get(req: Request, res: Response) {
 	const { app } = req;
@@ -10,14 +10,14 @@ export async function get(req: Request, res: Response) {
 
 	if (!month) {
 		const votes = JSON.parse(
-			fs.readFileSync('./assets/votes.json').toString()
+			fs.readFileSync("./assets/votes.json").toString()
 		);
 		const json: any = {
 			status_code: 200,
 			status_message: null,
 			res: votes
 		};
-		res.setHeader('Content-Type', 'application/json');
+		res.setHeader("Content-Type", "application/json");
 		return res.end(JSON.stringify(json, null, 4));
 	}
 
@@ -34,7 +34,7 @@ export async function get(req: Request, res: Response) {
 
 	if (requestedMonth) {
 		const votes = JSON.parse(
-			fs.readFileSync('./assets/votes.json').toString()
+			fs.readFileSync("./assets/votes.json").toString()
 		);
 		const json: any = {
 			status_code: 200,
@@ -44,7 +44,7 @@ export async function get(req: Request, res: Response) {
 				votes: votes[requestedMonth] || 0
 			}
 		};
-		res.setHeader('Content-Type', 'application/json');
+		res.setHeader("Content-Type", "application/json");
 		return res.end(JSON.stringify(json, null, 4));
 	} else {
 		return res.sendStatus(404);

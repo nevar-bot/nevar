@@ -1,22 +1,22 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import moment from 'moment';
-import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import moment from "moment";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 export default class WarnlistCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'warnlist',
-			description: 'Listet alle Verwarnungen eines Mitgliedes auf',
-			memberPermissions: ['KickMembers'],
+			name: "warnlist",
+			description: "Listet alle Verwarnungen eines Mitgliedes auf",
+			memberPermissions: ["KickMembers"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
-						.setName('mitglied')
-						.setDescription('Wähle ein Mitglied')
+						.setName("mitglied")
+						.setDescription("Wähle ein Mitglied")
 						.setRequired(true)
 				)
 			}
@@ -27,16 +27,16 @@ export default class WarnlistCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.listWarnings(interaction.options.getUser('mitglied'));
+		await this.listWarnings(interaction.options.getUser("mitglied"));
 	}
 
 	private async listWarnings(user: any): Promise<void> {
 		const member: any = await this.interaction.guild.resolveMember(user.id);
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst ein Mitglied angeben.',
-				'error',
-				'error'
+				"Du musst ein Mitglied angeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -54,23 +54,23 @@ export default class WarnlistCommand extends BaseCommand {
 		for (let warn of warnings) {
 			indicator++;
 			const text: string =
-				'### ' +
+				"### " +
 				this.client.emotes.ban +
-				' Warn ' +
+				" Warn " +
 				indicator +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				' Moderator: ' +
+				" Moderator: " +
 				warn.moderator +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				' Begründung: ' +
+				" Begründung: " +
 				warn.reason +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				' Verwarnt am: ' +
-				moment(warn.date).format('DD.MM.YYYY, HH:mm') +
-				'\n';
+				" Verwarnt am: " +
+				moment(warn.date).format("DD.MM.YYYY, HH:mm") +
+				"\n";
 			warnList.push(text);
 		}
 
@@ -78,8 +78,8 @@ export default class WarnlistCommand extends BaseCommand {
 			this.interaction,
 			5,
 			warnList,
-			'Warns von ' + member.user.username + ' (' + warnCount + ')',
-			member.user.username + ' hat keine Verwarnungen',
+			"Warns von " + member.user.username + " (" + warnCount + ")",
+			member.user.username + " hat keine Verwarnungen",
 			null
 		);
 	}

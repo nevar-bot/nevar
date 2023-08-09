@@ -1,14 +1,14 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import BaseGame from '@structures/BaseGame';
-import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import BaseGame from "@structures/BaseGame";
+import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 
 export default class FloodCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'flood',
+			name: "flood",
 			description:
-				'Du musst das gesamte Spielfeld mit einer Farbe füllen',
+				"Du musst das gesamte Spielfeld mit einer Farbe füllen",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -40,7 +40,7 @@ class FloodGame extends BaseGame {
 	public gameBoard: any[];
 	public maxTurns: number;
 	public turns: number;
-	public squares: string[] = ['🟥', '🟦', '🟧', '🟪', '🟩'];
+	public squares: string[] = ["🟥", "🟦", "🟧", "🟪", "🟩"];
 
 	public constructor(options: any = {}) {
 		super(options);
@@ -67,44 +67,44 @@ class FloodGame extends BaseGame {
 		this.maxTurns = Math.floor((25 * (this.length * 2)) / 26);
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
-			'Züge: ' +
+			"Züge: " +
 				this.turns +
-				'/' +
+				"/" +
 				this.maxTurns +
-				'\n\n' +
+				"\n\n" +
 				this.getBoardContent(),
-			'arrow',
-			'normal'
+			"arrow",
+			"normal"
 		);
 
 		const btn1: ButtonBuilder = this.options.client.createButton(
-			'flood_0',
+			"flood_0",
 			null,
-			'Primary',
+			"Primary",
 			this.squares[0]
 		);
 		const btn2: ButtonBuilder = this.options.client.createButton(
-			'flood_1',
+			"flood_1",
 			null,
-			'Primary',
+			"Primary",
 			this.squares[1]
 		);
 		const btn3: ButtonBuilder = this.options.client.createButton(
-			'flood_2',
+			"flood_2",
 			null,
-			'Primary',
+			"Primary",
 			this.squares[2]
 		);
 		const btn4: ButtonBuilder = this.options.client.createButton(
-			'flood_3',
+			"flood_3",
 			null,
-			'Primary',
+			"Primary",
 			this.squares[3]
 		);
 		const btn5: ButtonBuilder = this.options.client.createButton(
-			'flood_4',
+			"flood_4",
 			null,
-			'Primary',
+			"Primary",
 			this.squares[4]
 		);
 		const row: any = this.options.client.createMessageComponentsRow(
@@ -124,59 +124,59 @@ class FloodGame extends BaseGame {
 				btn.user.id === this.interaction.user.id
 		});
 
-		collector.on('collect', async (btn: any): Promise<any> => {
+		collector.on("collect", async (btn: any): Promise<any> => {
 			await btn.deferUpdate().catch((e: any): void => {});
 
 			const update: boolean | undefined = await this.updateGame(
-				this.squares[btn.customId.split('_')[1]],
+				this.squares[btn.customId.split("_")[1]],
 				msg
 			);
 			if (!update && update !== false) return collector.stop();
 			if (!update) return;
 
 			const embed: EmbedBuilder = this.options.client.createEmbed(
-				'Züge: ' +
+				"Züge: " +
 					this.turns +
-					'/' +
+					"/" +
 					this.maxTurns +
-					'\n\n' +
+					"\n\n" +
 					this.getBoardContent(),
-				'arrow',
-				'normal'
+				"arrow",
+				"normal"
 			);
 			return await msg.edit({ embeds: [embed], components: [row] });
 		});
 
-		collector.on('end', (_: any, reason: any) => {
-			if (reason === 'idle') return this.endGame(msg, false);
+		collector.on("end", (_: any, reason: any) => {
+			if (reason === "idle") return this.endGame(msg, false);
 		});
 	}
 
 	private getBoardContent(): string {
-		let board: string = '';
+		let board: string = "";
 		for (let y: number = 0; y < this.length; y++) {
 			for (let x: number = 0; x < this.length; x++) {
 				board += this.gameBoard[y * this.length + x];
 			}
-			board += '\n';
+			board += "\n";
 		}
 		return board;
 	}
 
 	private endGame(msg: any, result: any): any {
 		const GameOverMessage: string = result
-			? 'Du hast das Spiel nach **{turns}** Zügen gewonnen.'
-			: 'Du hast das Spiel nach **{turns}** Zügen verloren.';
+			? "Du hast das Spiel nach **{turns}** Zügen gewonnen."
+			: "Du hast das Spiel nach **{turns}** Zügen verloren.";
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
-			'Spiel beendet\n' +
+			"Spiel beendet\n" +
 				this.options.client.emotes.arrow +
-				' ' +
-				GameOverMessage.replace('{turns}', String(this.turns)) +
-				'\n\n' +
+				" " +
+				GameOverMessage.replace("{turns}", String(this.turns)) +
+				"\n\n" +
 				this.getBoardContent(),
-			'rocket',
-			'normal'
+			"rocket",
+			"normal"
 		);
 		return msg.edit({
 			embeds: [embed],

@@ -1,5 +1,5 @@
-import { EmbedBuilder } from 'discord.js';
-import BaseClient from '@structures/BaseClient';
+import { EmbedBuilder } from "discord.js";
+import BaseClient from "@structures/BaseClient";
 
 export default class {
 	private client: BaseClient;
@@ -32,7 +32,7 @@ export default class {
 				inviterData.invites.find(
 					(i: any): boolean => i.code === invite.code
 				).left++;
-				inviterData.markModified('invites');
+				inviterData.markModified("invites");
 				await inviterData.save();
 			}
 		}
@@ -40,29 +40,29 @@ export default class {
 		/* Send log */
 		const memberLeaveText: string =
 			this.client.emotes.edit +
-			' Anzeigename: ' +
+			" Anzeigename: " +
 			member.user.displayName +
-			'\n' +
+			"\n" +
 			this.client.emotes.user +
-			' Nutzername: ' +
+			" Nutzername: " +
 			member.user.username +
-			'\n' +
+			"\n" +
 			this.client.emotes.id +
-			' ID: ' +
+			" ID: " +
 			member.id;
 
 		const memberLeaveEmbed: EmbedBuilder = this.client.createEmbed(
 			memberLeaveText,
 			null,
-			'error'
+			"error"
 		);
 		memberLeaveEmbed.setTitle(
 			this.client.emotes.events.member.ban +
-				'Mitglied hat den Server verlassen'
+				"Mitglied hat den Server verlassen"
 		);
 		memberLeaveEmbed.setThumbnail(member.user.displayAvatarURL());
 
-		await guild.logAction(memberLeaveEmbed, 'member');
+		await guild.logAction(memberLeaveEmbed, "member");
 
 		/* Send farewell message */
 		if (guildData.settings?.farewell.enabled) {
@@ -75,7 +75,7 @@ export default class {
 					.replaceAll(/{server:name}/g, guild.name)
 					.replaceAll(/{server:id}/g, guild.id)
 					.replaceAll(/{server:membercount}/g, guild.memberCount)
-					.replaceAll(/{newline}/g, '\n');
+					.replaceAll(/{newline}/g, "\n");
 			}
 
 			const farewellMessage: string = parseMessage(
@@ -88,36 +88,36 @@ export default class {
 					.catch((e: any): void => {
 						const errorText: string =
 							this.client.emotes.user +
-							' Mitglied: ' +
+							" Mitglied: " +
 							member.user.displayName +
-							' (@' +
+							" (@" +
 							member.user.username +
-							')' +
-							'\n' +
+							")" +
+							"\n" +
 							this.client.emotes.arrow +
-							' Kanal: ' +
+							" Kanal: " +
 							guildData.settings.welcome.channel;
 
 						const errorEmbed: EmbedBuilder =
-							this.client.createEmbed(errorText, null, 'error');
+							this.client.createEmbed(errorText, null, "error");
 						errorEmbed.setTitle(
 							this.client.emotes.error +
-								' Verabschiedungsnachricht fehlgeschlagen'
+								" Verabschiedungsnachricht fehlgeschlagen"
 						);
 						errorEmbed.setThumbnail(member.user.displayAvatarURL());
 
-						guild.logAction(errorEmbed, 'guild');
+						guild.logAction(errorEmbed, "guild");
 					}));
 
-			if (guildData.settings.farewell.type === 'embed') {
+			if (guildData.settings.farewell.type === "embed") {
 				const farewellEmbed: EmbedBuilder = this.client.createEmbed(
 					farewellMessage,
 					null,
-					'normal'
+					"normal"
 				);
 				farewellEmbed.setColor(
 					guildData.settings.farewell.color ||
-						this.client.config.embeds['DEFAULT_COLOR']
+						this.client.config.embeds["DEFAULT_COLOR"]
 				);
 				if (guildData.settings.farewell?.thumbnail)
 					farewellEmbed.setThumbnail(member.user.displayAvatarURL());
@@ -126,51 +126,51 @@ export default class {
 					.catch((e: any): void => {
 						const errorText: string =
 							this.client.emotes.user +
-							' Mitglied: ' +
+							" Mitglied: " +
 							member.user.displayName +
-							' (@' +
+							" (@" +
 							member.user.username +
-							')' +
-							'\n' +
+							")" +
+							"\n" +
 							this.client.emotes.arrow +
-							' Kanal: ' +
+							" Kanal: " +
 							farewellChannel.toString();
 
 						const errorEmbed: EmbedBuilder =
-							this.client.createEmbed(errorText, null, 'error');
+							this.client.createEmbed(errorText, null, "error");
 						errorEmbed.setTitle(
 							this.client.emotes.error +
-								' Verabschiedungsnachricht fehlgeschlagen'
+								" Verabschiedungsnachricht fehlgeschlagen"
 						);
 						errorEmbed.setThumbnail(member.user.displayAvatarURL());
 
-						return guild.logAction(errorEmbed, 'guild');
+						return guild.logAction(errorEmbed, "guild");
 					});
-			} else if (guildData.settings.welcome.type === 'text') {
+			} else if (guildData.settings.welcome.type === "text") {
 				return farewellChannel
 					.send({ content: farewellMessage })
 					.catch((e: any): void => {
 						const errorText: string =
 							this.client.emotes.user +
-							' Mitglied: ' +
+							" Mitglied: " +
 							member.user.displayName +
-							' (@' +
+							" (@" +
 							member.user.username +
-							')' +
-							'\n' +
+							")" +
+							"\n" +
 							this.client.emotes.arrow +
-							' Kanal: ' +
+							" Kanal: " +
 							farewellChannel.toString();
 
 						const errorEmbed: EmbedBuilder =
-							this.client.createEmbed(errorText, null, 'error');
+							this.client.createEmbed(errorText, null, "error");
 						errorEmbed.setTitle(
 							this.client.emotes.error +
-								' Verabschiedungsnachricht fehlgeschlagen'
+								" Verabschiedungsnachricht fehlgeschlagen"
 						);
 						errorEmbed.setThumbnail(member.user.displayAvatarURL());
 
-						return guild.logAction(errorEmbed, 'guild');
+						return guild.logAction(errorEmbed, "guild");
 					});
 			}
 		}

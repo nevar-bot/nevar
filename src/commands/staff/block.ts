@@ -1,13 +1,13 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder } from 'discord.js';
-import moment from 'moment';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder } from "discord.js";
+import moment from "moment";
 
 export default class BlockCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'block',
-			description: 'Blockiert einen Server oder Nutzer',
+			name: "block",
+			description: "Blockiert einen Server oder Nutzer",
 			staffOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -25,21 +25,21 @@ export default class BlockCommand extends BaseCommand {
 		const action: string = args[0].toLowerCase();
 		args.shift();
 		switch (action) {
-			case 'add':
+			case "add":
 				await this.block(args);
 				break;
-			case 'remove':
+			case "remove":
 				await this.unblock(args);
 				break;
-			case 'list':
+			case "list":
 				await this.listBlocked();
 				break;
 			default:
 				const invalidOptionsEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Du musst zwischen add, remove und list wählen.',
-						'error',
-						'error'
+						"Du musst zwischen add, remove und list wählen.",
+						"error",
+						"error"
 					);
 				await message.reply({ embeds: [invalidOptionsEmbed] });
 				break;
@@ -49,25 +49,25 @@ export default class BlockCommand extends BaseCommand {
 	private async block(args: any[]): Promise<void> {
 		// get id and reason
 		const id: string = args.shift();
-		const reason: string = args.join(' ') || 'Kein Grund angegeben';
+		const reason: string = args.join(" ") || "Kein Grund angegeben";
 
 		// check if target is a user or guild
 		const type: string = (await this.client.users.fetch(id).catch(() => {}))
-			? 'user'
-			: 'guild';
+			? "user"
+			: "guild";
 
 		// fetch target guild/user
 		const target: any =
-			type === 'user'
+			type === "user"
 				? await this.client.users.fetch(id).catch(() => {})
 				: await this.client.guilds.fetch(id).catch(() => {});
 
 		// no target found
 		if (!target) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst die ID eines Servers oder Nutzers angeben.',
-				'error',
-				'error'
+				"Du musst die ID eines Servers oder Nutzers angeben.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -75,9 +75,9 @@ export default class BlockCommand extends BaseCommand {
 		// target is client
 		if (target.id === this.client.user!.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du kannst mich nicht blockieren.',
-				'error',
-				'error'
+				"Du kannst mich nicht blockieren.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -85,45 +85,45 @@ export default class BlockCommand extends BaseCommand {
 		// target is message author
 		if (target.id === this.message.author.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du kannst dich nicht selbst blockieren.',
-				'error',
-				'error'
+				"Du kannst dich nicht selbst blockieren.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		// target is support server
-		if (target.id === this.client.config.support['ID']) {
+		if (target.id === this.client.config.support["ID"]) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du kannst den Support-Server nicht blockieren.',
-				'error',
-				'error'
+				"Du kannst den Support-Server nicht blockieren.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		// target is bot owner
-		if (this.client.config.general['OWNER_IDS'].includes(target.id)) {
+		if (this.client.config.general["OWNER_IDS"].includes(target.id)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du kannst den Bot-Eigentümer nicht blockieren.',
-				'error',
-				'error'
+				"Du kannst den Bot-Eigentümer nicht blockieren.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		// get target data
 		const targetData: any =
-			type === 'user'
+			type === "user"
 				? await this.client.findOrCreateUser(id)
 				: await this.client.findOrCreateGuild(id);
 
 		// target is already blocked
 		if (targetData.blocked.state) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Dieser Nutzer oder Server ist bereits blockiert.',
-				'error',
-				'error'
+				"Dieser Nutzer oder Server ist bereits blockiert.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -134,19 +134,19 @@ export default class BlockCommand extends BaseCommand {
 			reason: reason,
 			date: Date.now(),
 			moderator: this.message.author.username,
-			name: type === 'user' ? target.username : target.name
+			name: type === "user" ? target.username : target.name
 		};
-		targetData.markModified('blocked');
+		targetData.markModified("blocked");
 		await targetData.save();
 
 		const message: string =
-			type === 'user'
-				? 'Nutzer ' + target.username
-				: 'Server ' + target.name;
+			type === "user"
+				? "Nutzer " + target.username
+				: "Server " + target.name;
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'Der ' + message + ' wurde blockiert.',
-			'success',
-			'success'
+			"Der " + message + " wurde blockiert.",
+			"success",
+			"success"
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -157,9 +157,9 @@ export default class BlockCommand extends BaseCommand {
 
 		if (!id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst die ID eines Servers oder Nutzers angeben.',
-				'error',
-				'error'
+				"Du musst die ID eines Servers oder Nutzers angeben.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -172,9 +172,9 @@ export default class BlockCommand extends BaseCommand {
 		// no target found
 		if (!targetData) {
 			const noTargetEmbed: EmbedBuilder = this.client.createEmbed(
-				'Es wurde kein Nutzer oder Server mit dieser ID gefunden.',
-				'error',
-				'error'
+				"Es wurde kein Nutzer oder Server mit dieser ID gefunden.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [noTargetEmbed] });
 		}
@@ -182,9 +182,9 @@ export default class BlockCommand extends BaseCommand {
 		// target is not blocked
 		if (!targetData.blocked.state) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Dieser Nutzer oder Server ist nicht blockiert.',
-				'error',
-				'error'
+				"Dieser Nutzer oder Server ist nicht blockiert.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -198,13 +198,13 @@ export default class BlockCommand extends BaseCommand {
 			moderator: null,
 			name: null
 		};
-		targetData.markModified('blocked');
+		targetData.markModified("blocked");
 		await targetData.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'{0} wurde entblockt.',
-			'success',
-			'success',
+			"{0} wurde entblockt.",
+			"success",
+			"success",
 			name
 		);
 		return this.message.reply({ embeds: [successEmbed] });
@@ -215,63 +215,63 @@ export default class BlockCommand extends BaseCommand {
 
 		// blocked users
 		const blockedUsers = await this.client.usersData.find({
-			'blocked.state': true
+			"blocked.state": true
 		});
 		for (let userData of blockedUsers) {
 			const user: any = await this.client.users
 				.fetch(userData.id)
 				.catch(() => {});
 			const text: string =
-				' **' +
+				" **" +
 				(user ? user.username : userData.blocked.name) +
-				'** (' +
+				"** (" +
 				(user ? user.id : userData.id) +
-				')\n' +
+				")\n" +
 				this.client.emotes.arrow +
-				' Typ: Nutzer\n' +
+				" Typ: Nutzer\n" +
 				this.client.emotes.arrow +
-				' Begründung: ' +
+				" Begründung: " +
 				userData.blocked.reason +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				' Blockiert am: ' +
-				moment(userData.blocked.date).format('DD.MM.YYYY HH:mm') +
-				'\n' +
+				" Blockiert am: " +
+				moment(userData.blocked.date).format("DD.MM.YYYY HH:mm") +
+				"\n" +
 				this.client.emotes.arrow +
-				' Blockiert von: ' +
+				" Blockiert von: " +
 				userData.blocked.moderator +
-				'\n';
+				"\n";
 			blocked.push(text);
 		}
 
 		// blocked guilds
 		const blockedGuilds = await this.client.guildsData.find({
-			'blocked.state': true
+			"blocked.state": true
 		});
 		for (let guildData of blockedGuilds) {
 			const guild: any = await this.client.guilds
 				.fetch(guildData.id)
 				.catch(() => {});
 			const text: string =
-				' **' +
+				" **" +
 				(guild ? guild.name : guildData.blocked.name) +
-				'** (' +
+				"** (" +
 				(guild ? guild.id : guildData.id) +
-				')\n' +
+				")\n" +
 				this.client.emotes.arrow +
-				' Typ: Server\n' +
+				" Typ: Server\n" +
 				this.client.emotes.arrow +
-				' Begründung: ' +
+				" Begründung: " +
 				guildData.blocked.reason +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				' Blockiert am: ' +
-				moment(guildData.blocked.date).format('DD.MM.YYYY HH:mm') +
-				'\n' +
+				" Blockiert am: " +
+				moment(guildData.blocked.date).format("DD.MM.YYYY HH:mm") +
+				"\n" +
 				this.client.emotes.arrow +
-				' Blockiert von: ' +
+				" Blockiert von: " +
 				guildData.blocked.moderator +
-				'\n';
+				"\n";
 			blocked.push(text);
 		}
 
@@ -279,9 +279,9 @@ export default class BlockCommand extends BaseCommand {
 			this.message,
 			3,
 			blocked,
-			'Blockierte Nutzer und Server',
-			'Es sind keine Nutzer oder Server blockiert',
-			'ban'
+			"Blockierte Nutzer und Server",
+			"Es sind keine Nutzer oder Server blockiert",
+			"ban"
 		);
 	}
 }

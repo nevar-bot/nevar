@@ -1,11 +1,11 @@
-import BaseClient from '@structures/BaseClient';
+import BaseClient from "@structures/BaseClient";
 import {
 	ActionRowBuilder,
 	AnyComponentBuilder,
 	ModalBuilder,
 	TextInputBuilder,
 	TextInputStyle
-} from 'discord.js';
+} from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -34,16 +34,16 @@ export default class {
 		const { user } = interaction;
 
 		const reasonModal: ModalBuilder = new ModalBuilder()
-			.setTitle('Idee ' + (type === 'accept' ? 'annehmen' : 'ablehnen'))
+			.setTitle("Idee " + (type === "accept" ? "annehmen" : "ablehnen"))
 			.setCustomId(
-				user.id + '_suggestion_' + this.client.utils.getRandomKey(10)
+				user.id + "_suggestion_" + this.client.utils.getRandomKey(10)
 			);
 
 		const reasonInputField: TextInputBuilder = new TextInputBuilder()
-			.setLabel('Gib ggf. einen Grund an')
+			.setLabel("Gib ggf. einen Grund an")
 			.setRequired(false)
 			.setStyle(TextInputStyle.Short)
-			.setCustomId('reason');
+			.setCustomId("reason");
 
 		const modalComponentsRow: ActionRowBuilder<AnyComponentBuilder> =
 			this.client.createMessageComponentsRow(reasonInputField);
@@ -67,44 +67,44 @@ export default class {
 		});
 		if (modalSubmitCollector) {
 			const givenReason: string =
-				modalSubmitCollector.fields.getTextInputValue('reason') ||
-				'Kein Grund angegeben';
+				modalSubmitCollector.fields.getTextInputValue("reason") ||
+				"Kein Grund angegeben";
 
 			if (suggestionEmbed.author.id !== this.client.user!.id)
 				return modalSubmitCollector.deferUpdate();
 
 			const embedData: any = suggestionEmbed.embeds[0].data;
 
-			if (type === 'accept') {
-				embedData.title = 'Angenommene ' + suggestionEmbedTitle;
+			if (type === "accept") {
+				embedData.title = "Angenommene " + suggestionEmbedTitle;
 				embedData.description =
 					suggestionEmbedDescription +
-					'\n\n' +
+					"\n\n" +
 					this.client.emotes.user +
-					' Moderator: ' +
+					" Moderator: " +
 					user.displayName +
-					' (@' +
+					" (@" +
 					user.username +
-					')' +
-					'\n' +
+					")" +
+					"\n" +
 					this.client.emotes.arrow +
-					' Begründung: ' +
+					" Begründung: " +
 					givenReason;
 				embedData.color = 5763719;
-			} else if (type === 'decline') {
-				embedData.title = 'Abgelehnte ' + suggestionEmbedTitle;
+			} else if (type === "decline") {
+				embedData.title = "Abgelehnte " + suggestionEmbedTitle;
 				embedData.description =
 					suggestionEmbedDescription +
-					'\n\n' +
+					"\n\n" +
 					this.client.emotes.arrow +
-					' Moderator: ' +
+					" Moderator: " +
 					user.displayName +
-					' (@' +
+					" (@" +
 					user.username +
-					')' +
-					'\n' +
+					")" +
+					"\n" +
 					this.client.emotes.arrow +
-					' Begründung: ' +
+					" Begründung: " +
 					givenReason;
 				embedData.color = 15548997;
 			}

@@ -1,27 +1,27 @@
-import * as fs from 'fs';
-import * as util from 'util';
-import * as path from 'path';
-import { ApplicationCommandType, Events } from 'discord.js';
+import * as fs from "fs";
+import * as util from "util";
+import * as path from "path";
+import { ApplicationCommandType, Events } from "discord.js";
 const readdir = util.promisify(fs.readdir);
-import Utils from '@helpers/Utils';
-import BaseClient from '@structures/BaseClient';
+import Utils from "@helpers/Utils";
+import BaseClient from "@structures/BaseClient";
 import { languages } from "@helpers/Language";
 
 export default class Loader {
 	static async loadCommands(client: BaseClient): Promise<void> {
 		let success: number = 0;
 		let failed: number = 0;
-		client.logger.log('Loading commands...');
+		client.logger.log("Loading commands...");
 
-		const directories: string[] = await readdir('./build/commands/');
+		const directories: string[] = await readdir("./build/commands/");
 		for (const directory of directories) {
 			const commands: string[] = await readdir(
-				'./build/commands/' + directory + '/'
+				"./build/commands/" + directory + "/"
 			);
 			for (const command of commands) {
-				if (path.extname(command) !== '.js') continue;
+				if (path.extname(command) !== ".js") continue;
 				const response = await client.loadCommand(
-					'../commands/' + directory,
+					"../commands/" + directory,
 					command
 				);
 				if (response) {
@@ -29,33 +29,33 @@ export default class Loader {
 					client.logger.error(
 						"Couldn't load command " +
 							command +
-							': ' +
+							": " +
 							response.stack
 					);
 				} else success++;
 			}
 		}
 		client.logger.log(
-			'Loaded ' +
+			"Loaded " +
 				(success + failed) +
-				' commands. Success (' +
+				" commands. Success (" +
 				success +
-				') Failed (' +
+				") Failed (" +
 				failed +
-				')'
+				")"
 		);
 	}
 
 	static async loadEvents(client: BaseClient): Promise<void> {
-		client.logger.log('Loading events...');
-		const directory = 'build/events';
+		client.logger.log("Loading events...");
+		const directory = "build/events";
 		let success: number = 0;
 		let failed: number = 0;
 
 		for (const filePath of Utils.recursiveReadDirSync(directory)) {
 			const file: string = path.basename(filePath);
 			try {
-				const eventName: string = path.basename(file, '.js');
+				const eventName: string = path.basename(file, ".js");
 				const event = new (await import(filePath)).default(client);
 				// @ts-ignore - Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'typeof Events'
 				if (!Events[eventName]) Events[eventName] = eventName;
@@ -67,17 +67,17 @@ export default class Loader {
 				delete require.cache[require.resolve(filePath)];
 			} catch (e: any) {
 				failed++;
-				client.logger.error("Couldn't load event " + file + ': ' + e);
+				client.logger.error("Couldn't load event " + file + ": " + e);
 			}
 		}
 		client.logger.log(
-			'Loaded ' +
+			"Loaded " +
 				(success + failed) +
-				' events. Success (' +
+				" events. Success (" +
 				success +
-				') Failed (' +
+				") Failed (" +
 				failed +
-				')'
+				")"
 		);
 	}
 
@@ -86,14 +86,14 @@ export default class Loader {
 		let failed: number = 0;
 		let userContexts: number = 0;
 		let messageContexts: number = 0;
-		client.logger.log('Loading context menus...');
+		client.logger.log("Loading context menus...");
 
-		const directory: any = await readdir('./build/contexts');
+		const directory: any = await readdir("./build/contexts");
 		for (const context of directory) {
-			if (path.extname(context) !== '.js') continue;
+			if (path.extname(context) !== ".js") continue;
 			try {
 				const props = new (
-					await import('@contexts/' + context)
+					await import("@contexts/" + context)
 				).default(client);
 				if (props.init) {
 					props.init(client);
@@ -107,27 +107,28 @@ export default class Loader {
 			} catch (e: any) {
 				failed++;
 				client.logger.error(
-					"Couldn't load context menu " + context + ': ' + e
+					"Couldn't load context menu " + context + ": " + e
 				);
 			}
 		}
 		client.logger.log(
-			'Loaded ' +
+			"Loaded " +
 				(success + failed) +
-				' context menus (' +
+				" context menus (" +
 				userContexts +
-				' user, ' +
+				" user, " +
 				messageContexts +
-				' message). Success (' +
+				" message). Success (" +
 				success +
-				') Failed (' +
+				") Failed (" +
 				failed +
-				')'
+				")"
 		);
 	}
 
 	static async loadLanguages(client: BaseClient): Promise<void> {
 		client.locales = await languages();
-		client.logger.log('Loaded ' + client.locales.length + ' languages');
+		const locales: string = Array.from(client.locales.keys()).join(", ");
+		client.logger.log("Loaded " + client.locales.size + " languages (" + locales + ")");
 	}
 }

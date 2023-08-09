@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { client } from '@src/app';
+import { Request, Response } from "express";
+import { client } from "@src/app";
 
 export async function get(req: Request, res: Response) {
 	const { app } = req;
@@ -24,6 +24,6 @@ export async function get(req: Request, res: Response) {
 		}
 	};
 
-	res.setHeader('Content-Type', 'application/json');
+	res.setHeader("Content-Type", "application/json");
 	res.end(JSON.stringify(json, null, 4));
 }

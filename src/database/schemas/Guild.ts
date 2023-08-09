@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
-import { Model, Schema, model, Document } from 'mongoose';
+import * as mongoose from "mongoose";
+import { Model, Schema, model, Document } from "mongoose";
 
 const GuildSchema: Schema = new mongoose.Schema({
 	id: { type: String, default: null },
@@ -7,7 +7,7 @@ const GuildSchema: Schema = new mongoose.Schema({
 	members: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Member'
+			ref: "Member"
 		}
 	],
 	blocked: {
@@ -55,7 +55,7 @@ const GuildSchema: Schema = new mongoose.Schema({
 			levels: {
 				enabled: false,
 				channel: null,
-				message: 'GG {user:username}, du bist jetzt Level {level}!',
+				message: "GG {user:username}, du bist jetzt Level {level}!",
 				roles: [],
 				doubleXP: [],
 				exclude: {
@@ -90,7 +90,7 @@ const GuildSchema: Schema = new mongoose.Schema({
 			aiChat: {
 				enabled: false,
 				channel: null,
-				mode: 'normal'
+				mode: "normal"
 			},
 			notifiers: {
 				youtube: {
@@ -107,5 +107,5 @@ const GuildSchema: Schema = new mongoose.Schema({
 	}
 });
 
-const Guild: Model<any> = model('Guild', GuildSchema);
+const Guild: Model<any> = model("Guild", GuildSchema);
 export default Guild;

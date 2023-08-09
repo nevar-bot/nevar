@@ -1,15 +1,15 @@
-import { EmbedBuilder, Guild } from 'discord.js';
-import BaseClient from '@structures/BaseClient';
-import { google } from 'googleapis';
+import { EmbedBuilder, Guild } from "discord.js";
+import BaseClient from "@structures/BaseClient";
+import { google } from "googleapis";
 
 async function getLastVideo(
 	youtubeInstance: any,
 	channelId: string
 ): Promise<object | null> {
 	const response: any = await youtubeInstance.search.list({
-		part: 'snippet',
+		part: "snippet",
 		channelId: channelId,
-		order: 'date',
+		order: "date",
 		maxResults: 1
 	});
 
@@ -28,8 +28,8 @@ async function getLastVideo(
 export default {
 	init(client: BaseClient): void {
 		const youtube: any = google.youtube({
-			version: 'v3',
-			auth: client.config.apikeys['GOOGLE']
+			version: "v3",
+			auth: client.config.apikeys["GOOGLE"]
 		});
 
 		const checkGuilds = async (): Promise<void> => {
@@ -53,7 +53,7 @@ export default {
 									(c: any): boolean => c.id === channel.id
 								).lastVideoId = lastVideo.id;
 								guildData.markModified(
-									'settings.notifiers.youtube.channels'
+									"settings.notifiers.youtube.channels"
 								);
 								await guildData.save();
 								const announcementChannel: any =
@@ -64,18 +64,18 @@ export default {
 								if (announcementChannel) {
 									const announcementEmbed: EmbedBuilder =
 										client.createEmbed(
-											'### {0} [{1}]({2})',
+											"### {0} [{1}]({2})",
 											null,
-											'normal',
+											"normal",
 											client.emotes.link,
 											lastVideo.title,
 											lastVideo.url
 										);
 									announcementEmbed.setTitle(
 										client.emotes.arrow +
-											' ' +
+											" " +
 											lastVideo.username +
-											' hat ein neues Video hochgeladen!'
+											" hat ein neues Video hochgeladen!"
 									);
 									announcementEmbed.setImage(
 										lastVideo.thumbnail

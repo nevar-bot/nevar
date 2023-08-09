@@ -1,15 +1,15 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, ChannelType, EmbedBuilder } from 'discord.js';
-import Utils from '@helpers/Utils';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, ChannelType, EmbedBuilder } from "discord.js";
+import Utils from "@helpers/Utils";
 
 export default class AutoreactCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'autoreact',
-			description: 'Verwaltet das automatische Reagieren auf Nachrichten',
-			memberPermissions: ['ManageGuild'],
-			botPermissions: ['AddReactions'],
+			name: "autoreact",
+			description: "Verwaltet das automatische Reagieren auf Nachrichten",
+			memberPermissions: ["ManageGuild"],
+			botPermissions: ["AddReactions"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,20 +17,20 @@ export default class AutoreactCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
 						option
-							.setName('aktion')
-							.setDescription('Wähle aus den folgenden Aktionen')
+							.setName("aktion")
+							.setDescription("Wähle aus den folgenden Aktionen")
 							.setRequired(true)
 							.addChoices(
-								{ name: 'hinzufügen', value: 'add' },
-								{ name: 'entfernen', value: 'remove' },
-								{ name: 'liste', value: 'list' }
+								{ name: "hinzufügen", value: "add" },
+								{ name: "entfernen", value: "remove" },
+								{ name: "liste", value: "list" }
 							)
 					)
 					.addChannelOption((option: any) =>
 						option
-							.setName('channel')
+							.setName("channel")
 							.setDescription(
-								'Wähle, für welchen Channel du die Aktion ausführen möchtest'
+								"Wähle, für welchen Channel du die Aktion ausführen möchtest"
 							)
 							.setRequired(false)
 							.addChannelTypes(
@@ -42,8 +42,8 @@ export default class AutoreactCommand extends BaseCommand {
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName('emoji')
-							.setDescription('Gib den gewünschten Emoji ein')
+							.setName("emoji")
+							.setDescription("Gib den gewünschten Emoji ein")
 							.setRequired(false)
 					)
 			}
@@ -55,32 +55,32 @@ export default class AutoreactCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 
-		const action: string = interaction.options.getString('aktion');
+		const action: string = interaction.options.getString("aktion");
 
 		switch (action) {
-			case 'add':
+			case "add":
 				await this.addAutoReact(
 					data,
-					interaction.options.getChannel('channel'),
-					interaction.options.getString('emoji')
+					interaction.options.getChannel("channel"),
+					interaction.options.getString("emoji")
 				);
 				break;
-			case 'remove':
+			case "remove":
 				await this.removeAutoReact(
 					data,
-					interaction.options.getChannel('channel'),
-					interaction.options.getString('emoji')
+					interaction.options.getChannel("channel"),
+					interaction.options.getString("emoji")
 				);
 				break;
-			case 'list':
+			case "list":
 				await this.showList(data);
 				break;
 			default:
 				const unexpectedErrorEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Ein unerwarteter Fehler ist aufgetreten.',
-						'error',
-						'error'
+						"Ein unerwarteter Fehler ist aufgetreten.",
+						"error",
+						"error"
 					);
 				return this.interaction.followUp({
 					embeds: [unexpectedErrorEmbed]
@@ -96,9 +96,9 @@ export default class AutoreactCommand extends BaseCommand {
 		/* Missing arguments */
 		if (!channel || !channel.id || !emote) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Channel und Emoji eingeben.',
-				'error',
-				'error'
+				"Du musst einen Channel und Emoji eingeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -107,9 +107,9 @@ export default class AutoreactCommand extends BaseCommand {
 		const { stringIsEmoji, stringIsCustomEmoji } = Utils;
 		if (!stringIsEmoji(emote) && !stringIsCustomEmoji(emote)) {
 			const invalidEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen gültigen Emoji eingeben.',
-				'error',
-				'error'
+				"Du musst einen gültigen Emoji eingeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidEmojiEmbed] });
 		}
@@ -117,16 +117,16 @@ export default class AutoreactCommand extends BaseCommand {
 		/* Get emoji id, if custom emoji is chosen */
 		const originEmote: string = emote;
 		if (stringIsCustomEmoji(emote))
-			emote = emote.replace(/<a?:\w+:(\d+)>/g, '$1');
+			emote = emote.replace(/<a?:\w+:(\d+)>/g, "$1");
 		/* Bot can't use this emoji */
 		if (
 			stringIsCustomEmoji(originEmote) &&
 			!this.client.emojis.cache.find((e: any): boolean => e.id === emote)
 		) {
 			const unusableEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				'Ich kann diesen Emoji nicht benutzen.',
-				'error',
-				'error'
+				"Ich kann diesen Emoji nicht benutzen.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [unusableEmojiEmbed] });
 		}
@@ -139,9 +139,9 @@ export default class AutoreactCommand extends BaseCommand {
 			)
 		) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
-				'Dieser Emoji ist in {0} bereits zum Autoreact hinzugefügt.',
-				'error',
-				'error',
+				"Dieser Emoji ist in {0} bereits zum Autoreact hinzugefügt.",
+				"error",
+				"error",
 				channel
 			);
 			return this.interaction.followUp({ embeds: [alreadyAddedEmbed] });
@@ -152,13 +152,13 @@ export default class AutoreactCommand extends BaseCommand {
 			channel: channel.id,
 			emoji: emote
 		});
-		data.guild.markModified('settings.autoreact');
+		data.guild.markModified("settings.autoreact");
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'{0} wurde in {1} zum Autoreact hinzugefügt.',
-			'success',
-			'success',
+			"{0} wurde in {1} zum Autoreact hinzugefügt.",
+			"success",
+			"success",
 			originEmote,
 			channel
 		);
@@ -173,9 +173,9 @@ export default class AutoreactCommand extends BaseCommand {
 		/* Missing arguments */
 		if (!channel || !channel.id || !emote) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Channel und Emoji eingeben.',
-				'error',
-				'error'
+				"Du musst einen Channel und Emoji eingeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -184,9 +184,9 @@ export default class AutoreactCommand extends BaseCommand {
 		const { stringIsEmoji, stringIsCustomEmoji } = Utils;
 		if (!stringIsEmoji(emote) && !stringIsCustomEmoji(emote)) {
 			const invalidEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen gültigen Emoji eingeben.',
-				'error',
-				'error'
+				"Du musst einen gültigen Emoji eingeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidEmojiEmbed] });
 		}
@@ -194,7 +194,7 @@ export default class AutoreactCommand extends BaseCommand {
 		/* Get emoji id, if custom emoji is chosen */
 		const originEmote: string = emote;
 		if (stringIsCustomEmoji(emote))
-			emote = emote.replace(/<a?:\w+:(\d+)>/g, '$1');
+			emote = emote.replace(/<a?:\w+:(\d+)>/g, "$1");
 
 		/* Emoji is not added to this channel */
 		if (
@@ -204,9 +204,9 @@ export default class AutoreactCommand extends BaseCommand {
 			)
 		) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
-				'Dieser Emoji ist in {0} nicht zum Autoreact hinzugefügt.',
-				'error',
-				'error',
+				"Dieser Emoji ist in {0} nicht zum Autoreact hinzugefügt.",
+				"error",
+				"error",
 				channel
 			);
 			return this.interaction.followUp({ embeds: [alreadyAddedEmbed] });
@@ -216,13 +216,13 @@ export default class AutoreactCommand extends BaseCommand {
 		data.guild.settings.autoreact = data.guild.settings.autoreact.filter(
 			(r: any): boolean => r.channel !== channel.id || r.emoji !== emote
 		);
-		data.guild.markModified('settings.autoreact');
+		data.guild.markModified("settings.autoreact");
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'{0} wurde in {1} vom Autoreact entfernt.',
-			'success',
-			'success',
+			"{0} wurde in {1} vom Autoreact entfernt.",
+			"success",
+			"success",
 			originEmote,
 			channel
 		);
@@ -235,7 +235,7 @@ export default class AutoreactCommand extends BaseCommand {
 		const finalSortedAutoReactArray: any[] = [];
 
 		for (let i: number = 0; i < response.length; i++) {
-			if (typeof response[i] !== 'object') continue;
+			if (typeof response[i] !== "object") continue;
 			const cachedChannel: any =
 				this.interaction.guild.channels.cache.get(response[i].channel);
 			if (cachedChannel) {
@@ -252,13 +252,13 @@ export default class AutoreactCommand extends BaseCommand {
 
 		for (let item in sortedAutoReactArray) {
 			finalSortedAutoReactArray.push(
-				' Channel: ' +
+				" Channel: " +
 					item +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					' Emojis: ' +
-					sortedAutoReactArray[item].join(', ') +
-					'\n'
+					" Emojis: " +
+					sortedAutoReactArray[item].join(", ") +
+					"\n"
 			);
 		}
 
@@ -266,9 +266,9 @@ export default class AutoreactCommand extends BaseCommand {
 			this.interaction,
 			5,
 			finalSortedAutoReactArray,
-			'Autoreact',
-			'Es ist kein Autoreact eingestellt',
-			'channel'
+			"Autoreact",
+			"Es ist kein Autoreact eingestellt",
+			"channel"
 		);
 	}
 }

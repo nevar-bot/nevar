@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { ApplicationCommandType } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { ApplicationCommandType } from "discord.js";
 
 export default class BaseContext {
 	public client: BaseClient;

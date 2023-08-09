@@ -1,13 +1,13 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import fs from 'fs';
-import { EmbedBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import fs from "fs";
+import { EmbedBuilder } from "discord.js";
 
 export default class EnableCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'enable',
-			description: 'Aktiviert einen Befehl',
+			name: "enable",
+			description: "Aktiviert einen Befehl",
 			ownerOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -27,9 +27,9 @@ export default class EnableCommand extends BaseCommand {
 	private async enableCommand(cmd: string): Promise<void> {
 		if (!cmd) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen Befehl angeben.',
-				'error',
-				'error'
+				"Du musst einen Befehl angeben.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -37,37 +37,37 @@ export default class EnableCommand extends BaseCommand {
 		const command: any = this.client.commands.get(cmd);
 		if (command) {
 			let disabledCommands = JSON.parse(
-				fs.readFileSync('./assets/disabled.json').toString()
+				fs.readFileSync("./assets/disabled.json").toString()
 			);
 			if (disabledCommands.includes(command.help.name)) {
 				disabledCommands = disabledCommands.filter(
 					(c: any): boolean => c !== command.help.name
 				);
 				fs.writeFileSync(
-					'./assets/disabled.json',
+					"./assets/disabled.json",
 					JSON.stringify(disabledCommands, null, 4)
 				);
 
 				const enabledEmbed: EmbedBuilder = this.client.createEmbed(
-					'Der Befehl wurde aktiviert.',
-					'success',
-					'success'
+					"Der Befehl wurde aktiviert.",
+					"success",
+					"success"
 				);
 				return this.message.reply({ embeds: [enabledEmbed] });
 			} else {
 				const isNotDisabledEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Der Befehl ist nicht deaktiviert.',
-						'error',
-						'error'
+						"Der Befehl ist nicht deaktiviert.",
+						"error",
+						"error"
 					);
 				return this.message.reply({ embeds: [isNotDisabledEmbed] });
 			}
 		} else {
 			const invalidCommandEmbed: EmbedBuilder = this.client.createEmbed(
-				'Der Befehl existiert nicht.',
-				'error',
-				'error'
+				"Der Befehl existiert nicht.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [invalidCommandEmbed] });
 		}

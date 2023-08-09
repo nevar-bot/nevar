@@ -1,15 +1,15 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder } from 'discord.js';
-import moment from 'moment';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder } from "discord.js";
+import moment from "moment";
 
 export default class BanlistCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'banlist',
-			description: 'Listet alle gebannten Mitglieder',
-			memberPermissions: ['BanMembers'],
-			botPermissions: ['BanMembers'],
+			name: "banlist",
+			description: "Listet alle gebannten Mitglieder",
+			memberPermissions: ["BanMembers"],
+			botPermissions: ["BanMembers"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -41,63 +41,63 @@ export default class BanlistCommand extends BaseCommand {
 				const duration: string =
 					memberData.banned.duration ===
 					200 * 60 * 60 * 24 * 365 * 1000
-						? 'Permanent'
+						? "Permanent"
 						: this.client.utils.getRelativeTime(
 								Date.now() - memberData.banned.duration
 						  );
 				const bannedUntil: string =
 					memberData.banned.duration ===
 					200 * 60 * 60 * 24 * 365 * 1000
-						? '/'
+						? "/"
 						: moment(memberData.banned.bannedUntil).format(
-								'DD.MM.YYYY, HH:mm'
+								"DD.MM.YYYY, HH:mm"
 						  );
 				const moderator: any = await this.client.users
 					.fetch(memberData.banned.moderator.id)
 					.catch((): void => {});
 				const text: string =
-					'### ' +
+					"### " +
 					this.client.emotes.ban +
-					' ' +
+					" " +
 					ban[1].user.username +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					' Begründung: ' +
+					" Begründung: " +
 					memberData.banned.reason +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					' Moderator: ' +
+					" Moderator: " +
 					(moderator
 						? moderator.username
 						: memberData.banned.moderator.name) +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					' Dauer: ' +
+					" Dauer: " +
 					duration +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					' Gebannt am: ' +
+					" Gebannt am: " +
 					moment(memberData.banned.bannedAt).format(
-						'DD.MM.YYYY, HH:mm'
+						"DD.MM.YYYY, HH:mm"
 					) +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					' Gebannt bis: ' +
+					" Gebannt bis: " +
 					bannedUntil +
-					'\n';
+					"\n";
 				bannedUsers.push(text);
 			} else {
 				// Nicht mit Nevar gebannt
 				const text: string =
-					'### ' +
+					"### " +
 					this.client.emotes.ban +
-					' ' +
+					" " +
 					ban[1].user.username +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					' Begründung: ' +
+					" Begründung: " +
 					ban[1].reason +
-					'\n';
+					"\n";
 				bannedUsers.push(text);
 			}
 		}
@@ -105,8 +105,8 @@ export default class BanlistCommand extends BaseCommand {
 			this.interaction,
 			3,
 			bannedUsers,
-			'Gebannte Nutzer',
-			'Es sind keine Nutzer gebannt',
+			"Gebannte Nutzer",
+			"Es sind keine Nutzer gebannt",
 			null
 		);
 	}

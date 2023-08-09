@@ -1,10 +1,10 @@
-import { EmbedBuilder, Guild } from 'discord.js';
-import BaseClient from '@structures/BaseClient';
+import { EmbedBuilder, Guild } from "discord.js";
+import BaseClient from "@structures/BaseClient";
 
 export default {
 	init(client: BaseClient): void {
 		client.membersData
-			.find({ 'muted.state': true })
+			.find({ "muted.state": true })
 			.then((members: any): void => {
 				members.forEach((member: any): void => {
 					client.databaseCache.mutedUsers.set(
@@ -32,55 +32,55 @@ export default {
 								member.roles
 									.remove(
 										guildData.settings.muterole,
-										'Mute-Dauer abgelaufen'
+										"Mute-Dauer abgelaufen"
 									)
 									.then(async (): Promise<void> => {
 										const unmuteMessage: string =
 											client.emotes.user +
-											' Nutzer: ' +
+											" Nutzer: " +
 											member.user.username +
-											'\n' +
+											"\n" +
 											client.emotes.arrow +
-											' Begründung: Mute-Dauer ist abgelaufen';
+											" Begründung: Mute-Dauer ist abgelaufen";
 
 										const unmuteEmbed: EmbedBuilder =
 											client.createEmbed(
 												unmuteMessage,
 												null,
-												'success'
+												"success"
 											);
 										unmuteEmbed.setTitle(
-											'Auto-Unmute durchgeführt'
+											"Auto-Unmute durchgeführt"
 										);
 										unmuteEmbed.setThumbnail(
 											member.user.displayAvatarURL()
 										);
 										await guild.logAction(
 											unmuteEmbed,
-											'moderation'
+											"moderation"
 										);
 									})
 									.catch(async (e: any): Promise<void> => {
 										const errorMessage: string =
 											client.emotes.user +
-											' Nutzer: ' +
+											" Nutzer: " +
 											member.user.username;
 
 										const errorEmbed: EmbedBuilder =
 											client.createEmbed(
 												errorMessage,
 												null,
-												'error'
+												"error"
 											);
 										errorEmbed.setTitle(
-											'Auto-Unmute fehlgeschlagen'
+											"Auto-Unmute fehlgeschlagen"
 										);
 										errorEmbed.setThumbnail(
 											member.user.displayAvatarURL()
 										);
 										await guild.logAction(
 											errorEmbed,
-											'moderation'
+											"moderation"
 										);
 									});
 							})
@@ -90,22 +90,22 @@ export default {
 									.catch((): void => {});
 								const errorMessage: string =
 									client.emotes.user +
-									' Nutzer: ' +
+									" Nutzer: " +
 									(user ? user.username : memberData.id);
 
 								const errorEmbed: EmbedBuilder =
 									client.createEmbed(
 										errorMessage,
 										null,
-										'error'
+										"error"
 									);
 								errorEmbed.setTitle(
-									'Auto-Unmute fehlgeschlagen'
+									"Auto-Unmute fehlgeschlagen"
 								);
 								errorEmbed.setThumbnail(
 									user!.displayAvatarURL()
 								);
-								await guild.logAction(errorEmbed, 'moderation');
+								await guild.logAction(errorEmbed, "moderation");
 							});
 					})
 					.catch((): void => {});
@@ -121,7 +121,7 @@ export default {
 					mutedAt: null,
 					mutedUntil: null
 				};
-				memberData.markModified('muted');
+				memberData.markModified("muted");
 				memberData.save();
 				client.databaseCache.mutedUsers.delete(
 					memberData.id + memberData.guildID

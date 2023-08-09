@@ -1,14 +1,14 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder } from 'discord.js';
-import mongoose from 'mongoose';
-import moment from 'moment';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder } from "discord.js";
+import mongoose from "mongoose";
+import moment from "moment";
 
 export default class SearchserverCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'searchserver',
-			description: 'Zeigt Informationen über einen Server an',
+			name: "searchserver",
+			description: "Zeigt Informationen über einen Server an",
 			staffOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -28,9 +28,9 @@ export default class SearchserverCommand extends BaseCommand {
 	private async searchServer(id: string): Promise<void> {
 		if (!id || !this.client.guilds.cache.get(id)) {
 			const notFoundEmbed: EmbedBuilder = this.client.createEmbed(
-				'Der Server wurde nicht gefunden.',
-				'error',
-				'error'
+				"Der Server wurde nicht gefunden.",
+				"error",
+				"error"
 			);
 			return this.message.reply({ embeds: [notFoundEmbed] });
 		}
@@ -51,72 +51,72 @@ export default class SearchserverCommand extends BaseCommand {
 		);
 
 		const createdDate: string = moment(guild.createdTimestamp).format(
-			'DD.MM.YYYY HH:mm'
+			"DD.MM.YYYY HH:mm"
 		);
 		const createdDiff: string = this.client.utils.getRelativeTime(
 			guild.createdTimestamp
 		);
 		const invitedDate: string = moment(guild.joinedAt).format(
-			'DD.MM.YYYY HH:mm'
+			"DD.MM.YYYY HH:mm"
 		);
 		const invitedDiff: string = this.client.utils.getRelativeTime(
 			guild.joinedTimestamp
 		);
 		const executedCommands: number = (
-			await (await mongoose.connection.db.collection('logs'))
-				.find({ 'guild.id': guild.id })
+			await (await mongoose.connection.db.collection("logs"))
+				.find({ "guild.id": guild.id })
 				.toArray()
 		).length;
 
 		const text: string =
 			this.client.emotes.crown +
-			' Eigentümer: **' +
+			" Eigentümer: **" +
 			owner.user.username +
-			'**\n\n' +
+			"**\n\n" +
 			this.client.emotes.users +
-			' Mitglieder: **' +
+			" Mitglieder: **" +
 			this.client.format(memberCount) +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.bot +
-			' davon Bots: **' +
+			" davon Bots: **" +
 			this.client.format(botCount) +
-			' (' +
+			" (" +
 			botPercentage +
-			'%)**\n' +
+			"%)**\n" +
 			this.client.emotes.user +
-			' davon Menschen: **' +
+			" davon Menschen: **" +
 			this.client.format(humanCount) +
-			' (' +
+			" (" +
 			humanPercentage +
-			'%)**\n\n' +
+			"%)**\n\n" +
 			this.client.emotes.calendar +
-			' Erstellt am: **' +
+			" Erstellt am: **" +
 			createdDate +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.reminder +
-			' Erstellt vor: **' +
+			" Erstellt vor: **" +
 			createdDiff +
-			'**\n\n' +
+			"**\n\n" +
 			this.client.emotes.calendar +
-			' Eingeladen am: **' +
+			" Eingeladen am: **" +
 			invitedDate +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.reminder +
-			' Eingeladen vor: **' +
+			" Eingeladen vor: **" +
 			invitedDiff +
-			'**\n\n' +
+			"**\n\n" +
 			this.client.emotes.slashcommand +
-			' Befehle ausgeführt: **' +
+			" Befehle ausgeführt: **" +
 			this.client.format(executedCommands) +
-			'**';
+			"**";
 
 		const searchServerEmbed: EmbedBuilder = this.client.createEmbed(
 			text,
 			null,
-			'normal'
+			"normal"
 		);
 		searchServerEmbed.setTitle(
-			this.client.emotes.information + ' Informationen zu ' + guild.name
+			this.client.emotes.information + " Informationen zu " + guild.name
 		);
 		searchServerEmbed.setThumbnail(guild.iconURL({ dynamic: true }));
 

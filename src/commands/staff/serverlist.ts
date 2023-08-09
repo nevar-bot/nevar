@@ -1,11 +1,11 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
 
 export default class ServerlistCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'serverlist',
-			description: 'Sendet die Serverliste',
+			name: "serverlist",
+			description: "Sendet die Serverliste",
 			staffOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -27,19 +27,19 @@ export default class ServerlistCommand extends BaseCommand {
 
 		for (let guild of this.client.guilds.cache) {
 			const text: string =
-				'### ' +
+				"### " +
 				this.client.emotes.discord +
-				' ' +
+				" " +
 				guild[1].name +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				' Mitglieder: ' +
+				" Mitglieder: " +
 				this.client.format(guild[1].memberCount) +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				' ID: ' +
+				" ID: " +
 				guild[1].id +
-				'\n';
+				"\n";
 			servers.push({ guild: guild[1], text: text });
 		}
 		servers.sort(
@@ -53,8 +53,8 @@ export default class ServerlistCommand extends BaseCommand {
 			this.message,
 			5,
 			serverTexts,
-			'Serverliste',
-			'Der Bot ist auf keinem Server',
+			"Serverliste",
+			"Der Bot ist auf keinem Server",
 			null
 		);
 	}

@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { AuditLogEvent, EmbedBuilder, PermissionsBitField } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { AuditLogEvent, EmbedBuilder, PermissionsBitField } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -16,20 +16,20 @@ export default class {
 		if (oldRole.color !== newRole.color)
 			properties.push(
 				this.client.emotes.settings +
-					' Farbe: ~~' +
+					" Farbe: ~~" +
 					oldRole.hexColor +
-					'~~ **' +
+					"~~ **" +
 					newRole.hexColor +
-					'**'
+					"**"
 			);
 		if (oldRole.name !== newRole.name)
 			properties.push(
 				this.client.emotes.edit +
-					' Name: ~~' +
+					" Name: ~~" +
 					oldRole.name +
-					'~~ **' +
+					"~~ **" +
 					newRole.name +
-					'**'
+					"**"
 			);
 
 		const addedPermissions: any[] = [];
@@ -59,29 +59,29 @@ export default class {
 
 		let roleLogMessage: string =
 			this.client.emotes.ping +
-			' Rolle: ' +
+			" Rolle: " +
 			newRole.toString() +
-			'\n' +
-			properties.join('\n');
+			"\n" +
+			properties.join("\n");
 
 		if (addedPermissions.length > 0) {
 			roleLogMessage +=
-				'\n' +
+				"\n" +
 				this.client.emotes.success +
-				' ' +
-				addedPermissions.join('\n' + this.client.emotes.success + ' ');
+				" " +
+				addedPermissions.join("\n" + this.client.emotes.success + " ");
 		}
 
 		if (removedPermissions.length > 0) {
 			roleLogMessage +=
-				'\n' +
+				"\n" +
 				this.client.emotes.error +
-				' ' +
-				removedPermissions.join('\n' + this.client.emotes.error + ' ');
+				" " +
+				removedPermissions.join("\n" + this.client.emotes.error + " ");
 		}
 
 		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent['RoleUpdate'], limit: 1 })
+			.fetchAuditLogs({ type: AuditLogEvent["RoleUpdate"], limit: 1 })
 			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
@@ -89,14 +89,14 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					roleLogMessage +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
@@ -110,13 +110,13 @@ export default class {
 		const roleLogEmbed: EmbedBuilder = this.client.createEmbed(
 			roleLogMessage,
 			null,
-			'warning'
+			"warning"
 		);
 		roleLogEmbed.setTitle(
-			this.client.emotes.events.role.update + ' Rolle bearbeitet'
+			this.client.emotes.events.role.update + " Rolle bearbeitet"
 		);
 		roleLogEmbed.setThumbnail(guild.iconURL());
 
-		await guild.logAction(roleLogEmbed, 'role');
+		await guild.logAction(roleLogEmbed, "role");
 	}
 }

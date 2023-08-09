@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
-import { Model } from 'mongoose';
+import * as mongoose from "mongoose";
+import { Model } from "mongoose";
 
 const Schema = new mongoose.Schema({
 	id: { type: String },
@@ -44,5 +44,5 @@ const Schema = new mongoose.Schema({
 	voteCount: { type: Number, default: 0 }
 });
 
-const User: Model<any> = mongoose.model('User', Schema);
+const User: Model<any> = mongoose.model("User", Schema);
 export default User;

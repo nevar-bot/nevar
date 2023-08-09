@@ -1,0 +1,20 @@
+{
+  "mode": {
+    "selectMenuDescription": "Wähle einen Verhaltensmodus",
+    "selectMenuItem": "Setze den Verhaltensmodus auf {{mode.name}}",
+    "chooseEmbedDescription": "Wähle aus den folgenden Verhaltensmodi.",
+    "set": "Der Verhaltensmodus wurde auf {{mode}} gesetzt."
+  },
+  "channel": {
+    "errors": {
+      "missingChannel": "Du musst einen Channel auswählen."
+    },
+    "set": "Der KI-Chat ist ab jetzt in {{channel}} aktiv."
+  },
+  "status": {
+    "errors": {
+      "missingStatus": "Du musst einen Status auswählen."
+    },
+    "set": "Der KI-Chat ist jetzt {{status}}."
+  }
+}

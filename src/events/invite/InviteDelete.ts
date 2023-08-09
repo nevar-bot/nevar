@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { AuditLogEvent, EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { AuditLogEvent, EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -24,14 +24,14 @@ export default class {
 		memberData.invites = memberData.invites.filter(
 			(i: any): boolean => i.code !== invite.code
 		);
-		memberData.markModified('invites');
+		memberData.markModified("invites");
 		await memberData.save();
 
 		let inviteDeleteText: string =
-			this.client.emotes.link + ' Link: ' + invite.url;
+			this.client.emotes.link + " Link: " + invite.url;
 
 		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent['InviteDelete'], limit: 1 })
+			.fetchAuditLogs({ type: AuditLogEvent["InviteDelete"], limit: 1 })
 			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
@@ -39,27 +39,27 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					inviteDeleteText +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
 		const inviteDeleteEmbed: EmbedBuilder = this.client.createEmbed(
 			inviteDeleteText,
 			null,
-			'error'
+			"error"
 		);
 		inviteDeleteEmbed.setTitle(
-			this.client.emotes.invite + ' Einladung gelöscht'
+			this.client.emotes.invite + " Einladung gelöscht"
 		);
 		inviteDeleteEmbed.setThumbnail(guild.iconURL());
 
-		await guild.logAction(inviteDeleteEmbed, 'guild');
+		await guild.logAction(inviteDeleteEmbed, "guild");
 	}
 }

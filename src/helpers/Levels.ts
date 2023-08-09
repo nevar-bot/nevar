@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
-import LevelSchema from '@schemas/Levels';
+import * as mongoose from "mongoose";
+import LevelSchema from "@schemas/Levels";
 let mongoUrl;
 
 export default class Levels {
@@ -161,7 +161,7 @@ export default class Levels {
 			const leaderboard: any[] = await LevelSchema.find({
 				guildID: guildId
 			})
-				.sort([['xp', 'descending']])
+				.sort([["xp", "descending"]])
 				.exec();
 
 			user.position =
@@ -228,7 +228,7 @@ export default class Levels {
 		limit: number = 10
 	): Promise<any> {
 		return await LevelSchema.find({ guildID: guildId })
-			.sort([['xp', 'descending']])
+			.sort([["xp", "descending"]])
 			.exec();
 	}
 
@@ -244,8 +244,8 @@ export default class Levels {
 		if (fetchUsers) {
 			for (const key of leaderboard) {
 				const user = (await client.users.fetch(key.userID)) || {
-					username: 'Unbekannt',
-					displayName: 'Unbekannt'
+					username: "Unbekannt",
+					displayName: "Unbekannt"
 				};
 				computedArray.push({
 					guildID: key.guildID,
@@ -277,10 +277,10 @@ export default class Levels {
 						) + 1,
 					username: client.users.cache.get(key.userID)
 						? client.users.cache.get(key.userID).username
-						: 'Unbekannt',
+						: "Unbekannt",
 					displayName: client.users.cache.get(key.userID)
 						? client.users.cache.get(key.userID).displayName
-						: 'Unbekannt'
+						: "Unbekannt"
 				});
 			});
 		}

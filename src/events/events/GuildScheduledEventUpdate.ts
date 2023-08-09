@@ -1,6 +1,6 @@
-import BaseClient from '@structures/BaseClient';
-import { AuditLogEvent, EmbedBuilder } from 'discord.js';
-import moment from 'moment';
+import BaseClient from "@structures/BaseClient";
+import { AuditLogEvent, EmbedBuilder } from "discord.js";
+import moment from "moment";
 
 export default class {
 	private client: BaseClient;
@@ -25,20 +25,20 @@ export default class {
 		if (oldScheduledEvent.name !== newScheduledEvent.name)
 			properties.push(
 				this.client.emotes.edit +
-					' Name: ~~' +
+					" Name: ~~" +
 					oldScheduledEvent.name +
-					'~~ **' +
+					"~~ **" +
 					newScheduledEvent.name +
-					'**'
+					"**"
 			);
 		if (oldScheduledEvent.description !== newScheduledEvent.description)
 			properties.push(
 				this.client.emotes.text +
-					' Beschreibung: ~~' +
+					" Beschreibung: ~~" +
 					oldScheduledEvent.description +
-					'~~ **' +
+					"~~ **" +
 					newScheduledEvent.description +
-					'**'
+					"**"
 			);
 		if (
 			oldScheduledEvent.scheduledStartTimestamp !==
@@ -46,19 +46,19 @@ export default class {
 		)
 			properties.push(
 				this.client.emotes.reminder +
-					' Startzeit: ~~' +
+					" Startzeit: ~~" +
 					(oldScheduledEvent.scheduledStartTimestamp
 						? moment(
 								oldScheduledEvent.scheduledStartTimestamp
-						  ).format('DD.MM.YYYY HH:mm')
-						: '/') +
-					'~~ **' +
+						  ).format("DD.MM.YYYY HH:mm")
+						: "/") +
+					"~~ **" +
 					(newScheduledEvent.scheduledStartTimestamp
 						? moment(
 								newScheduledEvent.scheduledStartTimestamp
-						  ).format('DD.MM.YYYY HH:mm')
-						: '/') +
-					'**'
+						  ).format("DD.MM.YYYY HH:mm")
+						: "/") +
+					"**"
 			);
 		if (
 			oldScheduledEvent.scheduledEndTimestamp !==
@@ -66,27 +66,27 @@ export default class {
 		)
 			properties.push(
 				this.client.emotes.reminder +
-					' Startzeit: ~~' +
+					" Startzeit: ~~" +
 					(oldScheduledEvent.scheduledEndTimestamp
 						? moment(
 								oldScheduledEvent.scheduledEndTimestamp
-						  ).format('DD.MM.YYYY HH:mm')
-						: '/') +
-					'~~ **' +
+						  ).format("DD.MM.YYYY HH:mm")
+						: "/") +
+					"~~ **" +
 					(newScheduledEvent.scheduledEndTimestamp
 						? moment(
 								newScheduledEvent.scheduledEndTimestamp
-						  ).format('DD.MM.YYYY HH:mm')
-						: '/') +
-					'**'
+						  ).format("DD.MM.YYYY HH:mm")
+						: "/") +
+					"**"
 			);
 		if (properties.length < 1) return;
 
-		let scheduledEventLogMessage: string = properties.join('\n');
+		let scheduledEventLogMessage: string = properties.join("\n");
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({
-				type: AuditLogEvent['GuildScheduledEventUpdate'],
+				type: AuditLogEvent["GuildScheduledEventUpdate"],
 				limit: 1
 			})
 			.catch((e: any): void => {});
@@ -96,27 +96,27 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					scheduledEventLogMessage +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
 		const scheduledEventLogEmbed: EmbedBuilder = this.client.createEmbed(
 			scheduledEventLogMessage,
 			null,
-			'warning'
+			"warning"
 		);
 		scheduledEventLogEmbed.setTitle(
-			this.client.emotes.events.event.update + 'Event bearbeitet'
+			this.client.emotes.events.event.update + "Event bearbeitet"
 		);
 		scheduledEventLogEmbed.setThumbnail(guild.iconURL());
 
-		await guild.logAction(scheduledEventLogEmbed, 'guild');
+		await guild.logAction(scheduledEventLogEmbed, "guild");
 	}
 }

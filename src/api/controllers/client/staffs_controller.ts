@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import { client } from '@src/app';
-import mongoose from 'mongoose';
+import { Request, Response } from "express";
+import { client } from "@src/app";
+import mongoose from "mongoose";
 
 export async function get(req: Request, res: Response) {
 	const { app } = req;
@@ -8,7 +8,7 @@ export async function get(req: Request, res: Response) {
 	const headStaffs: any[] = [];
 	const normalStaffs: any[] = [];
 
-	for (const ownerId of client.config.general['OWNER_IDS']) {
+	for (const ownerId of client.config.general["OWNER_IDS"]) {
 		const user: any = await client.users
 			.fetch(ownerId)
 			.catch((): void => {});
@@ -18,13 +18,13 @@ export async function get(req: Request, res: Response) {
 			displayName: user.displayName,
 			avatar: user.displayAvatarURL(),
 			id: user.id,
-			role: 'Head-Staff'
+			role: "Head-Staff"
 		});
 	}
 
 	const staffsData: any = await mongoose.connection.db
-		.collection('users')
-		.find({ 'staff.state': true })
+		.collection("users")
+		.find({ "staff.state": true })
 		.toArray();
 
 	for (const staffData of staffsData) {
@@ -38,10 +38,10 @@ export async function get(req: Request, res: Response) {
 			displayName: user.displayName,
 			avatar: user.displayAvatarURL(),
 			id: user.id,
-			role: staffData.staff.role === 'head-staff' ? 'Head-Staff' : 'Staff'
+			role: staffData.staff.role === "head-staff" ? "Head-Staff" : "Staff"
 		};
 
-		if (staffData.staff.role === 'head-staff') headStaffs.push(staffToPush);
+		if (staffData.staff.role === "head-staff") headStaffs.push(staffToPush);
 		else normalStaffs.push(staffToPush);
 	}
 
@@ -55,6 +55,6 @@ export async function get(req: Request, res: Response) {
 			staffs
 		}
 	};
-	res.setHeader('Content-Type', 'application/json');
+	res.setHeader("Content-Type", "application/json");
 	return res.end(JSON.stringify(json, null, 4));
 }

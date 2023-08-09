@@ -1,21 +1,21 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 export default class ResetwarnsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'resetwarns',
-			description: 'Setzt die Verwarnungen eines Mitgliedes zurück',
-			memberPermissions: ['KickMembers'],
+			name: "resetwarns",
+			description: "Setzt die Verwarnungen eines Mitgliedes zurück",
+			memberPermissions: ["KickMembers"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
-						.setName('mitglied')
-						.setDescription('Wähle ein Mitglied')
+						.setName("mitglied")
+						.setDescription("Wähle ein Mitglied")
 						.setRequired(true)
 				)
 			}
@@ -26,7 +26,7 @@ export default class ResetwarnsCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.resetWarns(interaction.options.getUser('mitglied'));
+		await this.resetWarns(interaction.options.getUser("mitglied"));
 	}
 
 	private async resetWarns(user: any): Promise<void> {
@@ -39,30 +39,30 @@ export default class ResetwarnsCommand extends BaseCommand {
 			count: 0,
 			list: []
 		};
-		memberData.markModified('warnings');
+		memberData.markModified("warnings");
 		await memberData.save();
 
 		const logText: string =
-			'### ' +
+			"### " +
 			this.client.emotes.delete +
-			' Verwarnungen von ' +
+			" Verwarnungen von " +
 			user.username +
-			' zurückgesetzt\n\n' +
+			" zurückgesetzt\n\n" +
 			this.client.emotes.user +
-			' Moderator: ' +
+			" Moderator: " +
 			this.interaction.user.username;
 		const logEmbed: EmbedBuilder = this.client.createEmbed(
 			logText,
 			null,
-			'normal'
+			"normal"
 		);
 		logEmbed.setThumbnail(user.displayAvatarURL());
-		await this.interaction.guild.logAction(logEmbed, 'moderation');
+		await this.interaction.guild.logAction(logEmbed, "moderation");
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'Die Verwarnungen von {0} wurden zurückgesetzt.',
-			'success',
-			'success',
+			"Die Verwarnungen von {0} wurden zurückgesetzt.",
+			"success",
+			"success",
 			user.username
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });

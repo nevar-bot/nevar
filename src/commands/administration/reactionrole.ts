@@ -1,14 +1,14 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, ChannelType, EmbedBuilder } from 'discord.js';
-import Utils from '@helpers/Utils';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, ChannelType, EmbedBuilder } from "discord.js";
+import Utils from "@helpers/Utils";
 
 export default class ReactionroleCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'reactionrole',
-			description: 'Erstellt eine neue Reaktions-Rolle',
-			memberPermissions: ['ManageGuild'],
+			name: "reactionrole",
+			description: "Erstellt eine neue Reaktions-Rolle",
+			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -16,9 +16,9 @@ export default class ReactionroleCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addChannelOption((option: any) =>
 						option
-							.setName('channel')
+							.setName("channel")
 							.setDescription(
-								'Wähle, in welchem Channel du eine Reaktions-Rolle erstellen möchtest'
+								"Wähle, in welchem Channel du eine Reaktions-Rolle erstellen möchtest"
 							)
 							.setRequired(true)
 							.addChannelTypes(
@@ -28,22 +28,22 @@ export default class ReactionroleCommand extends BaseCommand {
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName('id')
-							.setDescription('Gib die ID der Nachricht ein')
+							.setName("id")
+							.setDescription("Gib die ID der Nachricht ein")
 							.setRequired(true)
 					)
 					.addRoleOption((option: any) =>
 						option
-							.setName('rolle')
+							.setName("rolle")
 							.setDescription(
-								'Wähle die Rolle, die vergeben werden soll'
+								"Wähle die Rolle, die vergeben werden soll"
 							)
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName('emoji')
-							.setDescription('Gib einen Emoji ein')
+							.setName("emoji")
+							.setDescription("Gib einen Emoji ein")
 							.setRequired(true)
 					)
 			}
@@ -54,10 +54,10 @@ export default class ReactionroleCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		await this.addReactionRole(
-			interaction.options.getChannel('channel'),
-			interaction.options.getString('id'),
-			interaction.options.getRole('rolle'),
-			interaction.options.getString('emoji'),
+			interaction.options.getChannel("channel"),
+			interaction.options.getString("id"),
+			interaction.options.getRole("rolle"),
+			interaction.options.getString("emoji"),
 			data
 		);
 	}
@@ -72,9 +72,9 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Role is @everyone */
 		if (role.id === this.interaction.guild.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
-				'Die @everyone Rolle kann nicht als eine Reactionrole hinzugefügt werden.',
-				'error',
-				'error'
+				"Die @everyone Rolle kann nicht als eine Reactionrole hinzugefügt werden.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [everyoneEmbed] });
 		}
@@ -82,9 +82,9 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Role is managed */
 		if (role.managed) {
 			const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
-				'Rollen welche durch eine Integration verwaltet werden, können nicht als Reactionrole hinzugefügt werden.',
-				'error',
-				'error'
+				"Rollen welche durch eine Integration verwaltet werden, können nicht als Reactionrole hinzugefügt werden.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [roleIsManagedEmbed] });
 		}
@@ -95,9 +95,9 @@ export default class ReactionroleCommand extends BaseCommand {
 			role.position
 		) {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
-				'Da {0} eine höhere oder gleiche Position wie meine höchste Rolle ({1}) hat, kann sie nicht als Reactionrole hinzugefügt werden.',
-				'error',
-				'error',
+				"Da {0} eine höhere oder gleiche Position wie meine höchste Rolle ({1}) hat, kann sie nicht als Reactionrole hinzugefügt werden.",
+				"error",
+				"error",
 				role,
 				this.interaction.guild.members.me.roles.highest
 			);
@@ -108,9 +108,9 @@ export default class ReactionroleCommand extends BaseCommand {
 		const { stringIsEmoji, stringIsCustomEmoji } = Utils;
 		if (!stringIsEmoji(emote) && !stringIsCustomEmoji(emote)) {
 			const invalidEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst einen gültigen Emoji angeben.',
-				'error',
-				'error'
+				"Du musst einen gültigen Emoji angeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidEmojiEmbed] });
 		}
@@ -118,16 +118,16 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Get emoji id */
 		const originEmote: string = emote;
 		if (stringIsCustomEmoji(emote))
-			emote = emote.replace(/<a?:\w+:(\d+)>/g, '$1');
+			emote = emote.replace(/<a?:\w+:(\d+)>/g, "$1");
 		/* Emoji is not available */
 		if (
 			stringIsCustomEmoji(originEmote) &&
 			!this.client.emojis.cache.find((e: any): boolean => e.id === emote)
 		) {
 			const unusableEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				'Der Emoji muss auf einem Server wo ich bin verfügbar sein.',
-				'error',
-				'error'
+				"Der Emoji muss auf einem Server wo ich bin verfügbar sein.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [unusableEmojiEmbed] });
 		}
@@ -138,9 +138,9 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Message not found */
 		if (!message) {
 			const messageNotFoundEmbed: EmbedBuilder = this.client.createEmbed(
-				'Die Nachricht konnte nicht gefunden werden.',
-				'error',
-				'error'
+				"Die Nachricht konnte nicht gefunden werden.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({
 				embeds: [messageNotFoundEmbed]
@@ -160,22 +160,22 @@ export default class ReactionroleCommand extends BaseCommand {
 			roleId: role.id
 		};
 		data.guild.settings.reactionroles.push(reactionRole);
-		data.guild.markModified('settings.reactionroles');
+		data.guild.markModified("settings.reactionroles");
 		await data.guild.save();
 
 		await message.react(emote).catch(() => {
 			const reactionFailedEmbed: EmbedBuilder = this.client.createEmbed(
-				'Ich konnte nicht auf die Nachricht reagieren.',
-				'error',
-				'error'
+				"Ich konnte nicht auf die Nachricht reagieren.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [reactionFailedEmbed] });
 		});
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'Die Reactionrole wurde hinzugefügt.',
-			'success',
-			'success'
+			"Die Reactionrole wurde hinzugefügt.",
+			"success",
+			"success"
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}

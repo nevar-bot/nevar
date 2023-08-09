@@ -1,15 +1,15 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 export default class ClearCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'clear',
+			name: "clear",
 			description:
-				'Löscht eine bestimmte Anzahl an Nachrichten, ggf. von einem bestimmten Nutzer',
-			memberPermissions: ['ManageMessages'],
-			botPermissions: ['ManageMessages'],
+				"Löscht eine bestimmte Anzahl an Nachrichten, ggf. von einem bestimmten Nutzer",
+			memberPermissions: ["ManageMessages"],
+			botPermissions: ["ManageMessages"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,9 +17,9 @@ export default class ClearCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addIntegerOption((option: any) =>
 						option
-							.setName('anzahl')
+							.setName("anzahl")
 							.setDescription(
-								'Gib an, wieviele Nachrichten du löschen möchtest'
+								"Gib an, wieviele Nachrichten du löschen möchtest"
 							)
 							.setMinValue(1)
 							.setMaxValue(99)
@@ -27,9 +27,9 @@ export default class ClearCommand extends BaseCommand {
 					)
 					.addUserOption((option: any) =>
 						option
-							.setName('nutzer')
+							.setName("nutzer")
 							.setDescription(
-								'Wähle, von welchem Nutzer du Nachrichten löschen möchtest'
+								"Wähle, von welchem Nutzer du Nachrichten löschen möchtest"
 							)
 							.setRequired(false)
 					)
@@ -42,8 +42,8 @@ export default class ClearCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		await this.clearMessages(
-			interaction.options.getInteger('anzahl'),
-			interaction.options.getUser('nutzer')
+			interaction.options.getInteger("anzahl"),
+			interaction.options.getUser("nutzer")
 		);
 	}
 
@@ -69,11 +69,11 @@ export default class ClearCommand extends BaseCommand {
 			.bulkDelete(messages, true)
 			.catch((): void => {});
 
-		const string: string = user ? 'von ' + user.username : '';
+		const string: string = user ? "von " + user.username : "";
 		const deletedEmbed: EmbedBuilder = this.client.createEmbed(
-			'Ich habe {0} Nachrichten {1} gelöscht.',
-			'success',
-			'success',
+			"Ich habe {0} Nachrichten {1} gelöscht.",
+			"success",
+			"success",
 			messages.length,
 			string
 		);
@@ -83,25 +83,25 @@ export default class ClearCommand extends BaseCommand {
 
 		const text: string =
 			this.client.emotes.arrow +
-			' Anzahl: ' +
+			" Anzahl: " +
 			messages.length +
-			'\n' +
+			"\n" +
 			this.client.emotes.channel +
-			' Kanal: ' +
+			" Kanal: " +
 			this.interaction.channel.toString() +
-			'\n' +
+			"\n" +
 			this.client.emotes.user +
-			' Moderator: ' +
+			" Moderator: " +
 			this.interaction.user.username;
 
 		const logEmbed: EmbedBuilder = this.client.createEmbed(
 			text,
 			null,
-			'normal'
+			"normal"
 		);
-		logEmbed.setTitle(this.client.emotes.delete + ' Nachrichten gelöscht');
+		logEmbed.setTitle(this.client.emotes.delete + " Nachrichten gelöscht");
 		logEmbed.setThumbnail(this.interaction.user.displayAvatarURL());
-		await this.interaction.guild.logAction(logEmbed, 'moderation');
+		await this.interaction.guild.logAction(logEmbed, "moderation");
 
 		await this.client.wait(7000);
 		embedSent.delete().catch((): void => {});

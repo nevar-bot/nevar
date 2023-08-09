@@ -1,14 +1,14 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import moment from 'moment';
-import { SlashCommandBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import moment from "moment";
+import { SlashCommandBuilder } from "discord.js";
 
 export default class MutelistCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'mutelist',
-			description: 'Listet alle gemuteten Mitglieder',
-			memberPermissions: ['ManageRoles'],
+			name: "mutelist",
+			description: "Listet alle gemuteten Mitglieder",
+			memberPermissions: ["ManageRoles"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -36,33 +36,33 @@ export default class MutelistCommand extends BaseCommand {
 				);
 				const text: string =
 					member.user.username +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					'Begründung: ' +
+					"Begründung: " +
 					victimData.muted.reason +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					'Moderator: ' +
+					"Moderator: " +
 					victimData.muted.moderator.name +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					'Dauer: ' +
+					"Dauer: " +
 					this.client.utils.getRelativeTime(
 						Date.now() - victimData.muted.duration
 					) +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					'Gemutet am: ' +
+					"Gemutet am: " +
 					moment(victimData.muted.mutedAt).format(
-						'DD.MM.YYYY, HH:mm'
+						"DD.MM.YYYY, HH:mm"
 					) +
-					'\n' +
+					"\n" +
 					this.client.emotes.arrow +
-					'Gemutet bis: ' +
+					"Gemutet bis: " +
 					moment(victimData.muted.mutedUntil).format(
-						'DD.MM.YYYY, HH:mm'
+						"DD.MM.YYYY, HH:mm"
 					) +
-					'\n';
+					"\n";
 				mutedUsers.push(text);
 			}
 		}
@@ -71,9 +71,9 @@ export default class MutelistCommand extends BaseCommand {
 			this.interaction,
 			3,
 			mutedUsers,
-			'Gemutete Mitglieder',
-			'Es sind keine Mitglieder gemutet',
-			'timeout'
+			"Gemutete Mitglieder",
+			"Es sind keine Mitglieder gemutet",
+			"timeout"
 		);
 	}
 }

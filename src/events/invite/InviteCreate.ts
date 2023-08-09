@@ -1,6 +1,6 @@
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder, Collection, AuditLogEvent } from 'discord.js';
-import moment from 'moment';
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder, Collection, AuditLogEvent } from "discord.js";
+import moment from "moment";
 
 export default class {
 	private client: BaseClient;
@@ -35,27 +35,27 @@ export default class {
 			fake: 0,
 			left: 0
 		});
-		memberData.markModified('invites');
+		memberData.markModified("invites");
 		await memberData.save();
 
 		let inviteCreateText: string =
 			this.client.emotes.link +
-			' Link: ' +
+			" Link: " +
 			invite.url +
-			'\n' +
+			"\n" +
 			this.client.emotes.reload +
-			' Max. Verwendungen: ' +
-			(invite.maxUses === 0 ? 'Unbegrenzt' : invite.maxUses) +
-			'\n' +
+			" Max. Verwendungen: " +
+			(invite.maxUses === 0 ? "Unbegrenzt" : invite.maxUses) +
+			"\n" +
 			(invite.expiresTimestamp
 				? this.client.emotes.reminder +
-				  ' Ablaufdatum: **' +
-				  moment(invite.expiresTimestamp).format('DD.MM.YYYY HH:mm') +
-				  '**'
-				: '');
+				  " Ablaufdatum: **" +
+				  moment(invite.expiresTimestamp).format("DD.MM.YYYY HH:mm") +
+				  "**"
+				: "");
 
 		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent['InviteCreate'], limit: 1 })
+			.fetchAuditLogs({ type: AuditLogEvent["InviteCreate"], limit: 1 })
 			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
@@ -63,27 +63,27 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					inviteCreateText +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
 		const inviteCreateEmbed: EmbedBuilder = this.client.createEmbed(
 			inviteCreateText,
 			null,
-			'success'
+			"success"
 		);
 		inviteCreateEmbed.setTitle(
-			this.client.emotes.invite + ' Einladung erstellt'
+			this.client.emotes.invite + " Einladung erstellt"
 		);
 		inviteCreateEmbed.setThumbnail(guild.iconURL());
 
-		await guild.logAction(inviteCreateEmbed, 'guild');
+		await guild.logAction(inviteCreateEmbed, "guild");
 	}
 }

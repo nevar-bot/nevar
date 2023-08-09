@@ -1,6 +1,6 @@
-import moment from 'moment';
-import { Collection, EmbedBuilder } from 'discord.js';
-import BaseClient from '@structures/BaseClient';
+import moment from "moment";
+import { Collection, EmbedBuilder } from "discord.js";
+import BaseClient from "@structures/BaseClient";
 
 export default class {
 	private client: BaseClient;
@@ -65,7 +65,7 @@ export default class {
 
 		/* Send log */
 		const createdAt: string = moment(member.user.createdTimestamp).format(
-			'DD.MM.YYYY HH:mm'
+			"DD.MM.YYYY HH:mm"
 		);
 		const createdDiff: string = this.client.utils.getRelativeTime(
 			member.user.createdTimestamp
@@ -73,46 +73,46 @@ export default class {
 
 		const memberJoinText: string =
 			this.client.emotes.edit +
-			' Anzeigename: ' +
+			" Anzeigename: " +
 			member.user.displayName +
-			'\n' +
+			"\n" +
 			this.client.emotes.user +
-			' Nutzername: ' +
+			" Nutzername: " +
 			member.user.username +
-			'\n' +
+			"\n" +
 			this.client.emotes.id +
-			' ID: ' +
+			" ID: " +
 			member.id +
-			'\n' +
+			"\n" +
 			this.client.emotes.calendar +
-			' Erstellt am: ' +
+			" Erstellt am: " +
 			createdAt +
-			'\n' +
+			"\n" +
 			this.client.emotes.reminder +
-			' Erstellt vor: ' +
+			" Erstellt vor: " +
 			createdDiff +
-			'\n' +
+			"\n" +
 			(inviteData.inviter
 				? this.client.emotes.invite +
-				  ' Eingeladen von: ' +
+				  " Eingeladen von: " +
 				  inviteData.inviter.displayName +
-				  ' (@' +
+				  " (@" +
 				  inviteData.inviter.username +
-				  ')'
-				: '');
+				  ")"
+				: "");
 
 		const memberJoinEmbed: EmbedBuilder = this.client.createEmbed(
 			memberJoinText,
 			null,
-			'success'
+			"success"
 		);
 		memberJoinEmbed.setTitle(
 			this.client.emotes.events.member.unban +
-				' Mitglied hat den Server betreten'
+				" Mitglied hat den Server betreten"
 		);
 		memberJoinEmbed.setThumbnail(member.user.displayAvatarURL());
 
-		await guild.logAction(memberJoinEmbed, 'member');
+		await guild.logAction(memberJoinEmbed, "member");
 
 		/* Check member mute state */
 		if (memberData?.muted?.state) {
@@ -121,24 +121,24 @@ export default class {
 				.catch((e: any): void => {
 					const errorText: string =
 						this.client.emotes.user +
-						' Mitglied: ' +
+						" Mitglied: " +
 						member.user.displayName +
-						' (@' +
+						" (@" +
 						member.user.username +
-						')';
+						")";
 
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(
 						errorText,
 						null,
-						'error'
+						"error"
 					);
 					errorEmbed.setTitle(
 						this.client.emotes.error +
-							' Automatischer Mute fehlgeschlagen'
+							" Automatischer Mute fehlgeschlagen"
 					);
 					errorEmbed.setThumbnail(member.user.displayAvatarURL());
 
-					guild.logAction(errorEmbed, 'moderation');
+					guild.logAction(errorEmbed, "moderation");
 				});
 		}
 
@@ -149,31 +149,31 @@ export default class {
 				(await guild.roles.fetch(roleId).catch((e: any): void => {}));
 			if (!role) continue;
 
-			member.roles.add(role, 'Autorolle').catch((e: any): void => {
+			member.roles.add(role, "Autorolle").catch((e: any): void => {
 				const errorText: string =
 					this.client.emotes.user +
-					' Mitglied: ' +
+					" Mitglied: " +
 					member.user.displayName +
-					' (@' +
+					" (@" +
 					member.user.username +
-					')' +
-					'\n' +
+					")" +
+					"\n" +
 					this.client.emotes.arrow +
-					' Rolle: ' +
+					" Rolle: " +
 					role.name;
 
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					errorText,
 					null,
-					'error'
+					"error"
 				);
 				errorEmbed.setTitle(
 					this.client.emotes.error +
-						' Hinzufügen von Autorolle fehlgeschlagen'
+						" Hinzufügen von Autorolle fehlgeschlagen"
 				);
 				errorEmbed.setThumbnail(member.user.displayAvatarURL());
 
-				guild.logAction(errorEmbed, 'guild');
+				guild.logAction(errorEmbed, "guild");
 			});
 		}
 
@@ -188,24 +188,24 @@ export default class {
 					.replaceAll(/{server:name}/g, guild.name)
 					.replaceAll(/{server:id}/g, guild.id)
 					.replaceAll(/{server:membercount}/g, guild.memberCount)
-					.replaceAll(/{inviter}/g, inviteData.inviter || 'Unbekannt')
+					.replaceAll(/{inviter}/g, inviteData.inviter || "Unbekannt")
 					.replaceAll(
 						/{inviter:username}/g,
-						inviteData.inviter?.username || 'Unbekannt'
+						inviteData.inviter?.username || "Unbekannt"
 					)
 					.replaceAll(
 						/{inviter:displayname}/g,
-						inviteData.inviter?.displayName || 'Unbekannt'
+						inviteData.inviter?.displayName || "Unbekannt"
 					)
 					.replaceAll(
 						/{inviter:id}/g,
-						inviteData.inviter?.id || '000000000000000000'
+						inviteData.inviter?.id || "000000000000000000"
 					)
 					.replaceAll(
 						/{inviter:invites}/g,
 						inviteData.totalInvites || 0
 					)
-					.replaceAll(/{newline}/g, '\n');
+					.replaceAll(/{newline}/g, "\n");
 			}
 
 			const welcomeMessage: string = parseMessage(
@@ -218,33 +218,33 @@ export default class {
 					.catch((e: any): void => {
 						const errorText: string =
 							this.client.emotes.user +
-							' Mitglied: ' +
+							" Mitglied: " +
 							member.user.displayName +
-							' (@' +
+							" (@" +
 							member.user.username +
-							')' +
-							'\n' +
+							")" +
+							"\n" +
 							this.client.emotes.arrow +
-							' Kanal: ' +
+							" Kanal: " +
 							guildData.settings.welcome.channel;
 
 						const errorEmbed: EmbedBuilder =
-							this.client.createEmbed(errorText, null, 'error');
+							this.client.createEmbed(errorText, null, "error");
 						errorEmbed.setTitle(
 							this.client.emotes.error +
-								' Willkommensnachricht fehlgeschlagen'
+								" Willkommensnachricht fehlgeschlagen"
 						);
 						errorEmbed.setThumbnail(member.user.displayAvatarURL());
 
-						guild.logAction(errorEmbed, 'guild');
+						guild.logAction(errorEmbed, "guild");
 					}));
 
 			if (welcomeChannel) {
-				if (guildData.settings.welcome.type === 'embed') {
+				if (guildData.settings.welcome.type === "embed") {
 					const welcomeEmbed: EmbedBuilder = this.client.createEmbed(
 						welcomeMessage,
 						null,
-						'normal'
+						"normal"
 					);
 					welcomeEmbed.setThumbnail(member.user.displayAvatarURL());
 					welcomeChannel
@@ -252,63 +252,63 @@ export default class {
 						.catch((e: any): void => {
 							const errorText: string =
 								this.client.emotes.user +
-								' Mitglied: ' +
+								" Mitglied: " +
 								member.user.displayName +
-								' (@' +
+								" (@" +
 								member.user.username +
-								')' +
-								'\n' +
+								")" +
+								"\n" +
 								this.client.emotes.arrow +
-								' Kanal: ' +
+								" Kanal: " +
 								welcomeChannel.toString();
 
 							const errorEmbed: EmbedBuilder =
 								this.client.createEmbed(
 									errorText,
 									null,
-									'error'
+									"error"
 								);
 							errorEmbed.setTitle(
 								this.client.emotes.error +
-									' Willkommensnachricht fehlgeschlagen'
+									" Willkommensnachricht fehlgeschlagen"
 							);
 							errorEmbed.setThumbnail(
 								member.user.displayAvatarURL()
 							);
 
-							guild.logAction(errorEmbed, 'guild');
+							guild.logAction(errorEmbed, "guild");
 						});
-				} else if (guildData.settings.welcome.type === 'text') {
+				} else if (guildData.settings.welcome.type === "text") {
 					welcomeChannel
 						.send({ content: welcomeMessage })
 						.catch((e: any): void => {
 							const errorText: string =
 								this.client.emotes.user +
-								' Mitglied: ' +
+								" Mitglied: " +
 								member.user.displayName +
-								' (@' +
+								" (@" +
 								member.user.username +
-								')' +
-								'\n' +
+								")" +
+								"\n" +
 								this.client.emotes.arrow +
-								' Kanal: ' +
+								" Kanal: " +
 								welcomeChannel.toString();
 
 							const errorEmbed: EmbedBuilder =
 								this.client.createEmbed(
 									errorText,
 									null,
-									'error'
+									"error"
 								);
 							errorEmbed.setTitle(
 								this.client.emotes.error +
-									' Willkommensnachricht fehlgeschlagen'
+									" Willkommensnachricht fehlgeschlagen"
 							);
 							errorEmbed.setThumbnail(
 								member.user.displayAvatarURL()
 							);
 
-							guild.logAction(errorEmbed, 'guild');
+							guild.logAction(errorEmbed, "guild");
 						});
 				}
 			}
@@ -352,10 +352,10 @@ export default class {
 					).left--;
 				memberData.inviteUsed = inviteData.invite.code;
 
-				memberData.markModified('inviteUsed');
+				memberData.markModified("inviteUsed");
 				await memberData.save();
 
-				inviterData.markModified('invites');
+				inviterData.markModified("invites");
 				await inviterData.save();
 			}
 		}

@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { AuditLogEvent, EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { AuditLogEvent, EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -15,15 +15,15 @@ export default class {
 
 		let stickerLogMessage: string =
 			this.client.emotes.edit +
-			' Name: ' +
+			" Name: " +
 			sticker.name +
-			'\n' +
+			"\n" +
 			this.client.emotes.id +
-			' ID: ' +
+			" ID: " +
 			sticker.id;
 
 		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent['StickerCreate'], limit: 1 })
+			.fetchAuditLogs({ type: AuditLogEvent["StickerCreate"], limit: 1 })
 			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
@@ -31,27 +31,27 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					stickerLogMessage +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
 		const stickerLogEmbed: EmbedBuilder = this.client.createEmbed(
 			stickerLogMessage,
 			null,
-			'success'
+			"success"
 		);
 		stickerLogEmbed.setTitle(
-			this.client.emotes.events.sticker.create + ' Sticker erstellt'
+			this.client.emotes.events.sticker.create + " Sticker erstellt"
 		);
 		stickerLogEmbed.setThumbnail(sticker.url);
 
-		await guild.logAction(stickerLogEmbed, 'guild');
+		await guild.logAction(stickerLogEmbed, "guild");
 	}
 }

@@ -1,13 +1,13 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 export default class WarnCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'warn',
-			description: 'Verwarnt ein Mitglied',
-			memberPermissions: ['KickMembers'],
+			name: "warn",
+			description: "Verwarnt ein Mitglied",
+			memberPermissions: ["KickMembers"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -15,16 +15,16 @@ export default class WarnCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addUserOption((option: any) =>
 						option
-							.setName('mitglied')
+							.setName("mitglied")
 							.setDescription(
-								'Wähle ein Mitglied, welches du verwarnen möchtest'
+								"Wähle ein Mitglied, welches du verwarnen möchtest"
 							)
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName('grund')
-							.setDescription('Gib ggf. einen Grund an')
+							.setName("grund")
+							.setDescription("Gib ggf. einen Grund an")
 							.setRequired(false)
 					)
 			}
@@ -36,35 +36,35 @@ export default class WarnCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		await this.warnMember(
-			interaction.options.getUser('mitglied'),
-			interaction.options.getString('grund')
+			interaction.options.getUser("mitglied"),
+			interaction.options.getString("grund")
 		);
 	}
 
 	private async warnMember(user: any, reason: string): Promise<void> {
-		if (!reason) reason = 'Kein Grund angegeben';
+		if (!reason) reason = "Kein Grund angegeben";
 		const member = await this.interaction.guild.resolveMember(user.id);
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst ein Mitglied angeben.',
-				'error',
-				'error'
+				"Du musst ein Mitglied angeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 		if (member.user.id === this.client.user!.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Ich kann mich nicht selber verwarnen.',
-				'error',
-				'error'
+				"Ich kann mich nicht selber verwarnen.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 		if (member.user.id === this.client.user!.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du kannst dich nicht selber verwarnen.',
-				'error',
-				'error'
+				"Du kannst dich nicht selber verwarnen.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -73,9 +73,9 @@ export default class WarnCommand extends BaseCommand {
 			this.interaction.member.roles.highest.position
 		) {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du kannst keine Mitglieder verwarnen, die eine höhere Rolle haben als du.',
-				'error',
-				'error'
+				"Du kannst keine Mitglieder verwarnen, die eine höhere Rolle haben als du.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [higherRoleEmbed] });
 		}
@@ -91,69 +91,69 @@ export default class WarnCommand extends BaseCommand {
 			moderator: this.interaction.member.user.username,
 			reason: reason
 		});
-		victimData.markModified('warnings');
+		victimData.markModified("warnings");
 		await victimData.save();
 
 		const privateText: string =
-			'### ' +
+			"### " +
 			this.client.emotes.ban +
-			' Du wurdest auf ' +
+			" Du wurdest auf " +
 			this.interaction.guild.name +
-			' verwarnt.\n\n' +
+			" verwarnt.\n\n" +
 			this.client.emotes.arrow +
-			' Moderator: ' +
+			" Moderator: " +
 			this.interaction.member.user.username +
-			'\n' +
+			"\n" +
 			this.client.emotes.arrow +
-			' Begründung: ' +
+			" Begründung: " +
 			reason;
 		const privateEmbed: EmbedBuilder = this.client.createEmbed(
 			privateText,
-			'ban',
-			'warning'
+			"ban",
+			"warning"
 		);
 		await member.user
 			.send({ embeds: [privateEmbed] })
 			.catch((): void => {});
 
 		const logText: string =
-			'### ' +
+			"### " +
 			this.client.emotes.ban +
-			' ' +
+			" " +
 			member.user.username +
-			' wurde verwarnt\n\n' +
+			" wurde verwarnt\n\n" +
 			this.client.emotes.user +
-			' Moderator: ' +
+			" Moderator: " +
 			this.interaction.user.username +
-			'\n' +
+			"\n" +
 			this.client.emotes.text +
-			' Begründung: ' +
+			" Begründung: " +
 			reason;
 		const logEmbed: EmbedBuilder = this.client.createEmbed(
 			logText,
 			null,
-			'normal'
+			"normal"
 		);
 		logEmbed.setThumbnail(member.user.displayAvatarURL());
-		await this.interaction.guild.logAction(logEmbed, 'moderation');
+		await this.interaction.guild.logAction(logEmbed, "moderation");
 
 		const publicText: string =
-			'### ' +
+			"### " +
 			this.client.emotes.ban +
-			' ' +
+			" " +
 			member.user.username +
-			' wurde verwarnt.\n\n' +
+			" wurde verwarnt.\n\n" +
 			this.client.emotes.arrow +
-			' Moderator: ' +
+			" Moderator: " +
 			this.interaction.member.user.username +
-			'\n' +
+			"\n" +
 			this.client.emotes.arrow +
-			' Begründung: ' +
+			" Begründung: " +
 			reason;
 		const publicEmbed: EmbedBuilder = this.client.createEmbed(
 			publicText,
 			null,
-			'success'
+			"success"
 		);
 		return this.interaction.followUp({ embeds: [publicEmbed] });
 	}

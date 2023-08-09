@@ -1,13 +1,13 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import BaseGame from '@structures/BaseGame';
-import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import BaseGame from "@structures/BaseGame";
+import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 
 export default class SnakeCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'snake',
-			description: 'Friss möglichst viele Äpfel, um länger zu werden',
+			name: "snake",
+			description: "Friss möglichst viele Äpfel, um länger zu werden",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -43,15 +43,15 @@ class SnakeGame extends BaseGame {
 	public constructor(options: any = {}) {
 		super(options);
 		options.snake = {
-			head: '🐍',
-			body: '🟩',
-			tail: '🟢',
-			skull: '💀'
+			head: "🐍",
+			body: "🟩",
+			tail: "🟢",
+			skull: "💀"
 		};
 
 		options.emojis = {
-			board: '⬛',
-			food: '🍎',
+			board: "⬛",
+			food: "🍎",
 			up: options.client.emotes.arrows.up,
 			down: options.client.emotes.arrows.down,
 			left: options.client.emotes.arrows.left,
@@ -59,7 +59,7 @@ class SnakeGame extends BaseGame {
 		};
 
 		options.foods = [];
-		options.stopButton = 'Stop';
+		options.stopButton = "Stop";
 
 		this.snake = [{ x: 5, y: 5 }];
 		this.apple = { x: 1, y: 1 };
@@ -76,7 +76,7 @@ class SnakeGame extends BaseGame {
 
 	private getBoardContent(isSkull: any): string {
 		const emojis: any = this.options.snake;
-		let board: string = '';
+		let board: string = "";
 
 		for (let y: number = 0; y < 10; y++) {
 			for (let x: number = 0; x < 15; x++) {
@@ -103,7 +103,7 @@ class SnakeGame extends BaseGame {
 				if (!this.isSnake({ x: x, y: y }))
 					board += this.gameBoard[y * 15 + x];
 			}
-			board += '\n';
+			board += "\n";
 		}
 		return board;
 	}
@@ -138,54 +138,54 @@ class SnakeGame extends BaseGame {
 		this.updateFoodLoc();
 
 		const snakeEmbed: EmbedBuilder = this.client.createEmbed(
-			' Punkte: ' + this.score + '\n\n' + this.getBoardContent(undefined),
-			'arrow',
-			'normal'
+			" Punkte: " + this.score + "\n\n" + this.getBoardContent(undefined),
+			"arrow",
+			"normal"
 		);
-		snakeEmbed.setTitle('Snake');
+		snakeEmbed.setTitle("Snake");
 		snakeEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		const up: ButtonBuilder = this.client.createButton(
-			'snake_up',
+			"snake_up",
 			null,
-			'Primary',
+			"Primary",
 			this.client.emotes.arrows.up
 		);
 		const down: ButtonBuilder = this.client.createButton(
-			'snake_down',
+			"snake_down",
 			null,
-			'Primary',
+			"Primary",
 			this.client.emotes.arrows.down
 		);
 		const left: ButtonBuilder = this.client.createButton(
-			'snake_left',
+			"snake_left",
 			null,
-			'Primary',
+			"Primary",
 			this.client.emotes.arrows.left
 		);
 		const right: ButtonBuilder = this.client.createButton(
-			'snake_right',
+			"snake_right",
 			null,
-			'Primary',
+			"Primary",
 			this.client.emotes.arrows.right
 		);
 		const stop: ButtonBuilder = this.client.createButton(
-			'snake_stop',
-			'Stop',
-			'Danger'
+			"snake_stop",
+			"Stop",
+			"Danger"
 		);
 
 		const dis1: ButtonBuilder = this.client.createButton(
-			'dis1',
-			'\u200b',
-			'Secondary',
+			"dis1",
+			"\u200b",
+			"Secondary",
 			null,
 			true
 		);
 		const dis2: ButtonBuilder = this.client.createButton(
-			'dis2',
-			'\u200b',
-			'Secondary',
+			"dis2",
+			"\u200b",
+			"Secondary",
 			null,
 			true
 		);
@@ -220,11 +220,11 @@ class SnakeGame extends BaseGame {
 		}
 
 		const snakeEmbed: EmbedBuilder = this.client.createEmbed(
-			' Punkte: ' + this.score + '\n\n' + this.getBoardContent(undefined),
-			'arrow',
-			'normal'
+			" Punkte: " + this.score + "\n\n" + this.getBoardContent(undefined),
+			"arrow",
+			"normal"
 		);
-		snakeEmbed.setTitle('Snake');
+		snakeEmbed.setTitle("Snake");
 		snakeEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({ embeds: [snakeEmbed] });
@@ -232,14 +232,14 @@ class SnakeGame extends BaseGame {
 
 	private endGame(msg: any): any {
 		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(
-			'Das Spiel ist vorbei, du hast ' +
+			"Das Spiel ist vorbei, du hast " +
 				this.score +
-				' Punkte erreicht.\n\n' +
+				" Punkte erreicht.\n\n" +
 				this.getBoardContent(true),
-			'arrow',
-			'normal'
+			"arrow",
+			"normal"
 		);
-		gameOverEmbed.setTitle('Snake');
+		gameOverEmbed.setTitle("Snake");
 		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({
@@ -254,17 +254,17 @@ class SnakeGame extends BaseGame {
 				btn.user.id === this.interaction.user.id
 		});
 
-		snakeCollector.on('collect', async (btn: any): Promise<any> => {
+		snakeCollector.on("collect", async (btn: any): Promise<any> => {
 			await btn.deferUpdate().catch((e: any): void => {});
 
 			const snakeHead = this.snake[0];
 			const nextPos: any = { x: snakeHead.x, y: snakeHead.y };
-			const ButtonID = btn.customId.split('_')[1];
+			const ButtonID = btn.customId.split("_")[1];
 
-			if (ButtonID === 'left') nextPos.x = snakeHead.x - 1;
-			else if (ButtonID === 'right') nextPos.x = snakeHead.x + 1;
-			else if (ButtonID === 'down') nextPos.y = snakeHead.y + 1;
-			else if (ButtonID === 'up') nextPos.y = snakeHead.y - 1;
+			if (ButtonID === "left") nextPos.x = snakeHead.x - 1;
+			else if (ButtonID === "right") nextPos.x = snakeHead.x + 1;
+			else if (ButtonID === "down") nextPos.y = snakeHead.y + 1;
+			else if (ButtonID === "up") nextPos.y = snakeHead.y - 1;
 
 			if (nextPos.x < 0 || nextPos.x >= 15) {
 				nextPos.x = nextPos.x < 0 ? 0 : 15 - 1;
@@ -276,7 +276,7 @@ class SnakeGame extends BaseGame {
 				return snakeCollector.stop();
 			}
 
-			if (this.isSnake(nextPos) || ButtonID === 'stop')
+			if (this.isSnake(nextPos) || ButtonID === "stop")
 				return snakeCollector.stop();
 			else {
 				this.snake.unshift(nextPos);
@@ -285,8 +285,8 @@ class SnakeGame extends BaseGame {
 			}
 		});
 
-		snakeCollector.on('end', async (_: any, reason: any): Promise<any> => {
-			if (reason === 'idle' || reason === 'user')
+		snakeCollector.on("end", async (_: any, reason: any): Promise<any> => {
+			if (reason === "idle" || reason === "user")
 				return this.endGame(msg);
 		});
 	}

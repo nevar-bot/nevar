@@ -1,15 +1,15 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 export default class AutoroleCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'autorole',
+			name: "autorole",
 			description:
-				'Verwaltet die Rollen, welche neuen Mitgliedern automatisch gegeben werden',
-			memberPermissions: ['ManageGuild'],
-			botPermissions: ['ManageRoles'],
+				"Verwaltet die Rollen, welche neuen Mitgliedern automatisch gegeben werden",
+			memberPermissions: ["ManageGuild"],
+			botPermissions: ["ManageRoles"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,19 +17,19 @@ export default class AutoroleCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
 						option
-							.setName('aktion')
-							.setDescription('Wähle aus den folgenden Aktionen')
+							.setName("aktion")
+							.setDescription("Wähle aus den folgenden Aktionen")
 							.setRequired(true)
 							.addChoices(
-								{ name: 'hinzufügen', value: 'add' },
-								{ name: 'entfernen', value: 'remove' },
-								{ name: 'liste', value: 'list' }
+								{ name: "hinzufügen", value: "add" },
+								{ name: "entfernen", value: "remove" },
+								{ name: "liste", value: "list" }
 							)
 					)
 					.addRoleOption((option: any) =>
 						option
-							.setName('rolle')
-							.setDescription('Wähle eine Rolle')
+							.setName("rolle")
+							.setDescription("Wähle eine Rolle")
 							.setRequired(false)
 					)
 			}
@@ -41,29 +41,29 @@ export default class AutoroleCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 
-		const action: string = interaction.options.getString('aktion');
+		const action: string = interaction.options.getString("aktion");
 		switch (action) {
-			case 'add':
+			case "add":
 				await this.addAutorole(
-					interaction.options.getRole('rolle'),
+					interaction.options.getRole("rolle"),
 					data
 				);
 				break;
-			case 'remove':
+			case "remove":
 				await this.removeAutorole(
-					interaction.options.getRole('rolle'),
+					interaction.options.getRole("rolle"),
 					data
 				);
 				break;
-			case 'list':
+			case "list":
 				await this.showList(data);
 				break;
 			default:
 				const unexpectedErrorEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Ein unerwarteter Fehler ist aufgetreten.',
-						'error',
-						'error'
+						"Ein unerwarteter Fehler ist aufgetreten.",
+						"error",
+						"error"
 					);
 				return this.interaction.followUp({
 					embeds: [unexpectedErrorEmbed]
@@ -75,9 +75,9 @@ export default class AutoroleCommand extends BaseCommand {
 		/* Invalid options */
 		if (!role || !role.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst eine Rolle eingeben.',
-				'error',
-				'error'
+				"Du musst eine Rolle eingeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -85,9 +85,9 @@ export default class AutoroleCommand extends BaseCommand {
 		/* Role is @everyone */
 		if (role.id === this.interaction.guild.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
-				'Die @everyone Rolle kann nicht als eine Autorolle hinzugefügt werden.',
-				'error',
-				'error'
+				"Die @everyone Rolle kann nicht als eine Autorolle hinzugefügt werden.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [everyoneEmbed] });
 		}
@@ -95,9 +95,9 @@ export default class AutoroleCommand extends BaseCommand {
 		/* Role is managed */
 		if (role.managed) {
 			const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
-				'Rollen welche durch eine Integration verwaltet werden, können nicht als Autorolle hinzugefügt werden.',
-				'error',
-				'error'
+				"Rollen welche durch eine Integration verwaltet werden, können nicht als Autorolle hinzugefügt werden.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [roleIsManagedEmbed] });
 		}
@@ -108,9 +108,9 @@ export default class AutoroleCommand extends BaseCommand {
 			role.position
 		) {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
-				'Da {0} eine höhere oder gleiche Position wie meine höchste Rolle ({1}) hat, kann sie nicht als Autorolle hinzugefügt werden.',
-				'error',
-				'error',
+				"Da {0} eine höhere oder gleiche Position wie meine höchste Rolle ({1}) hat, kann sie nicht als Autorolle hinzugefügt werden.",
+				"error",
+				"error",
 				role,
 				this.interaction.guild.members.me.roles.highest
 			);
@@ -121,9 +121,9 @@ export default class AutoroleCommand extends BaseCommand {
 		if (data.guild.settings.welcome.autoroles.includes(role.id)) {
 			const isAlreadyAutoroleEmbed: EmbedBuilder =
 				this.client.createEmbed(
-					'{0} ist bereits eine Autorolle.',
-					'error',
-					'error',
+					"{0} ist bereits eine Autorolle.",
+					"error",
+					"error",
 					role
 				);
 			return this.interaction.followUp({
@@ -133,13 +133,13 @@ export default class AutoroleCommand extends BaseCommand {
 
 		/* Add to database */
 		data.guild.settings.welcome.autoroles.push(role.id);
-		data.guild.markModified('settings.welcome.autoroles');
+		data.guild.markModified("settings.welcome.autoroles");
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'{0} wurde als Autorolle hinzugefügt.',
-			'success',
-			'success',
+			"{0} wurde als Autorolle hinzugefügt.",
+			"success",
+			"success",
 			role
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
@@ -149,9 +149,9 @@ export default class AutoroleCommand extends BaseCommand {
 		/* Invalid options */
 		if (!role || !role.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst eine Rolle angeben.',
-				'error',
-				'error'
+				"Du musst eine Rolle angeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -159,9 +159,9 @@ export default class AutoroleCommand extends BaseCommand {
 		/* Role is not an autorole */
 		if (!data.guild.settings.welcome.autoroles.includes(role.id)) {
 			const isNoAutoroleEmbed: EmbedBuilder = this.client.createEmbed(
-				'{0} ist keine Autorolle.',
-				'error',
-				'error',
+				"{0} ist keine Autorolle.",
+				"error",
+				"error",
 				role
 			);
 			return this.interaction.followUp({ embeds: [isNoAutoroleEmbed] });
@@ -172,13 +172,13 @@ export default class AutoroleCommand extends BaseCommand {
 			data.guild.settings.welcome.autoroles.filter(
 				(r: any): boolean => r !== role.id
 			);
-		data.guild.markModified('settings.welcome.autoroles');
+		data.guild.markModified("settings.welcome.autoroles");
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'{0} wurde als Autorolle entfernt.',
-			'success',
-			'success',
+			"{0} wurde als Autorolle entfernt.",
+			"success",
+			"success",
 			role
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
@@ -199,9 +199,9 @@ export default class AutoroleCommand extends BaseCommand {
 			this.interaction,
 			5,
 			autorolesArray,
-			'Autorollen',
-			'Es sind keine Autorollen vorhanden',
-			'ping'
+			"Autorollen",
+			"Es sind keine Autorollen vorhanden",
+			"ping"
 		);
 	}
 }

@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { AuditLogEvent, EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { AuditLogEvent, EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -15,15 +15,15 @@ export default class {
 
 		let roleLogMessage: string =
 			this.client.emotes.edit +
-			' Name: ' +
+			" Name: " +
 			role.name +
-			'\n' +
+			"\n" +
 			this.client.emotes.id +
-			' ID: ' +
+			" ID: " +
 			role.id;
 
 		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent['RoleDelete'], limit: 1 })
+			.fetchAuditLogs({ type: AuditLogEvent["RoleDelete"], limit: 1 })
 			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
@@ -31,27 +31,27 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					roleLogMessage +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
 		const roleLogEmbed: EmbedBuilder = this.client.createEmbed(
 			roleLogMessage,
 			null,
-			'error'
+			"error"
 		);
 		roleLogEmbed.setTitle(
-			this.client.emotes.events.role.delete + ' Rolle gelöscht'
+			this.client.emotes.events.role.delete + " Rolle gelöscht"
 		);
 		roleLogEmbed.setThumbnail(guild.iconURL());
 
-		await guild.logAction(roleLogEmbed, 'role');
+		await guild.logAction(roleLogEmbed, "role");
 	}
 }

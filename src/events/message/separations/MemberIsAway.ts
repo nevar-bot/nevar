@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -27,7 +27,7 @@ export default class {
 				afkUsers.push({
 					name: message.mentions.repliedUser.username,
 					id: message.mentions.repliedUser.id,
-					reason: mentionData.afk.reason || 'Kein Grund angegeben',
+					reason: mentionData.afk.reason || "Kein Grund angegeben",
 					since: afkSince
 				});
 			}
@@ -62,27 +62,27 @@ export default class {
 		for (let afkUser of afkUsers) {
 			const awayText: string =
 				this.client.emotes.text +
-				' Begründung: ' +
+				" Begründung: " +
 				afkUser.reason +
-				'\n' +
+				"\n" +
 				this.client.emotes.reminder +
-				' Abwesend seit: ' +
+				" Abwesend seit: " +
 				afkUser.since;
 
 			const isAwayEmbed: EmbedBuilder = this.client.createEmbed(
-				'{0}',
-				'reminder',
-				'normal',
+				"{0}",
+				"reminder",
+				"normal",
 				awayText
 			);
 			isAwayEmbed.setTitle(
 				this.client.emotes.status.idle +
-					' ' +
+					" " +
 					afkUser.displayName +
-					' (@' +
+					" (@" +
 					afkUser.name +
-					')' +
-					' ist aktuell abwesend!'
+					")" +
+					" ist aktuell abwesend!"
 			);
 			await message
 				.reply({ embeds: [isAwayEmbed] })

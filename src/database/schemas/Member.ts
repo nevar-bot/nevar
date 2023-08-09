@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
-import { Model } from 'mongoose';
+import * as mongoose from "mongoose";
+import { Model } from "mongoose";
 
 const Schema = new mongoose.Schema({
 	id: { type: String },
@@ -51,5 +51,5 @@ const Schema = new mongoose.Schema({
 	}
 });
 
-const Member: Model<any> = mongoose.model('Member', Schema);
+const Member: Model<any> = mongoose.model("Member", Schema);
 export default Member;

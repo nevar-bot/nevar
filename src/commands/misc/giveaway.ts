@@ -1,15 +1,15 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { ChannelType, SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import ems from 'enhanced-ms';
-const ms: any = ems('de');
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { ChannelType, SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import ems from "enhanced-ms";
+const ms: any = ems("de");
 
 export default class GiveawayCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'giveaway',
-			description: 'Verwaltet die Giveaways auf dem Server',
-			memberPermissions: ['ManageGuild'],
+			name: "giveaway",
+			description: "Verwaltet die Giveaways auf dem Server",
+			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,13 +17,13 @@ export default class GiveawayCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('start')
-							.setDescription('Startet ein neue Gewinnspiel')
+							.setName("start")
+							.setDescription("Startet ein neue Gewinnspiel")
 							.addChannelOption((option: any) =>
 								option
-									.setName('channel')
+									.setName("channel")
 									.setDescription(
-										'Wähle, in welchem Channel das Gewinnspiel gestartet werden soll'
+										"Wähle, in welchem Channel das Gewinnspiel gestartet werden soll"
 									)
 									.setRequired(true)
 									.addChannelTypes(
@@ -33,24 +33,24 @@ export default class GiveawayCommand extends BaseCommand {
 							)
 							.addStringOption((option: any) =>
 								option
-									.setName('gewinn')
-									.setDescription('Gib den Gewinn an')
+									.setName("gewinn")
+									.setDescription("Gib den Gewinn an")
 									.setMaxLength(256)
 									.setRequired(true)
 							)
 							.addStringOption((option: any) =>
 								option
-									.setName('dauer')
+									.setName("dauer")
 									.setDescription(
-										'Gib die Dauer an (z.B. 1h, 1d, 1w, 1h 30m)'
+										"Gib die Dauer an (z.B. 1h, 1d, 1w, 1h 30m)"
 									)
 									.setRequired(true)
 							)
 							.addIntegerOption((option: any) =>
 								option
-									.setName('gewinner')
+									.setName("gewinner")
 									.setDescription(
-										'Gib an wieviele Gewinner es geben soll'
+										"Gib an wieviele Gewinner es geben soll"
 									)
 									.setMinValue(1)
 									.setMaxValue(10)
@@ -59,50 +59,50 @@ export default class GiveawayCommand extends BaseCommand {
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('end')
-							.setDescription('Beendet ein laufendes Gewinnspiel')
+							.setName("end")
+							.setDescription("Beendet ein laufendes Gewinnspiel")
 							.addStringOption((option: any) =>
 								option
-									.setName('id')
+									.setName("id")
 									.setDescription(
-										'Gib die ID der Nachricht des Gewinnspiels an'
+										"Gib die ID der Nachricht des Gewinnspiels an"
 									)
 									.setRequired(true)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('reroll')
+							.setName("reroll")
 							.setDescription(
-								'Lost neue Gewinner für ein beendetes Gewinnspiel aus'
+								"Lost neue Gewinner für ein beendetes Gewinnspiel aus"
 							)
 							.addStringOption((option: any) =>
 								option
-									.setName('id')
+									.setName("id")
 									.setDescription(
-										'Gib die ID der Nachricht des beendeten Gewinnspiels an'
+										"Gib die ID der Nachricht des beendeten Gewinnspiels an"
 									)
 									.setRequired(true)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('delete')
-							.setDescription('Löscht ein Gewinnspiel')
+							.setName("delete")
+							.setDescription("Löscht ein Gewinnspiel")
 							.addStringOption((option: any) =>
 								option
-									.setName('id')
+									.setName("id")
 									.setDescription(
-										'Gib die ID der Nachricht des Gewinnspiels an'
+										"Gib die ID der Nachricht des Gewinnspiels an"
 									)
 									.setRequired(true)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName('list')
+							.setName("list")
 							.setDescription(
-								'Zeigt alle laufenden Gewinnspiele an'
+								"Zeigt alle laufenden Gewinnspiele an"
 							)
 					)
 			}
@@ -117,35 +117,35 @@ export default class GiveawayCommand extends BaseCommand {
 		const subcommand = interaction.options.getSubcommand();
 
 		switch (subcommand) {
-			case 'start':
+			case "start":
 				await this.start();
 				break;
-			case 'end':
+			case "end":
 				await this.end();
 				break;
-			case 'reroll':
+			case "reroll":
 				await this.reroll();
 				break;
-			case 'delete':
+			case "delete":
 				await this.delete();
 				break;
-			case 'list':
+			case "list":
 				await this.list();
 				break;
 		}
 	}
 
 	private async start(): Promise<void> {
-		const channel: any = this.interaction.options.getChannel('channel');
-		const win: any = this.interaction.options.getString('gewinn');
-		const duration: any = this.interaction.options.getString('dauer');
-		const winner: any = this.interaction.options.getInteger('gewinner');
+		const channel: any = this.interaction.options.getChannel("channel");
+		const win: any = this.interaction.options.getString("gewinn");
+		const duration: any = this.interaction.options.getString("dauer");
+		const winner: any = this.interaction.options.getInteger("gewinner");
 
 		if (!ms(duration)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst eine gültige Dauer angeben.',
-				'error',
-				'error'
+				"Du musst eine gültige Dauer angeben.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -158,84 +158,84 @@ export default class GiveawayCommand extends BaseCommand {
 
 			thumbnail: this.client.user!.displayAvatarURL(),
 			messages: {
-				giveaway: '🎉🎉 **GEWINNSPIEL** 🎉🎉',
-				giveawayEnded: '🎉🎉 **GEWINNSPIEL BEENDET** 🎉🎉',
-				title: 'Neues Gewinnspiel!',
+				giveaway: "🎉🎉 **GEWINNSPIEL** 🎉🎉",
+				giveawayEnded: "🎉🎉 **GEWINNSPIEL BEENDET** 🎉🎉",
+				title: "Neues Gewinnspiel!",
 				inviteToParticipate:
 					this.client.emotes.gift +
-					'Verlost wird **{this.prize}!**\n\n' +
+					"Verlost wird **{this.prize}!**\n\n" +
 					this.client.emotes.arrow +
-					'Um teilzunehmen, reagiere mit ' +
+					"Um teilzunehmen, reagiere mit " +
 					this.client.emotes.tada +
-					'!',
+					"!",
 				winMessage: {
 					content:
 						this.client.emotes.tada +
 						" Herzlichen Glückwunsch, {winners}! {this.winnerCount > 1 ? 'Ihr habt' : 'Du hast'} **{this.prize}** gewonnen!",
 					replyToGiveaway: true
 				},
-				drawing: this.client.emotes.reminder + ' Endet {timestamp}',
-				embedFooter: '{this.winnerCount} Gewinner',
+				drawing: this.client.emotes.reminder + " Endet {timestamp}",
+				embedFooter: "{this.winnerCount} Gewinner",
 				noWinner:
 					this.client.emotes.gift +
-					' Verlost wird **{this.prize}!**\n\n' +
+					" Verlost wird **{this.prize}!**\n\n" +
 					this.client.emotes.arrow +
-					'Teilnahmen sind **nicht** mehr möglich!\n' +
+					"Teilnahmen sind **nicht** mehr möglich!\n" +
 					this.client.emotes.reminder +
-					'Endet <t:{Math.round(this.endAt / 1000)}:R>\n\n' +
+					"Endet <t:{Math.round(this.endAt / 1000)}:R>\n\n" +
 					this.client.emotes.users +
-					' Da es keine Teilnehmer gab, gibt es keine Gewinner!',
+					" Da es keine Teilnehmer gab, gibt es keine Gewinner!",
 				winners:
 					this.client.emotes.gift +
-					' Verlost wird **{this.prize}!**\n\n' +
+					" Verlost wird **{this.prize}!**\n\n" +
 					this.client.emotes.arrow +
-					' Teilnahmen sind **nicht** mehr möglich!\n' +
+					" Teilnahmen sind **nicht** mehr möglich!\n" +
 					this.client.emotes.reminder +
-					' Endet <t:{Math.round(this.endAt / 1000)}:R>\n\n' +
+					" Endet <t:{Math.round(this.endAt / 1000)}:R>\n\n" +
 					this.client.emotes.users +
-					' Gewinner:',
-				endedAt: 'Beendet',
+					" Gewinner:",
+				endedAt: "Beendet",
 				hostedBy:
-					'\n' +
+					"\n" +
 					this.client.emotes.user +
-					' Veranstaltet durch: {this.hostedBy}\n' +
+					" Veranstaltet durch: {this.hostedBy}\n" +
 					this.client.emotes.users +
-					' Teilnehmer: {this.entrantIds.length}'
+					" Teilnehmer: {this.entrantIds.length}"
 			}
 		});
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			'Das Gewinnspiel wurde gestartet.',
-			'success',
-			'success'
+			"Das Gewinnspiel wurde gestartet.",
+			"success",
+			"success"
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async end(): Promise<void> {
-		const id: string = this.interaction.options.getString('id');
+		const id: string = this.interaction.options.getString("id");
 		this.client.giveawayManager
 			.end(id)
 			.then(async (): Promise<any> => {
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					'Das Gewinnspiel wurde beendet.',
-					'success',
-					'success'
+					"Das Gewinnspiel wurde beendet.",
+					"success",
+					"success"
 				);
 				return this.interaction.followUp({ embeds: [successEmbed] });
 			})
 			.catch(async (): Promise<any> => {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					'Mit der ID habe ich kein Gewinnspiel gefunden.',
-					'error',
-					'error'
+					"Mit der ID habe ich kein Gewinnspiel gefunden.",
+					"error",
+					"error"
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			});
 	}
 
 	private async reroll(): Promise<void> {
-		const id: string = this.interaction.options.getString('id');
+		const id: string = this.interaction.options.getString("id");
 		this.client.giveawayManager
 			.reroll(id, {
 				messages: {
@@ -247,44 +247,44 @@ export default class GiveawayCommand extends BaseCommand {
 					},
 					error:
 						this.client.emotes.error +
-						' Da es keine weiteren gültigen Teilnehmer gab, gibt es keine Gewinner!'
+						" Da es keine weiteren gültigen Teilnehmer gab, gibt es keine Gewinner!"
 				}
 			})
 			.then(async (): Promise<any> => {
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					'Das Gewinnspiel wurde neu ausgelost.',
-					'success',
-					'success'
+					"Das Gewinnspiel wurde neu ausgelost.",
+					"success",
+					"success"
 				);
 				return this.interaction.followUp({ embeds: [successEmbed] });
 			})
 			.catch(async (): Promise<any> => {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					'Mit der ID habe ich kein Gewinnspiel gefunden.',
-					'error',
-					'error'
+					"Mit der ID habe ich kein Gewinnspiel gefunden.",
+					"error",
+					"error"
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			});
 	}
 
 	private async delete(): Promise<void> {
-		const id: string = this.interaction.options.getString('id');
+		const id: string = this.interaction.options.getString("id");
 		this.client.giveawayManager
 			.delete(id)
 			.then(async (): Promise<any> => {
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					'Das Gewinnspiel wurde gelöscht.',
-					'success',
-					'success'
+					"Das Gewinnspiel wurde gelöscht.",
+					"success",
+					"success"
 				);
 				return this.interaction.followUp({ embeds: [successEmbed] });
 			})
 			.catch(async (): Promise<any> => {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					'Mit der ID habe ich kein Gewinnspiel gefunden.',
-					'error',
-					'error'
+					"Mit der ID habe ich kein Gewinnspiel gefunden.",
+					"error",
+					"error"
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			});
@@ -310,29 +310,29 @@ export default class GiveawayCommand extends BaseCommand {
 			const endAt = giveaway.endAt;
 
 			const text: string =
-				' **' +
+				" **" +
 				prize +
-				'**\n' +
+				"**\n" +
 				this.client.emotes.arrow +
-				'Channel: ' +
+				"Channel: " +
 				channel.toString() +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				'Gewinner: ' +
+				"Gewinner: " +
 				winnerCount +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				'Veranstaltet durch: ' +
+				"Veranstaltet durch: " +
 				hostedBy +
-				'\n' +
+				"\n" +
 				this.client.emotes.arrow +
-				'Gestartet <t:' +
+				"Gestartet <t:" +
 				Math.round(startedAt / 1000) +
-				':R>\n' +
+				":R>\n" +
 				this.client.emotes.arrow +
-				'Endet <t:' +
+				"Endet <t:" +
 				Math.round(endAt / 1000) +
-				':R>\n\n';
+				":R>\n\n";
 			giveaways.push(text);
 		}
 
@@ -340,9 +340,9 @@ export default class GiveawayCommand extends BaseCommand {
 			this.interaction,
 			3,
 			giveaways,
-			'Gewinnspiele',
-			'Es sind keine Gewinnspiele vorhanden',
-			'gift'
+			"Gewinnspiele",
+			"Es sind keine Gewinnspiele vorhanden",
+			"gift"
 		);
 	}
 }

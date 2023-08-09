@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { client } from '@src/app';
-import fs from 'fs';
-import moment from 'moment';
+import { Request, Response } from "express";
+import { client } from "@src/app";
+import fs from "fs";
+import moment from "moment";
 
 export async function get(req: Request, res: Response) {
 	const { app } = req;
@@ -20,13 +20,13 @@ export async function get(req: Request, res: Response) {
 			channel_count: client.channels.cache.size,
 			command_count: client.commands.size,
 			vote_count:
-				JSON.parse(fs.readFileSync('./assets/votes.json').toString())[
-					moment().format('MMMM').toLowerCase()
+				JSON.parse(fs.readFileSync("./assets/votes.json").toString())[
+					moment().format("MMMM").toLowerCase()
 				] || 0,
-			support_url: client.config.support['INVITE'],
+			support_url: client.config.support["INVITE"],
 			invite_url: client.createInvite()
 		}
 	};
-	res.setHeader('Content-Type', 'application/json');
+	res.setHeader("Content-Type", "application/json");
 	return res.end(JSON.stringify(json, null, 4));
 }

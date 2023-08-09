@@ -1,5 +1,5 @@
-import { ChannelType, EmbedBuilder } from 'discord.js';
-import BaseClient from '@structures/BaseClient';
+import { ChannelType, EmbedBuilder } from "discord.js";
+import BaseClient from "@structures/BaseClient";
 
 export default class {
 	private client: BaseClient;
@@ -30,10 +30,10 @@ export default class {
 			const channelName: string =
 				guildData.settings.joinToCreate.defaultName
 					.replaceAll(
-						'{count}',
+						"{count}",
 						guildData.settings.joinToCreate.channels?.length || 1
 					)
-					.replaceAll('{user}', user.displayName);
+					.replaceAll("{user}", user.displayName);
 
 			/* Create temp channel */
 			if (
@@ -42,7 +42,7 @@ export default class {
 				const tempChannel: any = await newMember.guild.channels
 					.create({
 						name: channelName,
-						reason: 'Join to create',
+						reason: "Join to create",
 						type: ChannelType.GuildVoice,
 						parent: guildData.settings.joinToCreate.category
 							? guildData.settings.joinToCreate.category
@@ -58,20 +58,20 @@ export default class {
 					.catch((e: any): any => {
 						const errorText: string =
 							this.client.emotes.channel +
-							' Nutzer: ' +
+							" Nutzer: " +
 							newMember.user.displayName +
-							' (@' +
+							" (@" +
 							newMember.user.username +
-							')';
+							")";
 
 						const errorEmbed: EmbedBuilder =
-							this.client.createEmbed(errorText, null, 'error');
+							this.client.createEmbed(errorText, null, "error");
 						errorEmbed.setTitle(
 							this.client.emotes.error +
-								' Erstellen von Join2Create-Channel fehlgeschlagen'
+								" Erstellen von Join2Create-Channel fehlgeschlagen"
 						);
 
-						return guild.logAction(errorEmbed, 'guild');
+						return guild.logAction(errorEmbed, "guild");
 					});
 
 				if (tempChannel) {
@@ -98,7 +98,7 @@ export default class {
 							guildData.settings.joinToCreate.channels.push(
 								tempChannel.id
 							);
-							guildData.markModified('settings.joinToCreate');
+							guildData.markModified("settings.joinToCreate");
 							await guildData.save();
 						});
 				}
@@ -114,25 +114,25 @@ export default class {
 				if (oldChannel.members.size >= 1) return;
 				await oldChannel.delete().catch((e: any): void => {
 					const errorText: string =
-						this.client.emotes.channel + ' Nutzer: ' + newMember;
+						this.client.emotes.channel + " Nutzer: " + newMember;
 
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(
 						errorText,
 						null,
-						'error'
+						"error"
 					);
 					errorEmbed.setTitle(
 						this.client.emotes.error +
-							' Löschen von Join2Create-Channel fehlgeschlagen'
+							" Löschen von Join2Create-Channel fehlgeschlagen"
 					);
 
-					return guild.logAction(errorEmbed, 'guild');
+					return guild.logAction(errorEmbed, "guild");
 				});
 				guildData.settings.joinToCreate.channels =
 					guildData.settings.joinToCreate.channels.filter(
 						(c: any): boolean => c !== oldChannel.id
 					);
-				guildData.markModified('settings.joinToCreate');
+				guildData.markModified("settings.joinToCreate");
 				await guildData.save();
 			}
 		}

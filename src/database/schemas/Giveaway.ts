@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
-import { Model } from 'mongoose';
+import * as mongoose from "mongoose";
+import { Model } from "mongoose";
 
 const Schema = new mongoose.Schema(
 	{
@@ -68,5 +68,5 @@ const Schema = new mongoose.Schema(
 	}
 );
 
-const Giveaway: Model<any> = mongoose.model('Giveaway', Schema);
+const Giveaway: Model<any> = mongoose.model("Giveaway", Schema);
 export default Giveaway;

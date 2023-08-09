@@ -1,10 +1,10 @@
-import moment from 'moment';
-import { Guild, GuildMember } from 'discord.js';
+import moment from "moment";
+import { Guild, GuildMember } from "discord.js";
 
 export default {
 	init(client: any): void {
 		client.membersData
-			.find({ 'reminders.0': { $exists: true } })
+			.find({ "reminders.0": { $exists: true } })
 			.then((members: any): void => {
 				members.forEach((member: any): void => {
 					client.databaseCache.reminders.set(
@@ -38,26 +38,26 @@ export default {
 									);
 								const reminderStarted = moment(
 									reminder.startDate
-								).format('DD.MM.YYYY HH:mm');
+								).format("DD.MM.YYYY HH:mm");
 
 								const text: string =
-									'### ' +
+									"### " +
 									client.emotes.reminder +
-									' Hier ist deine Erinnerung, die du vor ' +
+									" Hier ist deine Erinnerung, die du vor " +
 									reminderAgo +
-									' erstellt hast!\n' +
+									" erstellt hast!\n" +
 									client.emotes.arrow +
-									' Erstellt am: ' +
+									" Erstellt am: " +
 									reminderStarted +
-									'\n' +
+									"\n" +
 									client.emotes.arrow +
-									' Erinnerung: ' +
+									" Erinnerung: " +
 									reminder.reason;
 
 								const remindEmbed = client.createEmbed(
 									text,
 									null,
-									'normal'
+									"normal"
 								);
 
 								channel.send({
@@ -70,7 +70,7 @@ export default {
 										(r: any) =>
 											r.startDate !== reminder.startDate
 									);
-								memberData.markModified('reminders');
+								memberData.markModified("reminders");
 								memberData.save();
 							})
 							.catch((): void => {});

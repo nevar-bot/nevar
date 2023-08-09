@@ -1,13 +1,13 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 export default class XpForCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'xpfor',
+			name: "xpfor",
 			description:
-				'Zeigt, wieviel XP für ein bestimmtes Level benötigt wird',
+				"Zeigt, wieviel XP für ein bestimmtes Level benötigt wird",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -15,8 +15,8 @@ export default class XpForCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addIntegerOption(
 					(option: any) =>
 						option
-							.setName('level')
-							.setDescription('Gib das Level an')
+							.setName("level")
+							.setDescription("Gib das Level an")
 							.setMinValue(1)
 							.setRequired(true)
 				)
@@ -28,7 +28,7 @@ export default class XpForCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.sendXpFor(interaction.options.getInteger('level'), data);
+		await this.sendXpFor(interaction.options.getInteger("level"), data);
 	}
 
 	private async sendXpFor(level: number, data: any): Promise<void> {
@@ -42,7 +42,7 @@ export default class XpForCommand extends BaseCommand {
 			const divisor_seconds: number = divisor_minutes % 60;
 			const seconds: number = Math.ceil(divisor_seconds);
 
-			return hours + 'h ' + minutes + 'm ' + seconds + 's';
+			return hours + "h " + minutes + "m " + seconds + "s";
 		}
 
 		const minXp = data.guild.settings.levels.xp.min;
@@ -61,30 +61,30 @@ export default class XpForCommand extends BaseCommand {
 		);
 
 		const text: string =
-			'Um Level **' +
+			"Um Level **" +
 			level +
-			'** zu erreichen, werden **' +
+			"** zu erreichen, werden **" +
 			neededXp +
-			' XP** benötigt.\n' +
+			" XP** benötigt.\n" +
 			this.client.emotes.arrow +
-			' Auf diesem Server werden ' +
+			" Auf diesem Server werden " +
 			minXp +
-			' bis ' +
+			" bis " +
 			maxXp +
-			' XP pro Nachricht vergeben, der Durchschnitt liegt bei ' +
+			" XP pro Nachricht vergeben, der Durchschnitt liegt bei " +
 			averageXp +
-			' XP pro Nachricht.\n' +
+			" XP pro Nachricht.\n" +
 			this.client.emotes.arrow +
-			' Bei einem Timeout von 15 Sekunden, entspricht dies etwa **' +
+			" Bei einem Timeout von 15 Sekunden, entspricht dies etwa **" +
 			neededMessages +
-			' Nachrichten**, und einem Zeitaufwand von **' +
+			" Nachrichten**, und einem Zeitaufwand von **" +
 			neededTime +
-			'**.';
+			"**.";
 
 		const xpForEmbed: EmbedBuilder = this.client.createEmbed(
-			'{0}',
-			'arrow',
-			'normal',
+			"{0}",
+			"arrow",
+			"normal",
 			text
 		);
 		return this.interaction.followUp({ embeds: [xpForEmbed] });

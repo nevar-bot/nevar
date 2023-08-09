@@ -1,12 +1,12 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder } from "discord.js";
 
 export default class MyinvitesCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'myinvites',
-			description: 'Zeigt Statistiken zu deinen Einladungen',
+			name: "myinvites",
+			description: "Zeigt Statistiken zu deinen Einladungen",
 			cooldown: 3 * 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -52,29 +52,29 @@ export default class MyinvitesCommand extends BaseCommand {
 					fake: 0
 				});
 		}
-		memberData.markModified('invites');
+		memberData.markModified("invites");
 		await memberData.save();
 		const invites = memberData.invites;
 		const invitesData: any[] = [];
 		for (const invite of invites) {
 			invitesData.push(
-				'### ' +
+				"### " +
 					this.client.emotes.invite +
-					' discord.gg/' +
+					" discord.gg/" +
 					invite.code +
-					'\n' +
+					"\n" +
 					this.client.emotes.users +
-					' Verwendungen: **' +
+					" Verwendungen: **" +
 					invite.uses +
-					'**\n' +
+					"**\n" +
 					this.client.emotes.leave +
-					' Server verlassen: **' +
+					" Server verlassen: **" +
 					(invite.left || 0) +
-					'**\n' +
+					"**\n" +
 					this.client.emotes.error +
-					' Gefälscht: **' +
+					" Gefälscht: **" +
 					(invite.fake || 0) +
-					'**\n'
+					"**\n"
 			);
 		}
 
@@ -82,8 +82,8 @@ export default class MyinvitesCommand extends BaseCommand {
 			this.interaction,
 			5,
 			invitesData,
-			'Deine Einladungen',
-			'Du hast noch keine Nutzer eingeladen',
+			"Deine Einladungen",
+			"Du hast noch keine Nutzer eingeladen",
 			null
 		);
 	}

@@ -1,22 +1,22 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, AttachmentBuilder } from 'discord.js';
-import * as canvacord from 'canvacord';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
+import * as canvacord from "canvacord";
 
 export default class RankCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'rank',
-			description: 'Sendet deine Levelcard',
+			name: "rank",
+			description: "Sendet deine Levelcard",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
-						.setName('mitglied')
+						.setName("mitglied")
 						.setDescription(
-							'Wähle ein Mitglied, dessen Levelcard du sehen möchtest'
+							"Wähle ein Mitglied, dessen Levelcard du sehen möchtest"
 						)
 						.setRequired(false)
 				)
@@ -33,7 +33,7 @@ export default class RankCommand extends BaseCommand {
 
 	private async showRank(): Promise<void> {
 		const user: any =
-			this.interaction.options.getUser('mitglied') ||
+			this.interaction.options.getUser("mitglied") ||
 			this.interaction.user;
 
 		const userData: any = {
@@ -50,19 +50,19 @@ export default class RankCommand extends BaseCommand {
 			.setUsername(userData.user.username)
 			.setDiscriminator(userData.user.username)
 			.setAvatar(
-				userData.user.displayAvatarURL({ format: 'png', size: 512 })
+				userData.user.displayAvatarURL({ format: "png", size: 512 })
 			)
-			.setStatus('online', false, false)
+			.setStatus("online", false, false)
 			.renderEmojis(true)
 
 			// Rank and level
-			.setLevel(userData.level.level || 0, 'LEVEL')
-			.setLevelColor('#5773c9')
-			.setRank(userData.level.position || 100, 'RANG')
+			.setLevel(userData.level.level || 0, "LEVEL")
+			.setLevelColor("#5773c9")
+			.setRank(userData.level.position || 100, "RANG")
 
 			// Progress bar
-			.setProgressBar('#5773c9', 'COLOR', true)
-			.setProgressBarTrack('#ffffff')
+			.setProgressBar("#5773c9", "COLOR", true)
+			.setProgressBarTrack("#ffffff")
 
 			// XP
 			.setCurrentXP(userData.level.cleanXp)
@@ -70,7 +70,7 @@ export default class RankCommand extends BaseCommand {
 
 		rank.build().then((data: any): void => {
 			const attachment: AttachmentBuilder = new AttachmentBuilder(data, {
-				name: 'level-' + userData.user.id + '.png'
+				name: "level-" + userData.user.id + ".png"
 			});
 			return this.interaction.followUp({ files: [attachment] });
 		});

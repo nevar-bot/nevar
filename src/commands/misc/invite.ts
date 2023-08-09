@@ -1,12 +1,12 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from 'discord.js';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 
 export default class InviteCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'invite',
-			description: 'Gibt einen Überblick über wichtige Links',
+			name: "invite",
+			description: "Gibt einen Überblick über wichtige Links",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -27,35 +27,35 @@ export default class InviteCommand extends BaseCommand {
 		// First row
 		const inviteButton: ButtonBuilder = this.client.createButton(
 			null,
-			'Einladen',
-			'Link',
+			"Einladen",
+			"Link",
 			this.client.emotes.growth_up,
 			false,
 			this.client.createInvite()
 		);
 		const supportButton: ButtonBuilder = this.client.createButton(
 			null,
-			'Support',
-			'Link',
+			"Support",
+			"Link",
 			this.client.emotes.discord,
 			false,
-			this.client.config.support['INVITE']
+			this.client.config.support["INVITE"]
 		);
 		const websiteButton: ButtonBuilder = this.client.createButton(
 			null,
-			'Website',
-			'Link',
+			"Website",
+			"Link",
 			this.client.emotes.text,
 			false,
-			this.client.config.general['WEBSITE']
+			this.client.config.general["WEBSITE"]
 		);
 		const voteButton: ButtonBuilder = this.client.createButton(
 			null,
-			'Voten',
-			'Link',
+			"Voten",
+			"Link",
 			this.client.emotes.heart,
 			false,
-			'https://top.gg/' + this.client!.user!.id + '/vote'
+			"https://top.gg/" + this.client!.user!.id + "/vote"
 		);
 		const buttonRow: any = this.client.createMessageComponentsRow(
 			inviteButton,
@@ -67,35 +67,35 @@ export default class InviteCommand extends BaseCommand {
 		// Second row
 		const twitterButton: ButtonBuilder = this.client.createButton(
 			null,
-			'Twitter',
-			'Link',
+			"Twitter",
+			"Link",
 			this.client.emotes.socials.twitter,
 			false,
-			'https://twitter.com/nevar_eu'
+			"https://twitter.com/nevar_eu"
 		);
 		const instagramButton: ButtonBuilder = this.client.createButton(
 			null,
-			'Instagram',
-			'Link',
+			"Instagram",
+			"Link",
 			this.client.emotes.socials.instagram,
 			false,
-			'https://www.instagram.com/nevar_eu/'
+			"https://www.instagram.com/nevar_eu/"
 		);
 		const githubButton: ButtonBuilder = this.client.createButton(
 			null,
-			'GitHub',
-			'Link',
+			"GitHub",
+			"Link",
 			this.client.emotes.socials.github,
 			false,
-			'https://github.com/nevar-bot'
+			"https://github.com/nevar-bot"
 		);
 		const donateButton: ButtonBuilder = this.client.createButton(
 			null,
-			'Unterstützen',
-			'Link',
+			"Unterstützen",
+			"Link",
 			this.client.emotes.gift,
 			false,
-			'https://prohosting24.de/cp/donate/nevar'
+			"https://prohosting24.de/cp/donate/nevar"
 		);
 		const buttonRow2: any = this.client.createMessageComponentsRow(
 			twitterButton,
@@ -105,13 +105,13 @@ export default class InviteCommand extends BaseCommand {
 		);
 
 		const text: string =
-			'### ' +
+			"### " +
 			this.client.emotes.discover +
-			' Folgende Links könnten dich interessieren:';
+			" Folgende Links könnten dich interessieren:";
 		const linksEmbed: EmbedBuilder = this.client.createEmbed(
 			text,
 			null,
-			'normal'
+			"normal"
 		);
 		linksEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 

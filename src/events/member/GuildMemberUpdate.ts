@@ -1,5 +1,5 @@
-import { EmbedBuilder } from 'discord.js';
-import BaseClient from '@structures/BaseClient';
+import { EmbedBuilder } from "discord.js";
+import BaseClient from "@structures/BaseClient";
 
 export default class {
 	private client: BaseClient;
@@ -10,7 +10,7 @@ export default class {
 
 	public async dispatch(oldMember: any, newMember: any): Promise<any> {
 		if (oldMember.pending && !newMember.pending)
-			this.client.emit('guildMemberAdd', newMember);
+			this.client.emit("guildMemberAdd", newMember);
 		if (!oldMember || !newMember || !newMember.guild || oldMember.partial)
 			return;
 
@@ -27,18 +27,18 @@ export default class {
 		if (oldMember.displayName !== newMember.displayName)
 			properties.push(
 				this.client.emotes.edit +
-					' Anzeigename: ~~' +
+					" Anzeigename: ~~" +
 					oldMember.displayName +
-					'~~ **' +
+					"~~ **" +
 					newMember.displayName +
-					'**'
+					"**"
 			);
 
 		newMember.roles.cache.forEach((role: any): void => {
 			if (!oldMember.roles.cache.has(role.id))
 				properties.push(
 					this.client.emotes.events.role.create +
-						' Rolle hinzugefügt: ' +
+						" Rolle hinzugefügt: " +
 						role.toString()
 				);
 		});
@@ -47,30 +47,30 @@ export default class {
 			if (!newMember.roles.cache.has(role.id))
 				properties.push(
 					this.client.emotes.events.role.delete +
-						' Rolle entfernt: ' +
+						" Rolle entfernt: " +
 						role.toString()
 				);
 		});
 		if (properties.length < 1) return;
 
-		const memberUpdateText: string = properties.join('\n');
+		const memberUpdateText: string = properties.join("\n");
 
 		const memberUpdateEmbed: EmbedBuilder = this.client.createEmbed(
 			memberUpdateText,
 			null,
-			'warning'
+			"warning"
 		);
 		memberUpdateEmbed.setTitle(
 			this.client.emotes.events.member.update +
-				' ' +
+				" " +
 				newMember.user.displayName +
-				' (@' +
+				" (@" +
 				newMember.user.username +
-				')' +
-				' wurde aktualisiert'
+				")" +
+				" wurde aktualisiert"
 		);
 		memberUpdateEmbed.setThumbnail(newMember.user.displayAvatarURL());
 
-		await guild.logAction(memberUpdateEmbed, 'member');
+		await guild.logAction(memberUpdateEmbed, "member");
 	}
 }

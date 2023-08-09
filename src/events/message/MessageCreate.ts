@@ -1,10 +1,10 @@
-import BaseClient from '@structures/BaseClient';
-import { ButtonBuilder, EmbedBuilder } from 'discord.js';
-import ems from 'enhanced-ms';
-const ms: any = ems('de');
+import BaseClient from "@structures/BaseClient";
+import { ButtonBuilder, EmbedBuilder } from "discord.js";
+import ems from "enhanced-ms";
+const ms: any = ems("de");
 // @ts-ignore - Could not find a declaration file for module 'perspective-api-client'
-import Perspective from 'perspective-api-client';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import Perspective from "perspective-api-client";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 
 export default class {
 	private client: BaseClient;
@@ -43,12 +43,12 @@ export default class {
 			(message.mentions.repliedUser || message.mentions.users) &&
 			!message.author.bot
 		) {
-			this.client.emit('MemberIsAway', message, data, guild);
+			this.client.emit("MemberIsAway", message, data, guild);
 		}
 
 		/* Author is afk */
 		if (data.user.afk.state) {
-			this.client.emit('MemberIsBack', message, data, guild);
+			this.client.emit("MemberIsBack", message, data, guild);
 		}
 
 		/* Author mentioned bot */
@@ -60,11 +60,11 @@ export default class {
 		) {
 			const currentHour: number = new Date().getHours();
 			const greetings: (number | string)[][] = [
-				[0, 5, 'Gute Nacht'],
-				[5, 10, 'Guten Morgen'],
-				[11, 13, 'Guten Mittag'],
-				[14, 17, 'Guten Tag'],
-				[18, 23, 'Guten Abend']
+				[0, 5, "Gute Nacht"],
+				[5, 10, "Guten Morgen"],
+				[11, 13, "Guten Mittag"],
+				[14, 17, "Guten Tag"],
+				[18, 23, "Guten Abend"]
 			];
 
 			let greeting;
@@ -72,35 +72,35 @@ export default class {
 				// @ts-ignore - Operator '>=' cannot be applied to types 'number' and 'string | number'
 				if (currentHour >= element[0] && currentHour <= element[1]) {
 					greeting =
-						element[2] + ' ' + message.author.displayName + '!';
+						element[2] + " " + message.author.displayName + "!";
 				}
 			}
 
 			const helpCommand: any = (
 				await this.client.application!.commands.fetch()
-			).find((command: any): boolean => command.name === 'help');
+			).find((command: any): boolean => command.name === "help");
 			const greetingText: string =
-				'**{0}**' +
-				'\n\n{1} Ich bin {2} und helfe dir bei der Verwaltung deines Servers.' +
-				'\n{1} Eine Übersicht meiner Befehle erhältst du durch folgenden Befehl: {3}';
+				"**{0}**" +
+				"\n\n{1} Ich bin {2} und helfe dir bei der Verwaltung deines Servers." +
+				"\n{1} Eine Übersicht meiner Befehle erhältst du durch folgenden Befehl: {3}";
 
 			const helpEmbed: EmbedBuilder = this.client.createEmbed(
 				greetingText,
-				'wave',
-				'normal',
+				"wave",
+				"normal",
 				greeting,
 				this.client.emotes.arrow,
 				this.client.user!.username,
 				helpCommand
-					? '</' + helpCommand.name + ':' + helpCommand.id + '>'
-					: '/help'
+					? "</" + helpCommand.name + ":" + helpCommand.id + ">"
+					: "/help"
 			);
 			helpEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 			const inviteButton: ButtonBuilder = this.client.createButton(
 				null,
-				'Einladen',
-				'Link',
+				"Einladen",
+				"Link",
 				null,
 				false,
 				this.client.createInvite()
@@ -114,7 +114,7 @@ export default class {
 			});
 		} else if (message.content) {
 			/* split message into parts */
-			const splittedMessage: string[] = message.content.split(' ');
+			const splittedMessage: string[] = message.content.split(" ");
 
 			/* check bot mention */
 			if (
@@ -141,15 +141,15 @@ export default class {
 					/* check if user is staff or owner */
 					if (
 						!data.user.staff.state &&
-						!this.client.config.general['OWNER_IDS'].includes(
+						!this.client.config.general["OWNER_IDS"].includes(
 							message.author.id
 						)
 					)
 						return;
 					if (
-						clientCommand.help.category === 'owner' &&
-						data.user.staff.role !== 'head-staff' &&
-						!this.client.config.general['OWNER_IDS'].includes(
+						clientCommand.help.category === "owner" &&
+						data.user.staff.role !== "head-staff" &&
+						!this.client.config.general["OWNER_IDS"].includes(
 							message.author.id
 						)
 					)
@@ -163,7 +163,7 @@ export default class {
 							e,
 							message.guild,
 							message.member,
-							'<ClientMessageCommand>.dispatch(<message>, <args>, <data>)'
+							"<ClientMessageCommand>.dispatch(<message>, <args>, <data>)"
 						);
 					}
 				}
@@ -174,19 +174,19 @@ export default class {
 		if (data.guild.settings.aiModeration?.enabled) {
 			if (!message.author.bot) {
 				const perspective: Perspective = new Perspective({
-					apiKey: this.client.config.apikeys['GOOGLE']
+					apiKey: this.client.config.apikeys["GOOGLE"]
 				});
 
 				const result = await perspective
 					.analyze(message.content, {
 						attributes: [
-							'TOXICITY',
-							'INSULT',
-							'PROFANITY',
-							'THREAT',
-							'SEVERE_TOXICITY'
+							"TOXICITY",
+							"INSULT",
+							"PROFANITY",
+							"THREAT",
+							"SEVERE_TOXICITY"
 						],
-						languages: ['de'],
+						languages: ["de"],
 						doNotStore: true
 					})
 					.catch((e: any): void => {});
@@ -229,11 +229,11 @@ export default class {
 						);
 						if (alertChannel && !excluded) {
 							const attributeStrings: any = {
-								TOXICITY: 'Unangemessenheit',
-								SEVERE_TOXICITY: 'Schwere Unangemessenheit',
-								INSULT: 'Beleidigung',
-								PROFANITY: 'Vulgäre Inhalte',
-								THREAT: 'Bedrohung'
+								TOXICITY: "Unangemessenheit",
+								SEVERE_TOXICITY: "Schwere Unangemessenheit",
+								INSULT: "Beleidigung",
+								PROFANITY: "Vulgäre Inhalte",
+								THREAT: "Bedrohung"
 							};
 
 							const attributes: string[] = Object.keys(
@@ -253,70 +253,70 @@ export default class {
 									).toFixed(2);
 									return (
 										this.client.emotes.search +
-										' ' +
+										" " +
 										attributeStrings[key] +
-										': **' +
+										": **" +
 										value +
-										'**'
+										"**"
 									);
 								});
 
 							const alertMessage: string =
 								this.client.emotes.loading +
-								' **Folgende Einschätzungen habe ich getroffen:**\n\n' +
-								attributes.join('\n') +
-								'\n\n' +
+								" **Folgende Einschätzungen habe ich getroffen:**\n\n" +
+								attributes.join("\n") +
+								"\n\n" +
 								this.client.emotes.timeout +
-								' Daraus hat sich ein Durchschnittswert von **' +
+								" Daraus hat sich ein Durchschnittswert von **" +
 								(Math.floor(averageScore * 100) / 100).toFixed(
 									2
 								) +
-								' Punkten** ergeben.\n\n' +
+								" Punkten** ergeben.\n\n" +
 								this.client.emotes.user +
-								' Verfasst von: ' +
+								" Verfasst von: " +
 								message.author.toString() +
-								'\n' +
+								"\n" +
 								this.client.emotes.link +
-								' ' +
+								" " +
 								message.url +
-								'\n' +
+								"\n" +
 								this.client.emotes.text +
-								' **' +
+								" **" +
 								message.content +
-								'**';
+								"**";
 
 							const embed: EmbedBuilder = this.client.createEmbed(
 								alertMessage,
 								null,
-								'warning'
+								"warning"
 							);
 							embed.setTitle(
 								this.client.emotes.warning +
-									' Potenziell beleidigende Nachricht'
+									" Potenziell beleidigende Nachricht"
 							);
 
 							const deleteButton: ButtonBuilder =
 								this.client.createButton(
-									'aimod_' +
+									"aimod_" +
 										message.channel.id +
-										'_' +
+										"_" +
 										message.id +
-										'_delete',
-									'Nachricht löschen',
-									'Secondary',
-									'delete',
+										"_delete",
+									"Nachricht löschen",
+									"Secondary",
+									"delete",
 									false
 								);
 							const warnButton: ButtonBuilder =
 								this.client.createButton(
-									'aimod_' +
+									"aimod_" +
 										message.channel.id +
-										'_' +
+										"_" +
 										message.id +
-										'_warn',
-									'Verwarnen',
-									'Secondary',
-									'warning',
+										"_warn",
+									"Verwarnen",
+									"Secondary",
+									"warning",
 									true
 								);
 							const row: any =
@@ -340,17 +340,17 @@ export default class {
 			data.guild.settings.aiChat?.enabled &&
 			data.guild.settings.aiChat?.channel === message.channel.id &&
 			!message.author.bot &&
-			!message.content.startsWith('//')
+			!message.content.startsWith("//")
 		) {
 			/* User is blocked */
 			if (data.user.blocked.state) {
 				const reason =
-					data.user.blocked.reason || 'Kein Grund angegeben';
+					data.user.blocked.reason || "Kein Grund angegeben";
 				const blockedMessageEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}',
-						'error',
-						'error',
+						"Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}",
+						"error",
+						"error",
 						this.client.emotes.arrow,
 						reason
 					);
@@ -366,23 +366,23 @@ export default class {
 					].prompt;
 				this.client.aiChat
 					.get(message.guild.id)!
-					.push({ role: 'system', content: prompt });
+					.push({ role: "system", content: prompt });
 			}
 
 			await message.channel.sendTyping();
 			this.client.aiChat.get(message.guild.id)!.push({
-				role: 'user',
-				content: message.author.displayName + ': ' + message.content
+				role: "user",
+				content: message.author.displayName + ": " + message.content
 			});
 
 			/* send request */
 			const headers: any = {
-				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + this.client.config.apikeys['OPENAI']
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + this.client.config.apikeys["OPENAI"]
 			};
 
 			const body: any = {
-				model: 'gpt-3.5-turbo',
+				model: "gpt-3.5-turbo",
 				messages: this.client.aiChat.get(message.guild.id)
 			};
 
@@ -391,7 +391,7 @@ export default class {
 			});
 
 			const response: AxiosResponse | void = await AxiosInstance.post(
-				'https://beta.purgpt.xyz/openai/chat/completions',
+				"https://beta.purgpt.xyz/openai/chat/completions",
 				body,
 				{
 					headers,
@@ -404,7 +404,7 @@ export default class {
 			console.log(response);
 			if (response?.data?.choices?.[0]) {
 				this.client.aiChat.get(message.guild.id)!.push({
-					role: 'assistant',
+					role: "assistant",
 					content: response.data.choices[0].message.content
 				});
 				message.reply({
@@ -414,7 +414,7 @@ export default class {
 				message.reply({
 					content:
 						this.client.emotes.error +
-						' Leider ist ein **unerwarteter Fehler** aufgetreten. Bitte versuche es später erneut.'
+						" Leider ist ein **unerwarteter Fehler** aufgetreten. Bitte versuche es später erneut."
 				});
 			}
 		}
@@ -443,25 +443,25 @@ export default class {
 							message.delete().catch((e: any): void => {
 								const errorText: string =
 									this.client.emotes.channel +
-									' Channel: ' +
+									" Channel: " +
 									message.channel +
-									'\n' +
+									"\n" +
 									this.client.emotes.reminder +
-									' Löschen nach: ' +
+									" Löschen nach: " +
 									ms(Number(time));
 
 								const errorEmbed: EmbedBuilder =
 									this.client.createEmbed(
 										errorText,
 										null,
-										'error'
+										"error"
 									);
 								errorEmbed.setTitle(
 									this.client.emotes.error +
-										' Löschen von Nachricht durch Autodelete fehlgeschlagen'
+										" Löschen von Nachricht durch Autodelete fehlgeschlagen"
 								);
 
-								guild.logAction(errorEmbed, 'guild');
+								guild.logAction(errorEmbed, "guild");
 							});
 						}
 					})
@@ -488,24 +488,24 @@ export default class {
 				message.react(emoji).catch((e: any): void => {
 					const errorText: string =
 						this.client.emotes.channel +
-						' Channel: ' +
+						" Channel: " +
 						message.channel +
-						'\n' +
+						"\n" +
 						this.client.emotes.reminder +
-						' Emoji: ' +
+						" Emoji: " +
 						emoji;
 
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(
 						errorText,
 						null,
-						'error'
+						"error"
 					);
 					errorEmbed.setTitle(
 						this.client.emotes.error +
-							' Reagieren auf Nachricht durch Autoreact fehlgeschlagen'
+							" Reagieren auf Nachricht durch Autoreact fehlgeschlagen"
 					);
 
-					guild.logAction(errorEmbed, 'guild');
+					guild.logAction(errorEmbed, "guild");
 				});
 			}
 		}
@@ -577,26 +577,26 @@ export default class {
 									.catch((e: any): void => {
 										const errorText: string =
 											this.client.emotes.strike +
-											' Level: ' +
+											" Level: " +
 											level +
-											'\n' +
+											"\n" +
 											this.client.emotes.ping +
-											' Rolle: <@&' +
+											" Rolle: <@&" +
 											roleId +
-											'>';
+											">";
 
 										const errorEmbed: EmbedBuilder =
 											this.client.createEmbed(
 												errorText,
 												null,
-												'error'
+												"error"
 											);
 										errorEmbed.setTitle(
 											this.client.emotes.error +
-												' Vergeben von Levelrolle fehlgeschlagen'
+												" Vergeben von Levelrolle fehlgeschlagen"
 										);
 
-										guild.logAction(errorEmbed, 'guild');
+										guild.logAction(errorEmbed, "guild");
 									});
 							}
 						}
@@ -639,21 +639,21 @@ export default class {
 						.catch((e: any): void => {
 							const errorText: string =
 								this.client.emotes.channel +
-								' Channel: ' +
+								" Channel: " +
 								channel;
 
 							const errorEmbed: EmbedBuilder =
 								this.client.createEmbed(
 									errorText,
 									null,
-									'error'
+									"error"
 								);
 							errorEmbed.setTitle(
 								this.client.emotes.error +
-									' Senden von Level-Up-Nachricht fehlgeschlagen'
+									" Senden von Level-Up-Nachricht fehlgeschlagen"
 							);
 
-							guild.logAction(errorEmbed, 'guild');
+							guild.logAction(errorEmbed, "guild");
 						});
 				}
 				this.timeouts.add(message.author.id);

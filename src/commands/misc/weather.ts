@@ -1,21 +1,21 @@
-import BaseCommand from '@structures/BaseCommand';
-import BaseClient from '@structures/BaseClient';
-import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import axios from 'axios';
+import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import axios from "axios";
 
 export default class WeatherCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: 'weather',
-			description: 'Zeigt das Wetter für eine Stadt an',
+			name: "weather",
+			description: "Zeigt das Wetter für eine Stadt an",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option) =>
 					option
-						.setName('stadt')
-						.setDescription('Gib einen Ort oder Stadt an')
+						.setName("stadt")
+						.setDescription("Gib einen Ort oder Stadt an")
 						.setRequired(true)
 				)
 			}
@@ -26,37 +26,37 @@ export default class WeatherCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.showWeather(interaction.options.getString('stadt'));
+		await this.showWeather(interaction.options.getString("stadt"));
 	}
 
 	private async showWeather(city: string): Promise<void> {
 		if (
-			!this.client.config.apikeys['WEATHER'] ||
-			this.client.config.apikeys['WEATHER'] === ''
+			!this.client.config.apikeys["WEATHER"] ||
+			this.client.config.apikeys["WEATHER"] === ""
 		) {
 			const noApiKeyEmbed: EmbedBuilder = this.client.createEmbed(
-				'Da in der Bot-Config der nötige Openweathermap-API-Key nicht hinterlegt wurde, kann der Weather-Befehl nicht genutzt werden.',
-				'error',
-				'error'
+				"Da in der Bot-Config der nötige Openweathermap-API-Key nicht hinterlegt wurde, kann der Weather-Befehl nicht genutzt werden.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [noApiKeyEmbed] });
 		}
 		if (!city) {
 			const noCityEmbed: EmbedBuilder = this.client.createEmbed(
-				'Bitte gib einen Ort oder eine Stadt an.',
-				'error',
-				'error'
+				"Bitte gib einen Ort oder eine Stadt an.",
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [noCityEmbed] });
 		}
 
 		const weatherInformation = (
 			await axios.get(
-				'https://api.openweathermap.org/data/2.5/weather?q=' +
+				"https://api.openweathermap.org/data/2.5/weather?q=" +
 					encodeURI(city) +
-					'&appid=' +
-					this.client.config.apikeys['WEATHER'] +
-					'&lang=de&units=metric',
+					"&appid=" +
+					this.client.config.apikeys["WEATHER"] +
+					"&lang=de&units=metric",
 				{
 					validateStatus: (): boolean => true
 				}
@@ -77,47 +77,47 @@ export default class WeatherCommand extends BaseCommand {
 				},
 				sunrise: new Date(
 					weatherInformation.sys.sunrise * 1000
-				).toLocaleTimeString('de-DE'),
+				).toLocaleTimeString("de-DE"),
 				sunset: new Date(
 					weatherInformation.sys.sunset * 1000
-				).toLocaleTimeString('de-DE')
+				).toLocaleTimeString("de-DE")
 			};
 
 			const text: string =
-				' Temperatur (min/max/gefühlt): ' +
+				" Temperatur (min/max/gefühlt): " +
 				weather.temp +
-				'°C (' +
+				"°C (" +
 				weather.tempMin +
-				'°C /' +
+				"°C /" +
 				weather.tempMax +
-				'°C /' +
+				"°C /" +
 				weather.tempFeelsLike +
-				'°C)\n\n' +
+				"°C)\n\n" +
 				this.client.emotes.text +
-				' Luftfeuchtigkeit: ' +
+				" Luftfeuchtigkeit: " +
 				weather.humidity +
-				'%\n\n' +
+				"%\n\n" +
 				this.client.emotes.strike +
-				' Windgeschwindigkeit: ' +
+				" Windgeschwindigkeit: " +
 				weather.wind.kmh +
-				'km/h (' +
+				"km/h (" +
 				weather.wind.ms +
-				'm/s)\n\n' +
+				"m/s)\n\n" +
 				this.client.emotes.shine +
-				' Sonnenaufgang: ' +
+				" Sonnenaufgang: " +
 				weather.sunrise +
-				'\n' +
+				"\n" +
 				this.client.emotes.shine2 +
-				' Sonnenuntergang: ' +
+				" Sonnenuntergang: " +
 				weather.sunset;
 
 			const weatherEmbed: EmbedBuilder = this.client.createEmbed(
 				text,
-				'bright',
-				'normal'
+				"bright",
+				"normal"
 			);
 			weatherEmbed.setTitle(
-				weatherInformation.name + ': ' + weather.description
+				weatherInformation.name + ": " + weather.description
 			);
 
 			return this.interaction.followUp({ embeds: [weatherEmbed] });
@@ -126,8 +126,8 @@ export default class WeatherCommand extends BaseCommand {
 				'Es konnte kein Ort mit dem Namen "' +
 					city +
 					'" gefunden werden.',
-				'error',
-				'error'
+				"error",
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}

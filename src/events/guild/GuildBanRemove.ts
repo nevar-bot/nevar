@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { AuditLogEvent, EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { AuditLogEvent, EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -15,18 +15,18 @@ export default class {
 
 		let banLogMessage: string =
 			this.client.emotes.user +
-			' Nutzer: ' +
+			" Nutzer: " +
 			ban.user.displayName +
-			' (@' +
+			" (@" +
 			ban.user.username +
-			')' +
-			' (' +
+			")" +
+			" (" +
 			ban.user.id +
-			')';
+			")";
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({
-				type: AuditLogEvent['MemberBanRemove'],
+				type: AuditLogEvent["MemberBanRemove"],
 				limit: 1
 			})
 			.catch((e: any): void => {});
@@ -36,27 +36,27 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					banLogMessage +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
 		const banLogEmbed: EmbedBuilder = this.client.createEmbed(
 			banLogMessage,
 			null,
-			'success'
+			"success"
 		);
 		banLogEmbed.setTitle(
-			this.client.emotes.events.member.unban + ' Nutzer entbannt'
+			this.client.emotes.events.member.unban + " Nutzer entbannt"
 		);
 		banLogEmbed.setThumbnail(ban.user.displayAvatarURL());
 
-		await guild.logAction(banLogEmbed, 'moderation');
+		await guild.logAction(banLogEmbed, "moderation");
 	}
 }

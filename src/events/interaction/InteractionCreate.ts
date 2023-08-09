@@ -1,6 +1,6 @@
-import { EmbedBuilder, GuildMember, PermissionsBitField } from 'discord.js';
-import * as fs from 'fs';
-import BaseClient from '@structures/BaseClient';
+import { EmbedBuilder, GuildMember, PermissionsBitField } from "discord.js";
+import * as fs from "fs";
+import BaseClient from "@structures/BaseClient";
 
 const interactionCooldowns: any = {};
 
@@ -32,7 +32,6 @@ export default class {
 		member.data = data.member;
 		member.user.data = data.user;
 
-
 		/* Handle context menus */
 		if (interaction.isContextMenuCommand()) {
 			const contextMenu: any = this.client.contextMenus.get(
@@ -40,16 +39,16 @@ export default class {
 			);
 			if (!contextMenu) {
 				const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					'Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.',
-					'error',
-					'error',
+					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+					"error",
+					"error",
 					this.client.support
 				);
 				await interaction
 					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
 					.catch((e: any): void => {});
 				return this.client.alertException(
-					'Context menu ' + interaction.commandName + ' not found',
+					"Context menu " + interaction.commandName + " not found",
 					guild.name,
 					member.user,
 					'<Client>.contextMenus.get("' +
@@ -62,9 +61,9 @@ export default class {
 				await interaction.deferReply();
 			} catch (e: any) {
 				const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					'Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.',
-					'error',
-					'error',
+					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+					"error",
+					"error",
 					this.client.support
 				);
 				await interaction
@@ -74,25 +73,25 @@ export default class {
 					e,
 					guild.name,
 					member.user,
-					'<ContextInteraction>.deferReply()'
+					"<ContextInteraction>.deferReply()"
 				);
 			} finally {
 				if (!interaction.deferred) {
 					const errorMessageEmbed: EmbedBuilder =
 						this.client.createEmbed(
-							'Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.',
-							'error',
-							'error',
+							"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+							"error",
+							"error",
 							this.client.support
 						);
 					await interaction
 						.reply({ embeds: [errorMessageEmbed], ephemeral: true })
 						.catch((e: any): void => {});
 					await this.client.alertException(
-						'ContextInteraction is not deferred',
+						"ContextInteraction is not deferred",
 						guild.name,
 						member.user,
-						'<ContextInteraction>.deferReply()'
+						"<ContextInteraction>.deferReply()"
 					);
 				}
 			}
@@ -100,12 +99,12 @@ export default class {
 			/* User is blocked */
 			if (data.user.blocked.state) {
 				const reason =
-					data.user.blocked.reason || 'Kein Grund angegeben';
+					data.user.blocked.reason || "Kein Grund angegeben";
 				const blockedMessageEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}',
-						'error',
-						'error',
+						"Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}",
+						"error",
+						"error",
 						this.client.emotes.arrow,
 						reason
 					);
@@ -118,12 +117,12 @@ export default class {
 			/* Guild is blocked */
 			if (data.guild.blocked.state) {
 				const reason =
-					data.guild.blocked.reason || 'Kein Grund angegeben';
+					data.guild.blocked.reason || "Kein Grund angegeben";
 				const blockedMessageEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}',
-						'error',
-						'error',
+						"Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}",
+						"error",
+						"error",
 						this.client.emotes.arrow,
 						reason
 					);
@@ -141,7 +140,7 @@ export default class {
 				/* Staffs can bypass cooldown */
 				if (
 					!data.user.staff.state &&
-					!this.client.config.general['OWNER_IDS'].includes(
+					!this.client.config.general["OWNER_IDS"].includes(
 						member.user.id
 					)
 				) {
@@ -149,12 +148,12 @@ export default class {
 						(time - Date.now()) / 1000
 					);
 					const secondsString: string =
-						seconds > 1 ? 'Sekunden' : 'Sekunde';
+						seconds > 1 ? "Sekunden" : "Sekunde";
 					const cooldownMessageEmbed: EmbedBuilder =
 						this.client.createEmbed(
-							'Du musst noch {0} {1} warten, bis du diesen Befehl erneut nutzen kannst.',
-							'error',
-							'error',
+							"Du musst noch {0} {1} warten, bis du diesen Befehl erneut nutzen kannst.",
+							"error",
+							"error",
 							seconds,
 							secondsString
 						);
@@ -170,8 +169,8 @@ export default class {
 			const log = new this.client.logs({
 				command: contextMenu.help.name,
 				type: interaction.isUserContextMenuCommand()
-					? 'User Context Menu'
-					: 'Message Context Menu',
+					? "User Context Menu"
+					: "Message Context Menu",
 				arguments: [],
 				user: {
 					tag: member.user.username,
@@ -195,9 +194,9 @@ export default class {
 				return contextMenu.dispatch(interaction);
 			} catch (e: any) {
 				const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					'Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.',
-					'error',
-					'error',
+					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+					"error",
+					"error",
 					this.client.support
 				);
 				await interaction
@@ -207,20 +206,20 @@ export default class {
 					e,
 					guild.name,
 					member.user,
-					'<ContextInteraction>.dispatch(<Interaction>)'
+					"<ContextInteraction>.dispatch(<Interaction>)"
 				);
 			}
 		}
 
 		/* Handle suggestion reactions */
 		if (interaction.isButton()) {
-			const buttonIdSplitted = interaction.customId.split('_');
+			const buttonIdSplitted = interaction.customId.split("_");
 			if (!buttonIdSplitted) return;
 
 			/* User voted for a suggestion */
-			if (buttonIdSplitted[0] === 'suggestion') {
+			if (buttonIdSplitted[0] === "suggestion") {
 				this.client.emit(
-					'SuggestionVoted',
+					"SuggestionVoted",
 					interaction,
 					buttonIdSplitted,
 					data
@@ -228,9 +227,9 @@ export default class {
 			}
 
 			/* Moderator wants to review a suggestion */
-			if (buttonIdSplitted[0] === 'review') {
+			if (buttonIdSplitted[0] === "review") {
 				this.client.emit(
-					'SuggestionReviewed',
+					"SuggestionReviewed",
 					interaction,
 					buttonIdSplitted,
 					data,
@@ -239,9 +238,9 @@ export default class {
 			}
 
 			/* Moderator wants to handle an AI detected message */
-			if (buttonIdSplitted[0] === 'aimod') {
+			if (buttonIdSplitted[0] === "aimod") {
 				this.client.emit(
-					'AiMessageHandled',
+					"AiMessageHandled",
 					interaction,
 					buttonIdSplitted,
 					data,
@@ -257,16 +256,16 @@ export default class {
 			);
 			if (!command) {
 				const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					'Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.',
-					'error',
-					'error',
+					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+					"error",
+					"error",
 					this.client.support
 				);
 				await interaction
 					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
 					.catch((e: any): void => {});
 				return this.client.alertException(
-					'Context menu ' + interaction.commandName + ' not found',
+					"Context menu " + interaction.commandName + " not found",
 					guild.name,
 					member.user,
 					'<Client>.contextMenus.get("' +
@@ -279,9 +278,9 @@ export default class {
 				await interaction.deferReply();
 			} catch (e: any) {
 				const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					'Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.',
-					'error',
-					'error',
+					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+					"error",
+					"error",
 					this.client.support
 				);
 				await interaction
@@ -291,25 +290,25 @@ export default class {
 					e,
 					guild.name,
 					member.user,
-					'<CommandInteraction>.deferReply()'
+					"<CommandInteraction>.deferReply()"
 				);
 			} finally {
 				if (!interaction.deferred) {
 					const errorMessageEmbed: EmbedBuilder =
 						this.client.createEmbed(
-							'Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.',
-							'error',
-							'error',
+							"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+							"error",
+							"error",
 							this.client.support
 						);
 					await interaction
 						.reply({ embeds: [errorMessageEmbed], ephemeral: true })
 						.catch((e: any): void => {});
 					await this.client.alertException(
-						'CommandInteraction is not deferred',
+						"CommandInteraction is not deferred",
 						guild.name,
 						member.user,
-						'<CommandInteraction>.deferReply()'
+						"<CommandInteraction>.deferReply()"
 					);
 				}
 			}
@@ -320,12 +319,12 @@ export default class {
 			/* User is blocked */
 			if (data.user.blocked.state) {
 				const reason =
-					data.user.blocked.reason || 'Kein Grund angegeben';
+					data.user.blocked.reason || "Kein Grund angegeben";
 				const blockedMessageEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}',
-						'error',
-						'error',
+						"Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}",
+						"error",
+						"error",
 						this.client.emotes.arrow,
 						reason
 					);
@@ -338,12 +337,12 @@ export default class {
 			/* Guild is blocked */
 			if (data.guild.blocked.state) {
 				const reason =
-					data.guild.blocked.reason || 'Kein Grund angegeben';
+					data.guild.blocked.reason || "Kein Grund angegeben";
 				const blockedMessageEmbed: EmbedBuilder =
 					this.client.createEmbed(
-						'Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}',
-						'error',
-						'error',
+						"Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}",
+						"error",
+						"error",
 						this.client.emotes.arrow,
 						reason
 					);
@@ -352,8 +351,8 @@ export default class {
 
 			/* Check if bot has all required permissions */
 			const neededBotPermissions: any[] = [];
-			if (!command.conf.botPermissions.includes('EmbedLinks'))
-				command.conf.botPermissions.push('EmbedLinks');
+			if (!command.conf.botPermissions.includes("EmbedLinks"))
+				command.conf.botPermissions.push("EmbedLinks");
 			for (const neededBotPermission of command.conf.botPermissions) {
 				const permissions: any = channel.permissionsFor(
 					guild.members.me
@@ -371,12 +370,12 @@ export default class {
 			}
 			if (neededBotPermissions.length > 0) {
 				const missingPermissionMessageEmbed = this.client.createEmbed(
-					'Folgende Berechtigungen fehlen mir, um den Befehl ausführen zu können:\n\n{0} {1}',
-					'error',
-					'error',
+					"Folgende Berechtigungen fehlen mir, um den Befehl ausführen zu können:\n\n{0} {1}",
+					"error",
+					"error",
 					this.client.emotes.arrow,
 					neededBotPermissions.join(
-						'\n' + this.client.emotes.arrow + ' '
+						"\n" + this.client.emotes.arrow + " "
 					)
 				);
 				return interaction.followUp({
@@ -387,29 +386,29 @@ export default class {
 			/* Command is nsfw */
 			if (!channel.nsfw && command.conf.nsfw) {
 				const nsfwMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					'Dieser Befehl kann nur in altersbeschränkten Kanälen verwendet werden.',
-					'error',
-					'error'
+					"Dieser Befehl kann nur in altersbeschränkten Kanälen verwendet werden.",
+					"error",
+					"error"
 				);
 				return interaction.followUp({ embeds: [nsfwMessageEmbed] });
 			}
 
 			/* Command is disabled */
 			const disabledCommandsJson: any = JSON.parse(
-				fs.readFileSync('./assets/disabled.json').toString()
+				fs.readFileSync("./assets/disabled.json").toString()
 			);
 			if (disabledCommandsJson.includes(command.help.name)) {
 				/* Staffs can bypass disabled commands */
 				if (
 					!data.user.staff.state &&
-					!this.client.config.general['OWNER_IDS'].includes(
+					!this.client.config.general["OWNER_IDS"].includes(
 						member.user.id
 					)
 				) {
 					const disabledMessageEmbed = this.client.createEmbed(
-						'Dieser Befehl ist derzeit deaktiviert.',
-						'error',
-						'error'
+						"Dieser Befehl ist derzeit deaktiviert.",
+						"error",
+						"error"
 					);
 					return interaction.followUp({
 						embeds: [disabledMessageEmbed]
@@ -428,7 +427,7 @@ export default class {
 				/* Staffs can bypass cooldown */
 				if (
 					!data.user.staff.state &&
-					!this.client.config.general['OWNER_IDS'].includes(
+					!this.client.config.general["OWNER_IDS"].includes(
 						member.user.id
 					)
 				) {
@@ -436,12 +435,12 @@ export default class {
 						(time - Date.now()) / 1000
 					);
 					const secondsString: string =
-						seconds > 1 ? 'Sekunden' : 'Sekunde';
+						seconds > 1 ? "Sekunden" : "Sekunde";
 					const cooldownMessageEmbed: EmbedBuilder =
 						this.client.createEmbed(
-							'Du musst noch {0} {1} warten, bis du diesen Befehl erneut nutzen kannst.',
-							'error',
-							'error',
+							"Du musst noch {0} {1} warten, bis du diesen Befehl erneut nutzen kannst.",
+							"error",
+							"error",
 							seconds,
 							secondsString
 						);
@@ -456,7 +455,7 @@ export default class {
 			/* Save command log to database */
 			const log: any = new this.client.logs({
 				command: command.help.name,
-				type: 'Slash command',
+				type: "Slash command",
 				arguments: args,
 				user: {
 					tag: member.user.username,
@@ -481,9 +480,9 @@ export default class {
 				command.dispatch(interaction, data);
 			} catch (e: any) {
 				const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					'Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.',
-					'error',
-					'error',
+					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+					"error",
+					"error",
 					this.client.support
 				);
 				await interaction
@@ -493,7 +492,7 @@ export default class {
 					e,
 					guild.name,
 					member.user,
-					'<ContextInteraction>.dispatch(<Interaction>)'
+					"<ContextInteraction>.dispatch(<Interaction>)"
 				);
 			}
 		}

@@ -1,5 +1,5 @@
-import BaseClient from '@structures/BaseClient';
-import { AuditLogEvent, EmbedBuilder } from 'discord.js';
+import BaseClient from "@structures/BaseClient";
+import { AuditLogEvent, EmbedBuilder } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -14,19 +14,19 @@ export default class {
 
 		let threadLogMessage: string =
 			this.client.emotes.edit +
-			' Name: ' +
+			" Name: " +
 			thread.name +
-			'\n' +
+			"\n" +
 			this.client.emotes.id +
-			' ID: ' +
+			" ID: " +
 			thread.id +
-			'\n' +
+			"\n" +
 			this.client.emotes.list +
-			' Typ: ' +
+			" Typ: " +
 			this.client.channelTypes[thread.type];
 
 		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent['ThreadDelete'], limit: 1 })
+			.fetchAuditLogs({ type: AuditLogEvent["ThreadDelete"], limit: 1 })
 			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
@@ -34,27 +34,27 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					threadLogMessage +=
-						'\n\n' +
+						"\n\n" +
 						this.client.emotes.user +
-						' Nutzer: ' +
-						'**' +
+						" Nutzer: " +
+						"**" +
 						moderator.displayName +
-						'** (@' +
+						"** (@" +
 						moderator.username +
-						')';
+						")";
 			}
 		}
 
 		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(
 			threadLogMessage,
 			null,
-			'error'
+			"error"
 		);
 		threadLogEmbed.setTitle(
-			this.client.emotes.events.thread.delete + ' Thread gelöscht'
+			this.client.emotes.events.thread.delete + " Thread gelöscht"
 		);
 		threadLogEmbed.setThumbnail(guild.iconURL());
 
-		await guild.logAction(threadLogEmbed, 'thread');
+		await guild.logAction(threadLogEmbed, "thread");
 	}
 }

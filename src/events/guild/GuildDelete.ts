@@ -1,6 +1,6 @@
-import BaseClient from '@structures/BaseClient';
-import { EmbedBuilder } from 'discord.js';
-import moment from 'moment';
+import BaseClient from "@structures/BaseClient";
+import { EmbedBuilder } from "discord.js";
+import moment from "moment";
 
 export default class {
 	private client: BaseClient;
@@ -17,12 +17,12 @@ export default class {
 
 		/* Support log message */
 		const supportGuild: any = this.client.guilds.cache.get(
-			this.client.config.support['ID']
+			this.client.config.support["ID"]
 		);
 		if (!supportGuild) return;
 
 		const supportLogChannel: any = supportGuild.channels.cache.get(
-			this.client.config.support['BOT_LOG']
+			this.client.config.support["BOT_LOG"]
 		);
 		if (!supportLogChannel) return;
 
@@ -30,44 +30,44 @@ export default class {
 			.fetch(guild.ownerId)
 			.catch((e: any): void => {});
 		const createdAt: string = moment(guild.createdTimestamp).format(
-			'DD.MM.YYYY, HH:mm'
+			"DD.MM.YYYY, HH:mm"
 		);
 		const createdDiff: string = this.client.utils.getRelativeTime(
 			guild.createdTimestamp
 		);
 
 		const supportGuildLogMessage: string =
-			'Name: **' +
+			"Name: **" +
 			guild.name +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.crown +
-			' Eigentümer: **' +
-			(owner ? owner.displayName + ' (@' + owner.username + ')' : 'N/A') +
-			'**\n' +
+			" Eigentümer: **" +
+			(owner ? owner.displayName + " (@" + owner.username + ")" : "N/A") +
+			"**\n" +
 			this.client.emotes.id +
-			' ID: **' +
+			" ID: **" +
 			guild.id +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.users +
-			' Mitglieder: **' +
+			" Mitglieder: **" +
 			guild.memberCount +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.calendar +
-			' Erstellt am: **' +
+			" Erstellt am: **" +
 			createdAt +
-			'**\n' +
+			"**\n" +
 			this.client.emotes.reminder +
-			' Erstellt vor: **' +
+			" Erstellt vor: **" +
 			createdDiff +
-			'**';
+			"**";
 
 		const supportGuildLogEmbed: EmbedBuilder = this.client.createEmbed(
 			supportGuildLogMessage,
-			'discord',
-			'error'
+			"discord",
+			"error"
 		);
 		supportGuildLogEmbed.setTitle(
-			this.client.user!.username + ' wurde von einem Server entfernt'
+			this.client.user!.username + " wurde von einem Server entfernt"
 		);
 		supportGuildLogEmbed.setThumbnail(
 			guild.iconURL({ dynamic: true, size: 512 })
