@@ -7,6 +7,10 @@ export default class GoodbyeCommand extends BaseCommand {
 		super(client, {
 			name: "goodbye",
 			description: "Stellt die Verabschiedungsnachricht ein",
+			localizedDescriptions: {
+				"en-US": "Sets the farewell message",
+				"en-GB": "Sets the farewell message"
+			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
 			dirname: __dirname,
@@ -17,78 +21,176 @@ export default class GoodbyeCommand extends BaseCommand {
 						subcommand
 							.setName("status")
 							.setDescription("Legt fest, ob die Verabschiedungsnachricht aktiviert oder deaktiviert ist")
+							.setDescriptionLocalizations({
+								"en-US": "Defines whether the goodbye message is enabled or disabled",
+								"en-GB": "Defines whether the goodbye message is enabled or disabled"
+							})
 							.addStringOption((option: any) =>
 								option
 									.setName("status")
 									.setDescription("Wähle einen Status")
+									.setDescriptionLocalizations({
+										"en-US": "Choose a status",
+										"en-GB": "Choose a status"
+									})
 									.setRequired(true)
-									.addChoices({ name: "an", value: "true" }, { name: "aus", value: "false" })
+									.addChoices(
+										{
+											name: "an",
+											name_localizations: {
+												"en-US": "on",
+												"en-GB": "on"
+											},
+											value: "true"
+										},
+										{
+											name: "aus",
+											name_localizations: {
+												"en-US": "off",
+												"en-GB": "off"
+											},
+											value: "false"
+										})
 							)
 					)
-					.addSubcommand((subcommand: any) => subcommand.setName("test").setDescription("Sendet eine Testnachricht"))
+					.addSubcommand((subcommand: any) =>
+						subcommand
+							.setName("test")
+							.setDescription("Sendet eine Testnachricht")
+							.setDescriptionLocalizations({
+								"en-US": "Sends a test message",
+								"en-GB": "Sends a test message"
+							})
+					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("channel")
 							.setDescription("Legt fest, in welchem Channel die Verabschiedungsnachricht gesendet wird")
+							.setDescriptionLocalizations({
+								"en-US": "Defines in which channel the goodbye message is sent",
+								"en-GB": "Defines in which channel the goodbye message is sent"
+							})
 							.addChannelOption((option: any) =>
 								option
 									.setName("channel")
 									.setRequired(true)
 									.setDescription("Wähle einen Channel")
+									.setDescriptionLocalizations({
+										"en-US": "Choose a channel",
+										"en-GB": "Choose a channel"
+									})
 									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildNews)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName("typ")
+							.setName("type")
 							.setDescription("Ob die Verabschiedungsnachricht als Embed oder als Text gesendet wird")
+							.setDescriptionLocalizations({
+								"en-US": "Whether the goodbye message is sent as an embed or as text",
+								"en-GB": "Whether the goodbye message is sent as an embed or as text"
+							})
 							.addStringOption((option: any) =>
 								option
-									.setName("typ")
+									.setName("type")
 									.setDescription("Wähle einen Typ")
+									.setDescriptionLocalizations({
+										"en-US": "Choose a type",
+										"en-GB": "Choose a type"
+									})
 									.setRequired(true)
 									.addChoices({ name: "embed", value: "embed" }, { name: "text", value: "text" })
 							)
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName("nachricht")
-							.setDescription("Definiert die Verabschiedungsnachricht (Variablen siehe /goodbye variablen)")
-							.addStringOption((option: any) => option.setName("nachricht").setDescription("Gib die Nachricht ein").setRequired(true))
+							.setName("message")
+							.setDescription("Definiert die Verabschiedungsnachricht (Variablen siehe /goodbye variables)")
+							.setDescriptionLocalizations({
+								"en-US": "Defines the goodbye message (for variables see /goodbye variables)",
+								"en-GB": "Defines the goodbye message (for variables see /goodbye variables)"
+							})
+							.addStringOption((option: any) =>
+								option
+									.setName("message")
+									.setDescription("Gib die Nachricht ein")
+									.setDescriptionLocalizations({
+										"en-US": "Enter the message",
+										"en-GB": "Enter the message"
+									})
+									.setRequired(true))
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
-							.setName("variablen")
+							.setName("variables")
 							.setDescription("Listet alle Variablen, die in der Verabschiedungsnachricht verwendet werden können")
+							.setDescriptionLocalizations({
+								"en-US": "Lists all variables that can be used in the goodbye message",
+								"en-GB": "Lists all variables that can be used in the goodbye message"
+							})
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("color")
 							.setDescription("Die Farbe des Embeds (Standard: #5865F2)")
+							.setDescriptionLocalizations({
+								"en-US": "The color of the embed (default: #5865F2)",
+								"en-GB": "The color of the embed (default: #5865F2)"
+							})
 							.addStringOption((option: any) =>
-								option.setName("farbe").setDescription("Gib eine Farbe im HEX-Format ein").setRequired(true)
+								option
+									.setName("color")
+									.setDescription("Gib eine Farbe im HEX-Format ein")
+									.setDescriptionLocalizations({
+										"en-US": "Enter a color in HEX format",
+										"en-GB": "Enter a color in HEX format"
+									})
+									.setRequired(true)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("thumbnail")
 							.setDescription("Soll das Profilbild im Embed angezeigt werden?")
+							.setDescriptionLocalizations({
+								"en-US": "Should the profile picture be displayed in the embed?",
+								"en-GB": "Should the profile picture be displayed in the embed?"
+							})
 							.addStringOption((option: any) =>
 								option
 									.setName("status")
 									.setDescription("Wähle einen Status")
+									.setDescriptionLocalizations({
+										"en-US": "Choose a status",
+										"en-GB": "Choose a status"
+									})
 									.setRequired(true)
-									.addChoices({ name: "an", value: "true" }, { name: "aus", value: "false" })
+									.addChoices(
+										{
+											name: "an",
+											name_localizations: {
+												"en-US": "on",
+												"en-GB": "on"
+											},
+											value: "true"
+										},
+										{
+											name: "aus",
+											name_localizations: {
+												"en-US": "off",
+												"en-GB": "off"
+											},
+											value: "false"
+										})
 							)
 					)
 			}
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 
 		const subcommand: any = interaction.options.getSubcommand();
 
@@ -102,19 +204,19 @@ export default class GoodbyeCommand extends BaseCommand {
 			case "channel":
 				await this.setChannel(interaction.options.getChannel("channel"), data);
 				break;
-			case "typ":
-				await this.setType(interaction.options.getString("typ"), data);
+			case "type":
+				await this.setType(interaction.options.getString("type"), data);
 				break;
-			case "nachricht":
-				await this.setMessage(interaction.options.getString("nachricht"), data);
+			case "message":
+				await this.setMessage(interaction.options.getString("message"), data);
 				break;
 			case "color":
-				await this.setColor(interaction.options.getString("farbe"), data);
+				await this.setColor(interaction.options.getString("color"), data);
 				break;
 			case "thumbnail":
 				await this.setThumbnail(interaction.options.getString("status"), data);
 				break;
-			case "variablen":
+			case "variables":
 				await this.showVariables();
 				break;
 		}
@@ -122,12 +224,11 @@ export default class GoodbyeCommand extends BaseCommand {
 
 	private async setStatus(status: any, data: any): Promise<void> {
 		if (data.guild.settings.farewell.enabled === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? "aktiviert" : "deaktiviert";
+			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
-				"Die Verabschiedungsnachricht ist bereits {0}.",
+				this.translate("administration/goodbye:errors:alreadyStatus", { status: statusString }),
 				"error",
-				"error",
-				statusString
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [isAlreadyEmbed] });
 		}
@@ -136,19 +237,19 @@ export default class GoodbyeCommand extends BaseCommand {
 		data.guild.markModified("settings.farewell.enabled");
 		await data.guild.save();
 
-		const statusString: string = JSON.parse(status) ? "aktiviert" : "deaktiviert";
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht wurde {0}.", "success", "success", statusString);
+		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:statusSet", { status: statusString }), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async sendPreview(data: any): Promise<void> {
 		if (!data.guild.settings.farewell.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht ist nicht aktiviert.", "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:isDisabled"), "error", "error");
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 		if (!data.guild.settings.farewell.channel || !this.client.channels.cache.get(data.guild.settings.farewell.channel)) {
 			const noChannelEmbed: EmbedBuilder = this.client.createEmbed(
-				"Es wurde kein Channel für die Verabschiedungsnachricht festgelegt.",
+				this.translate("administration/goodbye:errors:noChannelSet"),
 				"error",
 				"error"
 			);
@@ -156,7 +257,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 		if (!data.guild.settings.farewell.message) {
 			const noMessageEmbed: EmbedBuilder = this.client.createEmbed(
-				"Es wurde keine Nachricht für die Verabschiedungsnachricht festgelegt.",
+				this.translate("administration/goodbye:errors:noMessageSet"),
 				"error",
 				"error"
 			);
@@ -164,7 +265,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 		if (!data.guild.settings.farewell.type) {
 			const noTypeEmbed: EmbedBuilder = this.client.createEmbed(
-				"Es wurde kein Typ für die Verabschiedungsnachricht festgelegt.",
+				this.translate("administration/goodbye:errors:noTypeSet"),
 				"error",
 				"error"
 			);
@@ -207,13 +308,13 @@ export default class GoodbyeCommand extends BaseCommand {
 			await channel.send({ content: message }).catch((e: any): void => {});
 		}
 
-		const testExecutedEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht wurde gesendet.", "success", "success");
+		const testExecutedEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:testSent"), "success", "success");
 		return this.interaction.followUp({ embeds: [testExecutedEmbed] });
 	}
 
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!data.guild.settings.farewell.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht ist nicht aktiviert.", "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:isDisabled"), "error", "error");
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
@@ -222,24 +323,23 @@ export default class GoodbyeCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"Die Verabschiedungsnachricht wird ab jetzt in {0} gesendet.",
+			this.translate("administration/goodbye:channelSet", { channel: channel.toString() }),
 			"success",
-			"success",
-			channel.toString()
+			"success"
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async setType(type: any, data: any): Promise<any> {
 		if (!data.guild.settings.farewell.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht ist nicht aktiviert.", "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:isDisabled"), "error", "error");
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
 		if (data.guild.settings.farewell.type === type) {
-			const statusString: string = type === "embed" ? "Embed" : "Textnachricht";
+			const statusString: string = type === "embed" ? this.translate("administration/goodbye:types:embed") : this.translate("administration/goodbye:types:text");
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
-				"Die Verabschiedungsnachricht wird bereits als {0} gesendet.",
+				this.translate("administration/goodbye:errors:sameType", { type: statusString }),
 				"error",
 				"error",
 				statusString
@@ -251,9 +351,9 @@ export default class GoodbyeCommand extends BaseCommand {
 		data.guild.markModified("settings.farewell.type");
 		await data.guild.save();
 
-		const statusString: string = type === "embed" ? "Embed" : "Textnachricht";
+		const statusString: string = type === "embed" ? this.translate("administration/goodbye:types:embed") : this.translate("administration/goodbye:types:text");
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"Die Verabschiedungsnachricht wird ab jetzt als {0} gesendet.",
+			this.translate("administration/goodbye:typeSet", { type: statusString }),
 			"success",
 			"success",
 			statusString
@@ -263,7 +363,7 @@ export default class GoodbyeCommand extends BaseCommand {
 
 	private async setMessage(message: string, data: any): Promise<void> {
 		if (!data.guild.settings.farewell.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht ist nicht aktiviert.", "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:isDisabled"), "error", "error");
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
@@ -271,27 +371,18 @@ export default class GoodbyeCommand extends BaseCommand {
 		data.guild.markModified("settings.farewell.message");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht wurde geändert.", "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:messageSet"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async showVariables(): Promise<void> {
-		const variables: string[] = [
-			"**{user}** - Erwähnt das Mitglied",
-			"**{user:username}** - Der Nutzername des Mitglieds",
-			"**{user:displayname}** - Der Anzeigename des Mitglieds",
-			"**{user:id}** - ID des Mitglieds",
-			"**{server:name}** - Name des Servers",
-			"**{server:id}** - ID des Servers",
-			"**{server:membercount}** - Anzahl an Mitgliedern des Servers",
-			"**{newline}** - Fügt eine neue Zeile ein"
-		];
+		const variables: string[] = this.translate("administration/goodbye:variables:list")
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
 			10,
 			variables,
-			"Verfügbare Variablen",
-			"Es sind keine Variablen verfügbar",
+			this.translate("administration/goodbye:variables:title"),
+			this.translate("administration/goodbye:variables:empty"),
 			"shine"
 		);
 	}
@@ -303,13 +394,13 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 
 		if (!data.guild.settings.farewell.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht ist nicht aktiviert.", "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:isDisabled"), "error", "error");
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
 		if (data.guild.settings.farewell.type === "text") {
 			const embedNotEnabled: EmbedBuilder = this.client.createEmbed(
-				"Der Typ der Verabschiedungsnachricht muss auf Embed gesetzt sein.",
+				this.translate("administration/goodbye:errors:typeHasToBeEmbed"),
 				"error",
 				"error"
 			);
@@ -317,7 +408,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		} else if (data.guild.settings.farewell.type === "embed") {
 			if (!this.client.utils.stringIsHexColor(color)) {
 				const invalidColorEmbed: EmbedBuilder = this.client.createEmbed(
-					"Du musst eine gültige Farbe im HEX-Format angeben.",
+					this.translate("administration/goodbye:errors:invalidColor"),
 					"error",
 					"error"
 				);
@@ -330,7 +421,7 @@ export default class GoodbyeCommand extends BaseCommand {
 			data.guild.markModified("settings.farewell.color");
 			await data.guild.save();
 
-			const successEmbed: EmbedBuilder = this.client.createEmbed("Die Farbe des Embeds wurde auf {0} geändert.", "success", "success", color);
+			const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:colorSet", { color: color}), "success", "success");
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		}
 	}
@@ -342,13 +433,13 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 
 		if (!data.guild.settings.farewell.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed("Die Verabschiedungsnachricht ist nicht aktiviert.", "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:isDisabled"), "error", "error");
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
 		if (data.guild.settings.farewell.type === "text") {
 			const embedNotEnabled: EmbedBuilder = this.client.createEmbed(
-				"Der Typ der Verabschiedungsnachricht muss auf Embed gesetzt sein.",
+				this.translate("administration/goodbye:errors:typeHasToBeEmbed"),
 				"error",
 				"error"
 			);
@@ -356,8 +447,8 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 
 		if (data.guild.settings.farewell.thumbnail === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? "aktiviert" : "deaktiviert";
-			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed("Das Profilbild im Embed ist bereits {0}.", "error", "error", statusString);
+			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:sameTypeThumbnail", { status: statusString }), "error", "error");
 			return this.interaction.followUp({ embeds: [isAlreadyEmbed] });
 		}
 
@@ -365,8 +456,8 @@ export default class GoodbyeCommand extends BaseCommand {
 		data.guild.markModified("settings.farewell.thumbnail");
 		await data.guild.save();
 
-		const statusString: string = JSON.parse(status) ? "aktiviert" : "deaktiviert";
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Das Profilbild im Embed wurde {0}.", "success", "success", statusString);
+		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:thumbnailSet", { status: statusString }), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

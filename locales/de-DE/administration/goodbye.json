@@ -1,0 +1,38 @@
+{
+  "errors": {
+    "alreadyStatus": "Die Verabschiedungsnachricht ist bereits {{status}}.",
+    "isDisabled": "Die Verabschiedungsnachricht ist deaktiviert.",
+    "noChannelSet": "Es wurde kein Channel für die Verabschiedungsnachricht festgelegt.",
+    "noMessageSet": "Es wurde keine Nachricht für die Verabschiedungsnachricht festgelegt.",
+    "noTypeSet": "Es wurde kein Typ für die Verabschiedungsnachricht festgelegt.",
+    "sameType": "Die Verabschiedungsnachricht wird bereits als {{type}} gesendet.",
+    "typeHasToBeEmbed": "Der Typ der Verabschiedungsnachricht muss auf Embed gesetzt sein.",
+    "invalidColor": "Du musst eine gültige Farbe im HEX-Format angeben.",
+    "sameTypeThumbnail": "Das Profilbild im Embed ist bereits {{status}}."
+  },
+  "statusSet": "Die Verabschiedungsnachricht wurde {{status}}.",
+  "testSent": "Die Verabschiedungsnachricht wurde gesendet.",
+  "channelSet": "Die Verabschiedungsnachricht wird ab jetzt in {{channel}} gesendet.",
+  "typeSet": "Die Verabschiedungsnachricht wird ab jetzt als {{type}} gesendet.",
+  "messageSet": "Die Verabschiedungsnachricht wurde geändert.",
+  "colorSet": "Die Farbe des Embeds wurde auf {{color}} geändert.",
+  "thumbnailSet": "Das Profilbild im Embed wurde {{status}}.",
+  "types": {
+    "text": "Textnachricht",
+    "embed": "Embed"
+  },
+  "variables": {
+    "list": [
+      "**{user}** - Erwähnt das Mitglied",
+      "**{user:username}** - Der Nutzername des Mitglieds",
+      "**{user:displayname}** - Der Anzeigename des Mitglieds",
+      "**{user:id}** - ID des Mitglieds",
+      "**{server:name}** - Name des Servers",
+      "**{server:id}** - ID des Servers",
+      "**{server:membercount}** - Anzahl an Mitgliedern des Servers",
+      "**{newline}** - Fügt eine neue Zeile ein"
+    ],
+    "title": "Verfügbare Variablen",
+    "empty": "Es sind keine Variablen verfügbar."
+  }
+}
