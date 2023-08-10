@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "colorHasToBeHex": "Du musst eine Farbe im HEX-Format eingeben.",
+    "authorIconHasToBeImage": "Das Autor-Icon muss ein Bild sein.",
+    "thumbnailHasToBeImage": "Das Thumbnail muss ein Bild sein.",
+    "imageHasToBeImage": "Das Embed-Bild muss ein Bild sein.",
+    "footerIconHasToBeImage": "Das Footer-Icon muss ein Bild sein."
+  },
+  "sent": "Das Embed wurde erstellt und gesendet."
+}
