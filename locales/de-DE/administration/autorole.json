@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "invalidRole": "Du musst eine Rolle auswählen.",
+    "cantUseEveryone": "Die @everyone Rolle kann nicht als eine Autorolle hinzugefügt werden.",
+    "roleIsManaged": "Rollen welche durch eine Integration verwaltet werden, können nicht als Autorolle hinzugefügt werden.",
+    "roleIsTooHigh": "Da {{role}} eine höhere oder gleiche Position wie meine höchste Rolle ({{botRole}}) hat, kann sie nicht als Autorolle hinzugefügt werden.",
+    "alreadyAdded": "{{role}} ist bereits als Autorolle hinzugefügt worden.",
+    "notAdded": "{{role}} ist keine Autorolle."
+  },
+  "added": "{{role}} wurde als Autorolle hinzugefügt.",
+  "removed": "{{role}} wurde als Autorolle entfernt.",
+  "list": {
+    "title": "Autorollen",
+    "empty": "Es wurden keine Autorollen hinzugefügt."
+  }
+}
