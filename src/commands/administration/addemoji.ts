@@ -7,10 +7,9 @@ export default class AddemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "addemoji",
-			description: "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild",
+			description: "Creates a new emoji based on a given emoji or a link to an image",
 			localizedDescriptions: {
-				"en-US": "Creates a new emoji based on a given emoji or a link to an image",
-				"en-GB": "Creates a new emoji based on a given emoji or a link to an image"
+				"de": "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild"
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -23,20 +22,18 @@ export default class AddemojiCommand extends BaseCommand {
 						option
 							.setRequired(true)
 							.setName("emoji")
-							.setDescription("Gib einen Emoji oder einen Link zu einem Bild ein")
+							.setDescription("Enter an emoji or a link to an image")
 							.setDescriptionLocalizations({
-								"en-US": "Enter an emoji or a link to an image",
-								"en-GB": "Enter an emoji or a link to an image"
+								"de": "Gib einen Emoji oder einen Link zu einem Bild ein"
 							})
 					)
 					.addStringOption((option: any) =>
 						option
 							.setRequired(false)
 							.setName("name")
-							.setDescription("Gib ein, wie der neue Emoji heißen soll")
+							.setDescription("Enter what you want the new emoji to be called")
 							.setDescriptionLocalizations({
-								"en-US": "Enter what you want the new emoji to be called",
-								"en-GB": "Enter what you want the new emoji to be called"
+								"de": "Gib ein, wie der neue Emoji heißen soll"
 							})
 							.setMaxLength(32)
 					)

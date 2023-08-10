@@ -8,10 +8,9 @@ export default class AutodeleteCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "autodelete",
-			description: "Verwaltet das automatische Löschen von Nachrichten auf dem Server",
+			description: "Manages the automatic deletion of messages on the server",
 			localizedDescriptions: {
-				"en-US": "Manages the automatic deletion of messages on the server",
-				"en-GB": "Manages the automatic deletion of messages on the server"
+				"de": "Verwaltet das automatische Löschen von Nachrichten auf dem Server"
 			},
 			memberPermissions: ["ManageGuild", "ManageMessages"],
 			botPermissions: ["ManageMessages"],
@@ -23,34 +22,30 @@ export default class AutodeleteCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
-							.setDescription("Wähle aus den folgenden Aktionen")
+							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								"en-US": "Choose from the following actions",
-								"en-GB": "Choose from the following actions"
+								"de": "Wähle aus den folgenden Aktionen"
 							})
 							.setRequired(true)
 							.addChoices(
 								{
-									name: "hinzufügen",
+									name: "add",
 									name_localizations: {
-										"en-US": "add",
-										"en-GB": "add"
+										"de": "hinzufügen"
 									},
 									value: "add"
 								},
 								{
-									name: "entfernen",
+									name: "remove",
 									name_localizations: {
-										"en-US": "remove",
-										"en-GB": "remove"
+										"de": "entfernen"
 									},
 									value: "remove"
 								},
 								{
-									name: "liste",
+									name: "list",
 									name_localizations: {
-										"en-US": "list",
-										"en-GB": "list"
+										"de": "liste"
 									},
 									value: "list"
 								}
@@ -59,10 +54,9 @@ export default class AutodeleteCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Wähle, für welchen Channel du die Aktion ausführen möchtest")
+							.setDescription("Choose for which channel you want to perform the action")
 							.setDescriptionLocalizations({
-								"en-US": "Choose for which channel you want to perform the action",
-								"en-GB": "Choose for which channel you want to perform the action"
+								"de": "Wähle, für welchen Channel du die Aktion ausführen möchtest"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.PublicThread)
@@ -71,10 +65,9 @@ export default class AutodeleteCommand extends BaseCommand {
 						option
 							.setName("time")
 							.setRequired(false)
-							.setDescription("Gib ein, nach welcher Zeit neue Nachrichten gelöscht werden sollen")
+							.setDescription("Enter after what time new messages should be deleted")
 							.setDescriptionLocalizations({
-								"en-US": "Enter after what time new messages should be deleted",
-								"en-GB": "Enter after what time new messages should be deleted"
+								"de": "Gib ein, nach welcher Zeit neue Nachrichten gelöscht werden sollen"
 							})
 					)
 			}

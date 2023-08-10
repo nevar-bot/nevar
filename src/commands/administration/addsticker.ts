@@ -8,10 +8,9 @@ export default class AddstickerCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "addsticker",
-			description: "Erstellt einen neuen Sticker anhand eines Links zu einem Bild",
+			description: "Creates a new sticker from a link to an image",
 			localizedDescriptions: {
-				"en-US": "Creates a new sticker from a link to an image",
-				"en-GB": "Creates a new sticker from a link to an image"
+				"de": "Erstellt einen neuen Sticker anhand eines Links zu einem Bild"
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -23,20 +22,18 @@ export default class AddstickerCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("url")
-							.setDescription("Gib einen Link zu einem Bild ein")
+							.setDescription("Enter a link to an image")
 							.setDescriptionLocalizations({
-								"en-US": "Enter a link to an image",
-								"en-GB": "Enter a link to an image"
+								"de": "Gib einen Link zu einem Bild ein"
 							})
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("name")
-							.setDescription("Gib ein, wie der neue Sticker heißen soll")
+							.setDescription("Enter what you want the new sticker to be called")
 							.setDescriptionLocalizations({
-								"en-US": "Enter what you want the new sticker to be called",
-								"en-GB": "Enter what you want the new sticker to be called"
+								"de": "Gib ein, wie der neue Sticker heißen soll"
 							})
 							.setRequired(true)
 							.setMaxLength(32)
@@ -44,20 +41,18 @@ export default class AddstickerCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("emoji")
-							.setDescription("Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert")
+							.setDescription("Enter a standard Discord emoji that represents the sticker")
 							.setDescriptionLocalizations({
-								"en-US": "Enter a standard Discord emoji that represents the sticker",
-								"en-GB": "Enter a standard Discord emoji that represents the sticker"
+								"de": "Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert"
 							})
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("description")
-							.setDescription("Gib eine kurze Beschreibung für den Sticker ein")
+							.setDescription("Enter a short description for the sticker")
 							.setDescriptionLocalizations({
-								"en-US": "Enter a short description for the sticker",
-								"en-GB": "Enter a short description for the sticker"
+								"de": "Gib eine kurze Beschreibung für den Sticker ein"
 							})
 							.setRequired(false)
 							.setMaxLength(100)

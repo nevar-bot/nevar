@@ -7,10 +7,9 @@ export default class AutoreactCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "autoreact",
-			description: "Verwaltet das automatische Reagieren auf Nachrichten",
+			description: "Manages automatic reactions to messages",
 			localizedDescriptions: {
-				"en-US": "Manages automatic reactions to messages",
-				"en-GB": "Manages automatic reactions to messages"
+				"de": "Verwaltet das automatische Reagieren auf Nachrichten"
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["AddReactions"],
@@ -22,34 +21,30 @@ export default class AutoreactCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
-							.setDescription("Wähle aus den folgenden Aktionen")
+							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								"en-US": "Choose from the following actions",
-								"en-GB": "Choose from the following actions"
+								"de": "Wähle aus den folgenden Aktionen"
 							})
 							.setRequired(true)
 							.addChoices(
 								{
-									name: "hinzufügen",
+									name: "add",
 									name_localizations: {
-										"en-US": "add",
-										"en-GB": "add"
+										"de": "hinzufügen"
 									},
 									value: "add"
 								},
 								{
-									name: "entfernen",
+									name: "remove",
 									name_localizations: {
-										"en-US": "remove",
-										"en-GB": "remove"
+										"de": "entfernen"
 									},
 									value: "remove"
 								},
 								{
-									name: "liste",
+									name: "list",
 									name_localizations: {
-										"en-US": "list",
-										"en-GB": "list"
+										"de": "liste"
 									},
 									value: "list"
 								}
@@ -58,10 +53,9 @@ export default class AutoreactCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Wähle, für welchen Channel du die Aktion ausführen möchtest")
+							.setDescription("Choose for which channel you want to perform the action")
 							.setDescriptionLocalizations({
-								"en-US": "Choose for which channel you want to perform the action",
-								"en-GB": "Choose for which channel you want to perform the action"
+								"de": "Wähle, für welchen Channel du die Aktion ausführen möchtest"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.PublicThread)
@@ -69,10 +63,9 @@ export default class AutoreactCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("emoji")
-							.setDescription("Gib den gewünschten Emoji ein")
+							.setDescription("Enter the emoji you want")
 							.setDescriptionLocalizations({
-								"en-US": "Enter the emoji you want",
-								"en-GB": "Enter the emoji you want"
+								"de": "Gib den gewünschten Emoji ein"
 							})
 							.setRequired(false))
 			}

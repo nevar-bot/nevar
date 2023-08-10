@@ -6,10 +6,9 @@ export default class AutoroleCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "autorole",
-			description: "Verwaltet die Rollen, welche neuen Mitgliedern automatisch gegeben werden",
+			description: "Manages the roles that are automatically given to new members",
 			localizedDescriptions: {
-				"en-US": "Manages the roles that are automatically given to new members",
-				"en-GB": "Manages the roles that are automatically given to new members"
+				"de": "Verwaltet die Rollen, welche neuen Mitgliedern automatisch gegeben werden"
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["ManageRoles"],
@@ -21,34 +20,30 @@ export default class AutoroleCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
-							.setDescription("Wähle aus den folgenden Aktionen")
+							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								"en-US": "Choose from the following actions",
-								"en-GB": "Choose from the following actions"
+								"de": "Wähle aus den folgenden Aktionen"
 							})
 							.setRequired(true)
 							.addChoices(
 								{
-									name: "hinzufügen",
+									name: "add",
 									name_localizations: {
-										"en-US": "add",
-										"en-GB": "add"
+										"de": "hinzufügen"
 									},
 									value: "add"
 								},
 								{
-									name: "entfernen",
+									name: "remove",
 									name_localizations: {
-										"en-US": "remove",
-										"en-GB": "remove"
+										"de": "entfernen"
 									},
 									value: "remove"
 								},
 								{
-									name: "liste",
+									name: "list",
 									name_localizations: {
-										"en-US": "list",
-										"en-GB": "list"
+										"de": "liste"
 									},
 									value: "list"
 								}
@@ -57,10 +52,9 @@ export default class AutoroleCommand extends BaseCommand {
 					.addRoleOption((option: any) =>
 						option
 							.setName("role")
-							.setDescription("Wähle eine Rolle")
+							.setDescription("Choose a role")
 							.setDescriptionLocalizations({
-								"en-US": "Choose a role",
-								"en-GB": "Choose a role"
+								"de": "Wähle eine Rolle"
 							})
 							.setRequired(false))
 			}

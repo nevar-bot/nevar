@@ -6,10 +6,9 @@ export default class AichatCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "aichat",
-			description: "Verwaltet den KI-Chat des Servers",
+			description: "Manages the AI chat of the guild",
 			localizedDescriptions: {
-				"en-US": "Manages the AI chat of the guild",
-				"en-GB": "Manages the AI chat of the guild"
+				"de": "Verwaltet den KI-Chat des Servers",
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
@@ -20,10 +19,9 @@ export default class AichatCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
-							.setDescription("Wähle aus den folgenden Aktionen")
+							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								"en-US": "Choose from the following actions",
-								"en-GB": "Choose from the following actions"
+								"de": "Wähle aus den folgenden Aktionen"
 							})
 							.setRequired(true)
 							.addChoices(
@@ -36,10 +34,9 @@ export default class AichatCommand extends BaseCommand {
 									value: "channel"
 								},
 								{
-									name: "modus",
+									name: "mode",
 									name_localizations: {
-										"en-US": "mode",
-										"en-GB": "mode"
+										"de": "modus",
 									},
 									value: "mode"
 								}
@@ -48,10 +45,9 @@ export default class AichatCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Wähle den Kanal, in dem der KI-Chat aktiv sein soll")
+							.setDescription("Choose the channel where the AI chat should be active")
 							.setDescriptionLocalizations({
-								"en-US": "Choose the channel where the AI chat should be active",
-								"en-GB": "Choose the channel where the AI chat should be active"
+								"de": "Wähle den Kanal, in dem der KI-Chat aktiv sein soll"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.PublicThread)
@@ -59,26 +55,23 @@ export default class AichatCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("status")
-							.setDescription("Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll")
+							.setDescription("Choose whether the AI chat should be enabled or disabled")
 							.setDescriptionLocalizations({
-								"en-US": "Choose whether the AI chat should be enabled or disabled",
-								"en-GB": "Choose whether the AI chat should be enabled or disabled"
+								"de": "Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll"
 							})
 							.setRequired(false)
 							.addChoices(
 								{
-									name: "an",
+									name: "on",
 									name_localizations: {
-										"en-US": "on",
-										"en-GB": "on"
+										"de": "an"
 									},
 									value: "on"
 								},
 								{
-									name: "aus",
+									name: "off",
 									name_localizations: {
-										"en-US": "off",
-										"en-GB": "off"
+										"de": "aus"
 									},
 									value: "off"
 								}

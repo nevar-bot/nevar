@@ -6,10 +6,9 @@ export default class GoodbyeCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "goodbye",
-			description: "Stellt die Verabschiedungsnachricht ein",
+			description: "Sets the farewell message",
 			localizedDescriptions: {
-				"en-US": "Sets the farewell message",
-				"en-GB": "Sets the farewell message"
+				"de": "Stellt die Verabschiedungsnachricht ein"
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
@@ -20,34 +19,30 @@ export default class GoodbyeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("status")
-							.setDescription("Legt fest, ob die Verabschiedungsnachricht aktiviert oder deaktiviert ist")
+							.setDescription("Defines whether the goodbye message is enabled or disabled")
 							.setDescriptionLocalizations({
-								"en-US": "Defines whether the goodbye message is enabled or disabled",
-								"en-GB": "Defines whether the goodbye message is enabled or disabled"
+								"de": "Legt fest, ob die Verabschiedungsnachricht aktiviert oder deaktiviert ist"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("status")
-									.setDescription("Wähle einen Status")
+									.setDescription("Choose a status")
 									.setDescriptionLocalizations({
-										"en-US": "Choose a status",
-										"en-GB": "Choose a status"
+										"de": "Wähle einen Status"
 									})
 									.setRequired(true)
 									.addChoices(
 										{
-											name: "an",
+											name: "on",
 											name_localizations: {
-												"en-US": "on",
-												"en-GB": "on"
+												"de": "an"
 											},
 											value: "true"
 										},
 										{
-											name: "aus",
+											name: "off",
 											name_localizations: {
-												"en-US": "off",
-												"en-GB": "off"
+												"de": "aus"
 											},
 											value: "false"
 										})
@@ -56,47 +51,42 @@ export default class GoodbyeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("test")
-							.setDescription("Sendet eine Testnachricht")
+							.setDescription("Sends a test message")
 							.setDescriptionLocalizations({
-								"en-US": "Sends a test message",
-								"en-GB": "Sends a test message"
+								"de": "Sendet eine Testnachricht"
 							})
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("channel")
-							.setDescription("Legt fest, in welchem Channel die Verabschiedungsnachricht gesendet wird")
+							.setDescription("Defines in which channel the goodbye message is sent")
 							.setDescriptionLocalizations({
-								"en-US": "Defines in which channel the goodbye message is sent",
-								"en-GB": "Defines in which channel the goodbye message is sent"
+								"de": "Legt fest, in welchem Channel die Verabschiedungsnachricht gesendet wird"
 							})
 							.addChannelOption((option: any) =>
 								option
 									.setName("channel")
 									.setRequired(true)
-									.setDescription("Wähle einen Channel")
+									.setDescription("Choose a channel")
 									.setDescriptionLocalizations({
-										"en-US": "Choose a channel",
-										"en-GB": "Choose a channel"
+										"de": "Wähle einen Channel"
 									})
-									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildNews)
+									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("type")
-							.setDescription("Ob die Verabschiedungsnachricht als Embed oder als Text gesendet wird")
+							.setDescription("Whether the goodbye message is sent as an embed or as text")
 							.setDescriptionLocalizations({
-								"en-US": "Whether the goodbye message is sent as an embed or as text",
-								"en-GB": "Whether the goodbye message is sent as an embed or as text"
+								"de": "Ob die Verabschiedungsnachricht als Embed oder als Text gesendet wird"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("type")
-									.setDescription("Wähle einen Typ")
+									.setDescription("Choose a type")
 									.setDescriptionLocalizations({
-										"en-US": "Choose a type",
-										"en-GB": "Choose a type"
+										"de": "Wähle einen Typ"
 									})
 									.setRequired(true)
 									.addChoices({ name: "embed", value: "embed" }, { name: "text", value: "text" })
@@ -105,45 +95,40 @@ export default class GoodbyeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("message")
-							.setDescription("Definiert die Verabschiedungsnachricht (Variablen siehe /goodbye variables)")
+							.setDescription("Defines the goodbye message (for variables see /goodbye variables)")
 							.setDescriptionLocalizations({
-								"en-US": "Defines the goodbye message (for variables see /goodbye variables)",
-								"en-GB": "Defines the goodbye message (for variables see /goodbye variables)"
+								"de": "Definiert die Verabschiedungsnachricht (Variablen siehe /goodbye variables)"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("message")
-									.setDescription("Gib die Nachricht ein")
+									.setDescription("Enter the message")
 									.setDescriptionLocalizations({
-										"en-US": "Enter the message",
-										"en-GB": "Enter the message"
+										"de": "Gib die Nachricht ein"
 									})
 									.setRequired(true))
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("variables")
-							.setDescription("Listet alle Variablen, die in der Verabschiedungsnachricht verwendet werden können")
+							.setDescription("Lists all variables that can be used in the goodbye message")
 							.setDescriptionLocalizations({
-								"en-US": "Lists all variables that can be used in the goodbye message",
-								"en-GB": "Lists all variables that can be used in the goodbye message"
+								"de": "Listet alle Variablen, die in der Verabschiedungsnachricht verwendet werden können"
 							})
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("color")
-							.setDescription("Die Farbe des Embeds (Standard: #5865F2)")
+							.setDescription("The color of the embed (default: #5865F2)")
 							.setDescriptionLocalizations({
-								"en-US": "The color of the embed (default: #5865F2)",
-								"en-GB": "The color of the embed (default: #5865F2)"
+								"de": "Die Farbe des Embeds (Standard: #5865F2)"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("color")
-									.setDescription("Gib eine Farbe im HEX-Format ein")
+									.setDescription("Enter a color in HEX format")
 									.setDescriptionLocalizations({
-										"en-US": "Enter a color in HEX format",
-										"en-GB": "Enter a color in HEX format"
+										"de": "Gib eine Farbe im HEX-Format ein"
 									})
 									.setRequired(true)
 							)
@@ -151,34 +136,30 @@ export default class GoodbyeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("thumbnail")
-							.setDescription("Soll das Profilbild im Embed angezeigt werden?")
+							.setDescription("Should the profile picture be displayed in the embed?")
 							.setDescriptionLocalizations({
-								"en-US": "Should the profile picture be displayed in the embed?",
-								"en-GB": "Should the profile picture be displayed in the embed?"
+								"de": "Soll das Profilbild im Embed angezeigt werden?"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("status")
-									.setDescription("Wähle einen Status")
+									.setDescription("Choose a status")
 									.setDescriptionLocalizations({
-										"en-US": "Choose a status",
-										"en-GB": "Choose a status"
+										"de": "Wähle einen Status"
 									})
 									.setRequired(true)
 									.addChoices(
 										{
-											name: "an",
+											name: "on",
 											name_localizations: {
-												"en-US": "on",
-												"en-GB": "on"
+												"de": "an"
 											},
 											value: "true"
 										},
 										{
-											name: "aus",
+											name: "off",
 											name_localizations: {
-												"en-US": "off",
-												"en-GB": "off"
+												"de": "aus"
 											},
 											value: "false"
 										})

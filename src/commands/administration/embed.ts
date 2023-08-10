@@ -6,10 +6,9 @@ export default class EmbedCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "embed",
-			description: "Ermöglicht das Senden eines angepassten Embeds",
+			description: "Allows you to send a customized embed",
 			localizedDescriptions: {
-				"en-US": "Allows you to send a customized embed",
-				"en-GB": "Allows you to send a customized embed"
+				"de": "Ermöglicht das Senden eines angepassten Embeds"
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["ManageWebhooks"],
@@ -21,86 +20,77 @@ export default class EmbedCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("author")
-							.setDescription("Gib den Namen des Autors ein")
+							.setDescription("Enter the name of the author")
 							.setDescriptionLocalizations({
-								"en-US": "Enter the name of the author",
-								"en-GB": "Enter the name of the author"
+								"de": "Gib den Namen des Autors ein"
 							})
 							.setRequired(true)
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("icon")
-							.setDescription("Wähle den Avatar des Autors")
+							.setDescription("Choose the avatar of the author")
 							.setDescriptionLocalizations({
-								"en-US": "Choose the avatar of the author",
-								"en-GB": "Choose the avatar of the author"
+								"de": "Wähle den Avatar des Autors"
 							})
 							.setRequired(false))
 					.addStringOption((option: any) =>
 						option
 							.setName("title")
-							.setDescription("Gib den Titel des Embeds ein")
+							.setDescription("Enter the title of the embed")
 							.setDescriptionLocalizations({
-								"en-US": "Enter the title of the embed",
-								"en-GB": "Enter the title of the embed"
+								"de": "Gib den Titel des Embeds ein"
 							})
 							.setRequired(false))
 					.addStringOption((option: any) =>
 						option
 							.setName("description")
-							.setDescription("Gib die Beschreibung des Embeds ein")
+							.setDescription("Enter the description of the embed")
 							.setDescriptionLocalizations({
-								"en-US": "Enter the description of the embed",
-								"en-GB": "Enter the description of the embed"
+								"de": "Gib die Beschreibung des Embeds ein"
 							})
 							.setRequired(false)
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("thumbnail")
-							.setDescription("Wähle das Thumbnail des Embeds")
+							.setDescription("Choose the thumbnail of the embed")
 							.setDescriptionLocalizations({
-								"en-US": "Choose the thumbnail of the embed",
-								"en-GB": "Choose the thumbnail of the embed"
+								"de": "Wähle das Thumbnail des Embeds"
 							})
 							.setRequired(false)
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("image")
-							.setDescription("Wähle das Bild des Embeds")
+							.setDescription("Choose the image of the embed")
 							.setDescriptionLocalizations({
-								"en-US": "Choose the image of the embed",
-								"en-GB": "Choose the image of the embed"
+								"de": "Wähle das Bild des Embeds"
 							})
 							.setRequired(false))
 					.addStringOption((option: any) =>
 						option
 							.setName("footertext")
-							.setDescription("Gib den Text des Footers ein")
+							.setDescription("Enter the text of the footer")
 							.setDescriptionLocalizations({
-								"en-US": "Enter the text of the footer",
-								"en-GB": "Enter the text of the footer"
+								"de": "Gib den Text des Footers ein"
 							})
 							.setRequired(false))
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("footericon")
-							.setDescription("Wähle das Icon des Footers")
+							.setDescription("Choose the icon of the footer")
 							.setDescriptionLocalizations({
-								"en-US": "Choose the icon of the footer",
-								"en-GB": "Choose the icon of the footer"
+								"de": "Wähle das Icon des Footers"
 							})
 							.setRequired(false)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("color")
-							.setDescription("Gib die Farbe des Embeds im HEX-Format ein")
+							.setDescription("Enter the color of the embed in HEX format")
 							.setDescriptionLocalizations({
-								"en-US": "Enter the color of the embed in HEX format",
-								"en-GB": "Enter the color of the embed in HEX format"
+								"de": "Gib die Farbe des Embeds im HEX-Format ein"
 							})
 							.setRequired(false)
 					)

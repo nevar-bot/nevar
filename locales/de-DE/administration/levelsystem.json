@@ -1,0 +1,104 @@
+{
+  "status": {
+    "errors": {
+      "isAlready": "Das Levelsystem ist bereits {{status}}."
+    },
+    "set": "Das Levelsystem wurde {{status}}."
+  },
+  "channel": {
+    "errors": {
+      "isDisabled": "Das Levelsystem ist deaktiviert."
+    },
+    "channelChosen": "in {{channel}}",
+    "channelCurrent": "im jeweils aktuellen Channel",
+    "set": "Level-Up Nachrichten kommen absofort {{channel}}."
+  },
+  "message": {
+    "errors": {
+      "isDisabled": "Das Levelsystem ist deaktiviert.",
+      "messageTooLong": "Die Level-Nachricht darf maximal 2.000 Zeichen lang sein. Deine ist {{length}} Zeichen lang."
+    },
+    "set": "Die Level-Up Nachricht wurde geändert."
+  },
+  "roles": {
+    "errors": {
+      "isDisabled": "Das Levelsystem ist deaktiviert.",
+      "missingLevelOrRole": "Du musst eine Rolle und ein Level eingeben.",
+      "missingRole": "Du musst eine Rolle wählen.",
+      "roleAlreadyAdded": "Diese Rolle ist bereits als Levelrolle hinzugefügt.",
+      "isNotAdded": "{{role}} ist keine Levelrolle.",
+      "cantUseEveryone": "Die @everyone Rolle kann nicht als eine Levelrolle hinzugefügt werden.",
+      "cantUseManaged": "Rollen welche durch eine Integration verwaltet werden, können nicht als Levelrolle hinzugefügt werden.",
+      "cantUseHigherRole": "Da {{role}} eine höhere oder gleiche Position wie meine höchste Rolle ({{botrole}}) hat, kann sie nicht als Levelrolle hinzugefügt werden."
+    },
+    "added": "{{role}} wurde als Levelrolle hinzugefügt.",
+    "removed": "{{role}} wurde als Levelrolle entfernt.",
+    "list": {
+      "role": "Rolle",
+      "level": "Level",
+      "title": "Levelrollen",
+      "empty": "Es wurden noch keine Levelrollen hinzugefügt."
+    }
+  },
+  "doublexp": {
+    "errors": {
+      "isDisabled": "Das Levelsystem ist deaktiviert.",
+      "missingRole": "Du musst eine Rolle wählen.",
+      "alreadyAdded": "Diese Rolle ist bereits als Doppel-XP Rolle hinzugefügt.",
+      "notAdded": "{{role}} ist keine Doppel-XP Rolle.",
+      "cantUseEveryone": "Die @everyone Rolle kann nicht als eine Doppel-XP Rolle hinzugefügt werden.",
+      "cantUseManaged": "Rollen welche durch eine Integration verwaltet werden, können nicht als Doppel-XP Rolle hinzugefügt werden."
+    },
+    "added": "{{role}} wurde als Doppel-XP Rolle hinzugefügt.",
+    "removed": "{{role}} wurde als Doppel-XP Rolle entfernt.",
+    "list": {
+      "title": "Doppel-XP Rollen",
+      "empty": "Es wurden noch keine Doppel-XP Rollen hinzugefügt."
+    }
+  },
+  "xp": {
+    "errors": {
+      "isDisabled": "Das Levelsystem ist deaktiviert.",
+      "minCantBeHigherThanMax": "Der Minimalwert darf den Maximalwert nicht überschreiten."
+    },
+    "set": "Der Minimalwert wurde auf {{min}} und der Maximalwert auf {{min}} gesetzt."
+  },
+  "variables": {
+    "list": [
+      "**{level}** - Zeigt das neue Level an",
+      "**{user}** - Erwähnt das Mitglied",
+      "**{user:username}** - Der Nutzername des Mitglieds",
+      "**{user:displayname}** - Der Anzeigename des Mitglieds",
+      "**{user:id}** - ID des Mitglieds",
+      "**{server:name}** - Name des Servers",
+      "**{server:id}** - ID des Servers",
+      "**{server:membercount}** - Anzahl an Mitgliedern des Servers"
+    ],
+    "title": "Verfügbare Variablen",
+    "empty": "Es sind keine Variablen verfügbar."
+  },
+  "preview": {
+    "errors": {
+      "isDisabled": "Das Levelsystem ist deaktiviert.",
+      "noMessageSet": "Es wurde keine Nachricht für die Level-Up Nachricht festgelegt.",
+      "cantSend": "Die Level-Up Nachricht konnte nicht gesendet werden."
+    },
+    "sent": "Die Level-Up Nachricht wurde getestet."
+  },
+  "exclude": {
+    "errors": {
+      "isDisabled": "Das Levelsystem ist deaktiviert.",
+      "missingChannelOrRole": "Bitte wähle einen Channel oder eine Rolle.",
+      "alreadyAdded": "{{item}} ist bereits auf der Blacklist.",
+      "notAdded": "{{item}} ist nicht auf der Blacklist.",
+      "cantUseEveryone": "Die @everyone Rolle kann nicht auf die Blacklist gesetzt werden.",
+      "cantUseManaged": "Rollen welche durch eine Integration verwaltet werden, können nicht auf die Blacklist gesetzt werden."
+    },
+    "added": "{{item}} wurde zur Blacklist hinzugefügt.",
+    "removed": "{{item}} wurde von der Blacklist entfernt.",
+    "list": {
+      "title": "Level-Blacklist",
+      "empty": "Es wurden noch keine Channels oder Rollen zur Blacklist hinzugefügt."
+    }
+  }
+}
