@@ -6,19 +6,13 @@ export default class XpForCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "xpfor",
-			description:
-				"Zeigt, wieviel XP für ein bestimmtes Level benötigt wird",
+			description: "Zeigt, wieviel XP für ein bestimmtes Level benötigt wird",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder().addIntegerOption(
-					(option: any) =>
-						option
-							.setName("level")
-							.setDescription("Gib das Level an")
-							.setMinValue(1)
-							.setRequired(true)
+				data: new SlashCommandBuilder().addIntegerOption((option: any) =>
+					option.setName("level").setDescription("Gib das Level an").setMinValue(1).setRequired(true)
 				)
 			}
 		});
@@ -48,17 +42,10 @@ export default class XpForCommand extends BaseCommand {
 		const minXp = data.guild.settings.levels.xp.min;
 		const maxXp = data.guild.settings.levels.xp.max;
 		const averageXp: number = Math.round((minXp + maxXp) / 2);
-		const neededXp: string = this.client.format(
-			this.client.levels.xpFor(level)
-		);
+		const neededXp: string = this.client.format(this.client.levels.xpFor(level));
 		const timeoutLengthInSeconds: 15 = 15;
-		const neededTime: string = secondsToTime(
-			(this.client.levels.xpFor(level) / averageXp) *
-				timeoutLengthInSeconds
-		);
-		const neededMessages: string = this.client.format(
-			Math.round(this.client.levels.xpFor(level) / averageXp)
-		);
+		const neededTime: string = secondsToTime((this.client.levels.xpFor(level) / averageXp) * timeoutLengthInSeconds);
+		const neededMessages: string = this.client.format(Math.round(this.client.levels.xpFor(level) / averageXp));
 
 		const text: string =
 			"Um Level **" +
@@ -81,12 +68,7 @@ export default class XpForCommand extends BaseCommand {
 			neededTime +
 			"**.";
 
-		const xpForEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0}",
-			"arrow",
-			"normal",
-			text
-		);
+		const xpForEmbed: EmbedBuilder = this.client.createEmbed("{0}", "arrow", "normal", text);
 		return this.interaction.followUp({ embeds: [xpForEmbed] });
 	}
 }

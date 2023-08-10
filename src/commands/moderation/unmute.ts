@@ -13,10 +13,7 @@ export default class UnmuteCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option
-						.setName("mitglied")
-						.setDescription("Wähle ein Mitglied")
-						.setRequired(true)
+					option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true)
 				)
 			}
 		});
@@ -33,34 +30,17 @@ export default class UnmuteCommand extends BaseCommand {
 	private async unmute(user: any, data: any): Promise<void> {
 		const member: any = await this.interaction.guild.resolveMember(user.id);
 		if (!member) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst ein Mitglied angeben.",
-				"error",
-				"error"
-			);
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst ein Mitglied angeben.", "error", "error");
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
-		const memberData: any = await this.client.findOrCreateMember(
-			user.id,
-			this.interaction.guild.id
-		);
+		const memberData: any = await this.client.findOrCreateMember(user.id, this.interaction.guild.id);
 		if (!memberData.muted.state) {
-			const isNotMutedEmbed: EmbedBuilder = this.client.createEmbed(
-				"{0} ist nicht gemutet.",
-				"error",
-				"error",
-				user.username
-			);
+			const isNotMutedEmbed: EmbedBuilder = this.client.createEmbed("{0} ist nicht gemutet.", "error", "error", user.username);
 			return this.interaction.followUp({ embeds: [isNotMutedEmbed] });
 		}
 
-		member.roles
-			.remove(
-				data.guild.settings.muterole,
-				"Vorzeitiger Unmute durch " + this.interaction.user.username
-			)
-			.catch((): void => {});
+		member.roles.remove(data.guild.settings.muterole, "Vorzeitiger Unmute durch " + this.interaction.user.username).catch((): void => {});
 		memberData.muted = {
 			state: false,
 			reason: null,
@@ -74,9 +54,7 @@ export default class UnmuteCommand extends BaseCommand {
 		};
 		memberData.markModified("muted");
 		await memberData.save();
-		this.client.databaseCache.mutedUsers.delete(
-			user.id + this.interaction.guild.id
-		);
+		this.client.databaseCache.mutedUsers.delete(user.id + this.interaction.guild.id);
 
 		const logText: string =
 			"### " +
@@ -87,20 +65,11 @@ export default class UnmuteCommand extends BaseCommand {
 			this.client.emotes.user +
 			" Moderator: " +
 			this.interaction.user.username;
-		const logEmbed: EmbedBuilder = this.client.createEmbed(
-			logText,
-			null,
-			"normal"
-		);
+		const logEmbed: EmbedBuilder = this.client.createEmbed(logText, null, "normal");
 		logEmbed.setThumbnail(user.displayAvatarURL());
 		await this.interaction.guild.logAction(logEmbed, "moderation");
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0} wurde entmutet.",
-			"success",
-			"success",
-			user.username
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde entmutet.", "success", "success", user.username);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

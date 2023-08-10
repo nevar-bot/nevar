@@ -57,12 +57,7 @@ export default class InviteCommand extends BaseCommand {
 			false,
 			"https://top.gg/" + this.client!.user!.id + "/vote"
 		);
-		const buttonRow: any = this.client.createMessageComponentsRow(
-			inviteButton,
-			supportButton,
-			websiteButton,
-			voteButton
-		); // test
+		const buttonRow: any = this.client.createMessageComponentsRow(inviteButton, supportButton, websiteButton, voteButton); // test
 
 		// Second row
 		const twitterButton: ButtonBuilder = this.client.createButton(
@@ -97,22 +92,10 @@ export default class InviteCommand extends BaseCommand {
 			false,
 			"https://prohosting24.de/cp/donate/nevar"
 		);
-		const buttonRow2: any = this.client.createMessageComponentsRow(
-			twitterButton,
-			instagramButton,
-			githubButton,
-			donateButton
-		);
+		const buttonRow2: any = this.client.createMessageComponentsRow(twitterButton, instagramButton, githubButton, donateButton);
 
-		const text: string =
-			"### " +
-			this.client.emotes.discover +
-			" Folgende Links könnten dich interessieren:";
-		const linksEmbed: EmbedBuilder = this.client.createEmbed(
-			text,
-			null,
-			"normal"
-		);
+		const text: string = "### " + this.client.emotes.discover + " Folgende Links könnten dich interessieren:";
+		const linksEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		linksEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return this.interaction.followUp({

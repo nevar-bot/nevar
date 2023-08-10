@@ -6,8 +6,7 @@ export default class ClearCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "clear",
-			description:
-				"Löscht eine bestimmte Anzahl an Nachrichten, ggf. von einem bestimmten Nutzer",
+			description: "Löscht eine bestimmte Anzahl an Nachrichten, ggf. von einem bestimmten Nutzer",
 			memberPermissions: ["ManageMessages"],
 			botPermissions: ["ManageMessages"],
 			cooldown: 1000,
@@ -18,20 +17,13 @@ export default class ClearCommand extends BaseCommand {
 					.addIntegerOption((option: any) =>
 						option
 							.setName("anzahl")
-							.setDescription(
-								"Gib an, wieviele Nachrichten du löschen möchtest"
-							)
+							.setDescription("Gib an, wieviele Nachrichten du löschen möchtest")
 							.setMinValue(1)
 							.setMaxValue(99)
 							.setRequired(true)
 					)
 					.addUserOption((option: any) =>
-						option
-							.setName("nutzer")
-							.setDescription(
-								"Wähle, von welchem Nutzer du Nachrichten löschen möchtest"
-							)
-							.setRequired(false)
+						option.setName("nutzer").setDescription("Wähle, von welchem Nutzer du Nachrichten löschen möchtest").setRequired(false)
 					)
 			}
 		});
@@ -41,10 +33,7 @@ export default class ClearCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.clearMessages(
-			interaction.options.getInteger("anzahl"),
-			interaction.options.getUser("nutzer")
-		);
+		await this.clearMessages(interaction.options.getInteger("anzahl"), interaction.options.getUser("nutzer"));
 	}
 
 	private async clearMessages(amount: number, user: any): Promise<void> {
@@ -57,17 +46,13 @@ export default class ClearCommand extends BaseCommand {
 		);
 
 		if (user) {
-			messages = messages.filter(
-				(m: any): boolean => m.author.id === user.id
-			);
+			messages = messages.filter((m: any): boolean => m.author.id === user.id);
 		}
 		messages = messages.filter((m) => !m.pinned);
 
 		if (messages[0].author.id === this.client.user!.id) messages.shift();
 
-		this.interaction.channel
-			.bulkDelete(messages, true)
-			.catch((): void => {});
+		this.interaction.channel.bulkDelete(messages, true).catch((): void => {});
 
 		const string: string = user ? "von " + user.username : "";
 		const deletedEmbed: EmbedBuilder = this.client.createEmbed(
@@ -94,11 +79,7 @@ export default class ClearCommand extends BaseCommand {
 			" Moderator: " +
 			this.interaction.user.username;
 
-		const logEmbed: EmbedBuilder = this.client.createEmbed(
-			text,
-			null,
-			"normal"
-		);
+		const logEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		logEmbed.setTitle(this.client.emotes.delete + " Nachrichten gelöscht");
 		logEmbed.setThumbnail(this.interaction.user.displayAvatarURL());
 		await this.interaction.guild.logAction(logEmbed, "moderation");

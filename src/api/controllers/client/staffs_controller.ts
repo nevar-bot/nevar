@@ -9,9 +9,7 @@ export async function get(req: Request, res: Response) {
 	const normalStaffs: any[] = [];
 
 	for (const ownerId of client.config.general["OWNER_IDS"]) {
-		const user: any = await client.users
-			.fetch(ownerId)
-			.catch((): void => {});
+		const user: any = await client.users.fetch(ownerId).catch((): void => {});
 		if (!user) continue;
 		headStaffs.push({
 			username: user.username,
@@ -22,15 +20,10 @@ export async function get(req: Request, res: Response) {
 		});
 	}
 
-	const staffsData: any = await mongoose.connection.db
-		.collection("users")
-		.find({ "staff.state": true })
-		.toArray();
+	const staffsData: any = await mongoose.connection.db.collection("users").find({ "staff.state": true }).toArray();
 
 	for (const staffData of staffsData) {
-		const user: any = await client.users
-			.fetch(staffData.id)
-			.catch(() => {});
+		const user: any = await client.users.fetch(staffData.id).catch(() => {});
 		if (!user) continue;
 		if (headStaffs.find((s: any): boolean => s.id === user.id)) continue;
 		const staffToPush: any = {

@@ -15,35 +15,17 @@ export default class Loader {
 
 		const directories: string[] = await readdir("./build/commands/");
 		for (const directory of directories) {
-			const commands: string[] = await readdir(
-				"./build/commands/" + directory + "/"
-			);
+			const commands: string[] = await readdir("./build/commands/" + directory + "/");
 			for (const command of commands) {
 				if (path.extname(command) !== ".js") continue;
-				const response = await client.loadCommand(
-					"../commands/" + directory,
-					command
-				);
+				const response = await client.loadCommand("../commands/" + directory, command);
 				if (response) {
 					failed++;
-					client.logger.error(
-						"Couldn't load command " +
-							command +
-							": " +
-							response.stack
-					);
+					client.logger.error("Couldn't load command " + command + ": " + response.stack);
 				} else success++;
 			}
 		}
-		client.logger.log(
-			"Loaded " +
-				(success + failed) +
-				" commands. Success (" +
-				success +
-				") Failed (" +
-				failed +
-				")"
-		);
+		client.logger.log("Loaded " + (success + failed) + " commands. Success (" + success + ") Failed (" + failed + ")");
 	}
 
 	static async loadEvents(client: BaseClient): Promise<void> {
@@ -60,9 +42,7 @@ export default class Loader {
 				// @ts-ignore - Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'typeof Events'
 				if (!Events[eventName]) Events[eventName] = eventName;
 				// @ts-ignore - Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'typeof Events'
-				client.on(Events[eventName], (...args) =>
-					event.dispatch(...args)
-				);
+				client.on(Events[eventName], (...args) => event.dispatch(...args));
 				success++;
 				delete require.cache[require.resolve(filePath)];
 			} catch (e: any) {
@@ -70,15 +50,7 @@ export default class Loader {
 				client.logger.error("Couldn't load event " + file + ": " + e);
 			}
 		}
-		client.logger.log(
-			"Loaded " +
-				(success + failed) +
-				" events. Success (" +
-				success +
-				") Failed (" +
-				failed +
-				")"
-		);
+		client.logger.log("Loaded " + (success + failed) + " events. Success (" + success + ") Failed (" + failed + ")");
 	}
 
 	static async loadContexts(client: BaseClient): Promise<void> {
@@ -92,23 +64,17 @@ export default class Loader {
 		for (const context of directory) {
 			if (path.extname(context) !== ".js") continue;
 			try {
-				const props = new (
-					await import("@contexts/" + context)
-				).default(client);
+				const props = new (await import("@contexts/" + context)).default(client);
 				if (props.init) {
 					props.init(client);
 				}
 				client.contextMenus.set(props.help.name, props);
-				if (props.help.type === ApplicationCommandType.User)
-					userContexts++;
-				else if (props.help.type === ApplicationCommandType.Message)
-					messageContexts++;
+				if (props.help.type === ApplicationCommandType.User) userContexts++;
+				else if (props.help.type === ApplicationCommandType.Message) messageContexts++;
 				success++;
 			} catch (e: any) {
 				failed++;
-				client.logger.error(
-					"Couldn't load context menu " + context + ": " + e
-				);
+				client.logger.error("Couldn't load context menu " + context + ": " + e);
 			}
 		}
 		client.logger.log(

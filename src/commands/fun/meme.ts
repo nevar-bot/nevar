@@ -28,30 +28,18 @@ export default class MemeCommand extends BaseCommand {
 		const self = this;
 
 		let memes: any = (
-			await axios.get(
-				"https://www.reddit.com/r/ich_iel/top.json?sort=top&t=day&limit=1000",
-				{
-					validateStatus: (status: number): boolean => true
-				}
-			)
+			await axios.get("https://www.reddit.com/r/ich_iel/top.json?sort=top&t=day&limit=1000", {
+				validateStatus: (status: number): boolean => true
+			})
 		).data.data.children;
 		memes = [...this.client.utils.shuffleArray(memes)];
 
 		const reloadId: string = member.user.id + "_reload";
-		const reloadButton: ButtonBuilder = this.client.createButton(
-			reloadId,
-			"Neu laden",
-			"Secondary",
-			"loading"
-		);
+		const reloadButton: ButtonBuilder = this.client.createButton(reloadId, "Neu laden", "Secondary", "loading");
 
 		function generateMemeEmbed(): EmbedBuilder {
 			const meme = memes[Math.floor(Math.random() * memes.length)];
-			const memeEmbed: EmbedBuilder = self.client.createEmbed(
-				null,
-				null,
-				"normal"
-			);
+			const memeEmbed: EmbedBuilder = self.client.createEmbed(null, null, "normal");
 			memeEmbed.setImage(meme.data.url);
 			memeEmbed.setTitle(meme.data.title);
 			memeEmbed.setFooter({
@@ -72,9 +60,7 @@ export default class MemeCommand extends BaseCommand {
 		collector.on("collect", async (interaction: any): Promise<void> => {
 			await interaction.update({
 				embeds: [generateMemeEmbed()],
-				components: [
-					this.client.createMessageComponentsRow(reloadButton)
-				]
+				components: [this.client.createMessageComponentsRow(reloadButton)]
 			});
 		});
 	}

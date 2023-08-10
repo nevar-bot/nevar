@@ -1,7 +1,7 @@
 {
   "mode": {
     "selectMenuDescription": "Wähle einen Verhaltensmodus",
-    "selectMenuItem": "Setze den Verhaltensmodus auf {{mode.name}}",
+    "selectMenuItem": "Die KI verhält sich {{mode.name}}",
     "chooseEmbedDescription": "Wähle aus den folgenden Verhaltensmodi.",
     "set": "Der Verhaltensmodus wurde auf {{mode}} gesetzt."
   },

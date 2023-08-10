@@ -27,20 +27,14 @@ export default class LeaderboardCommand extends BaseCommand {
 		const leaderboardData: any[] = [
 			...(await this.client.levels.computeLeaderboard(
 				this.client,
-				await this.client.levels.fetchLeaderboard(
-					this.interaction.guild.id,
-					10
-				),
+				await this.client.levels.fetchLeaderboard(this.interaction.guild.id, 10),
 				true
 			))
 		];
 
 		const beautifiedLeaderboard: any[] = [];
 		for (let user of leaderboardData) {
-			const emote: any =
-				user.position < 4
-					? this.client.emotes[user.position]
-					: this.client.emotes.arrow;
+			const emote: any = user.position < 4 ? this.client.emotes[user.position] : this.client.emotes.arrow;
 			beautifiedLeaderboard.push(
 				"### " +
 					emote +
@@ -55,17 +49,11 @@ export default class LeaderboardCommand extends BaseCommand {
 					" " +
 					this.client.format(user.xp) +
 					" / " +
-					this.client.format(
-						this.client.levels.xpFor(user.level + 1)
-					) +
+					this.client.format(this.client.levels.xpFor(user.level + 1)) +
 					" XP"
 			);
 		}
-		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(
-			beautifiedLeaderboard.join("\n\n"),
-			null,
-			"normal"
-		);
+		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(beautifiedLeaderboard.join("\n\n"), null, "normal");
 		leaderboardEmbed.setThumbnail(this.interaction.guild.iconURL());
 		return this.interaction.followUp({ embeds: [leaderboardEmbed] });
 	}

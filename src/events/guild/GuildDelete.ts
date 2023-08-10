@@ -16,25 +16,15 @@ export default class {
 		this.client.invites.delete(guild.id);
 
 		/* Support log message */
-		const supportGuild: any = this.client.guilds.cache.get(
-			this.client.config.support["ID"]
-		);
+		const supportGuild: any = this.client.guilds.cache.get(this.client.config.support["ID"]);
 		if (!supportGuild) return;
 
-		const supportLogChannel: any = supportGuild.channels.cache.get(
-			this.client.config.support["BOT_LOG"]
-		);
+		const supportLogChannel: any = supportGuild.channels.cache.get(this.client.config.support["BOT_LOG"]);
 		if (!supportLogChannel) return;
 
-		const owner: any = await this.client.users
-			.fetch(guild.ownerId)
-			.catch((e: any): void => {});
-		const createdAt: string = moment(guild.createdTimestamp).format(
-			"DD.MM.YYYY, HH:mm"
-		);
-		const createdDiff: string = this.client.utils.getRelativeTime(
-			guild.createdTimestamp
-		);
+		const owner: any = await this.client.users.fetch(guild.ownerId).catch((e: any): void => {});
+		const createdAt: string = moment(guild.createdTimestamp).format("DD.MM.YYYY, HH:mm");
+		const createdDiff: string = this.client.utils.getRelativeTime(guild.createdTimestamp);
 
 		const supportGuildLogMessage: string =
 			"Name: **" +
@@ -61,20 +51,10 @@ export default class {
 			createdDiff +
 			"**";
 
-		const supportGuildLogEmbed: EmbedBuilder = this.client.createEmbed(
-			supportGuildLogMessage,
-			"discord",
-			"error"
-		);
-		supportGuildLogEmbed.setTitle(
-			this.client.user!.username + " wurde von einem Server entfernt"
-		);
-		supportGuildLogEmbed.setThumbnail(
-			guild.iconURL({ dynamic: true, size: 512 })
-		);
+		const supportGuildLogEmbed: EmbedBuilder = this.client.createEmbed(supportGuildLogMessage, "discord", "error");
+		supportGuildLogEmbed.setTitle(this.client.user!.username + " wurde von einem Server entfernt");
+		supportGuildLogEmbed.setThumbnail(guild.iconURL({ dynamic: true, size: 512 }));
 
-		await supportLogChannel
-			.send({ embeds: [supportGuildLogEmbed] })
-			.catch((e: any): void => {});
+		await supportLogChannel.send({ embeds: [supportGuildLogEmbed] }).catch((e: any): void => {});
 	}
 }

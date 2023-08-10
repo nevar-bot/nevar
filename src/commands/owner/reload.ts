@@ -25,37 +25,19 @@ export default class ReloadCommand extends BaseCommand {
 
 	private async reloadCommand(cmd: string): Promise<void> {
 		if (!cmd) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst einen Befehl angeben.",
-				"error",
-				"error"
-			);
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst einen Befehl angeben.", "error", "error");
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		const command: any = this.client.commands.get(cmd);
 		if (command) {
-			await this.client.unloadCommand(
-				command.conf.location,
-				command.help.name
-			);
-			await this.client.loadCommand(
-				command.conf.location,
-				command.help.name
-			);
+			await this.client.unloadCommand(command.conf.location, command.help.name);
+			await this.client.loadCommand(command.conf.location, command.help.name);
 
-			const reloadEmbed: EmbedBuilder = this.client.createEmbed(
-				"Der Befehl wurde neugeladen.",
-				"success",
-				"success"
-			);
+			const reloadEmbed: EmbedBuilder = this.client.createEmbed("Der Befehl wurde neugeladen.", "success", "success");
 			return this.message.reply({ embeds: [reloadEmbed] });
 		} else {
-			const invalidCommandEmbed: EmbedBuilder = this.client.createEmbed(
-				"Der Befehl existiert nicht.",
-				"error",
-				"error"
-			);
+			const invalidCommandEmbed: EmbedBuilder = this.client.createEmbed("Der Befehl existiert nicht.", "error", "error");
 			return this.message.reply({ embeds: [invalidCommandEmbed] });
 		}
 	}

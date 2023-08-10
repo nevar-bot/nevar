@@ -8,11 +8,10 @@ export default class AddstickerCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "addsticker",
-			description:
-				"Erstellt einen neuen Sticker anhand eines Links zu einem Bild",
+			description: "Erstellt einen neuen Sticker anhand eines Links zu einem Bild",
 			localizedDescriptions: {
-				"en-GB": "Creates a new sticker from a link to an image",
-				"en-US": "Creates a new sticker from a link to an image"
+				"en-US": "Creates a new sticker from a link to an image",
+				"en-GB": "Creates a new sticker from a link to an image"
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -25,63 +24,41 @@ export default class AddstickerCommand extends BaseCommand {
 						option
 							.setName("url")
 							.setDescription("Gib einen Link zu einem Bild ein")
-							.setDescriptionLocalization(
-								"en-US",
-								"Enter a link to an image"
-							)
-							.setDescriptionLocalization(
-								"en-GB",
-								"Enter a link to an image"
-							)
+							.setDescriptionLocalizations({
+								"en-US": "Enter a link to an image",
+								"en-GB": "Enter a link to an image"
+							})
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("name")
-							.setDescription(
-								"Gib ein, wie der neue Sticker heißen soll"
-							)
-							.setDescriptionLocalization(
-								"en-US",
-								"Enter what you want the new sticker to be called"
-							)
-							.setDescriptionLocalization(
-								"en-GB",
-								"Enter what you want the new sticker to be called"
-							)
+							.setDescription("Gib ein, wie der neue Sticker heißen soll")
+							.setDescriptionLocalizations({
+								"en-US": "Enter what you want the new sticker to be called",
+								"en-GB": "Enter what you want the new sticker to be called"
+							})
 							.setRequired(true)
 							.setMaxLength(32)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("emoji")
-							.setDescription(
-								"Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert"
-							)
-							.setDescriptionLocalization(
-								"en-US",
-								"Enter a standard Discord emoji that represents the sticker"
-							)
-							.setDescriptionLocalization(
-								"en-GB",
-								"Enter a standard Discord emoji that represents the sticker"
-							)
+							.setDescription("Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert")
+							.setDescriptionLocalizations({
+								"en-US": "Enter a standard Discord emoji that represents the sticker",
+								"en-GB": "Enter a standard Discord emoji that represents the sticker"
+							})
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("description")
-							.setDescription(
-								"Gib eine kurze Beschreibung für den Sticker ein"
-							)
-							.setDescriptionLocalization(
-								"en-US",
-								"Enter a short description for the sticker"
-							)
-							.setDescriptionLocalization(
-								"en-GB",
-								"Enter a short description for the sticker"
-							)
+							.setDescription("Gib eine kurze Beschreibung für den Sticker ein")
+							.setDescriptionLocalizations({
+								"en-US": "Enter a short description for the sticker",
+								"en-GB": "Enter a short description for the sticker"
+							})
 							.setRequired(false)
 							.setMaxLength(100)
 					)
@@ -101,12 +78,7 @@ export default class AddstickerCommand extends BaseCommand {
 		);
 	}
 
-	private async addSticker(
-		url: string,
-		name: string,
-		emoji: string,
-		description: string
-	): Promise<void> {
+	private async addSticker(url: string, name: string, emoji: string, description: string): Promise<void> {
 		const sticker: any = {
 			file: undefined,
 			name: undefined,
@@ -117,16 +89,9 @@ export default class AddstickerCommand extends BaseCommand {
 		const { stringIsUrl, urlIsImage, stringIsEmoji } = Utils;
 
 		/* No emoji or link given */
-		if (
-			!stringIsUrl(url) ||
-			!urlIsImage(url) ||
-			!stringIsEmoji(emoji) ||
-			!nodeEmoji.find(emoji)
-		) {
+		if (!stringIsUrl(url) || !urlIsImage(url) || !stringIsEmoji(emoji) || !nodeEmoji.find(emoji)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate(
-					"administration/addsticker:errors:invalidEmojiOrLink"
-				),
+				this.translate("administration/addsticker:errors:invalidEmojiOrLink"),
 				"error",
 				"error"
 			);
@@ -153,9 +118,7 @@ export default class AddstickerCommand extends BaseCommand {
 		} catch (e) {
 			/* Error while creating sticker */
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.interaction.guild.translate(
-					"administration/addsticker:errors:errorWhileCreating"
-				),
+				this.translate("basics:errors:unexpected", { support: this.client.support }),
 				"error",
 				"error"
 			);

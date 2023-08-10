@@ -1,0 +1,17 @@
+{
+  "errors": {
+    "invalidChannelOrTime": "Du musst einen Channel und eine Zeit eingeben.",
+    "invalidChannel": "Du musst einen Channel eingeben.",
+    "alreadySetInChannel": "In {{channel}} ist bereits ein Autodelete eingerichtet.",
+    "notSetInChannel": "In {{channel}} ist kein Autodelete eingerichtet.",
+    "timeLessThanOneSecond": "Die Zeit muss mindestens 1 Sekunde betragen.",
+    "timeMoreThan1Week": "Die Zeit darf höchstens 7 Tage betragen."
+  },
+  "set": "In {{channel}} werden neue Nachrichten absofort automatisch nach {{time}} gelöscht.",
+  "removed": "In {{channel}} werden neue Nachrichten nicht mehr automatisch gelöscht.",
+  "list": {
+    "channel": "Channel",
+    "time": "Zeit",
+    "empty": "Es ist kein Autodelete eingestellt."
+  }
+}

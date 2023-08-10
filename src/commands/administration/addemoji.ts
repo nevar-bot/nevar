@@ -7,13 +7,10 @@ export default class AddemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "addemoji",
-			description:
-				"Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild",
+			description: "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild",
 			localizedDescriptions: {
-				"en-GB":
-					"Creates a new emoji based on a given emoji or a link to an image",
-				"en-US":
-					"Creates a new emoji based on a given emoji or a link to an image"
+				"en-US": "Creates a new emoji based on a given emoji or a link to an image",
+				"en-GB": "Creates a new emoji based on a given emoji or a link to an image"
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -26,33 +23,21 @@ export default class AddemojiCommand extends BaseCommand {
 						option
 							.setRequired(true)
 							.setName("emoji")
-							.setDescription(
-								"Gib einen Emoji oder einen Link zu einem Bild ein"
-							)
-							.setDescriptionLocalization(
-								"en-US",
-								"Enter an emoji or a link to an image"
-							)
-							.setDescriptionLocalization(
-								"en-GB",
-								"Enter an emoji or a link to an image"
-							)
+							.setDescription("Gib einen Emoji oder einen Link zu einem Bild ein")
+							.setDescriptionLocalizations({
+								"en-US": "Enter an emoji or a link to an image",
+								"en-GB": "Enter an emoji or a link to an image"
+							})
 					)
 					.addStringOption((option: any) =>
 						option
 							.setRequired(false)
 							.setName("name")
-							.setDescription(
-								"Gib ein, wie der neue Emoji heißen soll"
-							)
-							.setDescriptionLocalization(
-								"en-US",
-								"Enter what you want the new emoji to be called"
-							)
-							.setDescriptionLocalization(
-								"en-GB",
-								"Enter what you want the new emoji to be called"
-							)
+							.setDescription("Gib ein, wie der neue Emoji heißen soll")
+							.setDescriptionLocalizations({
+								"en-US": "Enter what you want the new emoji to be called",
+								"en-GB": "Enter what you want the new emoji to be called"
+							})
 							.setMaxLength(32)
 					)
 			}
@@ -63,27 +48,17 @@ export default class AddemojiCommand extends BaseCommand {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
 
-		await this.addEmoji(
-			interaction.options.getString("emoji"),
-			interaction.options.getString("name"),
-			interaction.guild
-		);
+		await this.addEmoji(interaction.options.getString("emoji"), interaction.options.getString("name"), interaction.guild);
 	}
 
-	private async addEmoji(
-		emoji: string,
-		name: string,
-		guild: any
-	): Promise<void> {
+	private async addEmoji(emoji: string, name: string, guild: any): Promise<void> {
 		const emote: any = { name: undefined, url: undefined };
 		const { stringIsCustomEmoji, stringIsUrl, urlIsImage } = Utils;
 
 		/* No emoji or link given */
 		if (!stringIsCustomEmoji(emoji) && !stringIsUrl(emoji)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate(
-					"administration/addemoji:errors:invalidEmojiOrLink"
-				),
+				this.translate("administration/addemoji:errors:invalidEmojiOrLink"),
 				"error",
 				"error"
 			);
@@ -93,9 +68,7 @@ export default class AddemojiCommand extends BaseCommand {
 		/* Given link is not an image */
 		if (stringIsUrl(emoji) && !urlIsImage(emoji)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate(
-					"administration/addemoji:errors:invalidLinkExtension"
-				),
+				this.translate("administration/addemoji:errors:invalidLinkExtension"),
 				"error",
 				"error"
 			);
@@ -115,10 +88,7 @@ export default class AddemojiCommand extends BaseCommand {
 		if (stringIsCustomEmoji(emoji)) {
 			const parsedEmoji: any = parseEmoji(emoji);
 			emote.name = name || parsedEmoji.name;
-			emote.url =
-				"https://cdn.discordapp.com/emojis/" +
-				parsedEmoji.id +
-				(parsedEmoji.animated ? ".gif" : ".png");
+			emote.url = "https://cdn.discordapp.com/emojis/" + parsedEmoji.id + (parsedEmoji.animated ? ".gif" : ".png");
 		} else if (stringIsUrl(emoji) && urlIsImage(emoji)) {
 			emote.name = name;
 			emote.url = emoji;
@@ -142,9 +112,7 @@ export default class AddemojiCommand extends BaseCommand {
 		} catch (exception) {
 			/* Error while creating emoji */
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate(
-					"administration/addemoji:errors:errorWhileCreating"
-				),
+				this.translate("basics:errors:unexpected", { support: this.client.support }),
 				"error",
 				"error"
 			);

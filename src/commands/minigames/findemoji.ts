@@ -1,19 +1,13 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import BaseGame from "@structures/BaseGame";
-import {
-	SlashCommandBuilder,
-	ActionRowBuilder,
-	EmbedBuilder,
-	ButtonBuilder
-} from "discord.js";
+import { SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 
 export default class FindemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "findemoji",
-			description:
-				"Du musst dir die Reihenfolge acht verschiedener Emojis merken, und den Richtigen wählen",
+			description: "Du musst dir die Reihenfolge acht verschiedener Emojis merken, und den Richtigen wählen",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -46,19 +40,7 @@ class FindemojiGame extends BaseGame {
 
 	public constructor(options: any = {}) {
 		super(options);
-		this.emojis = [
-			"🍉",
-			"🍇",
-			"🍊",
-			"🍋",
-			"🥭",
-			"🍎",
-			"🍏",
-			"🥝",
-			"🥥",
-			"🍓",
-			"🍒"
-		];
+		this.emojis = ["🍉", "🍇", "🍊", "🍋", "🥭", "🍎", "🍏", "🥝", "🥥", "🍓", "🍒"];
 		this.selected = null;
 		this.emoji = null;
 	}
@@ -67,8 +49,7 @@ class FindemojiGame extends BaseGame {
 		await this.interaction.deferReply().catch((e: any): void => {});
 
 		this.emojis = this.shuffleArray(this.emojis).slice(0, 8);
-		this.emoji =
-			this.emojis[Math.floor(Math.random() * this.emojis.length)];
+		this.emoji = this.emojis[Math.floor(Math.random() * this.emojis.length)];
 
 		const findEmojiEmbed: EmbedBuilder = this.client.createEmbed(
 			"Du hast 5 Sekunden, um dir die Emojis in richtiger Reihenfolge zu merken!",
@@ -83,40 +64,31 @@ class FindemojiGame extends BaseGame {
 		});
 
 		const timeoutCallback: any = async (): Promise<void> => {
-			findEmojiEmbed.setDescription(
-				"Finde den " + this.emoji + " Emoji, bevor die Zeit abläuft"
-			);
+			findEmojiEmbed.setDescription("Finde den " + this.emoji + " Emoji, bevor die Zeit abläuft");
 			await msg.edit({
 				embeds: [findEmojiEmbed],
 				components: this.getComponents(false)
 			});
 			const emojiCollector = msg.createMessageComponentCollector({
-				filter: (btn: any): boolean =>
-					btn.user.id === this.interaction.user.id,
+				filter: (btn: any): boolean => btn.user.id === this.interaction.user.id,
 				idle: 30000
 			});
 
 			emojiCollector.on("collect", async (btn: any): Promise<any> => {
 				await btn.deferUpdate().catch((e: any): void => {});
-				this.selected =
-					this.emojis[parseInt(btn.customId.split("_")[1])];
+				this.selected = this.emojis[parseInt(btn.customId.split("_")[1])];
 				return emojiCollector.stop();
 			});
 
-			emojiCollector.on(
-				"end",
-				async (_: any, reason: any): Promise<any> => {
-					if (reason === "idle" || reason === "user")
-						return this.endGame(msg, reason === "user");
-				}
-			);
+			emojiCollector.on("end", async (_: any, reason: any): Promise<any> => {
+				if (reason === "idle" || reason === "user") return this.endGame(msg, reason === "user");
+			});
 		};
 		setTimeout(timeoutCallback, 5000);
 	}
 
 	private endGame(msg: any, result: any) {
-		const resultMessage: "win" | "lose" =
-			this.selected === this.emoji ? "win" : "lose";
+		const resultMessage: "win" | "lose" = this.selected === this.emoji ? "win" : "lose";
 		if (!result) this.selected = this.emoji;
 
 		let finalMessage: string;
@@ -126,12 +98,7 @@ class FindemojiGame extends BaseGame {
 			finalMessage = "Du hast den falschen Emoji ausgewählt. {0}";
 		}
 
-		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(
-			finalMessage,
-			"arrow",
-			"normal",
-			this.emoji
-		);
+		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(finalMessage, "arrow", "normal", this.emoji);
 		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({
@@ -150,11 +117,7 @@ class FindemojiGame extends BaseGame {
 				const btn: ButtonBuilder = this.client.createButton(
 					"findEmoji_" + (x * 4 + y),
 					"\u200b",
-					buttonEmoji === this.selected
-						? this.selected === this.emoji
-							? "Success"
-							: "Danger"
-						: "Primary",
+					buttonEmoji === this.selected ? (this.selected === this.emoji ? "Success" : "Danger") : "Primary",
 					showEmoji ? buttonEmoji : null
 				);
 				row.addComponents(btn);

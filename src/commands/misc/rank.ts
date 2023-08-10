@@ -13,12 +13,7 @@ export default class RankCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option
-						.setName("mitglied")
-						.setDescription(
-							"Wähle ein Mitglied, dessen Levelcard du sehen möchtest"
-						)
-						.setRequired(false)
+					option.setName("mitglied").setDescription("Wähle ein Mitglied, dessen Levelcard du sehen möchtest").setRequired(false)
 				)
 			}
 		});
@@ -32,26 +27,18 @@ export default class RankCommand extends BaseCommand {
 	}
 
 	private async showRank(): Promise<void> {
-		const user: any =
-			this.interaction.options.getUser("mitglied") ||
-			this.interaction.user;
+		const user: any = this.interaction.options.getUser("mitglied") || this.interaction.user;
 
 		const userData: any = {
 			user: user,
-			level: await this.client.levels.fetch(
-				user.id,
-				this.interaction.guild.id,
-				true
-			)
+			level: await this.client.levels.fetch(user.id, this.interaction.guild.id, true)
 		};
 
 		const rank: any = new canvacord.Rank()
 			// Avatar, status, username and displayname
 			.setUsername(userData.user.username)
 			.setDiscriminator(userData.user.username)
-			.setAvatar(
-				userData.user.displayAvatarURL({ format: "png", size: 512 })
-			)
+			.setAvatar(userData.user.displayAvatarURL({ format: "png", size: 512 }))
 			.setStatus("online", false, false)
 			.renderEmojis(true)
 

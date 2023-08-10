@@ -36,15 +36,11 @@ export default class TopvotersCommand extends BaseCommand {
 
 		let i: number = 0;
 		for (let topVoter of topVoters) {
-			const user: any = await this.client.users
-				.fetch(topVoter.id)
-				.catch((): void => {});
+			const user: any = await this.client.users.fetch(topVoter.id).catch((): void => {});
 			if (user) {
 				i++;
 				voters.push(
-					(i <= 3
-						? this.client.emotes[i]
-						: this.client.emotes.arrow) +
+					(i <= 3 ? this.client.emotes[i] : this.client.emotes.arrow) +
 						" **" +
 						user.username +
 						"** - " +
@@ -54,12 +50,6 @@ export default class TopvotersCommand extends BaseCommand {
 				);
 			}
 		}
-		await this.client.utils.sendPaginatedEmbed(
-			this.interaction,
-			10,
-			voters,
-			"Topvoter",
-			"Es gibt noch keine Topvoter"
-		);
+		await this.client.utils.sendPaginatedEmbed(this.interaction, 10, voters, "Topvoter", "Es gibt noch keine Topvoter");
 	}
 }

@@ -22,23 +22,10 @@ export default class {
 
 		const afkSinceString: string = this.client.utils.getRelativeTime(since);
 
-		const backText: string =
-			"Du warst **" +
-			afkSinceString +
-			"** abwesend: " +
-			(afkReason || "Kein Grund angegeben");
+		const backText: string = "Du warst **" + afkSinceString + "** abwesend: " + (afkReason || "Kein Grund angegeben");
 
-		const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0}",
-			"reminder",
-			"normal",
-			backText
-		);
-		welcomeBackEmbed.setTitle(
-			this.client.emotes.shine2 + " Willkommen zurück!"
-		);
-		return message
-			.reply({ embeds: [welcomeBackEmbed] })
-			.catch((): void => {});
+		const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed("{0}", "reminder", "normal", backText);
+		welcomeBackEmbed.setTitle(this.client.emotes.shine2 + " Willkommen zurück!");
+		return message.reply({ embeds: [welcomeBackEmbed] }).catch((): void => {});
 	}
 }

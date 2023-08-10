@@ -28,11 +28,7 @@ export default class {
 
 		/* Initialize giveaways manager */
 		client.logger.log("Initializing giveaways manager...");
-		await client.giveawayManager
-			._init()
-			.then((_: any): void =>
-				client.logger.success("Initialized giveaways manager")
-			);
+		await client.giveawayManager._init().then((_: any): void => client.logger.success("Initialized giveaways manager"));
 
 		/* Update interactions every day at 00:00 */
 		scheduleJob("0 0 * * *", async (): Promise<void> => {
@@ -53,50 +49,22 @@ export default class {
 		/* Support server stats channels */
 		if (config.support["ID"]) {
 			setInterval(() => {
-				const supportGuild: Guild = client.guilds.cache.get(
-					config.support["ID"]
-				);
+				const supportGuild: Guild = client.guilds.cache.get(config.support["ID"]);
 				let serverChannel: any, voteChannel: any, userChannel: any;
-				if (config.channels["SERVER_COUNT_ID"])
-					serverChannel = supportGuild.channels.cache.get(
-						config.channels["SERVER_COUNT_ID"]
-					);
-				if (config.channels["VOTE_COUNT_ID"])
-					voteChannel = supportGuild.channels.cache.get(
-						config.channels["VOTE_COUNT_ID"]
-					);
-				if (config.channels["USER_COUNT_ID"])
-					userChannel = supportGuild.channels.cache.get(
-						config.channels["USER_COUNT_ID"]
-					);
+				if (config.channels["SERVER_COUNT_ID"]) serverChannel = supportGuild.channels.cache.get(config.channels["SERVER_COUNT_ID"]);
+				if (config.channels["VOTE_COUNT_ID"]) voteChannel = supportGuild.channels.cache.get(config.channels["VOTE_COUNT_ID"]);
+				if (config.channels["USER_COUNT_ID"]) userChannel = supportGuild.channels.cache.get(config.channels["USER_COUNT_ID"]);
 
-				if (serverChannel)
-					serverChannel.setName(
-						config.channels["SERVER_COUNT_NAME"].replace(
-							"{count}",
-							client.guilds.cache.size
-						)
-					);
+				if (serverChannel) serverChannel.setName(config.channels["SERVER_COUNT_NAME"].replace("{count}", client.guilds.cache.size));
 				if (userChannel)
 					userChannel.setName(
 						config.channels["USER_COUNT_NAME"].replace(
 							"{count}",
-							client.format(
-								client.guilds.cache.reduce(
-									(sum: any, guild: any) =>
-										sum +
-										(guild.available
-											? guild.memberCount
-											: 0),
-									0
-								)
-							)
+							client.format(client.guilds.cache.reduce((sum: any, guild: any) => sum + (guild.available ? guild.memberCount : 0), 0))
 						)
 					);
 
-				let votes: any = JSON.parse(
-					fs.readFileSync("./assets/votes.json").toString()
-				);
+				let votes: any = JSON.parse(fs.readFileSync("./assets/votes.json").toString());
 
 				const date: Date = new Date();
 				let month: string = date.toLocaleString("de-DE", {
@@ -109,12 +77,7 @@ export default class {
 				if (voteChannel) {
 					voteChannel.setName(
 						config.channels["VOTE_COUNT_NAME"]
-							.replace(
-								"{count}",
-								client.format(
-									votes[voteMonth.toLowerCase()] || 0
-								)
-							)
+							.replace("{count}", client.format(votes[voteMonth.toLowerCase()] || 0))
 							.replace("{month}", month)
 					);
 				}
@@ -126,27 +89,13 @@ export default class {
 			guild.invites
 				.fetch()
 				.then((invites: Collection<string, Invite>) => {
-					client.invites.set(
-						guild.id,
-						new Collection(
-							invites.map((invite: Invite) => [
-								invite.code,
-								invite.uses
-							])
-						)
-					);
+					client.invites.set(guild.id, new Collection(invites.map((invite: Invite) => [invite.code, invite.uses])));
 				})
 				.catch((): void => {});
 		});
 
 		client.logger.log("Loaded " + client.guilds.cache.size + " guilds");
-		client.logger.success(
-			"Logged in as " +
-				client.user.displayName +
-				" (@" +
-				client.user.username +
-				")"
-		);
+		client.logger.success("Logged in as " + client.user.displayName + " (@" + client.user.username + ")");
 
 		/* Register interactions, if bot is running on development mode */
 		if (process.argv.slice(2)[0] === "--dev") {

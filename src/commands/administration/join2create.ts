@@ -15,18 +15,12 @@ export default class Join2CreateCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addChannelOption((option) =>
-						option
-							.setName("channel")
-							.setDescription("Wähle einen Channel")
-							.setRequired(true)
-							.addChannelTypes(ChannelType.GuildVoice)
+						option.setName("channel").setDescription("Wähle einen Channel").setRequired(true).addChannelTypes(ChannelType.GuildVoice)
 					)
 					.addIntegerOption((option) =>
 						option
 							.setName("limit")
-							.setDescription(
-								"Wähle, wieviele Leute maximal in einem Channel sein dürfen (0 = unbegrenzt)"
-							)
+							.setDescription("Wähle, wieviele Leute maximal in einem Channel sein dürfen (0 = unbegrenzt)")
 							.setMinValue(0)
 							.setMaxValue(99)
 							.setRequired(true)
@@ -34,9 +28,7 @@ export default class Join2CreateCommand extends BaseCommand {
 					.addIntegerOption((option) =>
 						option
 							.setName("bitrate")
-							.setDescription(
-								"Wähle die Bitrate (8 - 96kbps, Standard: 64kbps)"
-							)
+							.setDescription("Wähle die Bitrate (8 - 96kbps, Standard: 64kbps)")
 							.setRequired(true)
 							.setMinValue(8)
 							.setMaxValue(96)
@@ -44,18 +36,14 @@ export default class Join2CreateCommand extends BaseCommand {
 					.addStringOption((option) =>
 						option
 							.setName("name")
-							.setDescription(
-								"Setze den Standard-Namen für die Channel (Variablen: {count} und {user})"
-							)
+							.setDescription("Setze den Standard-Namen für die Channel (Variablen: {count} und {user})")
 							.setRequired(true)
 							.setMaxLength(100)
 					)
 					.addChannelOption((option) =>
 						option
 							.setName("kategorie")
-							.setDescription(
-								"Wähle, in welcher Kategorie die Channel erstellt werden"
-							)
+							.setDescription("Wähle, in welcher Kategorie die Channel erstellt werden")
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildCategory)
 					)
@@ -77,14 +65,7 @@ export default class Join2CreateCommand extends BaseCommand {
 		);
 	}
 
-	private async setJoinToCreate(
-		channel: any,
-		userlimit: number,
-		bitrate: number,
-		name: string,
-		category: any,
-		data: any
-	): Promise<void> {
+	private async setJoinToCreate(channel: any, userlimit: number, bitrate: number, name: string, category: any, data: any): Promise<void> {
 		data.guild.settings.joinToCreate = {
 			enabled: true,
 			channel: channel.id,
@@ -97,11 +78,7 @@ export default class Join2CreateCommand extends BaseCommand {
 		data.guild.markModified("settings.joinToCreate");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"Join2Create wurde eingerichtet.",
-			"success",
-			"success"
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed("Join2Create wurde eingerichtet.", "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

@@ -12,10 +12,7 @@ export default class AvatarCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option) =>
-					option
-						.setName("mitglied")
-						.setDescription("Wähle ein Mitglied")
-						.setRequired(false)
+					option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(false)
 				)
 			}
 		});

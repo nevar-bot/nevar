@@ -13,10 +13,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addRoleOption((option: any) =>
-					option
-						.setName("rolle")
-						.setDescription("Wähle eine Rolle")
-						.setRequired(true)
+					option.setName("rolle").setDescription("Wähle eine Rolle").setRequired(true)
 				)
 			}
 		});
@@ -32,11 +29,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 	private async setMuteRole(role: any, data: any): Promise<void> {
 		/* Invalid options */
 		if (!role || !role.id) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst eine Rolle angeben.",
-				"error",
-				"error"
-			);
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst eine Rolle angeben.", "error", "error");
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -61,10 +54,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 		}
 
 		/* Role is higher than the bot's highest role */
-		if (
-			this.interaction.guild.members.me.roles.highest.position <=
-			role.position
-		) {
+		if (this.interaction.guild.members.me.roles.highest.position <= role.position) {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
 				"Da {0} eine höhere oder gleiche Position wie meine höchste Rolle ({1}) hat, kann sie nicht als Mute-Rolle gesetzt werden.",
 				"error",
@@ -77,13 +67,12 @@ export default class SetmuteroleCommand extends BaseCommand {
 
 		/* Role is already the mute role */
 		if (data.guild.settings.muterole === role.id) {
-			const roleIsAlreadyMuteRoleEmbed: EmbedBuilder =
-				this.client.createEmbed(
-					"{0} ist bereits die Mute-Rolle.",
-					"error",
-					"error",
-					role.toString()
-				);
+			const roleIsAlreadyMuteRoleEmbed: EmbedBuilder = this.client.createEmbed(
+				"{0} ist bereits die Mute-Rolle.",
+				"error",
+				"error",
+				role.toString()
+			);
 			return this.interaction.followUp({
 				embeds: [roleIsAlreadyMuteRoleEmbed]
 			});
@@ -94,12 +83,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 		data.guild.markModified("settings.muterole");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0} wurde als Mute-Rolle gesetzt.",
-			"success",
-			"success",
-			role.toString()
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde als Mute-Rolle gesetzt.", "success", "success", role.toString());
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

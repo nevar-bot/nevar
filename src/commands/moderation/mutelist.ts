@@ -31,9 +31,7 @@ export default class MutelistCommand extends BaseCommand {
 		for (let memberData of this.client.databaseCache.mutedUsers) {
 			if (memberData[1].guildID === this.interaction.guild.id) {
 				const victimData: any = memberData[1];
-				const member: any = await this.interaction.guild.resolveMember(
-					victimData.id
-				);
+				const member: any = await this.interaction.guild.resolveMember(victimData.id);
 				const text: string =
 					member.user.username +
 					"\n" +
@@ -47,21 +45,15 @@ export default class MutelistCommand extends BaseCommand {
 					"\n" +
 					this.client.emotes.arrow +
 					"Dauer: " +
-					this.client.utils.getRelativeTime(
-						Date.now() - victimData.muted.duration
-					) +
+					this.client.utils.getRelativeTime(Date.now() - victimData.muted.duration) +
 					"\n" +
 					this.client.emotes.arrow +
 					"Gemutet am: " +
-					moment(victimData.muted.mutedAt).format(
-						"DD.MM.YYYY, HH:mm"
-					) +
+					moment(victimData.muted.mutedAt).format("DD.MM.YYYY, HH:mm") +
 					"\n" +
 					this.client.emotes.arrow +
 					"Gemutet bis: " +
-					moment(victimData.muted.mutedUntil).format(
-						"DD.MM.YYYY, HH:mm"
-					) +
+					moment(victimData.muted.mutedUntil).format("DD.MM.YYYY, HH:mm") +
 					"\n";
 				mutedUsers.push(text);
 			}

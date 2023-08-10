@@ -27,77 +27,36 @@ export default class StatsCommand extends BaseCommand {
 	}
 
 	private async sendStats(): Promise<void> {
-		const staffsdata: any = await (
-			await mongoose.connection.db.collection("users")
-		)
-			.find({ "staff.state": true })
-			.toArray();
+		const staffsdata: any = await (await mongoose.connection.db.collection("users")).find({ "staff.state": true }).toArray();
 		const head_staffs: any[] = [];
 		const staffs: any[] = [];
 
 		for (let ownerId of this.client.config.general["OWNER_IDS"]) {
-			const headStaff: any = await this.client.users
-				.fetch(ownerId)
-				.catch((): void => {});
-			head_staffs.push(
-				"**" +
-					headStaff.displayName +
-					"** (@" +
-					headStaff.username +
-					")"
-			);
+			const headStaff: any = await this.client.users.fetch(ownerId).catch((): void => {});
+			head_staffs.push("**" + headStaff.displayName + "** (@" + headStaff.username + ")");
 		}
 
 		for (let userdata of staffsdata) {
-			const user: any = await this.client.users
-				.fetch(userdata.id)
-				.catch(() => {});
+			const user: any = await this.client.users.fetch(userdata.id).catch(() => {});
 			if (userdata.staff.role === "head-staff") {
-				if (
-					!head_staffs.includes(
-						"**" + user.displayName + "** (@" + user.username + ")"
-					)
-				)
-					head_staffs.push(
-						"**" + user.displayName + "** (@" + user.username + ")"
-					);
+				if (!head_staffs.includes("**" + user.displayName + "** (@" + user.username + ")"))
+					head_staffs.push("**" + user.displayName + "** (@" + user.username + ")");
 			} else if (userdata.staff.role === "staff") {
 				if (
-					!head_staffs.includes(
-						"**" + user.displayName + "** (@" + user.username + ")"
-					) &&
-					!staffs.includes(
-						"**" + user.displayName + "** (@" + user.username + ")"
-					)
+					!head_staffs.includes("**" + user.displayName + "** (@" + user.username + ")") &&
+					!staffs.includes("**" + user.displayName + "** (@" + user.username + ")")
 				)
-					staffs.push(
-						"**" + user.displayName + "** (@" + user.username + ")"
-					);
+					staffs.push("**" + user.displayName + "** (@" + user.username + ")");
 			}
 		}
 
-		const uptime: any = this.client.utils.getRelativeTime(
-			Date.now() - (this.client.uptime as number)
-		);
+		const uptime: any = this.client.utils.getRelativeTime(Date.now() - (this.client.uptime as number));
 		const serverCount: number = this.client.guilds.cache.size;
-		const voteCount =
-			JSON.parse(fs.readFileSync("./assets/votes.json").toString())[
-				moment().format("MMMM").toLowerCase()
-			] || 0;
-		const userCount: number = this.client.guilds.cache.reduce(
-			(sum: number, guild: any) =>
-				sum + (guild.available ? guild.memberCount : 0),
-			0
-		);
+		const voteCount = JSON.parse(fs.readFileSync("./assets/votes.json").toString())[moment().format("MMMM").toLowerCase()] || 0;
+		const userCount: number = this.client.guilds.cache.reduce((sum: number, guild: any) => sum + (guild.available ? guild.memberCount : 0), 0);
 		const channelCount: number = this.client.channels.cache.size;
-		const commandCount: number = this.client.commands.filter(
-			(cmd) => !cmd.conf.ownerOnly && !cmd.conf.staffOnly
-		).size;
-		const executedCommands: number = (
-			await (
-				await mongoose.connection.db.collection("logs").find({})
-			).toArray()
-		).length;
+		const commandCount: number = this.client.commands.filter((cmd) => !cmd.conf.ownerOnly && !cmd.conf.staffOnly).size;
+		const executedCommands: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).length;
 		const packageJson: any = require("@root/package.json");
 		const botVersion: any = packageJson.version;
 		const nodeVer: string = process.version.replace("v", "");
@@ -167,11 +126,7 @@ export default class StatsCommand extends BaseCommand {
 			nodeVer +
 			"**";
 
-		const statsEmbed: EmbedBuilder = this.client.createEmbed(
-			text,
-			null,
-			"normal"
-		);
+		const statsEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		statsEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 		statsEmbed.setTitle("Statistiken zu " + this.client.user!.username);
 

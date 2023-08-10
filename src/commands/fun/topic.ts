@@ -25,9 +25,7 @@ export default class TopicCommand extends BaseCommand {
 	}
 
 	private async getTopic(): Promise<void> {
-		const json = JSON.parse(
-			String(fs.readFileSync("./assets/topics.json"))
-		);
+		const json = JSON.parse(String(fs.readFileSync("./assets/topics.json")));
 		const topics: any[] = Object.values(json);
 
 		return this.interaction.followUp({

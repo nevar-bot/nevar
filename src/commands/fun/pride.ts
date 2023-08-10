@@ -1,10 +1,6 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
-import {
-	SlashCommandBuilder,
-	AttachmentBuilder,
-	EmbedBuilder
-} from "discord.js";
+import { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } from "discord.js";
 import axios from "axios";
 import Jimp from "jimp";
 
@@ -18,10 +14,7 @@ export default class PrideCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option
-						.setName("nutzer")
-						.setDescription("Wähle ein Mitglied")
-						.setRequired(false)
+					option.setName("nutzer").setDescription("Wähle ein Mitglied").setRequired(false)
 				)
 			}
 		});
@@ -32,8 +25,7 @@ export default class PrideCommand extends BaseCommand {
 		this.interaction = interaction;
 
 		let user: any = interaction.member.user;
-		if (interaction.options.getUser("nutzer"))
-			user = interaction.options.getUser("nutzer");
+		if (interaction.options.getUser("nutzer")) user = interaction.options.getUser("nutzer");
 
 		return await this.getPrideAvatar(user);
 	}
@@ -84,18 +76,11 @@ export default class PrideCommand extends BaseCommand {
 		image.composite(rainbowImage, 0, 0);
 
 		const editedBuffer: Buffer = await image.getBufferAsync(Jimp.MIME_PNG);
-		const attachment: AttachmentBuilder = new AttachmentBuilder(
-			editedBuffer,
-			{
-				name: "pride.png"
-			}
-		);
+		const attachment: AttachmentBuilder = new AttachmentBuilder(editedBuffer, {
+			name: "pride.png"
+		});
 
-		const prideAvatarEmbed: EmbedBuilder = this.client.createEmbed(
-			"",
-			"",
-			"normal"
-		);
+		const prideAvatarEmbed: EmbedBuilder = this.client.createEmbed("", "", "normal");
 		prideAvatarEmbed.setTitle("Pride-Avatar von " + user.username);
 		prideAvatarEmbed.setImage("attachment://pride.png");
 

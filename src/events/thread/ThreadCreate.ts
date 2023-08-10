@@ -25,33 +25,18 @@ export default class {
 			" Typ: " +
 			this.client.channelTypes[thread.type];
 
-		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent["ThreadCreate"], limit: 1 })
-			.catch((e: any): void => {});
+		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["ThreadCreate"], limit: 1 }).catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
 			if (auditLogEntry) {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					threadLogMessage +=
-						"\n\n" +
-						this.client.emotes.user +
-						" Nutzer: " +
-						"**" +
-						moderator.displayName +
-						"** (@" +
-						moderator.username +
-						")";
+						"\n\n" + this.client.emotes.user + " Nutzer: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
-		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(
-			threadLogMessage,
-			null,
-			"success"
-		);
-		threadLogEmbed.setTitle(
-			this.client.emotes.events.thread.create + " Thread erstellt"
-		);
+		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(threadLogMessage, null, "success");
+		threadLogEmbed.setTitle(this.client.emotes.events.thread.create + " Thread erstellt");
 		threadLogEmbed.setThumbnail(guild.iconURL());
 
 		await guild.logAction(threadLogEmbed, "thread");

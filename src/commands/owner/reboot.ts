@@ -24,11 +24,7 @@ export default class RebootCommand extends BaseCommand {
 	}
 
 	private async reboot(): Promise<void> {
-		const rebootEmbed: EmbedBuilder = this.client.createEmbed(
-			"Der Bot wird neu gestartet...",
-			"warning",
-			"warning"
-		);
+		const rebootEmbed: EmbedBuilder = this.client.createEmbed("Der Bot wird neu gestartet...", "warning", "warning");
 		await this.message.reply({ embeds: [rebootEmbed] });
 		process.exit(1);
 	}

@@ -1,12 +1,7 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import BaseGame from "@structures/BaseGame";
-import {
-	SlashCommandBuilder,
-	ActionRowBuilder,
-	EmbedBuilder,
-	ButtonBuilder
-} from "discord.js";
+import { SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 
 export default class HangmanCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -147,10 +142,7 @@ class HangmanGame extends BaseGame {
 			boots: "👞👞"
 		};
 
-		options.theme =
-			Object.keys(words)[
-				Math.floor(Math.random() * Object.keys(words).length)
-			];
+		options.theme = Object.keys(words)[Math.floor(Math.random() * Object.keys(words).length)];
 
 		this.hangman = options.hangman;
 		this.word = words[Math.floor(Math.random() * words.length)];
@@ -209,18 +201,8 @@ class HangmanGame extends BaseGame {
 		await this.interaction.deferReply().catch(() => {});
 
 		const description: string =
-			this.getBoardContent() +
-			"\n" +
-			this.client.emotes.arrow +
-			" **Wort (" +
-			this.word.length +
-			" Buchstaben)**\n" +
-			this.getWordEmojis();
-		const hangmanEmbed: EmbedBuilder = this.client.createEmbed(
-			description,
-			null,
-			"normal"
-		);
+			this.getBoardContent() + "\n" + this.client.emotes.arrow + " **Wort (" + this.word.length + " Buchstaben)**\n" + this.getWordEmojis();
+		const hangmanEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
 		hangmanEmbed.setTitle("Hangman");
 		hangmanEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
@@ -233,8 +215,7 @@ class HangmanGame extends BaseGame {
 
 	private handleButtons(msg: any): void {
 		const hangmanCollector: any = msg.createMessageComponentCollector({
-			filter: (btn: any): boolean =>
-				btn.user.id === this.interaction.user.id
+			filter: (btn: any): boolean => btn.user.id === this.interaction.user.id
 		});
 
 		hangmanCollector.on("collect", async (btn: any): Promise<any> => {
@@ -250,8 +231,7 @@ class HangmanGame extends BaseGame {
 			this.guessed.push(guess);
 
 			if (!this.word.toUpperCase().includes(guess)) this.damage += 1;
-			if (this.damage > 4 || this.foundWord())
-				return hangmanCollector.stop();
+			if (this.damage > 4 || this.foundWord()) return hangmanCollector.stop();
 
 			const description: string =
 				this.getBoardContent() +
@@ -268,11 +248,7 @@ class HangmanGame extends BaseGame {
 				" Buchstaben)**\n" +
 				this.getWordEmojis();
 
-			const hangmanEmbed: EmbedBuilder = this.client.createEmbed(
-				description,
-				null,
-				"normal"
-			);
+			const hangmanEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
 			hangmanEmbed.setTitle("Hangman");
 			hangmanEmbed.setThumbnail(this.client.user!.displayAvatarURL({}));
 
@@ -283,8 +259,7 @@ class HangmanGame extends BaseGame {
 		});
 
 		hangmanCollector.on("end", (_: any, reason: any) => {
-			if (reason === "idle" || reason === "user")
-				return this.endGame(msg, this.foundWord());
+			if (reason === "idle" || reason === "user") return this.endGame(msg, this.foundWord());
 		});
 	}
 
@@ -297,23 +272,14 @@ class HangmanGame extends BaseGame {
 			this.getBoardContent() +
 			"\n" +
 			(this.guessed.length
-				? this.client.emotes.question +
-				  " **Geratene Buchstaben**\n" +
-				  this.client.emotes.arrow +
-				  " " +
-				  this.guessed.join(", ") +
-				  "\n\n"
+				? this.client.emotes.question + " **Geratene Buchstaben**\n" + this.client.emotes.arrow + " " + this.guessed.join(", ") + "\n\n"
 				: "") +
 			this.client.emotes.arrow +
 			" " +
 			GameOverMessage.replace("{word}", this.word);
 		this.getWordEmojis();
 
-		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(
-			description,
-			null,
-			"normal"
-		);
+		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
 		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 		gameOverEmbed.setTitle("Hangman");
 
@@ -332,13 +298,7 @@ class HangmanGame extends BaseGame {
 		return this.word
 			.toUpperCase()
 			.split("")
-			.map((l: string): boolean =>
-				this.guessed.includes(l)
-					? this.getAlphaEmoji(l)
-					: l === " "
-					? "⬜"
-					: this.client.emotes.question
-			)
+			.map((l: string): boolean => (this.guessed.includes(l) ? this.getAlphaEmoji(l) : l === " " ? "⬜" : this.client.emotes.question))
 			.join(" ");
 	}
 
@@ -366,33 +326,15 @@ class HangmanGame extends BaseGame {
 		}
 
 		const row4: ActionRowBuilder = new ActionRowBuilder();
-		const stop: ButtonBuilder = this.client.createButton(
-			"hangman_stop",
-			"Stop",
-			"Danger"
-		);
+		const stop: ButtonBuilder = this.client.createButton("hangman_stop", "Stop", "Danger");
 		const pageBtn: ButtonBuilder = this.client.createButton(
 			pageID,
 			null,
 			"Secondary",
-			this.buttonPage
-				? this.client.emotes.arrows.left
-				: this.client.emotes.arrows.right
+			this.buttonPage ? this.client.emotes.arrows.left : this.client.emotes.arrows.right
 		);
-		const letterY: ButtonBuilder = this.client.createButton(
-			"hangman_Y",
-			"Y",
-			"Primary",
-			null,
-			this.guessed.includes("Y")
-		);
-		const letterZ: ButtonBuilder = this.client.createButton(
-			"hangman_Z",
-			"Z",
-			"Primary",
-			null,
-			this.guessed.includes("Z")
-		);
+		const letterY: ButtonBuilder = this.client.createButton("hangman_Y", "Y", "Primary", null, this.guessed.includes("Y"));
+		const letterZ: ButtonBuilder = this.client.createButton("hangman_Z", "Z", "Primary", null, this.guessed.includes("Z"));
 		row4.addComponents(pageBtn, stop);
 		if (this.buttonPage) row4.addComponents(letterY, letterZ);
 

@@ -12,18 +12,9 @@ class MongooseGiveaways extends GiveawaysManager {
 					embedColor: client.config.embeds["DEFAULT_COLOR"],
 					embedColorEnd: client.config.embeds["WARNING_COLOR"],
 					buttons: {
-						join: client.createButton(
-							"join",
-							null,
-							"Primary",
-							"tada"
-						),
-						joinReply:
-							client.emotes.join +
-							" Du hast am Gewinnspiel teilgenommen",
-						leaveReply:
-							client.emotes.leave +
-							" Du nimmst nicht mehr am Gewinnspiel teil"
+						join: client.createButton("join", null, "Primary", "tada"),
+						joinReply: client.emotes.join + " Du hast am Gewinnspiel teilgenommen",
+						leaveReply: client.emotes.leave + " Du nimmst nicht mehr am Gewinnspiel teil"
 					}
 				}
 			},
@@ -35,18 +26,12 @@ class MongooseGiveaways extends GiveawaysManager {
 		return await Model.find().lean().exec();
 	}
 
-	async saveGiveaway(
-		messageId: string,
-		giveawayData: GiveawayData
-	): Promise<boolean> {
+	async saveGiveaway(messageId: string, giveawayData: GiveawayData): Promise<boolean> {
 		await Model.create(giveawayData);
 		return true;
 	}
 
-	async editGiveaway(
-		messageId: string,
-		giveawayData: GiveawayData
-	): Promise<boolean> {
+	async editGiveaway(messageId: string, giveawayData: GiveawayData): Promise<boolean> {
 		await Model.updateOne({ messageId }, giveawayData, {
 			omitUndefined: true
 		}).exec();

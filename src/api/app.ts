@@ -17,16 +17,10 @@ export default {
 		for (const file of files) {
 			if (!file.endsWith(".js")) {
 				if (file.endsWith(".map")) continue;
-				const nestedFiles: string[] = fs.readdirSync(
-					"./build/api/routes/" + file
-				);
+				const nestedFiles: string[] = fs.readdirSync("./build/api/routes/" + file);
 				for (const nestedFile of nestedFiles) {
 					if (nestedFile.endsWith(".js")) {
-						new (
-							await import(
-								"@api/routes/" + file + "/" + nestedFile
-							)
-						).default(app);
+						new (await import("@api/routes/" + file + "/" + nestedFile)).default(app);
 					}
 				}
 			} else {
@@ -35,9 +29,7 @@ export default {
 		}
 
 		app.listen(client.config.api["PORT"], (): void => {
-			client.logger.log(
-				"API is running on port " + client.config.api["PORT"]
-			);
+			client.logger.log("API is running on port " + client.config.api["PORT"]);
 		});
 	}
 };

@@ -17,59 +17,32 @@ export default class {
 		const guildData: any = await this.client.findOrCreateGuild(guild.id);
 
 		if (newChannel && newMember.guild) {
-			if (
-				!guildData.settings?.joinToCreate?.enabled ||
-				!guildData.settings?.joinToCreate?.channel
-			)
-				return;
+			if (!guildData.settings?.joinToCreate?.enabled || !guildData.settings?.joinToCreate?.channel) return;
 
-			const user: any = await this.client.users
-				.fetch(newMember.id)
-				.catch((e: any): void => {});
+			const user: any = await this.client.users.fetch(newMember.id).catch((e: any): void => {});
 
-			const channelName: string =
-				guildData.settings.joinToCreate.defaultName
-					.replaceAll(
-						"{count}",
-						guildData.settings.joinToCreate.channels?.length || 1
-					)
-					.replaceAll("{user}", user.displayName);
+			const channelName: string = guildData.settings.joinToCreate.defaultName
+				.replaceAll("{count}", guildData.settings.joinToCreate.channels?.length || 1)
+				.replaceAll("{user}", user.displayName);
 
 			/* Create temp channel */
-			if (
-				newMember.channel.id === guildData.settings.joinToCreate.channel
-			) {
+			if (newMember.channel.id === guildData.settings.joinToCreate.channel) {
 				const tempChannel: any = await newMember.guild.channels
 					.create({
 						name: channelName,
 						reason: "Join to create",
 						type: ChannelType.GuildVoice,
-						parent: guildData.settings.joinToCreate.category
-							? guildData.settings.joinToCreate.category
-							: newMember.channel.parentId,
-						bitrate:
-							parseInt(guildData.settings.joinToCreate.bitrate) *
-							1000,
-						position: guildData.settings.joinToCreate.category
-							? 0
-							: newMember.channel.position,
+						parent: guildData.settings.joinToCreate.category ? guildData.settings.joinToCreate.category : newMember.channel.parentId,
+						bitrate: parseInt(guildData.settings.joinToCreate.bitrate) * 1000,
+						position: guildData.settings.joinToCreate.category ? 0 : newMember.channel.position,
 						userLimit: guildData.settings.joinToCreate.userLimit
 					})
 					.catch((e: any): any => {
 						const errorText: string =
-							this.client.emotes.channel +
-							" Nutzer: " +
-							newMember.user.displayName +
-							" (@" +
-							newMember.user.username +
-							")";
+							this.client.emotes.channel + " Nutzer: " + newMember.user.displayName + " (@" + newMember.user.username + ")";
 
-						const errorEmbed: EmbedBuilder =
-							this.client.createEmbed(errorText, null, "error");
-						errorEmbed.setTitle(
-							this.client.emotes.error +
-								" Erstellen von Join2Create-Channel fehlgeschlagen"
-						);
+						const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
+						errorEmbed.setTitle(this.client.emotes.error + " Erstellen von Join2Create-Channel fehlgeschlagen");
 
 						return guild.logAction(errorEmbed, "guild");
 					});
@@ -95,9 +68,7 @@ export default class {
 							tempChannel.delete().catch((e: any): void => {});
 						})
 						.then(async (e: any): Promise<void> => {
-							guildData.settings.joinToCreate.channels.push(
-								tempChannel.id
-							);
+							guildData.settings.joinToCreate.channels.push(tempChannel.id);
 							guildData.markModified("settings.joinToCreate");
 							await guildData.save();
 						});
@@ -106,32 +77,17 @@ export default class {
 		}
 
 		if (oldChannel && newMember.guild) {
-			if (
-				guildData.settings?.joinToCreate?.channels?.includes(
-					oldChannel.id
-				)
-			) {
+			if (guildData.settings?.joinToCreate?.channels?.includes(oldChannel.id)) {
 				if (oldChannel.members.size >= 1) return;
 				await oldChannel.delete().catch((e: any): void => {
-					const errorText: string =
-						this.client.emotes.channel + " Nutzer: " + newMember;
+					const errorText: string = this.client.emotes.channel + " Nutzer: " + newMember;
 
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(
-						errorText,
-						null,
-						"error"
-					);
-					errorEmbed.setTitle(
-						this.client.emotes.error +
-							" Löschen von Join2Create-Channel fehlgeschlagen"
-					);
+					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
+					errorEmbed.setTitle(this.client.emotes.error + " Löschen von Join2Create-Channel fehlgeschlagen");
 
 					return guild.logAction(errorEmbed, "guild");
 				});
-				guildData.settings.joinToCreate.channels =
-					guildData.settings.joinToCreate.channels.filter(
-						(c: any): boolean => c !== oldChannel.id
-					);
+				guildData.settings.joinToCreate.channels = guildData.settings.joinToCreate.channels.filter((c: any): boolean => c !== oldChannel.id);
 				guildData.markModified("settings.joinToCreate");
 				await guildData.save();
 			}

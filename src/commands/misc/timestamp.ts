@@ -16,48 +16,40 @@ export default class TimestampCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("datum")
-							.setDescription(
-								"Gib hier das Datum im deutschen Format an (Datum & Zeit, nur Datum oder nur Zeit)"
-							)
+							.setDescription("Gib hier das Datum im deutschen Format an (Datum & Zeit, nur Datum oder nur Zeit)")
 							.setRequired(true)
 					)
 					.addStringOption((option: any) =>
-						option
-							.setName("format")
-							.setDescription(
-								"Wähle, wie der Timestamp angezeigt werden soll"
-							)
-							.setRequired(true)
-							.addChoices(
-								{
-									name: "Kurze Zeit (bspw. 17:30)",
-									value: "t"
-								},
-								{
-									name: "Lange Zeit (bspw. 17:30:12)",
-									value: "T"
-								},
-								{
-									name: "Kurzes Datum (bspw. 01.01.2023)",
-									value: "d"
-								},
-								{
-									name: "Langes Datum (bspw. 01. Januar 2023)",
-									value: "D"
-								},
-								{
-									name: "Kurzes Datum und kurze Zeit (bspw. 01.01.2023 17:30)",
-									value: "f"
-								},
-								{
-									name: "Langes Datum und lange Zeit (bspw. 01. Januar 2023 17:30)",
-									value: "F"
-								},
-								{
-									name: "Relative Zeit (bspw. vor 5 Minuten)",
-									value: "R"
-								}
-							)
+						option.setName("format").setDescription("Wähle, wie der Timestamp angezeigt werden soll").setRequired(true).addChoices(
+							{
+								name: "Kurze Zeit (bspw. 17:30)",
+								value: "t"
+							},
+							{
+								name: "Lange Zeit (bspw. 17:30:12)",
+								value: "T"
+							},
+							{
+								name: "Kurzes Datum (bspw. 01.01.2023)",
+								value: "d"
+							},
+							{
+								name: "Langes Datum (bspw. 01. Januar 2023)",
+								value: "D"
+							},
+							{
+								name: "Kurzes Datum und kurze Zeit (bspw. 01.01.2023 17:30)",
+								value: "f"
+							},
+							{
+								name: "Langes Datum und lange Zeit (bspw. 01. Januar 2023 17:30)",
+								value: "F"
+							},
+							{
+								name: "Relative Zeit (bspw. vor 5 Minuten)",
+								value: "R"
+							}
+						)
 					)
 			}
 		});
@@ -67,10 +59,7 @@ export default class TimestampCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.createTimestamp(
-			interaction.options.getString("datum"),
-			interaction.options.getString("format")
-		);
+		await this.createTimestamp(interaction.options.getString("datum"), interaction.options.getString("format"));
 	}
 
 	private async createTimestamp(date: string, type: string): Promise<void> {
@@ -96,12 +85,7 @@ export default class TimestampCommand extends BaseCommand {
 		);
 
 		const custom_id: string = "timestamp_copy" + Date.now();
-		const copyButton: ButtonBuilder = this.client.createButton(
-			custom_id,
-			"Zeitstempel kopieren",
-			"Secondary",
-			"text"
-		);
+		const copyButton: ButtonBuilder = this.client.createButton(custom_id, "Zeitstempel kopieren", "Secondary", "text");
 		const row: any = this.client.createMessageComponentsRow(copyButton);
 		await this.interaction.followUp({
 			embeds: [timestampEmbed],
@@ -109,10 +93,9 @@ export default class TimestampCommand extends BaseCommand {
 		});
 
 		const filter: any = (i: any): boolean => i.customId === custom_id;
-		const collector: any =
-			this.interaction.channel.createMessageComponentCollector({
-				filter
-			});
+		const collector: any = this.interaction.channel.createMessageComponentCollector({
+			filter
+		});
 		collector.on("collect", async (i: any): Promise<void> => {
 			await i.deferUpdate();
 			await i.followUp({ content: rawTimestamp, ephemeral: true });
@@ -132,11 +115,7 @@ export default class TimestampCommand extends BaseCommand {
 			format = "DD.MM.YYYY";
 		}
 
-		const parsedDate: moment.Moment = moment.tz(
-			inputString,
-			format,
-			"Europe/Berlin"
-		);
+		const parsedDate: moment.Moment = moment.tz(inputString, format, "Europe/Berlin");
 
 		if (parsedDate.isValid()) {
 			return parsedDate.unix();

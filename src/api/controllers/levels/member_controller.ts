@@ -44,9 +44,7 @@ export async function get(req: Request, res: Response) {
 			displayName: member.user.displayName,
 			userID: userId,
 			guildID: guildId,
-			avatar:
-				member.user?.displayAvatarURL({ size: 2048 }) ||
-				"https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png"
+			avatar: member.user?.displayAvatarURL({ size: 2048 }) || "https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png"
 		}
 	};
 

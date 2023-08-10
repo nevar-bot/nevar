@@ -1,10 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import {
-	EmbedBuilder,
-	ChannelType,
-	PermissionsBitField,
-	ButtonBuilder
-} from "discord.js";
+import { EmbedBuilder, ChannelType, PermissionsBitField, ButtonBuilder } from "discord.js";
 import moment from "moment";
 
 export default class {
@@ -22,26 +17,15 @@ export default class {
 		guild.invites
 			.fetch()
 			.then((invites: any): void => {
-				this.client.invites.set(
-					guild.id,
-					new Map(
-						invites.map((invite: any): any => [
-							invite.code,
-							invite.uses
-						])
-					)
-				);
+				this.client.invites.set(guild.id, new Map(invites.map((invite: any): any => [invite.code, invite.uses])));
 			})
 			.catch((e: any): void => {});
 
 		/* Send welcome message */
 		const firstChannel: any = guild.channels.cache.find(
 			(c: any) =>
-				(c.type === ChannelType.GuildText ||
-					c.type === ChannelType.GuildAnnouncement) &&
-				c
-					.permissionsFor(guild.members.me)
-					.has(PermissionsBitField.Flags.SendMessages)
+				(c.type === ChannelType.GuildText || c.type === ChannelType.GuildAnnouncement) &&
+				c.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.SendMessages)
 		);
 
 		const welcomeMessage: string =
@@ -52,28 +36,17 @@ export default class {
 			this.client.emotes.arrow +
 			" Bei Fragen oder Problemen stehen wir jederzeit gerne zur Verfügung.";
 
-		const helpCommand: any = (
-			await this.client.application!.commands.fetch()
-		).find((cmd) => cmd.name === "help")?.id;
+		const helpCommand: any = (await this.client.application!.commands.fetch()).find((cmd) => cmd.name === "help")?.id;
 		const welcomeMessageEmbed: EmbedBuilder = this.client.createEmbed(
 			welcomeMessage,
 			null,
 			"normal",
 			helpCommand ? "</help:" + helpCommand + ">" : "/help"
 		);
-		welcomeMessageEmbed.setTitle(
-			this.client.emotes.shine + " Danke, dass ich hier sein darf!"
-		);
+		welcomeMessageEmbed.setTitle(this.client.emotes.shine + " Danke, dass ich hier sein darf!");
 		welcomeMessageEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
-		const buttonInvite: ButtonBuilder = this.client.createButton(
-			null,
-			"Einladen",
-			"Link",
-			"growth_up",
-			false,
-			this.client.createInvite()
-		);
+		const buttonInvite: ButtonBuilder = this.client.createButton(null, "Einladen", "Link", "growth_up", false, this.client.createInvite());
 		const buttonSupport: ButtonBuilder = this.client.createButton(
 			null,
 			"Support",
@@ -82,23 +55,14 @@ export default class {
 			false,
 			this.client.config.support["INVITE"]
 		);
-		const buttonWebsite: ButtonBuilder = this.client.createButton(
-			null,
-			"Website",
-			"Link",
-			"globe",
-			true,
-			this.client.config.general["WEBSITE"]
-		);
+		const buttonWebsite: ButtonBuilder = this.client.createButton(null, "Website", "Link", "globe", true, this.client.config.general["WEBSITE"]);
 		const buttonVote: ButtonBuilder = this.client.createButton(
 			null,
 			"Voten",
 			"Link",
 			"heart",
 			false,
-			"https://discordbotlist.com/bots/" +
-				this.client.user!.id +
-				"/upvote"
+			"https://discordbotlist.com/bots/" + this.client.user!.id + "/upvote"
 		);
 		const buttonDonate: ButtonBuilder = this.client.createButton(
 			null,
@@ -109,38 +73,20 @@ export default class {
 			"https://prohosting24.de/cp/donate/nevar"
 		);
 
-		const buttonRow = this.client.createMessageComponentsRow(
-			buttonInvite,
-			buttonSupport,
-			buttonWebsite,
-			buttonVote,
-			buttonDonate
-		);
-		await firstChannel
-			.send({ embeds: [welcomeMessageEmbed], components: [buttonRow] })
-			.catch((e: any): void => {});
-		await firstChannel
-			.send({ content: this.client.config.support["INVITE"] })
-			.catch((e: any): void => {});
+		const buttonRow = this.client.createMessageComponentsRow(buttonInvite, buttonSupport, buttonWebsite, buttonVote, buttonDonate);
+		await firstChannel.send({ embeds: [welcomeMessageEmbed], components: [buttonRow] }).catch((e: any): void => {});
+		await firstChannel.send({ content: this.client.config.support["INVITE"] }).catch((e: any): void => {});
 
 		/* Support log message */
-		const supportGuild: any = this.client.guilds.cache.get(
-			this.client.config.support["ID"]
-		);
+		const supportGuild: any = this.client.guilds.cache.get(this.client.config.support["ID"]);
 		if (!supportGuild) return;
 
-		const supportLogChannel: any = supportGuild.channels.cache.get(
-			this.client.config.support["BOT_LOG"]
-		);
+		const supportLogChannel: any = supportGuild.channels.cache.get(this.client.config.support["BOT_LOG"]);
 		if (!supportLogChannel) return;
 
 		const owner: any = await guild.fetchOwner().catch((e: any): void => {});
-		const createdAt: string = moment(guild.createdTimestamp).format(
-			"DD.MM.YYYY, HH:mm"
-		);
-		const createdDiff: string = this.client.utils.getRelativeTime(
-			guild.createdTimestamp
-		);
+		const createdAt: string = moment(guild.createdTimestamp).format("DD.MM.YYYY, HH:mm");
+		const createdDiff: string = this.client.utils.getRelativeTime(guild.createdTimestamp);
 
 		const supportGuildLogMessage: string =
 			"Name: **" +
@@ -170,20 +116,10 @@ export default class {
 			createdDiff +
 			"**";
 
-		const supportGuildLogEmbed: EmbedBuilder = this.client.createEmbed(
-			supportGuildLogMessage,
-			"discord",
-			"success"
-		);
-		supportGuildLogEmbed.setTitle(
-			this.client.user!.username + " wurde einem neuen Server hinzugefügt"
-		);
-		supportGuildLogEmbed.setThumbnail(
-			guild.iconURL({ dynamic: true, size: 512 })
-		);
+		const supportGuildLogEmbed: EmbedBuilder = this.client.createEmbed(supportGuildLogMessage, "discord", "success");
+		supportGuildLogEmbed.setTitle(this.client.user!.username + " wurde einem neuen Server hinzugefügt");
+		supportGuildLogEmbed.setThumbnail(guild.iconURL({ dynamic: true, size: 512 }));
 
-		await supportLogChannel
-			.send({ embeds: [supportGuildLogEmbed] })
-			.catch((e: any): void => {});
+		await supportLogChannel.send({ embeds: [supportGuildLogEmbed] }).catch((e: any): void => {});
 	}
 }

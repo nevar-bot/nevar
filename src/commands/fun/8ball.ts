@@ -69,10 +69,7 @@ export default class EightballCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option
-						.setRequired(true)
-						.setName("frage")
-						.setDescription("Gib deine Frage ein")
+					option.setRequired(true).setName("frage").setDescription("Gib deine Frage ein")
 				)
 			}
 		});
@@ -85,16 +82,8 @@ export default class EightballCommand extends BaseCommand {
 	}
 
 	private async getAnswer(): Promise<void> {
-		const randomAnswer: string =
-			eightBallAnswers[
-				Math.floor(Math.random() * eightBallAnswers.length)
-			];
-		const eightBallEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0}",
-			"question",
-			"normal",
-			randomAnswer
-		);
+		const randomAnswer: string = eightBallAnswers[Math.floor(Math.random() * eightBallAnswers.length)];
+		const eightBallEmbed: EmbedBuilder = this.client.createEmbed("{0}", "question", "normal", randomAnswer);
 		return this.interaction.followUp({ embeds: [eightBallEmbed] });
 	}
 }

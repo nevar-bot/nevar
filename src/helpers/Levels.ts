@@ -42,11 +42,7 @@ export default class Levels {
 		return user;
 	}
 
-	static async appendXp(
-		userId: string,
-		guildId: string,
-		xp: number
-	): Promise<any> {
+	static async appendXp(userId: string, guildId: string, xp: number): Promise<any> {
 		if (xp <= 0 || !xp || isNaN(parseInt(String(xp)))) return false;
 
 		const user: any = await LevelSchema.findOne({
@@ -78,11 +74,7 @@ export default class Levels {
 		return Math.floor(0.1 * Math.sqrt((user.xp -= xp))) < user.level;
 	}
 
-	static async appendLevel(
-		userId: string,
-		guildId: string,
-		levels: number
-	): Promise<any> {
+	static async appendLevel(userId: string, guildId: string, levels: number): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
 			guildID: guildId
@@ -100,11 +92,7 @@ export default class Levels {
 		return user;
 	}
 
-	static async setXp(
-		userId: string,
-		guildId: string,
-		xp: number
-	): Promise<any> {
+	static async setXp(userId: string, guildId: string, xp: number): Promise<any> {
 		if (xp <= 0 || !xp || isNaN(parseInt(String(xp)))) return false;
 
 		const user: any = await LevelSchema.findOne({
@@ -124,11 +112,7 @@ export default class Levels {
 		return user;
 	}
 
-	static async setLevel(
-		userId: string,
-		guildId: string,
-		level: number
-	): Promise<any> {
+	static async setLevel(userId: string, guildId: string, level: number): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
 			guildID: guildId
@@ -146,11 +130,7 @@ export default class Levels {
 		return user;
 	}
 
-	static async fetch(
-		userId: string,
-		guildId: string,
-		fetchPosition: boolean = false
-	): Promise<any> {
+	static async fetch(userId: string, guildId: string, fetchPosition: boolean = false): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
 			guildID: guildId
@@ -164,24 +144,16 @@ export default class Levels {
 				.sort([["xp", "descending"]])
 				.exec();
 
-			user.position =
-				leaderboard.findIndex(
-					(i: any): boolean => i.userID === userId
-				) + 1;
+			user.position = leaderboard.findIndex((i: any): boolean => i.userID === userId) + 1;
 		}
 
 		user.cleanXp = user.xp - this.xpFor(user.level);
-		user.cleanNextLevelXp =
-			this.xpFor(user.level + 1) - this.xpFor(user.level);
+		user.cleanNextLevelXp = this.xpFor(user.level + 1) - this.xpFor(user.level);
 
 		return user;
 	}
 
-	static async substractXp(
-		userId: string,
-		guildId: string,
-		xp: number
-	): Promise<any> {
+	static async substractXp(userId: string, guildId: string, xp: number): Promise<any> {
 		if (xp <= 0 || !xp || isNaN(parseInt(String(xp)))) return false;
 
 		const user: any = await LevelSchema.findOne({
@@ -201,11 +173,7 @@ export default class Levels {
 		return user;
 	}
 
-	static async substractLevel(
-		userId: string,
-		guildId: string,
-		levels: number
-	): Promise<any> {
+	static async substractLevel(userId: string, guildId: string, levels: number): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
 			guildID: guildId
@@ -223,20 +191,13 @@ export default class Levels {
 		return user;
 	}
 
-	static async fetchLeaderboard(
-		guildId: string,
-		limit: number = 10
-	): Promise<any> {
+	static async fetchLeaderboard(guildId: string, limit: number = 10): Promise<any> {
 		return await LevelSchema.find({ guildID: guildId })
 			.sort([["xp", "descending"]])
 			.exec();
 	}
 
-	static async computeLeaderboard(
-		client: any,
-		leaderboard: any[],
-		fetchUsers = false
-	): Promise<any> {
+	static async computeLeaderboard(client: any, leaderboard: any[], fetchUsers = false): Promise<any> {
 		if (leaderboard.length < 1) return [];
 
 		const computedArray = [];
@@ -252,12 +213,7 @@ export default class Levels {
 					userID: key.userID,
 					xp: key.xp,
 					level: key.level,
-					position:
-						leaderboard.findIndex(
-							(i: any): boolean =>
-								i.guildID === key.guildID &&
-								i.userID === key.userID
-						) + 1,
+					position: leaderboard.findIndex((i: any): boolean => i.guildID === key.guildID && i.userID === key.userID) + 1,
 					username: user.username,
 					displayName: user.displayName
 				});
@@ -269,18 +225,9 @@ export default class Levels {
 					userID: key.userID,
 					xp: key.xp,
 					level: key.level,
-					position:
-						leaderboard.findIndex(
-							(i: any): boolean =>
-								i.guildID === key.guildID &&
-								i.userID === key.userID
-						) + 1,
-					username: client.users.cache.get(key.userID)
-						? client.users.cache.get(key.userID).username
-						: "Unbekannt",
-					displayName: client.users.cache.get(key.userID)
-						? client.users.cache.get(key.userID).displayName
-						: "Unbekannt"
+					position: leaderboard.findIndex((i: any): boolean => i.guildID === key.guildID && i.userID === key.userID) + 1,
+					username: client.users.cache.get(key.userID) ? client.users.cache.get(key.userID).username : "Unbekannt",
+					displayName: client.users.cache.get(key.userID) ? client.users.cache.get(key.userID).displayName : "Unbekannt"
 				});
 			});
 		}
@@ -298,11 +245,9 @@ export default class Levels {
 		const guild: any = await LevelSchema.findOne({ guildID: guildId });
 		if (!guild) return false;
 
-		await LevelSchema.deleteMany({ guildID: guildId }).catch(
-			(e: any): boolean => {
-				return false;
-			}
-		);
+		await LevelSchema.deleteMany({ guildID: guildId }).catch((e: any): boolean => {
+			return false;
+		});
 
 		return guild;
 	}

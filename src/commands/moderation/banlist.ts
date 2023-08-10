@@ -28,33 +28,20 @@ export default class BanlistCommand extends BaseCommand {
 
 	private async showBanList(): Promise<void> {
 		let bannedUsers: any[] = [];
-		const bans: any = await this.interaction.guild.bans
-			.fetch()
-			.catch((): void => {});
+		const bans: any = await this.interaction.guild.bans.fetch().catch((): void => {});
 		for (let ban of bans) {
-			const memberData: any = await this.client.findOrCreateMember(
-				ban[1].user.id,
-				this.interaction.guild.id
-			);
+			const memberData: any = await this.client.findOrCreateMember(ban[1].user.id, this.interaction.guild.id);
 			if (memberData.banned.state) {
 				// Mit Nevar gebannt
 				const duration: string =
-					memberData.banned.duration ===
-					200 * 60 * 60 * 24 * 365 * 1000
+					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "Permanent"
-						: this.client.utils.getRelativeTime(
-								Date.now() - memberData.banned.duration
-						  );
+						: this.client.utils.getRelativeTime(Date.now() - memberData.banned.duration);
 				const bannedUntil: string =
-					memberData.banned.duration ===
-					200 * 60 * 60 * 24 * 365 * 1000
+					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "/"
-						: moment(memberData.banned.bannedUntil).format(
-								"DD.MM.YYYY, HH:mm"
-						  );
-				const moderator: any = await this.client.users
-					.fetch(memberData.banned.moderator.id)
-					.catch((): void => {});
+						: moment(memberData.banned.bannedUntil).format("DD.MM.YYYY, HH:mm");
+				const moderator: any = await this.client.users.fetch(memberData.banned.moderator.id).catch((): void => {});
 				const text: string =
 					"### " +
 					this.client.emotes.ban +
@@ -67,9 +54,7 @@ export default class BanlistCommand extends BaseCommand {
 					"\n" +
 					this.client.emotes.arrow +
 					" Moderator: " +
-					(moderator
-						? moderator.username
-						: memberData.banned.moderator.name) +
+					(moderator ? moderator.username : memberData.banned.moderator.name) +
 					"\n" +
 					this.client.emotes.arrow +
 					" Dauer: " +
@@ -77,9 +62,7 @@ export default class BanlistCommand extends BaseCommand {
 					"\n" +
 					this.client.emotes.arrow +
 					" Gebannt am: " +
-					moment(memberData.banned.bannedAt).format(
-						"DD.MM.YYYY, HH:mm"
-					) +
+					moment(memberData.banned.bannedAt).format("DD.MM.YYYY, HH:mm") +
 					"\n" +
 					this.client.emotes.arrow +
 					" Gebannt bis: " +
@@ -101,13 +84,6 @@ export default class BanlistCommand extends BaseCommand {
 				bannedUsers.push(text);
 			}
 		}
-		await this.client.utils.sendPaginatedEmbed(
-			this.interaction,
-			3,
-			bannedUsers,
-			"Gebannte Nutzer",
-			"Es sind keine Nutzer gebannt",
-			null
-		);
+		await this.client.utils.sendPaginatedEmbed(this.interaction, 3, bannedUsers, "Gebannte Nutzer", "Es sind keine Nutzer gebannt", null);
 	}
 }

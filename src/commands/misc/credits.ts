@@ -91,11 +91,7 @@ export default class CreditsCommand extends BaseCommand {
 			" [icons](https://discord.gg/9AtkECMX2P) - Emojis für " +
 			this.client.user!.username;
 
-		const creditsEmbed: EmbedBuilder = this.client.createEmbed(
-			credits,
-			null,
-			"normal"
-		);
+		const creditsEmbed: EmbedBuilder = this.client.createEmbed(credits, null, "normal");
 		creditsEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 		creditsEmbed.setTitle("Credits für " + this.client.user!.username);
 

@@ -1,7 +1,6 @@
 {
   "errors": {
-    "invalidEmojiOrLink": "Du musst einen Link zu einem Bild und einen Standard-Emoji eingeben. Beachte zusätzlich, dass derzeit nicht alle Emojis unterstützt werden.",
-    "errorWhileCreating": "Beim Erstellen des Stickers ist ein unerwarteter Fehler aufgetreten."
+    "invalidEmojiOrLink": "Du musst einen Link zu einem Bild und einen Standard-Emoji eingeben. Beachte zusätzlich, dass derzeit nicht alle Emojis unterstützt werden."
   },
   "created": "Der neue Sticker {{sticker}} wurde erstellt."
 }

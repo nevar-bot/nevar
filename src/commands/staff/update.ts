@@ -7,8 +7,7 @@ export default class PullCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "update",
-			description:
-				"Bringt den Bot auf den aktuellen Stand des GitHub Repositories",
+			description: "Bringt den Bot auf den aktuellen Stand des GitHub Repositories",
 			staffOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -26,11 +25,7 @@ export default class PullCommand extends BaseCommand {
 	}
 
 	private async update(): Promise<void> {
-		const updateEmbed: EmbedBuilder = this.client.createEmbed(
-			"Starte Aktualisierung...",
-			"warning",
-			"warning"
-		);
+		const updateEmbed: EmbedBuilder = this.client.createEmbed("Starte Aktualisierung...", "warning", "warning");
 		const repliedMessage = await this.message.reply({
 			embeds: [updateEmbed]
 		});
@@ -44,25 +39,17 @@ export default class PullCommand extends BaseCommand {
 				);
 				return repliedMessage.edit({ embeds: [errorEmbed] });
 			}
-			exec(
-				"npm run build",
-				(err: any, stdout: string, stderr: string): void => {
-					if (err) {
-						const errorEmbed: EmbedBuilder =
-							this.client.createEmbed(
-								`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``,
-								"error",
-								"error"
-							);
-						return repliedMessage.edit({ embeds: [errorEmbed] });
-					}
+			exec("npm run build", (err: any, stdout: string, stderr: string): void => {
+				if (err) {
+					const errorEmbed: EmbedBuilder = this.client.createEmbed(
+						`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``,
+						"error",
+						"error"
+					);
+					return repliedMessage.edit({ embeds: [errorEmbed] });
 				}
-			);
-			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				"Aktualisierung erfolgreich, starte neu...",
-				"success",
-				"success"
-			);
+			});
+			const successEmbed: EmbedBuilder = this.client.createEmbed("Aktualisierung erfolgreich, starte neu...", "success", "success");
 			repliedMessage.edit({ embeds: [successEmbed] }).then((): void => {
 				process.exit(1);
 			});

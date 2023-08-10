@@ -12,10 +12,7 @@ export default class AfkCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option
-						.setName("grund")
-						.setDescription("Warum bist du abwesend?")
-						.setRequired(false)
+					option.setName("grund").setDescription("Warum bist du abwesend?").setRequired(false)
 				)
 			}
 		});
@@ -25,21 +22,15 @@ export default class AfkCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.setAfk(
-			interaction.member,
-			interaction.options.getString("grund"),
-			data
-		);
+		await this.setAfk(interaction.member, interaction.options.getString("grund"), data);
 	}
 
 	private async setAfk(member: any, reason: string, data: any) {
 		if (data.user.afk.state) {
 			const afkSince: any = data.user.afk.since;
-			const reason: string =
-				data.user.afk.reason || "Kein Grund angegeben";
+			const reason: string = data.user.afk.reason || "Kein Grund angegeben";
 
-			const relativeTime: string =
-				this.client.utils.getRelativeTime(afkSince);
+			const relativeTime: string = this.client.utils.getRelativeTime(afkSince);
 			const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
 				"Willkommen zurück! Du warst abwesend für {0}.",
 				"reminder",

@@ -20,9 +20,7 @@ export default class AimodCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("status")
-							.setDescription(
-								"Aktiviert oder deaktiviert die AI-gestützte Chatmoderation"
-							)
+							.setDescription("Aktiviert oder deaktiviert die AI-gestützte Chatmoderation")
 							.setDescriptionLocalizations({
 								"en-US": "Enables or disables AI-powered chat moderation",
 								"en-GB": "Enables or disables AI-powered chat moderation"
@@ -30,9 +28,7 @@ export default class AimodCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("status")
-									.setDescription(
-										"Wähle einen Status"
-									)
+									.setDescription("Wähle einen Status")
 									.setDescriptionLocalizations({
 										"en-US": "Choose a status",
 										"en-GB": "Choose a status"
@@ -61,9 +57,7 @@ export default class AimodCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("exclude")
-							.setDescription(
-								"Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation"
-							)
+							.setDescription("Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation")
 							.setDescriptionLocalizations({
 								"en-US": "Excludes a channel or role from AI-powered chat moderation",
 								"en-GB": "Excludes a channel or role from AI-powered chat moderation"
@@ -71,9 +65,7 @@ export default class AimodCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
-									.setDescription(
-										"Wähle eine Aktion"
-									)
+									.setDescription("Wähle eine Aktion")
 									.setDescriptionLocalizations({
 										"en-US": "Choose an action",
 										"en-GB": "Choose an action"
@@ -109,9 +101,7 @@ export default class AimodCommand extends BaseCommand {
 							.addRoleOption((option: any) =>
 								option
 									.setName("role")
-									.setDescription(
-										"Wähle eine Rolle"
-									)
+									.setDescription("Wähle eine Rolle")
 									.setDescriptionLocalizations({
 										"en-US": "Choose a role",
 										"en-GB": "Choose a role"
@@ -121,9 +111,7 @@ export default class AimodCommand extends BaseCommand {
 							.addChannelOption((option: any) =>
 								option
 									.setName("channel")
-									.setDescription(
-										"Wähle einen Channel"
-									)
+									.setDescription("Wähle einen Channel")
 									.setDescriptionLocalizations({
 										"en-US": "Choose a channel",
 										"en-GB": "Choose a channel"
@@ -140,9 +128,7 @@ export default class AimodCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("threshold")
-							.setDescription(
-								"Wähle, ab welchem Wert gewarnt werden soll (0 = nicht unangemessen, 1 = sehr unangemessen)"
-							)
+							.setDescription("Wähle, ab welchem Wert gewarnt werden soll (0 = nicht unangemessen, 1 = sehr unangemessen)")
 							.setDescriptionLocalizations({
 								"en-US": "Choose from which value to warn (0 = not inappropriate, 1 = very inappropriate)",
 								"en-GB": "Choose from which value to warn (0 = not inappropriate, 1 = very inappropriate)"
@@ -163,9 +149,7 @@ export default class AimodCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("channel")
-							.setDescription(
-								"Wähle den Kanal, in dem die AI-gestützte Chatmoderation warnen soll"
-							)
+							.setDescription("Wähle den Kanal, in dem die AI-gestützte Chatmoderation warnen soll")
 							.setDescriptionLocalizations({
 								"en-US": "Choose the channel where you want the AI-powered chat moderation to warn you",
 								"en-GB": "Choose the channel where you want the AI-powered chat moderation to warn you"
@@ -188,21 +172,14 @@ export default class AimodCommand extends BaseCommand {
 							)
 					)
 					.addSubcommand((subcommand: any) =>
-						subcommand
-							.setName("explain")
-							.setDescription(
-								"Erklärt die AI-gestützte Chatmoderation"
-							)
-							.setDescriptionLocalizations({
-								"en-US": "Explains AI-powered chat moderation",
-								"en-GB": "Explains AI-powered chat moderation"
-							})
+						subcommand.setName("explain").setDescription("Erklärt die AI-gestützte Chatmoderation").setDescriptionLocalizations({
+							"en-US": "Explains AI-powered chat moderation",
+							"en-GB": "Explains AI-powered chat moderation"
+						})
 					)
 			}
 		});
 	}
-
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
@@ -224,30 +201,21 @@ export default class AimodCommand extends BaseCommand {
 
 		switch (subcommand) {
 			case "status":
-				await this.setStatus(
-					interaction.options.getString("status"),
-					data
-				);
+				await this.setStatus(interaction.options.getString("status"), data);
 				break;
 			case "exclude":
 				await this.exclude(
-					interaction.options.getString("aktion"),
+					interaction.options.getString("action"),
 					interaction.options.getChannel("channel"),
-					interaction.options.getRole("rolle"),
+					interaction.options.getRole("role"),
 					data
 				);
 				break;
 			case "threshold":
-				await this.setThreshold(
-					interaction.options.getNumber("threshold"),
-					data
-				);
+				await this.setThreshold(interaction.options.getNumber("threshold"), data);
 				break;
 			case "channel":
-				await this.setChannel(
-					interaction.options.getChannel("channel"),
-					data
-				);
+				await this.setChannel(interaction.options.getChannel("channel"), data);
 				break;
 			case "explain":
 				await this.explain();
@@ -259,9 +227,7 @@ export default class AimodCommand extends BaseCommand {
 		data.guild.markModified("settings.aiModeration.status");
 		await data.guild.save();
 
-		const localeStatus: string = status === "on" ?
-			this.translate("basics:enabled") :
-			this.translate("basics:disabled");
+		const localeStatus: string = status === "on" ? this.translate("basics:enabled") : this.translate("basics:disabled");
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("administration/aimod:status:set", { status: localeStatus }),
 			"success",
@@ -270,12 +236,7 @@ export default class AimodCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [embed] });
 	}
 
-	private async exclude(
-		action: string,
-		channel: any,
-		role: any,
-		data: any
-	): Promise<void> {
+	private async exclude(action: string, channel: any, role: any, data: any): Promise<void> {
 		if (action === "add") {
 			if (!channel && !role) {
 				const embed: EmbedBuilder = this.client.createEmbed(
@@ -286,11 +247,7 @@ export default class AimodCommand extends BaseCommand {
 				return this.interaction.followUp({ embeds: [embed] });
 			}
 			if (channel) {
-				if (
-					data.guild.settings.aiModeration.excludedChannels.includes(
-						channel.id
-					)
-				) {
+				if (data.guild.settings.aiModeration.excludedChannels.includes(channel.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
 						this.translate("administration/aimod:exclude:errors:isAlreadyDisabledInChannel", { channel: channel.toString() }),
 						"error",
@@ -298,12 +255,8 @@ export default class AimodCommand extends BaseCommand {
 					);
 					return this.interaction.followUp({ embeds: [embed] });
 				}
-				data.guild.settings.aiModeration.excludedChannels.push(
-					channel.id
-				);
-				data.guild.markModified(
-					"settings.aiModeration.excludedChannels"
-				);
+				data.guild.settings.aiModeration.excludedChannels.push(channel.id);
+				data.guild.markModified("settings.aiModeration.excludedChannels");
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
@@ -314,11 +267,7 @@ export default class AimodCommand extends BaseCommand {
 				return this.interaction.followUp({ embeds: [successEmbed] });
 			}
 			if (role) {
-				if (
-					data.guild.settings.aiModeration.excludedRoles.includes(
-						role.id
-					)
-				) {
+				if (data.guild.settings.aiModeration.excludedRoles.includes(role.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
 						this.translate("administration/aimod:exclude:errors:isAlreadyDisabledForRole", { role: role.toString() }),
 						"error",
@@ -350,11 +299,7 @@ export default class AimodCommand extends BaseCommand {
 				return this.interaction.followUp({ embeds: [embed] });
 			}
 			if (channel) {
-				if (
-					!data.guild.settings.aiModeration.excludedChannels.includes(
-						channel.id
-					)
-				) {
+				if (!data.guild.settings.aiModeration.excludedChannels.includes(channel.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
 						this.translate("administration/aimod:exclude:errors:isNotDisabledInChannel", { channel: channel.toString() }),
 						"error",
@@ -362,13 +307,10 @@ export default class AimodCommand extends BaseCommand {
 					);
 					return this.interaction.followUp({ embeds: [embed] });
 				}
-				data.guild.settings.aiModeration.excludedChannels =
-					data.guild.settings.aiModeration.excludedChannels.filter(
-						(id: string): boolean => id !== channel.id
-					);
-				data.guild.markModified(
-					"settings.aiModeration.excludedChannels"
+				data.guild.settings.aiModeration.excludedChannels = data.guild.settings.aiModeration.excludedChannels.filter(
+					(id: string): boolean => id !== channel.id
 				);
+				data.guild.markModified("settings.aiModeration.excludedChannels");
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
@@ -379,11 +321,7 @@ export default class AimodCommand extends BaseCommand {
 				return this.interaction.followUp({ embeds: [successEmbed] });
 			}
 			if (role) {
-				if (
-					!data.guild.settings.aiModeration.excludedRoles.includes(
-						role.id
-					)
-				) {
+				if (!data.guild.settings.aiModeration.excludedRoles.includes(role.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
 						this.translate("administration/aimod:exclude:errors:isNotDisabledForRole", { role: role.toString() }),
 						"error",
@@ -391,10 +329,9 @@ export default class AimodCommand extends BaseCommand {
 					);
 					return this.interaction.followUp({ embeds: [embed] });
 				}
-				data.guild.settings.aiModeration.excludedRoles =
-					data.guild.settings.aiModeration.excludedRoles.filter(
-						(id: string): boolean => id !== role.id
-					);
+				data.guild.settings.aiModeration.excludedRoles = data.guild.settings.aiModeration.excludedRoles.filter(
+					(id: string): boolean => id !== role.id
+				);
 				data.guild.markModified("settings.aiModeration.excludedRoles");
 				await data.guild.save();
 
@@ -410,25 +347,14 @@ export default class AimodCommand extends BaseCommand {
 		if (action === "list") {
 			const excludedChannelsAndRoles: string[] = [];
 
-			for (const channelID of data.guild.settings.aiModeration
-				.excludedChannels) {
-				const channel: any =
-					await this.interaction.guild.channels.cache.get(channelID);
-				if (channel)
-					excludedChannelsAndRoles.push(
-						this.client.emotes.channel + " " + channel.toString()
-					);
+			for (const channelID of data.guild.settings.aiModeration.excludedChannels) {
+				const channel: any = await this.interaction.guild.channels.cache.get(channelID);
+				if (channel) excludedChannelsAndRoles.push(this.client.emotes.channel + " " + channel.toString());
 			}
 
-			for (const roleID of data.guild.settings.aiModeration
-				.excludedRoles) {
-				const role: any = await this.interaction.guild.roles.cache.get(
-					roleID
-				);
-				if (role)
-					excludedChannelsAndRoles.push(
-						this.client.emotes.ping + " " + role.toString()
-					);
+			for (const roleID of data.guild.settings.aiModeration.excludedRoles) {
+				const role: any = await this.interaction.guild.roles.cache.get(roleID);
+				if (role) excludedChannelsAndRoles.push(this.client.emotes.ping + " " + role.toString());
 			}
 
 			await this.client.utils.sendPaginatedEmbed(
@@ -470,18 +396,13 @@ export default class AimodCommand extends BaseCommand {
 	}
 
 	private async explain(): Promise<void> {
-		const explainText: string =
-			this.translate("administration/aimod:explain:text", { e: this.client.emotes, clientname: this.client.user!.username}).join("\n");
+		const explainText: string = this.translate("administration/aimod:explain:text", {
+			e: this.client.emotes,
+			clientname: this.client.user!.username
+		}).join("\n");
 
-		const embed: EmbedBuilder = this.client.createEmbed(
-			explainText,
-			null,
-			"normal"
-		);
-		embed.setTitle(
-			this.client.emotes.flags.CertifiedModerator + " " +
-			this.translate("administration/aimod:explain:title")
-		);
+		const embed: EmbedBuilder = this.client.createEmbed(explainText, null, "normal");
+		embed.setTitle(this.client.emotes.flags.CertifiedModerator + " " + this.translate("administration/aimod:explain:title"));
 		return this.interaction.followUp({ embeds: [embed] });
 	}
 }

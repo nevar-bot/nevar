@@ -44,12 +44,7 @@ export default class BaseCommand {
 		}
 	) {
 		const category: string = dirname
-			? (dirname as string).split(path.sep)[
-					parseInt(
-						String((dirname as string).split(path.sep).length - 1),
-						10
-					)
-			  ]
+			? (dirname as string).split(path.sep)[parseInt(String((dirname as string).split(path.sep).length - 1), 10)]
 			: "Misc";
 		this.client = client;
 		this.conf = {

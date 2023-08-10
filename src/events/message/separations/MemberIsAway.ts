@@ -12,17 +12,11 @@ export default class {
 		let afkUsers: any[] = [];
 
 		if (message.mentions.repliedUser) {
-			const mentionData = await this.client.findOrCreateUser(
-				message.mentions.repliedUser.id
-			);
+			const mentionData = await this.client.findOrCreateUser(message.mentions.repliedUser.id);
 
 			if (mentionData.afk?.state) {
-				const afkSince: any = this.client.utils.getRelativeTime(
-					mentionData.afk.since
-				);
-				afkUsers = afkUsers.filter(
-					(u): boolean => u.id !== message.mentions.repliedUser.id
-				);
+				const afkSince: any = this.client.utils.getRelativeTime(mentionData.afk.since);
+				afkUsers = afkUsers.filter((u): boolean => u.id !== message.mentions.repliedUser.id);
 
 				afkUsers.push({
 					name: message.mentions.repliedUser.username,
@@ -37,17 +31,11 @@ export default class {
 			const users: any = Array.from(message.mentions.users);
 
 			for (const user of users) {
-				const mentionData = await this.client.findOrCreateUser(
-					user[1].id
-				);
+				const mentionData = await this.client.findOrCreateUser(user[1].id);
 
 				if (mentionData.afk?.state) {
-					const afkSince = this.client.utils.getRelativeTime(
-						mentionData.afk.since
-					);
-					afkUsers = afkUsers.filter(
-						(u: any): boolean => u.id !== user[1].id
-					);
+					const afkSince = this.client.utils.getRelativeTime(mentionData.afk.since);
+					afkUsers = afkUsers.filter((u: any): boolean => u.id !== user[1].id);
 					afkUsers.push({
 						name: user[1].username,
 						displayName: user[1].displayName,
@@ -61,32 +49,11 @@ export default class {
 
 		for (let afkUser of afkUsers) {
 			const awayText: string =
-				this.client.emotes.text +
-				" Begründung: " +
-				afkUser.reason +
-				"\n" +
-				this.client.emotes.reminder +
-				" Abwesend seit: " +
-				afkUser.since;
+				this.client.emotes.text + " Begründung: " + afkUser.reason + "\n" + this.client.emotes.reminder + " Abwesend seit: " + afkUser.since;
 
-			const isAwayEmbed: EmbedBuilder = this.client.createEmbed(
-				"{0}",
-				"reminder",
-				"normal",
-				awayText
-			);
-			isAwayEmbed.setTitle(
-				this.client.emotes.status.idle +
-					" " +
-					afkUser.displayName +
-					" (@" +
-					afkUser.name +
-					")" +
-					" ist aktuell abwesend!"
-			);
-			await message
-				.reply({ embeds: [isAwayEmbed] })
-				.catch((): void => {});
+			const isAwayEmbed: EmbedBuilder = this.client.createEmbed("{0}", "reminder", "normal", awayText);
+			isAwayEmbed.setTitle(this.client.emotes.status.idle + " " + afkUser.displayName + " (@" + afkUser.name + ")" + " ist aktuell abwesend!");
+			await message.reply({ embeds: [isAwayEmbed] }).catch((): void => {});
 		}
 	}
 }

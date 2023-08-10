@@ -42,7 +42,6 @@ export const permissions = {
 	UseVAD: "Sprachaktivierung verwenden",
 	ViewAuditLog: "Audit-Log einsehen",
 	ViewChannel: "Channel anzeigen",
-	ViewCreatorMonetizationAnalytics:
-		"Creator-Monetarisierungsanalyse anzeigen",
+	ViewCreatorMonetizationAnalytics: "Creator-Monetarisierungsanalyse anzeigen",
 	ViewGuildInsights: "Server-Einblicke anzeigen"
 };

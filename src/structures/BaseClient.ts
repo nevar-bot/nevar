@@ -82,10 +82,7 @@ export default class BaseClient extends DiscordClient {
 				GatewayIntentBits.GuildInvites,
 				GatewayIntentBits.MessageContent
 			],
-			partials: Object.values(Partials).filter(
-				(partial: string | Partials): partial is Partials =>
-					typeof partial === "object"
-			),
+			partials: Object.values(Partials).filter((partial: string | Partials): partial is Partials => typeof partial === "object"),
 			allowedMentions: {
 				parse: ["users"]
 			}
@@ -126,27 +123,16 @@ export default class BaseClient extends DiscordClient {
 		this.aiChat = new Collection();
 	}
 
-	getLocaleString(
-		key: string,
-		locale: string,
-		args: any[] = []
-	): Promise<any> {
+	getLocaleString(key: string, locale: string, args: any[] = []): Promise<any> {
 		const language: any = this.locales.get(locale);
 		return language(key, args);
 	}
 
-	async findOrCreateUser(
-		userID: string,
-		isLean: boolean = false
-	): Promise<any> {
+	async findOrCreateUser(userID: string, isLean: boolean = false): Promise<any> {
 		if (this.databaseCache.users.get(userID)) {
-			return isLean
-				? this.databaseCache.users.get(userID).toJSON()
-				: this.databaseCache.users.get(userID);
+			return isLean ? this.databaseCache.users.get(userID).toJSON() : this.databaseCache.users.get(userID);
 		} else {
-			let userData: any = isLean
-				? await this.usersData.findOne({ id: userID }).lean()
-				: await this.usersData.findOne({ id: userID });
+			let userData: any = isLean ? await this.usersData.findOne({ id: userID }).lean() : await this.usersData.findOne({ id: userID });
 			if (userData) {
 				if (!isLean) this.databaseCache.users.set(userID, userData);
 				return userData;
@@ -161,50 +147,29 @@ export default class BaseClient extends DiscordClient {
 
 	async findUser(userID: string): Promise<any> {
 		const cachedUser: any = this.databaseCache.users.get(userID);
-		return cachedUser
-			? cachedUser
-			: await this.usersData.findOne({ id: userID });
+		return cachedUser ? cachedUser : await this.usersData.findOne({ id: userID });
 	}
 
 	async deleteUser(userID: string): Promise<any> {
 		if (this.databaseCache.users.get(userID)) {
-			await this.usersData
-				.findOneAndDelete({ id: userID })
-				.catch((e: any) => {
-					this.alertException(
-						e,
-						null,
-						null,
-						'<BaseClient>.deleteUser("' + userID + '")'
-					);
-				});
+			await this.usersData.findOneAndDelete({ id: userID }).catch((e: any) => {
+				this.alertException(e, null, null, '<BaseClient>.deleteUser("' + userID + '")');
+			});
 			this.databaseCache.users.delete(userID);
 		}
 	}
 
-	async findOrCreateMember(
-		memberID: string,
-		guildID: string,
-		isLean: boolean = false
-	): Promise<any> {
+	async findOrCreateMember(memberID: string, guildID: string, isLean: boolean = false): Promise<any> {
 		if (this.databaseCache.members.get(`${memberID}${guildID}`)) {
 			return isLean
-				? this.databaseCache.members
-						.get(`${memberID}${guildID}`)
-						.toJSON()
+				? this.databaseCache.members.get(`${memberID}${guildID}`).toJSON()
 				: this.databaseCache.members.get(`${memberID}${guildID}`);
 		} else {
 			let memberData: any = isLean
-				? await this.membersData
-						.findOne({ guildID, id: memberID })
-						.lean()
+				? await this.membersData.findOne({ guildID, id: memberID }).lean()
 				: await this.membersData.findOne({ guildID, id: memberID });
 			if (memberData) {
-				if (!isLean)
-					this.databaseCache.members.set(
-						`${memberID}${guildID}`,
-						memberData
-					);
+				if (!isLean) this.databaseCache.members.set(`${memberID}${guildID}`, memberData);
 				return memberData;
 			} else {
 				memberData = new this.membersData({
@@ -216,26 +181,16 @@ export default class BaseClient extends DiscordClient {
 				if (guild) {
 					guild.members.push(memberData._id);
 					await guild.save().catch((e: any) => {
-						this.alertException(
-							e,
-							null,
-							null,
-							"<GuildData>.save()"
-						);
+						this.alertException(e, null, null, "<GuildData>.save()");
 					});
 				}
-				this.databaseCache.members.set(
-					`${memberID}${guildID}`,
-					memberData
-				);
+				this.databaseCache.members.set(`${memberID}${guildID}`, memberData);
 			}
 		}
 	}
 
 	async findMember(memberID: string, guildID: string): Promise<any> {
-		const cachedMember: any = this.databaseCache.members.get(
-			`${memberID}${guildID}`
-		);
+		const cachedMember: any = this.databaseCache.members.get(`${memberID}${guildID}`);
 		return cachedMember
 			? cachedMember
 			: await this.membersData.findOne({
@@ -251,38 +206,19 @@ export default class BaseClient extends DiscordClient {
 				.deleteOne()
 				.exec()
 				.catch((e: Error) => {
-					this.alertException(
-						e,
-						null,
-						null,
-						'<Client>.deleteMember("' +
-							memberID +
-							'", ' +
-							guildID +
-							'")'
-					);
+					this.alertException(e, null, null, '<Client>.deleteMember("' + memberID + '", ' + guildID + '")');
 				});
 			this.databaseCache.members.delete(`${memberID}${guildID}`);
 		}
 	}
 
-	async findOrCreateGuild(
-		guildID: string,
-		isLean: boolean = false
-	): Promise<any> {
+	async findOrCreateGuild(guildID: string, isLean: boolean = false): Promise<any> {
 		if (this.databaseCache.guilds.get(guildID)) {
-			return isLean
-				? this.databaseCache.guilds.get(guildID).toJSON()
-				: this.databaseCache.guilds.get(guildID);
+			return isLean ? this.databaseCache.guilds.get(guildID).toJSON() : this.databaseCache.guilds.get(guildID);
 		} else {
 			let guildData: any = isLean
-				? await this.guildsData
-						.findOne({ id: guildID })
-						.populate("members")
-						.lean()
-				: await this.guildsData
-						.findOne({ id: guildID })
-						.populate("members");
+				? await this.guildsData.findOne({ id: guildID }).populate("members").lean()
+				: await this.guildsData.findOne({ id: guildID }).populate("members");
 			if (guildData) {
 				if (!isLean) this.databaseCache.guilds.set(guildID, guildData);
 				return guildData;
@@ -297,9 +233,7 @@ export default class BaseClient extends DiscordClient {
 
 	async findGuild(guildID: string): Promise<any> {
 		const cachedGuild: any = this.databaseCache.guilds.get(guildID);
-		return cachedGuild
-			? cachedGuild
-			: await this.guildsData.findOne({ id: guildID });
+		return cachedGuild ? cachedGuild : await this.guildsData.findOne({ id: guildID });
 	}
 
 	async deleteGuild(guildID: string): Promise<any> {
@@ -309,26 +243,16 @@ export default class BaseClient extends DiscordClient {
 				.deleteOne()
 				.exec()
 				.catch((e: Error) => {
-					this.alertException(
-						e,
-						null,
-						null,
-						'<Client>.deleteGuild("' + guildID + '")'
-					);
+					this.alertException(e, null, null, '<Client>.deleteGuild("' + guildID + '")');
 				});
 			this.databaseCache.guilds.delete(guildID);
 		}
 	}
 
 	// Command methods
-	async loadCommand(
-		commandPath: string,
-		name: string
-	): Promise<boolean | any> {
+	async loadCommand(commandPath: string, name: string): Promise<boolean | any> {
 		try {
-			const props = new (await import(commandPath + "/" + name)).default(
-				this
-			);
+			const props = new (await import(commandPath + "/" + name)).default(this);
 			props.conf.location = commandPath;
 			if (props.init) props.init(this);
 			this.commands.set(props.help.name, props);
@@ -338,18 +262,13 @@ export default class BaseClient extends DiscordClient {
 		}
 	}
 
-	async unloadCommand(
-		commandPath: string,
-		name: string
-	): Promise<string | boolean> {
+	async unloadCommand(commandPath: string, name: string): Promise<string | boolean> {
 		let command: any;
 		if (this.commands.has(name)) command = this.commands.get(name);
 		if (!command) return "Command not found: " + name;
 		if (command.shutdown) await command.shutdown(this);
 
-		delete require.cache[
-			require.resolve(commandPath + path.sep + name + ".js")
-		];
+		delete require.cache[require.resolve(commandPath + path.sep + name + ".js")];
 		return false;
 	}
 
@@ -373,10 +292,7 @@ export default class BaseClient extends DiscordClient {
 
 		let formattedMessage: string | null = message;
 		for (let i: number = 0; i < args.length; i++) {
-			formattedMessage = formattedMessage!.replaceAll(
-				"{" + i + "}",
-				args[i]
-			);
+			formattedMessage = formattedMessage!.replaceAll("{" + i + "}", args[i]);
 		}
 
 		return new EmbedBuilder()
@@ -385,10 +301,7 @@ export default class BaseClient extends DiscordClient {
 				iconURL: this.user!.displayAvatarURL(),
 				url: this.config.general["WEBSITE"]
 			})
-			.setDescription(
-				(emote ? this.emotes[emote] + " " : " ") +
-					(formattedMessage ? formattedMessage : " ")
-			)
+			.setDescription((emote ? this.emotes[emote] + " " : " ") + (formattedMessage ? formattedMessage : " "))
 			.setColor(color)
 			.setFooter({ text: this.config.embeds["FOOTER_TEXT"] });
 	}
@@ -415,9 +328,7 @@ export default class BaseClient extends DiscordClient {
 		return button;
 	}
 
-	createMessageComponentsRow(
-		...components: any
-	): ActionRowBuilder<AnyComponentBuilder> {
+	createMessageComponentsRow(...components: any): ActionRowBuilder<AnyComponentBuilder> {
 		return new ActionRowBuilder().addComponents(components);
 	}
 
@@ -445,60 +356,28 @@ export default class BaseClient extends DiscordClient {
 		});
 	}
 
-	alertException(
-		exception: any,
-		guild: string | null = null,
-		user: User | null = null,
-		action: string | null = null
-	): any {
-		const supportGuild: Guild | undefined = this.guilds.cache.get(
-			this.config.support["ID"]
-		);
-		const errorLogChannel: any = supportGuild?.channels.cache.get(
-			this.config.support["ERROR_LOG"]
-		);
+	alertException(exception: any, guild: string | null = null, user: User | null = null, action: string | null = null): any {
+		const supportGuild: Guild | undefined = this.guilds.cache.get(this.config.support["ID"]);
+		const errorLogChannel: any = supportGuild?.channels.cache.get(this.config.support["ERROR_LOG"]);
 		if (!supportGuild || !errorLogChannel) return;
 
-		const exceptionEmbed: EmbedBuilder = this.createEmbed(
-			"Ein Fehler ist aufgetreten",
-			"error",
-			"error"
-		);
+		const exceptionEmbed: EmbedBuilder = this.createEmbed("Ein Fehler ist aufgetreten", "error", "error");
 		let description: string | undefined = exceptionEmbed.data.description;
 
-		if (guild)
-			description += "\n" + this.emotes.arrow + " Server: " + guild;
-		if (user)
-			description +=
-				"\n" +
-				this.emotes.arrow +
-				" Nutzer: " +
-				user.username +
-				" (" +
-				user.id +
-				")";
-		if (action)
-			description += "\n" + this.emotes.arrow + " Aktion: " + action;
+		if (guild) description += "\n" + this.emotes.arrow + " Server: " + guild;
+		if (user) description += "\n" + this.emotes.arrow + " Nutzer: " + user.username + " (" + user.id + ")";
+		if (action) description += "\n" + this.emotes.arrow + " Aktion: " + action;
 		description += "\n```js\n" + exception.stack + "```";
 
 		exceptionEmbed.setDescription(description!);
 		exceptionEmbed.setThumbnail(this.user!.displayAvatarURL());
-		return errorLogChannel
-			.send({ embeds: [exceptionEmbed] })
-			.catch(() => {});
+		return errorLogChannel.send({ embeds: [exceptionEmbed] }).catch(() => {});
 	}
 
-	alert(
-		text: string,
-		color: "normal" | "success" | "warning" | "error" | "transparent"
-	): any {
-		const supportGuild: Guild | undefined = this.guilds.cache.get(
-			this.config.support["ID"]
-		);
+	alert(text: string, color: "normal" | "success" | "warning" | "error" | "transparent"): any {
+		const supportGuild: Guild | undefined = this.guilds.cache.get(this.config.support["ID"]);
 		if (!supportGuild) return;
-		const logChannel: any = supportGuild.channels.cache.get(
-			this.config.support["BOT_LOG"]
-		);
+		const logChannel: any = supportGuild.channels.cache.get(this.config.support["BOT_LOG"]);
 		if (!logChannel) return;
 
 		const embed = this.createEmbed(text, "information", color);
@@ -510,27 +389,18 @@ export default class BaseClient extends DiscordClient {
 		const USER_MENTION: RegExp = /<?@?!?(\d{17,20})>?/;
 		if (!query) return;
 
-		const patternMatch: RegExpExecArray | null =
-			RegExp(USER_MENTION).exec(query);
+		const patternMatch: RegExpExecArray | null = RegExp(USER_MENTION).exec(query);
 		if (patternMatch) {
 			const id: string = patternMatch[1];
-			const fetchedUser: any = await this.users
-				.fetch(id, { cache: true })
-				.catch((): void => {});
+			const fetchedUser: any = await this.users.fetch(id, { cache: true }).catch((): void => {});
 			if (fetchedUser) return fetchedUser;
 		}
 
-		const matchingUsernames: any = this.users.cache.filter(
-			(user: any): boolean => user.username === query
-		);
+		const matchingUsernames: any = this.users.cache.filter((user: any): boolean => user.username === query);
 		if (matchingUsernames.size === 1) return matchingUsernames.first();
 
 		if (!exact) {
-			return this.users.cache.find(
-				(x: any): any =>
-					x.username === query ||
-					x.username.toLowerCase().includes(query.toLowerCase())
-			);
+			return this.users.cache.find((x: any): any => x.username === query || x.username.toLowerCase().includes(query.toLowerCase()));
 		}
 	}
 }

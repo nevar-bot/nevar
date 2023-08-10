@@ -14,18 +14,8 @@ export default class KickCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()
-					.addUserOption((option: any) =>
-						option
-							.setName("mitglied")
-							.setDescription("Wähle ein Mitglied")
-							.setRequired(true)
-					)
-					.addStringOption((option: any) =>
-						option
-							.setName("grund")
-							.setDescription("Gib ggf. einen Grund an")
-							.setRequired(false)
-					)
+					.addUserOption((option: any) => option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true))
+					.addStringOption((option: any) => option.setName("grund").setDescription("Gib ggf. einen Grund an").setRequired(false))
 			}
 		});
 	}
@@ -34,44 +24,25 @@ export default class KickCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.kick(
-			interaction.options.getMember("mitglied"),
-			interaction.options.getString("grund")
-		);
+		await this.kick(interaction.options.getMember("mitglied"), interaction.options.getString("grund"));
 	}
 
 	private async kick(member: any, reason: string): Promise<void> {
 		if (member.user.id === this.interaction.member.user.id) {
-			const cantKickYourselfEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du kannst dich nicht selber kicken.",
-				"error",
-				"error"
-			);
+			const cantKickYourselfEmbed: EmbedBuilder = this.client.createEmbed("Du kannst dich nicht selber kicken.", "error", "error");
 			return this.interaction.followUp({
 				embeds: [cantKickYourselfEmbed]
 			});
 		}
 		if (member.user.id === this.client.user!.id) {
-			const cantKickBotEmbed: EmbedBuilder = this.client.createEmbed(
-				"Ich kann mich nicht selber kicken.",
-				"error",
-				"error"
-			);
+			const cantKickBotEmbed: EmbedBuilder = this.client.createEmbed("Ich kann mich nicht selber kicken.", "error", "error");
 			return this.interaction.followUp({ embeds: [cantKickBotEmbed] });
 		}
 		if (!member.kickable) {
-			const cantKickEmbed: EmbedBuilder = this.client.createEmbed(
-				"Ich kann {0} nicht kicken.",
-				"error",
-				"error",
-				member.user.username
-			);
+			const cantKickEmbed: EmbedBuilder = this.client.createEmbed("Ich kann {0} nicht kicken.", "error", "error", member.user.username);
 			return this.interaction.followUp({ embeds: [cantKickEmbed] });
 		}
-		if (
-			member.roles.highest.position >=
-			this.interaction.member.roles.highest.position
-		) {
+		if (member.roles.highest.position >= this.interaction.member.roles.highest.position) {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst keine Mitglieder kicken, die eine höhere Rolle haben als du.",
 				"error",
@@ -82,12 +53,7 @@ export default class KickCommand extends BaseCommand {
 		if (!reason) reason = "Kein Grund angegeben";
 
 		member
-			.kick(
-				"Gekickt von " +
-					this.interaction.member.user.username +
-					" - Begründung: " +
-					reason
-			)
+			.kick("Gekickt von " + this.interaction.member.user.username + " - Begründung: " + reason)
 			.then(async (): Promise<void> => {
 				const privateText: string =
 					"### " +
@@ -102,14 +68,8 @@ export default class KickCommand extends BaseCommand {
 					this.client.emotes.arrow +
 					" Moderator: " +
 					this.interaction.member.user.username;
-				const privateEmbed: EmbedBuilder = this.client.createEmbed(
-					privateText,
-					null,
-					"error"
-				);
-				await member
-					.send({ embeds: [privateEmbed] })
-					.catch((): void => {});
+				const privateEmbed: EmbedBuilder = this.client.createEmbed(privateText, null, "error");
+				await member.send({ embeds: [privateEmbed] }).catch((): void => {});
 
 				const logText: string =
 					"### " +
@@ -124,11 +84,7 @@ export default class KickCommand extends BaseCommand {
 					this.client.emotes.text +
 					" Begründung: " +
 					reason;
-				const logEmbed: EmbedBuilder = this.client.createEmbed(
-					logText,
-					null,
-					"error"
-				);
+				const logEmbed: EmbedBuilder = this.client.createEmbed(logText, null, "error");
 				logEmbed.setThumbnail(member.user.displayAvatarURL());
 				await this.interaction.guild.logAction(logEmbed, "moderation");
 
@@ -145,20 +101,11 @@ export default class KickCommand extends BaseCommand {
 					this.client.emotes.arrow +
 					" Moderator: " +
 					this.interaction.member.user.username;
-				const publicEmbed: EmbedBuilder = this.client.createEmbed(
-					publicText,
-					null,
-					"error"
-				);
+				const publicEmbed: EmbedBuilder = this.client.createEmbed(publicText, null, "error");
 				return this.interaction.followUp({ embeds: [publicEmbed] });
 			})
 			.catch(async (): Promise<void> => {
-				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					"Ich konnte {0} nicht kicken.",
-					"error",
-					"error",
-					member.user.username
-				);
+				const errorEmbed: EmbedBuilder = this.client.createEmbed("Ich konnte {0} nicht kicken.", "error", "error", member.user.username);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			});
 	}

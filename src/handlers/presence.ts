@@ -12,14 +12,7 @@ function updatePresence(client: any): void {
 			.replaceAll("{guilds}", client.format(client.guilds.cache.size))
 			.replaceAll(
 				"{users}",
-				client.format(
-					client.guilds.cache
-						.map((g: Guild): number => g.memberCount)
-						.reduce(
-							(partial_sum: any, a: any) => partial_sum + a,
-							0
-						)
-				)
+				client.format(client.guilds.cache.map((g: Guild): number => g.memberCount).reduce((partial_sum: any, a: any) => partial_sum + a, 0))
 			);
 
 		client.user.setPresence({

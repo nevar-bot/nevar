@@ -42,20 +42,10 @@ export default class ServerlistCommand extends BaseCommand {
 				"\n";
 			servers.push({ guild: guild[1], text: text });
 		}
-		servers.sort(
-			(a: any, b: any): number =>
-				b.guild.memberCount - a.guild.memberCount
-		);
+		servers.sort((a: any, b: any): number => b.guild.memberCount - a.guild.memberCount);
 
 		const serverTexts: any[] = servers.map((server) => server.text);
 
-		await this.client.utils.sendPaginatedEmbedMessage(
-			this.message,
-			5,
-			serverTexts,
-			"Serverliste",
-			"Der Bot ist auf keinem Server",
-			null
-		);
+		await this.client.utils.sendPaginatedEmbedMessage(this.message, 5, serverTexts, "Serverliste", "Der Bot ist auf keinem Server", null);
 	}
 }

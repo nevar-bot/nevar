@@ -9,9 +9,7 @@ export async function get(req: Request, res: Response) {
 	const month: string = req.params.month;
 
 	if (!month) {
-		const votes = JSON.parse(
-			fs.readFileSync("./assets/votes.json").toString()
-		);
+		const votes = JSON.parse(fs.readFileSync("./assets/votes.json").toString());
 		const json: any = {
 			status_code: 200,
 			status_message: null,
@@ -33,9 +31,7 @@ export async function get(req: Request, res: Response) {
 	}
 
 	if (requestedMonth) {
-		const votes = JSON.parse(
-			fs.readFileSync("./assets/votes.json").toString()
-		);
+		const votes = JSON.parse(fs.readFileSync("./assets/votes.json").toString());
 		const json: any = {
 			status_code: 200,
 			status_message: null,

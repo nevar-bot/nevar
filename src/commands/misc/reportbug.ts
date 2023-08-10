@@ -13,10 +13,7 @@ export default class ReportbugCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option
-						.setName("beschreibung")
-						.setDescription("Beschreibe den Fehler")
-						.setRequired(true)
+					option.setName("beschreibung").setDescription("Beschreibe den Fehler").setRequired(true)
 				)
 			}
 		});
@@ -26,16 +23,12 @@ export default class ReportbugCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.reportBug(
-			this.interaction.options.getString("beschreibung")
-		);
+		await this.reportBug(this.interaction.options.getString("beschreibung"));
 	}
 
 	private async reportBug(bug: string): Promise<void> {
 		const date: string = moment(Date.now()).format("DD.MM.YYYY, HH:mm");
-		const supportGuild: any = this.client.guilds.cache.get(
-			this.client.config.support["ID"]
-		);
+		const supportGuild: any = this.client.guilds.cache.get(this.client.config.support["ID"]);
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			"{0} Danke für deine Meldung! Wir werden uns so schnell wie möglich darum kümmern.",
@@ -58,9 +51,7 @@ export default class ReportbugCommand extends BaseCommand {
 			text: "Server-ID: " + this.interaction.guild.id + " | " + date
 		});
 
-		const errorLogChannel: any = await supportGuild.channels.fetch(
-			this.client.config.support["ERROR_LOG"]
-		);
+		const errorLogChannel: any = await supportGuild.channels.fetch(this.client.config.support["ERROR_LOG"]);
 		if (!errorLogChannel) return;
 
 		return errorLogChannel.send({ embeds: [supportEmbed] });

@@ -16,48 +16,27 @@ export default class {
 		this.client.invites.get(guild.id).delete(invite.code);
 
 		/* Remove invite from user */
-		const memberData: any = await this.client.findOrCreateMember(
-			invite.inviterId,
-			guild.id
-		);
+		const memberData: any = await this.client.findOrCreateMember(invite.inviterId, guild.id);
 		if (!memberData.invites) memberData.invites = [];
-		memberData.invites = memberData.invites.filter(
-			(i: any): boolean => i.code !== invite.code
-		);
+		memberData.invites = memberData.invites.filter((i: any): boolean => i.code !== invite.code);
 		memberData.markModified("invites");
 		await memberData.save();
 
-		let inviteDeleteText: string =
-			this.client.emotes.link + " Link: " + invite.url;
+		let inviteDeleteText: string = this.client.emotes.link + " Link: " + invite.url;
 
-		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent["InviteDelete"], limit: 1 })
-			.catch((e: any): void => {});
+		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["InviteDelete"], limit: 1 }).catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
 			if (auditLogEntry) {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					inviteDeleteText +=
-						"\n\n" +
-						this.client.emotes.user +
-						" Nutzer: " +
-						"**" +
-						moderator.displayName +
-						"** (@" +
-						moderator.username +
-						")";
+						"\n\n" + this.client.emotes.user + " Nutzer: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 
-		const inviteDeleteEmbed: EmbedBuilder = this.client.createEmbed(
-			inviteDeleteText,
-			null,
-			"error"
-		);
-		inviteDeleteEmbed.setTitle(
-			this.client.emotes.invite + " Einladung gelöscht"
-		);
+		const inviteDeleteEmbed: EmbedBuilder = this.client.createEmbed(inviteDeleteText, null, "error");
+		inviteDeleteEmbed.setTitle(this.client.emotes.invite + " Einladung gelöscht");
 		inviteDeleteEmbed.setThumbnail(guild.iconURL());
 
 		await guild.logAction(inviteDeleteEmbed, "guild");
