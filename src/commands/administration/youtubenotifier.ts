@@ -7,7 +7,10 @@ export default class Youtubenotifier extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "youtubenotifier",
-			description: "Verwaltet YouTube-Benachrichtigungen",
+			description: "Manages YouTube notifications",
+			localizedDescriptions: {
+				"de": "Verwaltet YouTube-Benachrichtigungen"
+			},
 			cooldown: 1000,
 			memberPermissions: ["ManageGuild"],
 			dirname: __dirname,
@@ -15,17 +18,32 @@ export default class Youtubenotifier extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
-						option.setName("aktion").setDescription("Wähle aus den folgenden Aktionen").setRequired(true).addChoices(
+						option.setName("action")
+							.setDescription("Choose from the following actions")
+							.setDescriptionLocalizations({
+								"de": "Wähle aus den folgenden Aktionen"
+							})
+							.setRequired(true)
+							.addChoices(
 							{
 								name: "add",
+								name_localizations: {
+									"de": "hinzufügen"
+								},
 								value: "add"
 							},
 							{
 								name: "remove",
+								name_localizations: {
+									"de": "entfernen"
+								},
 								value: "remove"
 							},
 							{
 								name: "list",
+								name_localizations: {
+									"de": "liste"
+								},
 								value: "list"
 							},
 							{
@@ -39,16 +57,33 @@ export default class Youtubenotifier extends BaseCommand {
 						)
 					)
 					.addStringOption((option: any) =>
-						option.setName("youtubekanal").setDescription("Gib hier die ID des YouTube-Kanals an").setRequired(false)
+						option.setName("youtubechannel")
+							.setDescription("Enter the ID of the YouTube channel here")
+							.setDescriptionLocalizations({
+								"de": "Gib hier die ID des YouTube-Kanals an"
+							})
+							.setRequired(false)
 					)
 					.addStringOption((option: any) =>
-						option.setName("status").setDescription("Wähle einen Status").setRequired(false).addChoices(
+						option.setName("status")
+							.setDescription("Choose a status")
+							.setDescriptionLocalizations({
+								"de": "Wähle einen Status"
+							})
+							.setRequired(false)
+							.addChoices(
 							{
-								name: "an",
+								name: "on",
+								name_localizations: {
+									"de": "an"
+								},
 								value: "on"
 							},
 							{
-								name: "aus",
+								name: "off",
+								name_localizations: {
+									"de": "aus"
+								},
 								value: "off"
 							}
 						)
@@ -56,7 +91,10 @@ export default class Youtubenotifier extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Wähle den Channel, in welchem neue Videos gesendet werden sollen")
+							.setDescription("Select the channel in which you want to send new videos")
+							.setDescriptionLocalizations({
+								"de": "Wähle den Channel, in welchem neue Videos gesendet werden sollen"
+							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
 					)
@@ -64,10 +102,10 @@ export default class Youtubenotifier extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
+
 		if (!data.guild.settings?.notifiers?.youtube) {
 			data.guild.settings.notifiers = {
 				...(data.guild.settings.notifiers || {}),
@@ -80,13 +118,13 @@ export default class Youtubenotifier extends BaseCommand {
 			data.guild.markModified("settings.notifiers");
 			await data.guild.save();
 		}
-		const action: string = interaction.options.getString("aktion");
+		const action: string = interaction.options.getString("action");
 		switch (action) {
 			case "add":
-				await this.addNotifier(interaction.options.getString("youtubekanal"), data);
+				await this.addNotifier(interaction.options.getString("youtubechannel"), data);
 				break;
 			case "remove":
-				await this.removeNotifier(interaction.options.getString("youtubekanal"), data);
+				await this.removeNotifier(interaction.options.getString("youtubechannel"), data);
 				break;
 			case "list":
 				await this.listNotifiers(data);
@@ -102,7 +140,7 @@ export default class Youtubenotifier extends BaseCommand {
 
 	private async addNotifier(channelId: string, data: any): Promise<void> {
 		if (!channelId) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed("Du musst eine YouTube-Kanal-ID angeben.", "error", "error");
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:errors:missingChannelId"), "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
@@ -110,7 +148,7 @@ export default class Youtubenotifier extends BaseCommand {
 		if (channel) {
 			if (data.guild.settings.notifiers.youtube.channels.length > 3) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					"Es können maximal 3 Kanäle gleichzeitig überwacht werden.",
+					this.translate("administration/youtubenotifier:errors:limitExceeded"),
 					"error",
 					"error"
 				);
@@ -118,7 +156,7 @@ export default class Youtubenotifier extends BaseCommand {
 			}
 
 			if (data.guild.settings.notifiers.youtube.channels.find((channel: any): boolean => channel.id === channelId)) {
-				const errorEmbed: EmbedBuilder = this.client.createEmbed("Dieser Kanal wird bereits überwacht.", "error", "error");
+				const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:errors:alreadyAdded"), "error", "error");
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
 
@@ -130,22 +168,20 @@ export default class Youtubenotifier extends BaseCommand {
 			await data.guild.save();
 
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				"[{0}]({1}) wird ab jetzt überwacht.",
+				this.translate("administration/youtubenotifier:added", { name: channel.username, url: "https://youtube.com/channel/" + channelId }),
 				"success",
-				"success",
-				channel.username,
-				"https://youtube.com/channel/" + channelId
+				"success"
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed("Dieser Kanal konnte nicht gefunden werden.", "error", "error", channelId);
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:errors:cantFindChannel"), "error", "error", channelId);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 	}
 
 	private async removeNotifier(channelId: string, data: any): Promise<void> {
 		if (!channelId) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed("Du musst eine YouTube-Kanal-ID angeben.", "error", "error");
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:errors:missingChannelId"), "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
@@ -158,15 +194,13 @@ export default class Youtubenotifier extends BaseCommand {
 
 			const channel: any = await this.getChannelNameFromId(channelId);
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				"[{0}]({1}) wird ab jetzt nicht mehr überwacht.",
+				this.translate("administration/youtubenotifier:removed", { name: channel.username, url: "https://youtube.com/channel/" + channelId }),
 				"success",
-				"success",
-				channel.username,
-				"https://youtube.com/channel/" + channelId
+				"success"
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed("Dieser Kanal wird nicht überwacht.", "error", "error");
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:errors:notAdded"), "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 	}
@@ -182,22 +216,22 @@ export default class Youtubenotifier extends BaseCommand {
 			this.interaction,
 			3,
 			channels,
-			"Überwachte Youtube-Kanäle",
-			"Es werden derzeit keine Youtube-Kanäle überwacht",
+			this.translate("administration/youtubenotifier:list:title"),
+			this.translate("administration/youtubenotifier:list:empty"),
 			"link"
 		);
 	}
 
 	private async setStatus(status: string, data: any): Promise<void> {
 		if (!["on", "off"].includes(status)) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed("Du musst einen Status wählen.", "error", "error", status);
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:errors:missingStatus"), "error", "error", status);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
 		const statusBool: boolean = status === "on";
-		const statusString: string = statusBool ? "aktiviert" : "deaktiviert";
+		const statusString: string = statusBool ? this.translate("basics:enabled") : this.translate("basics:disabled");
 		if (data.guild.settings.notifiers.youtube.enabled === statusBool) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed("Der YouTube-Notifier ist bereits {0}.", "error", "error", statusString);
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:errors:statusAlready", { status: statusString }), "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
@@ -205,22 +239,21 @@ export default class Youtubenotifier extends BaseCommand {
 		data.guild.markModified("settings.notifiers.youtube.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Der YouTube-Notifier wurde erfolgreich {0}.", "success", "success", statusString);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:statusSet", { status: statusString }), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!channel) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed("Du musst einen Kanal auswählen.", "error", "error");
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/youtubenotifier:errors:missingChannel"), "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
 		if (data.guild.settings.notifiers.youtube.announcementChannel === channel.id) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				"YouTube-Videos werden bereits in {0} gesendet.",
+				this.translate("administration/youtubenotifier:errors:channelAlready", { channel: channel.toString() }),
 				"error",
-				"error",
-				channel.toString()
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -230,10 +263,9 @@ export default class Youtubenotifier extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"YouTube-Videos werden ab jetzt in {0} gesendet.",
+			this.translate("administration/youtubenotifier:channelSet", { channel: channel.toString() }),
 			"success",
-			"success",
-			channel.toString()
+			"success"
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
