@@ -368,6 +368,41 @@ export default class GoodbyeCommand extends BaseCommand {
 		);
 	}
 
+	private async setThumbnail(status: any, data: any): Promise<void> {
+		if (!data.guild.settings.farewell.thumbnail) {
+			data.guild.settings.farewell.thumbnail = true;
+			data.guild.markModified("settings.farewell.thumbnail");
+		}
+
+		if (!data.guild.settings.farewell.enabled) {
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:isDisabled"), "error", "error");
+			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
+		}
+
+		if (data.guild.settings.farewell.type === "text") {
+			const embedNotEnabled: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/goodbye:errors:typeHasToBeEmbed"),
+				"error",
+				"error"
+			);
+			return this.interaction.followUp({ embeds: [embedNotEnabled] });
+		}
+
+		if (data.guild.settings.farewell.thumbnail === JSON.parse(status)) {
+			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:sameTypeThumbnail", { status: statusString }), "error", "error");
+			return this.interaction.followUp({ embeds: [isAlreadyEmbed] });
+		}
+
+		data.guild.settings.farewell.thumbnail = JSON.parse(status);
+		data.guild.markModified("settings.farewell.thumbnail");
+		await data.guild.save();
+
+		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:thumbnailSet", { status: statusString }), "success", "success");
+		return this.interaction.followUp({ embeds: [successEmbed] });
+	}
+
 	private async setColor(color: any, data: any): Promise<void> {
 		if (!data.guild.settings.farewell.color) {
 			data.guild.settings.farewell.color = "#5865F2";
@@ -405,40 +440,5 @@ export default class GoodbyeCommand extends BaseCommand {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:colorSet", { color: color}), "success", "success");
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		}
-	}
-
-	private async setThumbnail(status: any, data: any): Promise<void> {
-		if (!data.guild.settings.farewell.thumbnail) {
-			data.guild.settings.farewell.thumbnail = true;
-			data.guild.markModified("settings.farewell.thumbnail");
-		}
-
-		if (!data.guild.settings.farewell.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:isDisabled"), "error", "error");
-			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
-		}
-
-		if (data.guild.settings.farewell.type === "text") {
-			const embedNotEnabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:typeHasToBeEmbed"),
-				"error",
-				"error"
-			);
-			return this.interaction.followUp({ embeds: [embedNotEnabled] });
-		}
-
-		if (data.guild.settings.farewell.thumbnail === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
-			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:sameTypeThumbnail", { status: statusString }), "error", "error");
-			return this.interaction.followUp({ embeds: [isAlreadyEmbed] });
-		}
-
-		data.guild.settings.farewell.thumbnail = JSON.parse(status);
-		data.guild.markModified("settings.farewell.thumbnail");
-		await data.guild.save();
-
-		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:thumbnailSet", { status: statusString }), "success", "success");
-		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }
