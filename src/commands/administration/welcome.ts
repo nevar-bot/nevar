@@ -8,7 +8,7 @@ export default class WelcomeCommand extends BaseCommand {
 			name: "welcome",
 			description: "Sets the welcome message",
 			localizedDescriptions: {
-				"de": "Stellt die Willkommensnachricht ein"
+				de: "Stellt die Willkommensnachricht ein"
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
@@ -21,46 +21,45 @@ export default class WelcomeCommand extends BaseCommand {
 							.setName("status")
 							.setDescription("Determines whether the welcome message is enabled or disabled")
 							.setDescriptionLocalizations({
-								"de": "Legt fest, ob die Willkommensnachricht aktiviert oder deaktiviert ist"
+								de: "Legt fest, ob die Willkommensnachricht aktiviert oder deaktiviert ist"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("status")
 									.setDescription("Choose a status")
 									.setDescriptionLocalizations({
-										"de": "Wähle einen Status"
+										de: "Wähle einen Status"
 									})
 									.setRequired(true)
 									.addChoices(
 										{
 											name: "on",
 											name_localizations: {
-												"de": "an"
+												de: "an"
 											},
 											value: "true"
-										}, {
+										},
+										{
 											name: "off",
 											name_localizations: {
-												"de": "aus"
+												de: "aus"
 											},
 											value: "false"
-										})
+										}
+									)
 							)
 					)
-					.addSubcommand((subcommand: any) => subcommand
-						.setName("test")
-						.setDescription("Sends a test message")
-						.setDescriptionLocalizations({
-							"de": "Sendet eine Testnachricht"
+					.addSubcommand((subcommand: any) =>
+						subcommand.setName("test").setDescription("Sends a test message").setDescriptionLocalizations({
+							de: "Sendet eine Testnachricht"
 						})
-
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("channel")
 							.setDescription("Defines in which channel the welcome message is sent")
 							.setDescriptionLocalizations({
-								"de": "Legt fest, in welchem Channel die Willkommensnachricht gesendet wird"
+								de: "Legt fest, in welchem Channel die Willkommensnachricht gesendet wird"
 							})
 							.addChannelOption((option: any) =>
 								option
@@ -68,7 +67,7 @@ export default class WelcomeCommand extends BaseCommand {
 									.setRequired(true)
 									.setDescription("Choose a channel")
 									.setDescriptionLocalizations({
-										"de": "Wähle einen Channel"
+										de: "Wähle einen Channel"
 									})
 									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
 							)
@@ -78,23 +77,26 @@ export default class WelcomeCommand extends BaseCommand {
 							.setName("type")
 							.setDescription("Whether the welcome message is sent as an embed or as text")
 							.setDescriptionLocalizations({
-								"de": "Ob die Willkommensnachricht als Embed oder als Text gesendet wird"
+								de: "Ob die Willkommensnachricht als Embed oder als Text gesendet wird"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("type")
 									.setDescription("Choose a type")
 									.setDescriptionLocalizations({
-										"de": "Wähle einen Typ"
+										de: "Wähle einen Typ"
 									})
 									.setRequired(true)
-									.addChoices({
-										name: "embed",
-										value: "embed"
-									}, {
-										name: "text",
-										value: "text"
-									})
+									.addChoices(
+										{
+											name: "embed",
+											value: "embed"
+										},
+										{
+											name: "text",
+											value: "text"
+										}
+									)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
@@ -102,15 +104,16 @@ export default class WelcomeCommand extends BaseCommand {
 							.setName("message")
 							.setDescription("Defines the welcome message (variables see /welcome variables)")
 							.setDescriptionLocalizations({
-								"de": "Definiert die Willkommensnachricht (Variablen siehe /welcome variables)"
+								de: "Definiert die Willkommensnachricht (Variablen siehe /welcome variables)"
 							})
-							.addStringOption((option: any) => option
-								.setName("message")
-								.setDescription("Enter the message")
-								.setDescriptionLocalizations({
-									"de": "Gib die Nachricht ein"
-								})
-								.setRequired(true)
+							.addStringOption((option: any) =>
+								option
+									.setName("message")
+									.setDescription("Enter the message")
+									.setDescriptionLocalizations({
+										de: "Gib die Nachricht ein"
+									})
+									.setRequired(true)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
@@ -118,7 +121,7 @@ export default class WelcomeCommand extends BaseCommand {
 							.setName("variables")
 							.setDescription("Lists all variables that can be used in the welcome message")
 							.setDescriptionLocalizations({
-								"de": "Listet alle Variablen, die in der Willkommensnachricht verwendet werden können"
+								de: "Listet alle Variablen, die in der Willkommensnachricht verwendet werden können"
 							})
 					)
 					.addSubcommand((subcommand: any) =>
@@ -126,13 +129,14 @@ export default class WelcomeCommand extends BaseCommand {
 							.setName("color")
 							.setDescription("The color of the embed (default: #5865F2)")
 							.setDescriptionLocalizations({
-								"de": "Die Farbe des Embeds (Standard: #5865F2)"
+								de: "Die Farbe des Embeds (Standard: #5865F2)"
 							})
 							.addStringOption((option: any) =>
-								option.setName("farbe")
+								option
+									.setName("farbe")
 									.setDescription("Enter a color in HEX format")
 									.setDescriptionLocalizations({
-										"de": "Gib eine Farbe im HEX-Format ein"
+										de: "Gib eine Farbe im HEX-Format ein"
 									})
 									.setRequired(true)
 							)
@@ -142,29 +146,32 @@ export default class WelcomeCommand extends BaseCommand {
 							.setName("thumbnail")
 							.setDescription("Should the profile picture be displayed in the embed?")
 							.setDescriptionLocalizations({
-								"de": "Soll das Profilbild im Embed angezeigt werden?"
+								de: "Soll das Profilbild im Embed angezeigt werden?"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("status")
 									.setDescription("Choose a status")
 									.setDescriptionLocalizations({
-										"de": "Wähle einen Status"
+										de: "Wähle einen Status"
 									})
 									.setRequired(true)
-									.addChoices({
-										name: "on",
-										name_localizations: {
-											"de": "an"
+									.addChoices(
+										{
+											name: "on",
+											name_localizations: {
+												de: "an"
+											},
+											value: "true"
 										},
-										value: "true"
-									}, {
-										name: "off",
-										name_localizations: {
-											"de": "aus"
-										},
-										value: "false"
-									})
+										{
+											name: "off",
+											name_localizations: {
+												de: "aus"
+											},
+											value: "false"
+										}
+									)
 							)
 					)
 			}
@@ -208,7 +215,12 @@ export default class WelcomeCommand extends BaseCommand {
 	private async setStatus(status: any, data: any): Promise<void> {
 		if (data.guild.settings.welcome.enabled === JSON.parse(status)) {
 			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
-			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:alreadyStatus", { status: statusString }), "error", "error", statusString);
+			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:errors:alreadyStatus", { status: statusString }),
+				"error",
+				"error",
+				statusString
+			);
 			return this.interaction.followUp({ embeds: [isAlreadyEmbed] });
 		}
 
@@ -217,13 +229,22 @@ export default class WelcomeCommand extends BaseCommand {
 		await data.guild.save();
 
 		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:statusSet", { status: statusString }), "success", "success", statusString);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("administration/welcome:statusSet", { status: statusString }),
+			"success",
+			"success",
+			statusString
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async sendPreview(data: any): Promise<void> {
 		if (!data.guild.settings.welcome.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:isDisabled"), "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:errors:isDisabled"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 		if (!data.guild.settings.welcome.channel || !this.client.channels.cache.get(data.guild.settings.welcome.channel)) {
@@ -294,7 +315,11 @@ export default class WelcomeCommand extends BaseCommand {
 
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!data.guild.settings.welcome.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:isDisabled"), "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:errors:isDisabled"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
@@ -312,12 +337,17 @@ export default class WelcomeCommand extends BaseCommand {
 
 	private async setType(type: any, data: any): Promise<void> {
 		if (!data.guild.settings.welcome.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:isDisabled"), "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:errors:isDisabled"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
 		if (data.guild.settings.welcome.type === type) {
-			const statusString: string = type === "embed" ? this.translate("administration/welcome:types:embed") : this.translate("administration/welcome:types:text");
+			const statusString: string =
+				type === "embed" ? this.translate("administration/welcome:types:embed") : this.translate("administration/welcome:types:text");
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("administration/welcome:errors:sameType", { type: statusString }),
 				"error",
@@ -331,7 +361,8 @@ export default class WelcomeCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.type");
 		await data.guild.save();
 
-		const statusString: string = type === "embed" ? this.translate("administration/welcome:types:embed") : this.translate("administration/welcome:types:text");
+		const statusString: string =
+			type === "embed" ? this.translate("administration/welcome:types:embed") : this.translate("administration/welcome:types:text");
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("administration/welcome:typeSet", { type: statusString }),
 			"success",
@@ -342,7 +373,11 @@ export default class WelcomeCommand extends BaseCommand {
 
 	private async setMessage(message: string, data: any): Promise<void> {
 		if (!data.guild.settings.welcome.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:isDisabled"), "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:errors:isDisabled"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
@@ -355,7 +390,7 @@ export default class WelcomeCommand extends BaseCommand {
 	}
 
 	async showVariables(): Promise<void> {
-		const variables: string[] = this.translate("administration/welcome:variables:list")
+		const variables: string[] = this.translate("administration/welcome:variables:list");
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
 			10,
@@ -373,7 +408,11 @@ export default class WelcomeCommand extends BaseCommand {
 		}
 
 		if (!data.guild.settings.welcome.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:isDisabled"), "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:errors:isDisabled"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
@@ -388,7 +427,11 @@ export default class WelcomeCommand extends BaseCommand {
 
 		if (data.guild.settings.welcome.profilePicture === JSON.parse(status)) {
 			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
-			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:sameTypeThumbnail", { status: statusString }), "error", "error");
+			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:errors:sameTypeThumbnail", { status: statusString }),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [isAlreadyEmbed] });
 		}
 
@@ -397,7 +440,12 @@ export default class WelcomeCommand extends BaseCommand {
 		await data.guild.save();
 
 		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:thumbnailSet", { status: statusString }), "success", "success", statusString);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("administration/welcome:thumbnailSet", { status: statusString }),
+			"success",
+			"success",
+			statusString
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -408,7 +456,11 @@ export default class WelcomeCommand extends BaseCommand {
 		}
 
 		if (!data.guild.settings.welcome.enabled) {
-			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:isDisabled"), "error", "error");
+			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:errors:isDisabled"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
 
@@ -434,7 +486,12 @@ export default class WelcomeCommand extends BaseCommand {
 			data.guild.markModified("settings.welcome.color");
 			await data.guild.save();
 
-			const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:colorSet", { color: color}), "success", "success", color);
+			const successEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/welcome:colorSet", { color: color }),
+				"success",
+				"success",
+				color
+			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		}
 	}

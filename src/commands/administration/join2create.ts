@@ -8,7 +8,7 @@ export default class Join2CreateCommand extends BaseCommand {
 			name: "join2create",
 			description: "Manages the Join-2-Create channel of the server",
 			localizedDescriptions: {
-				"de": "Verwaltet den Join-2-Create Kanal des Servers"
+				de: "Verwaltet den Join-2-Create Kanal des Servers"
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["ManageChannels"],
@@ -22,16 +22,17 @@ export default class Join2CreateCommand extends BaseCommand {
 							.setName("channel")
 							.setDescription("Choose a channel")
 							.setDescriptionLocalizations({
-								"de": "Wähle einen Channel"
+								de: "Wähle einen Channel"
 							})
-							.setRequired(true).addChannelTypes(ChannelType.GuildVoice)
+							.setRequired(true)
+							.addChannelTypes(ChannelType.GuildVoice)
 					)
 					.addIntegerOption((option) =>
 						option
 							.setName("limit")
 							.setDescription("Choose how many people can be in a channel at most (0 = unlimited)")
 							.setDescriptionLocalizations({
-								"de": "Wähle, wieviele Leute maximal in einem Channel sein dürfen (0 = unbegrenzt)"
+								de: "Wähle, wieviele Leute maximal in einem Channel sein dürfen (0 = unbegrenzt)"
 							})
 							.setMinValue(0)
 							.setMaxValue(99)
@@ -42,7 +43,7 @@ export default class Join2CreateCommand extends BaseCommand {
 							.setName("bitrate")
 							.setDescription("Choose the bitrate (8 - 96kbps, default: 64kbps)")
 							.setDescriptionLocalizations({
-								"de": "Wähle die Bitrate (8 - 96kbps, Standard: 64kbps)"
+								de: "Wähle die Bitrate (8 - 96kbps, Standard: 64kbps)"
 							})
 							.setRequired(true)
 							.setMinValue(8)
@@ -53,7 +54,7 @@ export default class Join2CreateCommand extends BaseCommand {
 							.setName("name")
 							.setDescription("Set the default name for the channel (variables: {count} and {user})")
 							.setDescriptionLocalizations({
-								"de": "Setze den Standard-Namen für die Channel (Variablen: {count} und {user})"
+								de: "Setze den Standard-Namen für die Channel (Variablen: {count} und {user})"
 							})
 							.setRequired(true)
 							.setMaxLength(100)
@@ -63,7 +64,7 @@ export default class Join2CreateCommand extends BaseCommand {
 							.setName("category")
 							.setDescription("Choose in which category the channels will be created")
 							.setDescriptionLocalizations({
-								"de": "Wähle, in welcher Kategorie die Channel erstellt werden"
+								de: "Wähle, in welcher Kategorie die Channel erstellt werden"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildCategory)
@@ -71,7 +72,6 @@ export default class Join2CreateCommand extends BaseCommand {
 			}
 		});
 	}
-
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;

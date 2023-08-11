@@ -10,7 +10,7 @@ export default class AddstickerCommand extends BaseCommand {
 			name: "addsticker",
 			description: "Creates a new sticker from a link to an image",
 			localizedDescriptions: {
-				"de": "Erstellt einen neuen Sticker anhand eines Links zu einem Bild"
+				de: "Erstellt einen neuen Sticker anhand eines Links zu einem Bild"
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -24,7 +24,7 @@ export default class AddstickerCommand extends BaseCommand {
 							.setName("url")
 							.setDescription("Enter a link to an image")
 							.setDescriptionLocalizations({
-								"de": "Gib einen Link zu einem Bild ein"
+								de: "Gib einen Link zu einem Bild ein"
 							})
 							.setRequired(true)
 					)
@@ -33,7 +33,7 @@ export default class AddstickerCommand extends BaseCommand {
 							.setName("name")
 							.setDescription("Enter what you want the new sticker to be called")
 							.setDescriptionLocalizations({
-								"de": "Gib ein, wie der neue Sticker heißen soll"
+								de: "Gib ein, wie der neue Sticker heißen soll"
 							})
 							.setRequired(true)
 							.setMaxLength(32)
@@ -43,7 +43,7 @@ export default class AddstickerCommand extends BaseCommand {
 							.setName("emoji")
 							.setDescription("Enter a standard Discord emoji that represents the sticker")
 							.setDescriptionLocalizations({
-								"de": "Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert"
+								de: "Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert"
 							})
 							.setRequired(true)
 					)
@@ -52,7 +52,7 @@ export default class AddstickerCommand extends BaseCommand {
 							.setName("description")
 							.setDescription("Enter a short description for the sticker")
 							.setDescriptionLocalizations({
-								"de": "Gib eine kurze Beschreibung für den Sticker ein"
+								de: "Gib eine kurze Beschreibung für den Sticker ein"
 							})
 							.setRequired(false)
 							.setMaxLength(100)

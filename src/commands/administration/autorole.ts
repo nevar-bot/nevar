@@ -8,7 +8,7 @@ export default class AutoroleCommand extends BaseCommand {
 			name: "autorole",
 			description: "Manages the roles that are automatically given to new members",
 			localizedDescriptions: {
-				"de": "Verwaltet die Rollen, welche neuen Mitgliedern automatisch gegeben werden"
+				de: "Verwaltet die Rollen, welche neuen Mitgliedern automatisch gegeben werden"
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["ManageRoles"],
@@ -22,28 +22,28 @@ export default class AutoroleCommand extends BaseCommand {
 							.setName("action")
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								"de": "Wähle aus den folgenden Aktionen"
+								de: "Wähle aus den folgenden Aktionen"
 							})
 							.setRequired(true)
 							.addChoices(
 								{
 									name: "add",
 									name_localizations: {
-										"de": "hinzufügen"
+										de: "hinzufügen"
 									},
 									value: "add"
 								},
 								{
 									name: "remove",
 									name_localizations: {
-										"de": "entfernen"
+										de: "entfernen"
 									},
 									value: "remove"
 								},
 								{
 									name: "list",
 									name_localizations: {
-										"de": "liste"
+										de: "liste"
 									},
 									value: "list"
 								}
@@ -54,13 +54,13 @@ export default class AutoroleCommand extends BaseCommand {
 							.setName("role")
 							.setDescription("Choose a role")
 							.setDescriptionLocalizations({
-								"de": "Wähle eine Rolle"
+								de: "Wähle eine Rolle"
 							})
-							.setRequired(false))
+							.setRequired(false)
+					)
 			}
 		});
 	}
-
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
@@ -78,7 +78,11 @@ export default class AutoroleCommand extends BaseCommand {
 				await this.showList(data);
 				break;
 			default:
-				const unexpectedErrorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("basics:errors:unexpected", { support: this.client.support }), "error", "error");
+				const unexpectedErrorEmbed: EmbedBuilder = this.client.createEmbed(
+					this.translate("basics:errors:unexpected", { support: this.client.support }),
+					"error",
+					"error"
+				);
 				return this.interaction.followUp({
 					embeds: [unexpectedErrorEmbed]
 				});
@@ -88,7 +92,11 @@ export default class AutoroleCommand extends BaseCommand {
 	private async addAutorole(role: any, data: any): Promise<void> {
 		/* Invalid options */
 		if (!role || !role.id) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/autorole:errors:invalidRole"), "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/autorole:errors:invalidRole"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -115,7 +123,10 @@ export default class AutoroleCommand extends BaseCommand {
 		/* Role is higher than the bot's highest role */
 		if (this.interaction.guild.members.me.roles.highest.position <= role.position) {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/autorole:errors:roleIsTooHigh", { role: role.toString(), botRole: this.interaction.guild.members.me.roles.highest.toString() }),
+				this.translate("administration/autorole:errors:roleIsTooHigh", {
+					role: role.toString(),
+					botRole: this.interaction.guild.members.me.roles.highest.toString()
+				}),
 				"error",
 				"error"
 			);
@@ -124,7 +135,11 @@ export default class AutoroleCommand extends BaseCommand {
 
 		/* Role is already an autorole */
 		if (data.guild.settings.welcome.autoroles.includes(role.id)) {
-			const isAlreadyAutoroleEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/autorole:errors:alreadyAdded", { role: role.toString() }), "error", "error");
+			const isAlreadyAutoroleEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/autorole:errors:alreadyAdded", { role: role.toString() }),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({
 				embeds: [isAlreadyAutoroleEmbed]
 			});
@@ -135,20 +150,32 @@ export default class AutoroleCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.autoroles");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/autorole:added", { role: role.toString() }), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("administration/autorole:added", { role: role.toString() }),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async removeAutorole(role: any, data: any): Promise<void> {
 		/* Invalid options */
 		if (!role || !role.id) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/autorole:errors:invalidRole"), "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/autorole:errors:invalidRole"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
 		/* Role is not an autorole */
 		if (!data.guild.settings.welcome.autoroles.includes(role.id)) {
-			const isNoAutoroleEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/autorole:errors:notAdded", { role: role.toString() }), "error", "error");
+			const isNoAutoroleEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("administration/autorole:errors:notAdded", { role: role.toString() }),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [isNoAutoroleEmbed] });
 		}
 
@@ -157,7 +184,11 @@ export default class AutoroleCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.autoroles");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/autorole:removed", { role: role.toString() }), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("administration/autorole:removed", { role: role.toString() }),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -170,6 +201,13 @@ export default class AutoroleCommand extends BaseCommand {
 			if (cachedRole) autorolesArray.push(cachedRole.toString());
 		}
 
-		await this.client.utils.sendPaginatedEmbed(this.interaction, 5, autorolesArray, this.translate("administration/autorole:list:title"), this.translate("administration/autorole:list:empty"), "ping");
+		await this.client.utils.sendPaginatedEmbed(
+			this.interaction,
+			5,
+			autorolesArray,
+			this.translate("administration/autorole:list:title"),
+			this.translate("administration/autorole:list:empty"),
+			"ping"
+		);
 	}
 }

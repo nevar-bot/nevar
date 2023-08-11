@@ -8,7 +8,7 @@ export default class AichatCommand extends BaseCommand {
 			name: "aichat",
 			description: "Manages the AI chat of the guild",
 			localizedDescriptions: {
-				"de": "Verwaltet den KI-Chat des Servers",
+				de: "Verwaltet den KI-Chat des Servers"
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
@@ -21,7 +21,7 @@ export default class AichatCommand extends BaseCommand {
 							.setName("action")
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								"de": "Wähle aus den folgenden Aktionen"
+								de: "Wähle aus den folgenden Aktionen"
 							})
 							.setRequired(true)
 							.addChoices(
@@ -36,7 +36,7 @@ export default class AichatCommand extends BaseCommand {
 								{
 									name: "mode",
 									name_localizations: {
-										"de": "modus",
+										de: "modus"
 									},
 									value: "mode"
 								}
@@ -47,7 +47,7 @@ export default class AichatCommand extends BaseCommand {
 							.setName("channel")
 							.setDescription("Choose the channel where the AI chat should be active")
 							.setDescriptionLocalizations({
-								"de": "Wähle den Kanal, in dem der KI-Chat aktiv sein soll"
+								de: "Wähle den Kanal, in dem der KI-Chat aktiv sein soll"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.PublicThread)
@@ -57,21 +57,21 @@ export default class AichatCommand extends BaseCommand {
 							.setName("status")
 							.setDescription("Choose whether the AI chat should be enabled or disabled")
 							.setDescriptionLocalizations({
-								"de": "Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll"
+								de: "Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll"
 							})
 							.setRequired(false)
 							.addChoices(
 								{
 									name: "on",
 									name_localizations: {
-										"de": "an"
+										de: "an"
 									},
 									value: "on"
 								},
 								{
 									name: "off",
 									name_localizations: {
-										"de": "aus"
+										de: "aus"
 									},
 									value: "off"
 								}

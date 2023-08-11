@@ -9,7 +9,7 @@ export default class AddemojiCommand extends BaseCommand {
 			name: "addemoji",
 			description: "Creates a new emoji based on a given emoji or a link to an image",
 			localizedDescriptions: {
-				"de": "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild"
+				de: "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild"
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -19,13 +19,9 @@ export default class AddemojiCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
-						option
-							.setRequired(true)
-							.setName("emoji")
-							.setDescription("Enter an emoji or a link to an image")
-							.setDescriptionLocalizations({
-								"de": "Gib einen Emoji oder einen Link zu einem Bild ein"
-							})
+						option.setRequired(true).setName("emoji").setDescription("Enter an emoji or a link to an image").setDescriptionLocalizations({
+							de: "Gib einen Emoji oder einen Link zu einem Bild ein"
+						})
 					)
 					.addStringOption((option: any) =>
 						option
@@ -33,7 +29,7 @@ export default class AddemojiCommand extends BaseCommand {
 							.setName("name")
 							.setDescription("Enter what you want the new emoji to be called")
 							.setDescriptionLocalizations({
-								"de": "Gib ein, wie der neue Emoji heißen soll"
+								de: "Gib ein, wie der neue Emoji heißen soll"
 							})
 							.setMaxLength(32)
 					)

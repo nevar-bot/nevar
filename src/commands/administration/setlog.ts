@@ -8,7 +8,7 @@ export default class SetlogCommand extends BaseCommand {
 			name: "setlog",
 			description: "Sets the different log channels",
 			localizedDescriptions: {
-				"de": "Setzt die verschiedenen Log-Channel"
+				de: "Setzt die verschiedenen Log-Channel"
 			},
 			cooldown: 1000,
 			memberPermissions: ["ManageGuild"],
@@ -21,7 +21,7 @@ export default class SetlogCommand extends BaseCommand {
 							.setName("moderation")
 							.setDescription("Sets the channel in which moderation logs are sent")
 							.setDescriptionLocalizations({
-								"de": "Setzt den Channel, in welchem Moderations-Logs gesendet werden"
+								de: "Setzt den Channel, in welchem Moderations-Logs gesendet werden"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
@@ -31,7 +31,7 @@ export default class SetlogCommand extends BaseCommand {
 							.setName("members")
 							.setDescription("Sets the channel in which member logs are sent")
 							.setDescriptionLocalizations({
-								"de": "Setzt den Channel, in welchem Logs zu Mitgliedern gesendet werden"
+								de: "Setzt den Channel, in welchem Logs zu Mitgliedern gesendet werden"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
@@ -41,7 +41,7 @@ export default class SetlogCommand extends BaseCommand {
 							.setName("server")
 							.setDescription("Sets the channel in which general server logs are sent")
 							.setDescriptionLocalizations({
-								"de": "Setzt den Channel, in welchem allgemeine Logs zum Server gesendet werden"
+								de: "Setzt den Channel, in welchem allgemeine Logs zum Server gesendet werden"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
@@ -51,7 +51,7 @@ export default class SetlogCommand extends BaseCommand {
 							.setName("roles")
 							.setDescription("Sets the channel in which role logs are sent")
 							.setDescriptionLocalizations({
-								"de": "Setzt den Channel, in welchem Logs zu Rollen gesendet werden"
+								de: "Setzt den Channel, in welchem Logs zu Rollen gesendet werden"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
@@ -61,7 +61,7 @@ export default class SetlogCommand extends BaseCommand {
 							.setName("threads")
 							.setDescription("Sets the channel in which thread logs are sent")
 							.setDescriptionLocalizations({
-								"de": "Setzt den Channel, in welchem Logs zu Threads gesendet werden"
+								de: "Setzt den Channel, in welchem Logs zu Threads gesendet werden"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
@@ -71,7 +71,7 @@ export default class SetlogCommand extends BaseCommand {
 							.setName("channel")
 							.setDescription("Sets the channel in which channel logs are sent")
 							.setDescriptionLocalizations({
-								"de": "Setzt den Channel, in welchem Logs zu Channels gesendet werden"
+								de: "Setzt den Channel, in welchem Logs zu Channels gesendet werden"
 							})
 							.setRequired(false)
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)

@@ -8,7 +8,7 @@ export default class AimodCommand extends BaseCommand {
 			name: "aimod",
 			description: "Manages the AI-powered chat moderation of the guild",
 			localizedDescriptions: {
-				"de": "Verwaltet die AI-gestützte Chatmoderation des Servers"
+				de: "Verwaltet die AI-gestützte Chatmoderation des Servers"
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
@@ -21,28 +21,28 @@ export default class AimodCommand extends BaseCommand {
 							.setName("status")
 							.setDescription("Enables or disables AI-powered chat moderation")
 							.setDescriptionLocalizations({
-								"de": "Aktiviert oder deaktiviert die AI-gestützte Chatmoderation"
+								de: "Aktiviert oder deaktiviert die AI-gestützte Chatmoderation"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("status")
 									.setDescription("Choose a status")
 									.setDescriptionLocalizations({
-										"de": "Wähle einen Status"
+										de: "Wähle einen Status"
 									})
 									.setRequired(true)
 									.addChoices(
 										{
 											name: "on",
 											name_localizations: {
-												"de": "an"
+												de: "an"
 											},
 											value: "on"
 										},
 										{
 											name: "off",
 											name_localizations: {
-												"de": "aus"
+												de: "aus"
 											},
 											value: "off"
 										}
@@ -54,35 +54,35 @@ export default class AimodCommand extends BaseCommand {
 							.setName("exclude")
 							.setDescription("Excludes a channel or role from AI-powered chat moderation")
 							.setDescriptionLocalizations({
-								"de": "Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation"
+								de: "Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation"
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
 									.setDescription("Choose an action")
 									.setDescriptionLocalizations({
-										"de": "Wähle eine Aktion"
+										de: "Wähle eine Aktion"
 									})
 									.setRequired(true)
 									.addChoices(
 										{
 											name: "add",
 											name_localizations: {
-												"de": "hinzufügen"
+												de: "hinzufügen"
 											},
 											value: "add"
 										},
 										{
 											name: "remove",
 											name_localizations: {
-												"de": "entfernen"
+												de: "entfernen"
 											},
 											value: "remove"
 										},
 										{
 											name: "list",
 											name_localizations: {
-												"de": "liste"
+												de: "liste"
 											},
 											value: "list"
 										}
@@ -93,7 +93,7 @@ export default class AimodCommand extends BaseCommand {
 									.setName("role")
 									.setDescription("Choose a role")
 									.setDescriptionLocalizations({
-										"de": "Wähle eine Rolle"
+										de: "Wähle eine Rolle"
 									})
 									.setRequired(false)
 							)
@@ -102,7 +102,7 @@ export default class AimodCommand extends BaseCommand {
 									.setName("channel")
 									.setDescription("Choose a channel")
 									.setDescriptionLocalizations({
-										"de": "Wähle einen Channel"
+										de: "Wähle einen Channel"
 									})
 									.setRequired(false)
 									.addChannelTypes(
@@ -118,14 +118,14 @@ export default class AimodCommand extends BaseCommand {
 							.setName("threshold")
 							.setDescription("Choose from which value to warn (0 = not inappropriate, 1 = very inappropriate)")
 							.setDescriptionLocalizations({
-								"de": "Wähle, ab welchem Wert gewarnt werden soll (0 = nicht unangemessen, 1 = sehr unangemessen)"
+								de: "Wähle, ab welchem Wert gewarnt werden soll (0 = nicht unangemessen, 1 = sehr unangemessen)"
 							})
 							.addNumberOption((option: any) =>
 								option
 									.setName("threshold")
 									.setDescription("Choose a value")
 									.setDescriptionLocalizations({
-										"de": "Wähle einen Wert"
+										de: "Wähle einen Wert"
 									})
 									.setRequired(true)
 									.setMinValue(0)
@@ -137,14 +137,14 @@ export default class AimodCommand extends BaseCommand {
 							.setName("channel")
 							.setDescription("Choose the channel where you want the AI-powered chat moderation to warn you")
 							.setDescriptionLocalizations({
-								"de": "Wähle den Kanal, in dem die AI-gestützte Chatmoderation warnen soll"
+								de: "Wähle den Kanal, in dem die AI-gestützte Chatmoderation warnen soll"
 							})
 							.addChannelOption((option: any) =>
 								option
 									.setName("channel")
 									.setDescription("Choose a channel")
 									.setDescriptionLocalizations({
-										"de": "Wähle einen Channel"
+										de: "Wähle einen Channel"
 									})
 									.setRequired(true)
 									.addChannelTypes(
@@ -156,10 +156,8 @@ export default class AimodCommand extends BaseCommand {
 							)
 					)
 					.addSubcommand((subcommand: any) =>
-						subcommand.setName("explain")
-							.setDescription("Explains AI-powered chat moderation")
-							.setDescriptionLocalizations({
-							"de": "Erklärt die AI-gestützte Chatmoderation"
+						subcommand.setName("explain").setDescription("Explains AI-powered chat moderation").setDescriptionLocalizations({
+							de: "Erklärt die AI-gestützte Chatmoderation"
 						})
 					)
 			}
