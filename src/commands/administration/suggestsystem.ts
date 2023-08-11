@@ -6,7 +6,10 @@ export default class SuggestsystemCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "suggestsystem",
-			description: "Verwaltet das Ideen-System des Servers",
+			description: "Manages the server's idea system",
+			localizedDescriptions: {
+				"de": "Verwaltet das Ideen-System des Servers"
+			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
 			dirname: __dirname,
@@ -14,10 +17,32 @@ export default class SuggestsystemCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
-						option.setName("aktion").setDescription("Wähle aus den folgenden Aktionen").setRequired(true).addChoices(
-							{ name: "aktivieren", value: "enable" },
-							{ name: "deaktivieren", value: "disable" },
-							{ name: "channel", value: "channel" },
+						option
+							.setName("action")
+							.setDescription("Choose from the following actions")
+							.setDescriptionLocalizations({
+								"de": "Wähle aus den folgenden Aktionen"
+							})
+							.setRequired(true)
+							.addChoices(
+							{
+								name: "enable",
+								name_localizations: {
+									"de": "aktivieren"
+								},
+								value: "enable"
+							},
+							{
+								name: "disable",
+								name_localizations: {
+									"de": "deaktivieren"
+								},
+								value: "disable"
+							},
+							{
+								name: "channel",
+								value: "channel"
+							},
 							{
 								name: "reviewchannel",
 								value: "reviewchannel"
@@ -27,20 +52,22 @@ export default class SuggestsystemCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Wähle einen Channel")
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildNews)
+							.setDescription("Choose a channel")
+							.setDescriptionLocalizations({
+								"de": "Wähle einen Channel"
+							})
+							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
 							.setRequired(false)
 					)
 			}
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 
-		const action: string = interaction.options.getString("aktion");
+		const action: string = interaction.options.getString("action");
 		switch (action) {
 			case "enable":
 				await this.enable(data);
@@ -59,53 +86,53 @@ export default class SuggestsystemCommand extends BaseCommand {
 
 	private async enable(data: any): Promise<void> {
 		if (data.guild.settings.suggestions.enabled) {
-			const isAlreadyEnabled: EmbedBuilder = this.client.createEmbed("Das Ideen-System ist bereits aktiviert.", "error", "error");
+			const isAlreadyEnabled: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:errors:alreadyEnabled"), "error", "error");
 			return this.interaction.followUp({ embeds: [isAlreadyEnabled] });
 		}
 		data.guild.settings.suggestions.enabled = true;
 		data.guild.markModified("settings.suggestions.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Das Ideen-System wurde aktiviert.", "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:enabled"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async disable(data: any): Promise<void> {
 		if (!data.guild.settings.suggestions.enabled) {
-			const isAlreadyDisabled: EmbedBuilder = this.client.createEmbed("Das Ideen-System ist bereits deaktiviert.", "error", "error");
+			const isAlreadyDisabled: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:errors:alreadyDisabled"), "error", "error");
 			return this.interaction.followUp({ embeds: [isAlreadyDisabled] });
 		}
 		data.guild.settings.suggestions.enabled = false;
 		data.guild.markModified("settings.suggestions.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Das Ideen-System wurde deaktiviert.", "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:disabled"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!channel) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst einen Channel eingeben.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:errors:missingChannel"), "error", "error");
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 		data.guild.settings.suggestions.channel = channel.id;
 		data.guild.markModified("settings.suggestions.channel");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Neue Ideen werden absofort in {0} gesendet.", "success", "success", channel);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:channelSet", { channel: channel.toString() }), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async setReviewChannel(channel: any, data: any): Promise<void> {
 		if (!channel) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst einen Channel eingeben.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:errors:missingChannel"), "error", "error");
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 		data.guild.settings.suggestions.review_channel = channel.id;
 		data.guild.markModified("settings.suggestions.review_channel");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Neue Ideen werden absofort in {0} verwaltet.", "success", "success", channel);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:reviewChannelSet", { channel: channel.toString() }), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }
