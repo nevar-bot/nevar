@@ -53,7 +53,7 @@ export default class InviteCommand extends BaseCommand {
 			null,
 			"Voten",
 			"Link",
-			this.client.emotes.heart,
+			this.client.emotes.topgg,
 			false,
 			"https://top.gg/" + this.client!.user!.id + "/vote"
 		);
