@@ -84,6 +84,6 @@ export default class BanlistCommand extends BaseCommand {
 				bannedUsers.push(text);
 			}
 		}
-		await this.client.utils.sendPaginatedEmbed(this.interaction, 3, bannedUsers, "Gebannte Nutzer", "Es sind keine Nutzer gebannt", null);
+		await this.client.utils.sendPaginatedEmbed(this.interaction, 3, bannedUsers, "Gebannte Nutzer/-innen", "Es sind keine Nutzer gebannt", null);
 	}
 }

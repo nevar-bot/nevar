@@ -15,7 +15,7 @@ export default class {
 
 		let banLogMessage: string =
 			this.client.emotes.user +
-			" Nutzer: " +
+			" Nutzer/-in: " +
 			ban.user.displayName +
 			" (@" +
 			ban.user.username +
@@ -34,12 +34,12 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					banLogMessage +=
-						"\n\n" + this.client.emotes.user + " Nutzer: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
+						"\n\n" + this.client.emotes.user + " Nutzer/-in: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 
 		const banLogEmbed: EmbedBuilder = this.client.createEmbed(banLogMessage, null, "error");
-		banLogEmbed.setTitle(this.client.emotes.events.member.ban + " Nutzer gebannt");
+		banLogEmbed.setTitle(this.client.emotes.events.member.ban + " Nutzer/-in gebannt");
 		banLogEmbed.setThumbnail(ban.user.displayAvatarURL());
 
 		await guild.logAction(banLogEmbed, "moderation");

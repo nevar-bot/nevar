@@ -293,7 +293,7 @@ export default class HelpCommand extends BaseCommand {
 			if (clientCommand.conf.memberPermissions.length > 0) {
 				helpString +=
 					this.client.emotes.user +
-					" **Benötigte Rechte (Nutzer):** \n" +
+					" **Benötigte Rechte (Nutzer/-in):** \n" +
 					clientCommand.conf.memberPermissions
 						.map((p: any): string => this.client.emotes.arrow + " " + this.client.permissions[p])
 						.join("\n") +

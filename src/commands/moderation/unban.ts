@@ -13,7 +13,7 @@ export default class UnbanCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option.setName("nutzer").setDescription("Gib hier die ID des Nutzers an").setRequired(true)
+					option.setName("nutzer").setDescription("Gib hier die ID des/r Nutzers/-in an").setRequired(true)
 				)
 			}
 		});

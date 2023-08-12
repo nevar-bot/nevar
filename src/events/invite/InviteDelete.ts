@@ -31,7 +31,7 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					inviteDeleteText +=
-						"\n\n" + this.client.emotes.user + " Nutzer: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
+						"\n\n" + this.client.emotes.user + " Nutzer/-in: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
 			}
 		}
 

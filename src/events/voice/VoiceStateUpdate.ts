@@ -39,7 +39,7 @@ export default class {
 					})
 					.catch((e: any): any => {
 						const errorText: string =
-							this.client.emotes.channel + " Nutzer: " + newMember.user.displayName + " (@" + newMember.user.username + ")";
+							this.client.emotes.channel + " Nutzer/-in: " + newMember.user.displayName + " (@" + newMember.user.username + ")";
 
 						const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
 						errorEmbed.setTitle(this.client.emotes.error + " Erstellen von Join2Create-Channel fehlgeschlagen");
@@ -80,7 +80,7 @@ export default class {
 			if (guildData.settings?.joinToCreate?.channels?.includes(oldChannel.id)) {
 				if (oldChannel.members.size >= 1) return;
 				await oldChannel.delete().catch((e: any): void => {
-					const errorText: string = this.client.emotes.channel + " Nutzer: " + newMember;
+					const errorText: string = this.client.emotes.channel + " Nutzer/-in: " + newMember;
 
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
 					errorEmbed.setTitle(this.client.emotes.error + " Löschen von Join2Create-Channel fehlgeschlagen");

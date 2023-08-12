@@ -365,7 +365,7 @@ export default class BaseClient extends DiscordClient {
 		let description: string | undefined = exceptionEmbed.data.description;
 
 		if (guild) description += "\n" + this.emotes.arrow + " Server: " + guild;
-		if (user) description += "\n" + this.emotes.arrow + " Nutzer: " + user.username + " (" + user.id + ")";
+		if (user) description += "\n" + this.emotes.arrow + " Nutzer/-in: " + user.username + " (" + user.id + ")";
 		if (action) description += "\n" + this.emotes.arrow + " Aktion: " + action;
 		description += "\n```js\n" + exception.stack + "```";
 

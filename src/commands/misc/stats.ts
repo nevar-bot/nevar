@@ -85,7 +85,7 @@ export default class StatsCommand extends BaseCommand {
 			this.client.format(serverCount) +
 			"**\n" +
 			this.client.emotes.users +
-			" Nutzer: **" +
+			" Nutzer/-innen: **" +
 			this.client.format(userCount) +
 			"**\n" +
 			this.client.emotes.channel +

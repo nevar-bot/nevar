@@ -6,7 +6,7 @@ export default class ClearCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "clear",
-			description: "Löscht eine bestimmte Anzahl an Nachrichten, ggf. von einem bestimmten Nutzer",
+			description: "Löscht eine bestimmte Anzahl an Nachrichten, ggf. von einem/r bestimmten Nutzer/-in",
 			memberPermissions: ["ManageMessages"],
 			botPermissions: ["ManageMessages"],
 			cooldown: 1000,
@@ -23,7 +23,7 @@ export default class ClearCommand extends BaseCommand {
 							.setRequired(true)
 					)
 					.addUserOption((option: any) =>
-						option.setName("nutzer").setDescription("Wähle, von welchem Nutzer du Nachrichten löschen möchtest").setRequired(false)
+						option.setName("nutzer").setDescription("Wähle, von welchem/r Nutzer/-in du Nachrichten löschen möchtest").setRequired(false)
 					)
 			}
 		});

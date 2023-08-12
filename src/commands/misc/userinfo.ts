@@ -7,7 +7,7 @@ export default class UserinfoCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "userinfo",
-			description: "Zeigt Informationen über einen Nutzer an",
+			description: "Zeigt Informationen über eine/n Nutzer/-in an",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {

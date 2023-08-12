@@ -25,7 +25,7 @@ export default {
 									.then(async (): Promise<void> => {
 										const unmuteMessage: string =
 											client.emotes.user +
-											" Nutzer: " +
+											" Nutzer/-in: " +
 											member.user.username +
 											"\n" +
 											client.emotes.arrow +
@@ -37,7 +37,7 @@ export default {
 										await guild.logAction(unmuteEmbed, "moderation");
 									})
 									.catch(async (e: any): Promise<void> => {
-										const errorMessage: string = client.emotes.user + " Nutzer: " + member.user.username;
+										const errorMessage: string = client.emotes.user + " Nutzer/-in: " + member.user.username;
 
 										const errorEmbed: EmbedBuilder = client.createEmbed(errorMessage, null, "error");
 										errorEmbed.setTitle("Auto-Unmute fehlgeschlagen");
@@ -47,7 +47,7 @@ export default {
 							})
 							.catch(async (e: any): Promise<void> => {
 								const user = await client.users.fetch(memberData.id).catch((): void => {});
-								const errorMessage: string = client.emotes.user + " Nutzer: " + (user ? user.username : memberData.id);
+								const errorMessage: string = client.emotes.user + " Nutzer/-in: " + (user ? user.username : memberData.id);
 
 								const errorEmbed: EmbedBuilder = client.createEmbed(errorMessage, null, "error");
 								errorEmbed.setTitle("Auto-Unmute fehlgeschlagen");

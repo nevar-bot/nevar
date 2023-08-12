@@ -20,7 +20,7 @@ export default {
 						const user: any = await client.users.fetch(memberData.id).catch((): void => {});
 						const unbanMessage: string =
 							client.emotes.user +
-							" Nutzer: " +
+							" Nutzer/-in: " +
 							(user ? user.username : memberData.id) +
 							"\n" +
 							client.emotes.arrow +
@@ -33,7 +33,7 @@ export default {
 					})
 					.catch(async (e: any): Promise<void> => {
 						const user: any = await client.users.fetch(memberData.id).catch((): void => {});
-						const errorMessage: string = client.emotes.user + " Nutzer: " + (user ? user.username : memberData.id);
+						const errorMessage: string = client.emotes.user + " Nutzer/-in: " + (user ? user.username : memberData.id);
 
 						const errorEmbed: EmbedBuilder = client.createEmbed(errorMessage, null, "error");
 						errorEmbed.setTitle("Auto-Unban fehlgeschlagen");

@@ -30,7 +30,7 @@ export default class {
 						roleId +
 						">\n" +
 						this.client.emotes.user +
-						" Nutzer: " +
+						" Nutzer/-in: " +
 						user.displayName +
 						" (@" +
 						user.username +

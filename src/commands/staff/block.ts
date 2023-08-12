@@ -7,7 +7,7 @@ export default class BlockCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "block",
-			description: "Blockiert einen Server oder Nutzer",
+			description: "Blockiert einen Server oder Nutzer/-in",
 			staffOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -55,7 +55,7 @@ export default class BlockCommand extends BaseCommand {
 		// no target found
 		if (!target) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst die ID eines Servers oder Nutzers angeben.",
+				"Du musst die ID eines Servers oder Nutzers/-in angeben.",
 				"error",
 				"error"
 			);
@@ -91,7 +91,7 @@ export default class BlockCommand extends BaseCommand {
 
 		// target is already blocked
 		if (targetData.blocked.state) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Dieser Nutzer oder Server ist bereits blockiert.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Diese/r Nutzer/-in oder Server ist bereits blockiert.", "error", "error");
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -106,7 +106,7 @@ export default class BlockCommand extends BaseCommand {
 		targetData.markModified("blocked");
 		await targetData.save();
 
-		const message: string = type === "user" ? "Nutzer " + target.username : "Server " + target.name;
+		const message: string = type === "user" ? "Nutzer/-in " + target.username : "Server " + target.name;
 		const successEmbed: EmbedBuilder = this.client.createEmbed("Der " + message + " wurde blockiert.", "success", "success");
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -117,7 +117,7 @@ export default class BlockCommand extends BaseCommand {
 
 		if (!id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst die ID eines Servers oder Nutzers angeben.",
+				"Du musst die ID eines Servers oder Nutzers/-in angeben.",
 				"error",
 				"error"
 			);
@@ -129,13 +129,13 @@ export default class BlockCommand extends BaseCommand {
 
 		// no target found
 		if (!targetData) {
-			const noTargetEmbed: EmbedBuilder = this.client.createEmbed("Es wurde kein Nutzer oder Server mit dieser ID gefunden.", "error", "error");
+			const noTargetEmbed: EmbedBuilder = this.client.createEmbed("Es wurde kein/e Nutzer/-in oder Server mit dieser ID gefunden.", "error", "error");
 			return this.message.reply({ embeds: [noTargetEmbed] });
 		}
 
 		// target is not blocked
 		if (!targetData.blocked.state) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Dieser Nutzer oder Server ist nicht blockiert.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Diese/r Nutzer/-in oder Server ist nicht blockiert.", "error", "error");
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -171,7 +171,7 @@ export default class BlockCommand extends BaseCommand {
 				(user ? user.id : userData.id) +
 				")\n" +
 				this.client.emotes.arrow +
-				" Typ: Nutzer\n" +
+				" Typ: Nutzer/-in\n" +
 				this.client.emotes.arrow +
 				" Begründung: " +
 				userData.blocked.reason +
@@ -220,8 +220,8 @@ export default class BlockCommand extends BaseCommand {
 			this.message,
 			3,
 			blocked,
-			"Blockierte Nutzer und Server",
-			"Es sind keine Nutzer oder Server blockiert",
+			"Blockierte Nutzer/-innen und Server",
+			"Es sind keine Nutzer/-innen oder Server blockiert",
 			"ban"
 		);
 	}

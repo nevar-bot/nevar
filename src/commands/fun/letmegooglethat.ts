@@ -6,7 +6,7 @@ export default class LetmegooglethatCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "letmegooglethat",
-			description: "Führt eine Google-Suche durch für Nutzer welche dazu nicht in der Lage sind",
+			description: "Führt eine Google-Suche durch für Nutzer/-innen welche dazu nicht in der Lage sind",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {

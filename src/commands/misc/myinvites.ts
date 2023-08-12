@@ -69,7 +69,7 @@ export default class MyinvitesCommand extends BaseCommand {
 			5,
 			invitesData,
 			"Deine Einladungen",
-			"Du hast noch keine Nutzer eingeladen",
+			"Du hast noch keine Nutzer/-innen eingeladen",
 			null
 		);
 	}

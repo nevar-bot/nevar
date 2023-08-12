@@ -6,7 +6,7 @@ export default class AvatarCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "avatar",
-			description: "Sendet den Avatar eines Nutzers",
+			description: "Sendet den Avatar eines/r Nutzers/-in",
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
