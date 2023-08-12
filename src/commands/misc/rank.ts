@@ -36,7 +36,7 @@ export default class RankCommand extends BaseCommand {
 
 		const rank: any = new canvacord.Rank()
 			// Avatar, status, username and displayname
-			.setUsername(userData.user.username)
+			.setUsername(userData.user.displayName)
 			.setDiscriminator(userData.user.username)
 			.setAvatar(userData.user.displayAvatarURL({ format: "png", size: 512 }))
 			.setStatus("online", false, false)
