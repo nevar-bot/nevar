@@ -60,13 +60,13 @@ export default class InviteCommand extends BaseCommand {
 		const buttonRow: any = this.client.createMessageComponentsRow(inviteButton, supportButton, websiteButton, voteButton); // test
 
 		// Second row
-		const twitterButton: ButtonBuilder = this.client.createButton(
+		const xButton: ButtonBuilder = this.client.createButton(
 			null,
-			"Twitter",
+			"X (Twitter)",
 			"Link",
-			this.client.emotes.socials.twitter,
+			this.client.emotes.socials.x,
 			false,
-			"https://twitter.com/nevar_eu"
+			"https://x.com/nevar_eu"
 		);
 		const instagramButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -92,7 +92,7 @@ export default class InviteCommand extends BaseCommand {
 			false,
 			"https://prohosting24.de/cp/donate/nevar"
 		);
-		const buttonRow2: any = this.client.createMessageComponentsRow(twitterButton, instagramButton, githubButton, donateButton);
+		const buttonRow2: any = this.client.createMessageComponentsRow(xButton, instagramButton, githubButton, donateButton);
 
 		const text: string = "### " + this.client.emotes.discover + " Folgende Links könnten dich interessieren:";
 		const linksEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");

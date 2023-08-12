@@ -47,7 +47,7 @@ If you have any feedback, please reach out to us at [hello@nevar.eu](mailto:hell
 
 ## 🔗 Links
 [![Discord][discord-shield]][discord-url]
-[![Twitter][twitter-shield]][twitter-url]
+[![X][x-shield]][x-url]
 [![Instagram][instagram-shield]][instagram-url]
 
 ## License
@@ -65,7 +65,7 @@ Distributed under the AGPLv3 License. See `LICENSE` for more information.
 [website-url]:https://nevar.eu
 [instagram-shield]:https://img.shields.io/badge/instagram-E1306C?style=for-the-badge&logo=instagram&logoColor=white
 [instagram-url]:https://instagram.com/nevar_eu
-[twitter-shield]:https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white
-[twitter-url]:https://twitter.com/nevar_eu
+[x-shield]:https://img.shields.io/badge/X-000000?style=for-the-badge&logo=twitter&logoColor=white
+[x-url]:https://x.com/nevar_eu
 [discord-shield]:https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white
 [discord-url]:https://nevar.eu/support
