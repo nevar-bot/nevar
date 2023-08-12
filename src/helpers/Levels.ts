@@ -194,6 +194,7 @@ export default class Levels {
 	static async fetchLeaderboard(guildId: string, limit: number = 10): Promise<any> {
 		return await LevelSchema.find({ guildID: guildId })
 			.sort([["xp", "descending"]])
+			.limit(limit)
 			.exec();
 	}
 
