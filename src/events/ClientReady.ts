@@ -5,7 +5,7 @@ import { Collection, Guild, Invite } from "discord.js";
 
 import handlePresence from "@handlers/presence";
 import registerInteractions from "@handlers/registerInteractions";
-import TOPGG from "@helpers/TOP.GG";
+import TOPGG from "@helpers/Top.gg";
 import unbanMembers from "@handlers/unbanMembers";
 import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";

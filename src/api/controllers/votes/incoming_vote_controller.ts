@@ -48,7 +48,7 @@ export async function post(req: Request, res: Response) {
 			(voteCount ? "zum **" + voteCount + ". Mal** " : "") +
 			"für uns gevotet!\n" +
 			client.emotes.arrow +
-			" Auf **[TOP.GG](https://top.gg/bot/" +
+			" Auf **[Top.gg](https://top.gg/bot/" +
 			client.user!.id +
 			"/vote)** könnt ihr alle 12 Stunden für " +
 			client.user!.username +
