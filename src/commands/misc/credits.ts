@@ -46,9 +46,7 @@ export default class CreditsCommand extends BaseCommand {
 			this.client.emotes.arrow +
 			" [discord-giveaways](https://npmjs.com/package/discord-giveaways) - Discord Gewinnspiele\n" +
 			this.client.emotes.arrow +
-			" [@top-gg/sdk](https://www.npmjs.com/package/@top-gg/sdk) - Vote Webhook TOP.GG\n" +
-			this.client.emotes.arrow +
-			" [topgg-autoposter](https://www.npmjs.com/package/topgg-autoposter) - TOP.GG Bot-Statistiken\n" +
+			" [topgg-autoposter](https://www.npmjs.com/package/topgg-autoposter) - Top.gg Bot-Statistiken\n" +
 			"## Bildverarbeitung und -manipulation\n" +
 			this.client.emotes.arrow +
 			" [canvacord](https://npmjs.com/package/canvacord) - Bildmanipulation für Discord\n" +
@@ -70,8 +68,6 @@ export default class CreditsCommand extends BaseCommand {
 			this.client.emotes.arrow +
 			" [chalk](https://npmjs.com/package/chalk) - Terminaltext-Styling\n" +
 			this.client.emotes.arrow +
-			" [rimraf](https://npmjs.com/package/rimraf) - Entfernen von Dateien und Ordnern\n" +
-			this.client.emotes.arrow +
 			" [source-map-support](https://npmjs.com/package/source-map-support) - Source-Map-Unterstützung\n" +
 			this.client.emotes.arrow +
 			" [node-emoji](https://npmjs.com/package/node-emoji) - Emoji-Konvertierung\n" +
@@ -86,7 +82,11 @@ export default class CreditsCommand extends BaseCommand {
 			this.client.emotes.arrow +
 			" [typescript](https://npmjs.com/package/typescript) - Typisierter JavaScript-Compiler\n" +
 			this.client.emotes.arrow +
-			" [typescript-formatter](https://npmjs.com/package/typescript-formatter) - Formatter für TypeScript-Code\n" +
+			" [prettier](https://npmjs.com/package/prettier) - Code-Formatter für Typescript\n" +
+			this.client.emotes.arrow +
+			" [eslint](https://npmjs.com/package/eslint) - Linter für Typescript\n" +
+			this.client.emotes.arrow +
+			" [i18next](https://npmjs.com/package/i18next) - Internationalisierung\n" +
 			this.client.emotes.arrow +
 			" [icons](https://discord.gg/9AtkECMX2P) - Emojis für " +
 			this.client.user!.username;
