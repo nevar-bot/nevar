@@ -23,8 +23,9 @@ export default class {
 		if (!supportLogChannel) return;
 
 		const owner: any = await this.client.users.fetch(guild.ownerId).catch((e: any): void => {});
-		const createdAt: string = moment(guild.createdTimestamp).format("DD.MM.YYYY, HH:mm");
-		const createdDiff: string = this.client.utils.getRelativeTime(guild.createdTimestamp);
+		//const createdAt: string = moment(guild.createdTimestamp).format("DD.MM.YYYY, HH:mm");
+		const createdAt: string = this.client.utils.getDiscordTimestamp(guild.createdTimestamp, "f");
+		const createdDiff: string = this.client.utils.getDiscordTimestamp(guild.createdTimestamp, "R");
 
 		const supportGuildLogMessage: string =
 			"Name: **" +

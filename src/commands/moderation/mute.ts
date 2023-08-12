@@ -93,7 +93,7 @@ export default class MuteCommand extends BaseCommand {
 			duration: duration ? ms(duration) : 200 * 60 * 60 * 24 * 365 * 1000
 		};
 
-		let relativeTime: string = this.client.utils.getRelativeTime(Date.now() - mute.duration);
+		let relativeTime: string = this.client.utils.getDiscordTimestamp(Date.now() + mute.duration, "R");
 		if (mute.duration === 200 * 60 * 60 * 24 * 365 * 1000) {
 			relativeTime = "Permanent";
 		}

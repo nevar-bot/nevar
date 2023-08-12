@@ -77,7 +77,7 @@ export default class BanCommand extends BaseCommand {
 			duration: duration ? ms(duration) : 200 * 60 * 60 * 24 * 365 * 1000
 		};
 
-		let relativeTime = this.client.utils.getRelativeTime(Date.now() - ban.duration);
+		let relativeTime: string = this.client.utils.getDiscordTimestamp(Date.now() + ban.duration, "R");
 		if (ban.duration === 200 * 60 * 60 * 24 * 365 * 1000) {
 			relativeTime = "Permanent";
 		}

@@ -50,7 +50,8 @@ export default class StatsCommand extends BaseCommand {
 			}
 		}
 
-		const uptime: any = this.client.utils.getRelativeTime(Date.now() - (this.client.uptime as number));
+		//const uptime: any = this.client.utils.getRelativeTime(Date.now() - (this.client.uptime as number));
+		const uptime: string = this.client.utils.getDiscordTimestamp(Date.now() - (this.client.uptime as number), "R");
 		const serverCount: number = this.client.guilds.cache.size;
 		const voteCount = JSON.parse(fs.readFileSync("./assets/votes.json").toString())[moment().format("MMMM").toLowerCase()] || 0;
 		const userCount: number = this.client.guilds.cache.reduce((sum: number, guild: any) => sum + (guild.available ? guild.memberCount : 0), 0);

@@ -37,11 +37,11 @@ export default class UserinfoCommand extends BaseCommand {
 
 		const name: string = member.user.username;
 		const displayName: string = member.user.displayName;
-		const createdAt: string = moment(member.user.createdTimestamp).format("DD.MM.YYYY HH:mm");
-		const createdDiff: string = this.client.utils.getRelativeTime(member.user.createdTimestamp);
+		const createdAt: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "f");
+		const createdDiff: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "R");
 		const nickname: string = member.nickname ? member.nickname : member.user.username;
-		const joinedAt: string = moment(member.joinedTimestamp).format("DD.MM.YYYY HH:mm");
-		const joinedDiff: string = this.client.utils.getRelativeTime(member.joinedTimestamp);
+		const joinedAt: string = this.client.utils.getDiscordTimestamp(member.joinedTimestamp, "f");
+		const joinedDiff: string = this.client.utils.getDiscordTimestamp(member.joinedTimestamp, "R");
 		const bot: string = member.user.bot ? "Ja" : "Nein";
 		const userFlags: any[] = (await member.user.fetchFlags()).toArray();
 

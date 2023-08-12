@@ -38,9 +38,8 @@ export default class ServerinfoCommand extends BaseCommand {
 		const forumCount: number = this.interaction.guild.channels.cache.filter((c: any): boolean => c.type === ChannelType.GuildForum).size;
 		const categoryCount: number = this.interaction.guild.channels.cache.filter((c: any): boolean => c.type === ChannelType.GuildCategory).size;
 		const threadCount: number = this.interaction.guild.channels.cache.filter((c: any): boolean => c.type === ChannelType.GuildPublicThread).size;
-		const createdAt: string = moment(this.interaction.guild.createdTimestamp).format("DD.MM.YYYY HH:mm");
-		const createdAgo: string = this.client.utils.getRelativeTime(this.interaction.guild.createdTimestamp);
-
+		const createdAt: string = this.client.utils.getDiscordTimestamp(this.interaction.guild.createdTimestamp, "f");
+		const createdAgo: string = this.client.utils.getDiscordTimestamp(this.interaction.guild.createdTimestamp, "R");
 		const text: string =
 			" Name: **" +
 			name +

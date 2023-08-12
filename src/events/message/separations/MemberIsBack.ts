@@ -20,9 +20,9 @@ export default class {
 		data.user.markModified("afk");
 		await data.user.save();
 
-		const afkSinceString: string = this.client.utils.getRelativeTime(since);
+		const afkSinceString: string = this.client.utils.getDiscordTimestamp(since, "f");
 
-		const backText: string = "Du warst **" + afkSinceString + "** abwesend: " + (afkReason || "Kein Grund angegeben");
+		const backText: string = "Du warst seit **" + afkSinceString + "** abwesend: " + (afkReason || "Kein Grund angegeben");
 
 		const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed("{0}", "reminder", "normal", backText);
 		welcomeBackEmbed.setTitle(this.client.emotes.shine2 + " Willkommen zurück!");

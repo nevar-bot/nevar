@@ -30,9 +30,9 @@ export default class AfkCommand extends BaseCommand {
 			const afkSince: any = data.user.afk.since;
 			const reason: string = data.user.afk.reason || "Kein Grund angegeben";
 
-			const relativeTime: string = this.client.utils.getRelativeTime(afkSince);
+			const relativeTime: string = this.client.utils.getDiscordTimestamp(afkSince, "f");
 			const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
-				"Willkommen zurück! Du warst abwesend für {0}.",
+				"Willkommen zurück! Du warst abwesend seit {0}.",
 				"reminder",
 				"normal",
 				relativeTime + " (" + reason + ")"

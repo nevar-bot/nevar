@@ -233,6 +233,29 @@ export default class Utils {
 		return String.fromCodePoint(...[...countryCode.toUpperCase()].map((x) => 0x1f1a5 + x.charCodeAt(0)));
 	}
 
+
+	/**
+	 * Erstellt einen Discord-Timestamp
+	 *
+	 * @param {string} time - Zeit
+	 * @param {"t"|"T"|"d"|"D"|"f"|"F"|"r"|undefined} type - gewünschter Typ
+	 *   - undefined: Standard Zeitformat (z.B. "28. November 2023, 09:01")
+	 *   - "t": Kurzes Zeitformat (z.B. "09:01")
+	 *   - "T": Langes Zeitformat (z.B. "09:01:00")
+	 *   - "d": Kurzes Datumsformat (z.B. "28.11.2023")
+	 *   - "D": Langes Datumsformat (z.B. "28. November 2023")
+	 *   - "f": Kurzes Datum und Uhrzeitformat (z.B. "28. November 2023 09:01")
+	 *   - "F": Langes Datum und Uhrzeitformat (z.B. "Dienstag, 28. November 2023 09:01")
+	 *   - "r": Relatives Zeitformat (z.B. "vor 5 Minuten")
+	 * @returns {string} Generierter Discord-Timestamp
+	 */
+	static getDiscordTimestamp(time: string, type: "t"|"T"|"d"|"D"|"f"|"F"|"R"|undefined): string {
+		if(!type){
+			return "<t:" + moment(time).unix() + ">";
+		}else{
+			return "<t:" + moment(time).unix() + ":" + type + ">";
+		}
+	}
 	static getRelativeTime(time: string): string | any {
 		const { _data } = moment.duration(moment(Date.now()).diff(time));
 		const momentDuration: any = _data;

@@ -107,15 +107,15 @@ export default class ReminderCommand extends BaseCommand {
 				"\n" +
 				this.client.emotes.arrow +
 				" Erstellt am: " +
-				moment(reminder.startDate).format("DD.MM.YYYY, HH:mm") +
+				this.client.utils.getDiscordTimestamp(reminder.startDate, "f") +
 				"\n" +
 				this.client.emotes.arrow +
 				" Endet am: " +
-				moment(reminder.endDate).format("DD.MM.YYYY, HH:mm") +
+				this.client.utils.getDiscordTimestamp(reminder.endDate, "f") +
 				"\n" +
 				this.client.emotes.arrow +
 				" Endet in: " +
-				this.client.utils.getRelativeTime(Date.now() - (reminder.endDate - Date.now()));
+				this.client.utils.getDiscordTimestamp(reminder.endDate, "R");
 			reminders.push(text);
 		}
 

@@ -36,7 +36,7 @@ export default class BanlistCommand extends BaseCommand {
 				const duration: string =
 					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "Permanent"
-						: this.client.utils.getRelativeTime(Date.now() - memberData.banned.duration);
+						: this.client.utils.getDiscordTimestamp(Date.now() + memberData.banned.duration, "R");
 				const bannedUntil: string =
 					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "/"

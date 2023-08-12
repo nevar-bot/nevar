@@ -43,8 +43,8 @@ export default class {
 		}
 
 		/* Send log */
-		const createdAt: string = moment(member.user.createdTimestamp).format("DD.MM.YYYY HH:mm");
-		const createdDiff: string = this.client.utils.getRelativeTime(member.user.createdTimestamp);
+		const createdAt: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "f");
+		const createdDiff: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "R");
 
 		const memberJoinText: string =
 			this.client.emotes.edit +
