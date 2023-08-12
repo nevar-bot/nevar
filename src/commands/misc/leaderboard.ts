@@ -38,9 +38,9 @@ export default class LeaderboardCommand extends BaseCommand {
 			beautifiedLeaderboard.push(
 				"### " +
 					emote +
-					" **" +
-					user.username +
-					"**\n" +
+					" " +
+					user.displayName + " (*@" + user.username + "*)" +
+					"\n" +
 					this.client.emotes.shine2 +
 					" Level " +
 					user.level +
