@@ -125,7 +125,8 @@ export default class BlockCommand extends BaseCommand {
 		}
 
 		// get target user/guild data
-		const targetData: any = (await this.client.usersData.find({ id: id }))[0] || (await this.client.guildsData.find({ id: id }))[0];
+		const type: string = (await this.client.users.fetch(id).catch((): void => {})) ? "user" : "guild";
+		const targetData: any = type === "user" ? await this.client.findOrCreateUser(id) : await this.client.findOrCreateGuild(id);
 
 		// no target found
 		if (!targetData) {
