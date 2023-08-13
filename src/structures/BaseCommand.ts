@@ -8,6 +8,7 @@ export default class BaseCommand {
 	public slashCommand: object;
 	public guild: any;
 	public interaction: any;
+	public message: any;
 
 	constructor(
 		client: BaseClient,

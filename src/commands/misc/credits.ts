@@ -88,6 +88,8 @@ export default class CreditsCommand extends BaseCommand {
 			this.client.emotes.arrow +
 			" [i18next](https://npmjs.com/package/i18next) - Internationalisierung\n" +
 			this.client.emotes.arrow +
+			" [lodash](https://npmjs.com/package/lodash) - Utility-Bibliothek\n" +
+			this.client.emotes.arrow +
 			" [icons](https://discord.gg/9AtkECMX2P) - Emojis für " +
 			this.client.user!.username;
 

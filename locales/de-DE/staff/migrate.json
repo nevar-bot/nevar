@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "wrongOption": "Du musst zwischen users, members und guilds wählen."
+  },
+  "success_users": "Es wurden {{count}} User-Datensätze an das Schema angeglichen.",
+  "success_members": "Es wurden {{count}} Member-Datensätze an das Schema angeglichen.",
+  "success_guilds": "Es wurden {{count}} Guild-Datensätze an das Schema angeglichen."
+}
