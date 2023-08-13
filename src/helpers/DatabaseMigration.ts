@@ -21,7 +21,7 @@ export default {
             if(!(await this.isEqual(rawGuildData, updatedGuildData))){
                 count++;
                 await Guild.findOneAndDelete({ id: guild.id }).catch((): void => {});
-                const newGuildData: any = new Guild(updatedGuildData).catch((): void => {});
+                const newGuildData: any = new Guild(updatedGuildData);
                 await newGuildData.save().catch((): void => {});
             }
         }
@@ -40,7 +40,7 @@ export default {
             if(!(await this.isEqual(rawUserData, updatedUserData))){
                 count++;
                 await User.findOneAndDelete({ id: user.id }).catch((): void => {});
-                const newUserData = new User(updatedUserData).catch((): void => {});
+                const newUserData = new User(updatedUserData);
                 await newUserData.save().catch((): void => {});
             }
         }
@@ -60,7 +60,7 @@ export default {
             if(!(await this.isEqual(rawMemberData, updatedMemberData))){
                 count++;
                 await Member.findOneAndDelete({ id: member.id, guildID: member.guildID }).catch((): void => {});
-                const newMemberData = new Member(updatedMemberData).catch((): void => {});
+                const newMemberData = new Member(updatedMemberData);
                 await newMemberData.save().catch((): void => {});
             }
         }
