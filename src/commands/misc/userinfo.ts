@@ -80,11 +80,11 @@ export default class UserinfoCommand extends BaseCommand {
 		if (badges.length === 0) badges = [this.client.emotes.arrow + " Keine Badges vorhanden"];
 
 		const text: string =
-			this.client.emotes.user +
+			this.client.emotes.label +
 			" Displayname: **" +
 			displayName +
 			"**\n" +
-   this.client.emotes.edit +
+   this.client.emotes.label +
    "Server-Displayname: **" +
    memberDisplayName +
    "**\n" +
@@ -111,7 +111,7 @@ export default class UserinfoCommand extends BaseCommand {
 			this.client.emotes.reminder +
 			" Server betreten vor: **" +
 			joinedDiff +
-			"**\n\n" +
+			"**\n\n### " +
 			this.client.emotes.shine +
 			" Badges: **\n" +
 			badges.join("\n") +
