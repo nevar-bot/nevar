@@ -113,9 +113,9 @@ export default class UserinfoCommand extends BaseCommand {
 			joinedDiff +
 			"**\n\n### " +
 			this.client.emotes.shine +
-			" Badges: **\n" +
-			badges.join("\n") +
-			"**";
+			" Badges:\n**" +
+			badges.join("\n")
+   + "**";
 
 		const searchServerEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		searchServerEmbed.setTitle(this.client.emotes.information + " Informationen zu " + member.user.username);
