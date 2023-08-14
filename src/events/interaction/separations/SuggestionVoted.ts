@@ -39,7 +39,7 @@ export default class {
 			id: suggestionEmbedMessage.id,
 			type: type === "yes" ? 1 : 0
 		});
-		data.member.markModified("suggestion");
+		data.member.markModified("suggestions");
 		await data.member.save();
 
 		/* Update embed */
