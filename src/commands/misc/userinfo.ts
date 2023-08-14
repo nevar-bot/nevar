@@ -81,13 +81,21 @@ export default class UserinfoCommand extends BaseCommand {
 
 		const text: string =
 			this.client.emotes.user +
-			" Anzeigename: **" +
+			" Displayname: **" +
 			displayName +
 			"**\n" +
+   this.client.emotes.edit +
+   "Server-Displayname: **" +
+   memberDisplayName +
+   "**\n" +
 			this.client.emotes.user +
 			" Name: **" +
 			name +
-			"**\n\n" +
+			"**\n" +
+   this.client.emotes.bot +
+   " Bot: **" +
+   bot +
+   "**\n\n" +
 			this.client.emotes.calendar +
 			" Account erstellt am: **" +
 			createdAt +
@@ -103,14 +111,6 @@ export default class UserinfoCommand extends BaseCommand {
 			this.client.emotes.reminder +
 			" Server betreten vor: **" +
 			joinedDiff +
-			"**\n\n" +
-			this.client.emotes.edit +
-			" Server-Anzeigename: **" +
-			memberDisplayName +
-			"**\n" +
-			this.client.emotes.bot +
-			" Bot: **" +
-			bot +
 			"**\n\n" +
 			this.client.emotes.shine +
 			" Badges: **\n" +
