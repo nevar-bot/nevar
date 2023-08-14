@@ -89,7 +89,7 @@ export default class UserinfoCommand extends BaseCommand {
    memberDisplayName +
    "**\n" +
 			this.client.emotes.user +
-			" Name: **" +
+			" Nutzername: **" +
 			name +
 			"**\n" +
    this.client.emotes.bot +
