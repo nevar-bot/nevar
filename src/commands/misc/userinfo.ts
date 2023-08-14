@@ -39,7 +39,7 @@ export default class UserinfoCommand extends BaseCommand {
 		const displayName: string = member.user.displayName;
 		const createdAt: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "f");
 		const createdDiff: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "R");
-		const nickname: string = member.nickname ? member.nickname : member.user.username;
+		const memberDisplayName: string = member.displayName;
 		const joinedAt: string = this.client.utils.getDiscordTimestamp(member.joinedTimestamp, "f");
 		const joinedDiff: string = this.client.utils.getDiscordTimestamp(member.joinedTimestamp, "R");
 		const bot: string = member.user.bot ? "Ja" : "Nein";
@@ -105,8 +105,8 @@ export default class UserinfoCommand extends BaseCommand {
 			joinedDiff +
 			"**\n\n" +
 			this.client.emotes.edit +
-			" Nickname: **" +
-			nickname +
+			" Server-Anzeigename: **" +
+			memberDisplayName +
 			"**\n" +
 			this.client.emotes.bot +
 			" Bot: **" +
