@@ -166,7 +166,7 @@ export default class {
 			}
 		}
 
-		/* Handle suggestion reactions */
+		/* Handle button interactions */
 		if (interaction.isButton()) {
 			const buttonIdSplitted = interaction.customId.split("_");
 			if (!buttonIdSplitted) return;
@@ -184,6 +184,11 @@ export default class {
 			/* Moderator wants to handle an AI detected message */
 			if (buttonIdSplitted[0] === "aimod") {
 				this.client.emit("AiMessageHandled", interaction, buttonIdSplitted, data, guild);
+			}
+
+			/* User wants to participate in a giveaway */
+			if (buttonIdSplitted[0] === "giveaway") {
+				this.client.emit("GiveawayParticipated", interaction, buttonIdSplitted, data, guild);
 			}
 		}
 

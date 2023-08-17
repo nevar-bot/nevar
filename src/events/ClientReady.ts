@@ -10,6 +10,7 @@ import unbanMembers from "@handlers/unbanMembers";
 import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";
 import youtubeNotifier from "@handlers/youtubeNotifier";
+import endGiveaways from "@handlers/endGiveaways";
 import api from "@api/app";
 import BaseClient from "@structures/BaseClient";
 
@@ -28,7 +29,7 @@ export default class {
 
 		/* Initialize giveaways manager */
 		client.logger.log("Initializing giveaways manager...");
-		await client.giveawayManager._init().then((_: any): void => client.logger.success("Initialized giveaways manager"));
+		client.logger.success("Initialized giveaways manager");
 
 		/* Update interactions every day at 00:00 */
 		scheduleJob("0 0 * * *", async (): Promise<void> => {
@@ -44,6 +45,7 @@ export default class {
 		unmuteMembers.init(client);
 		remindMembers.init(client);
 		youtubeNotifier.init(client);
+		endGiveaways.init(client);
 		if (config.api["ENABLED"]) api.init(client);
 
 		/* Support server stats channels */

@@ -107,127 +107,71 @@ export default class GiveawayCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
-		this.client.giveawayManager.start(channel, {
-			duration: ms(duration),
+		await this.client.giveawayManager.createGiveaway({
+			messageId: null,
+			channelId: channel.id,
+			guildId: this.interaction.guild.id,
+			startAt: Date.now(),
+			endAt: Date.now() + ms(duration),
+			ended: false,
 			winnerCount: winner,
 			prize: win,
-			hostedBy: this.interaction.user,
-
-			thumbnail: this.client.user!.displayAvatarURL(),
-			messages: {
-				giveaway: "🎉🎉 **GEWINNSPIEL** 🎉🎉",
-				giveawayEnded: "🎉🎉 **GEWINNSPIEL BEENDET** 🎉🎉",
-				title: "Neues Gewinnspiel!",
-				inviteToParticipate:
-					this.client.emotes.gift +
-					"Verlost wird **{this.prize}!**\n\n" +
-					this.client.emotes.arrow +
-					"Um teilzunehmen, reagiere mit " +
-					this.client.emotes.tada +
-					"!",
-				winMessage: {
-					content:
-						this.client.emotes.tada +
-						" Herzlichen Glückwunsch, {winners}! {this.winnerCount > 1 ? 'Ihr habt' : 'Du hast'} **{this.prize}** gewonnen!",
-					replyToGiveaway: true
-				},
-				drawing: this.client.emotes.reminder + " Endet {timestamp}",
-				embedFooter: "{this.winnerCount} Gewinner",
-				noWinner:
-					this.client.emotes.gift +
-					" Verlost wird **{this.prize}!**\n\n" +
-					this.client.emotes.arrow +
-					"Teilnahmen sind **nicht** mehr möglich!\n" +
-					this.client.emotes.reminder +
-					"Endet <t:{Math.round(this.endAt / 1000)}:R>\n\n" +
-					this.client.emotes.users +
-					" Da es keine Teilnehmer gab, gibt es keine Gewinner!",
-				winners:
-					this.client.emotes.gift +
-					" Verlost wird **{this.prize}!**\n\n" +
-					this.client.emotes.arrow +
-					" Teilnahmen sind **nicht** mehr möglich!\n" +
-					this.client.emotes.reminder +
-					" Endet <t:{Math.round(this.endAt / 1000)}:R>\n\n" +
-					this.client.emotes.users +
-					" Gewinner:",
-				endedAt: "Beendet",
-				hostedBy:
-					"\n" +
-					this.client.emotes.user +
-					" Veranstaltet durch: {this.hostedBy}\n" +
-					this.client.emotes.users +
-					" Teilnehmer: {this.entrantIds.length}"
-			}
+			entrantIds: [],
+			hostedBy: this.interaction.user.id,
+			winnerIds: [],
+			exemptMembers: [],
 		});
-
 		const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde gestartet.", "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async end(): Promise<void> {
 		const id: string = this.interaction.options.getString("id");
-		this.client.giveawayManager
-			.end(id)
-			.then(async (): Promise<any> => {
-				const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde beendet.", "success", "success");
-				return this.interaction.followUp({ embeds: [successEmbed] });
-			})
-			.catch(async (): Promise<any> => {
-				const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
-				return this.interaction.followUp({ embeds: [errorEmbed] });
-			});
+		const endGiveaway: boolean = await this.client.giveawayManager.endGiveaway(id);
+		if(endGiveaway){
+			const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde beendet.", "success", "success");
+			return this.interaction.followUp({ embeds: [successEmbed] });
+		}else{
+			const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
+			return this.interaction.followUp({ embeds: [errorEmbed] });
+		}
 	}
 
 	private async reroll(): Promise<void> {
 		const id: string = this.interaction.options.getString("id");
-		this.client.giveawayManager
-			.reroll(id, {
-				messages: {
-					congrat: {
-						content:
-							this.client.emotes.tada +
-							" Herzlichen Glückwunsch, {winners}! {this.winnerCount > 1 ? 'Ihr habt' : 'Du hast'} **{this.prize}** gewonnen!",
-						replyToGiveaway: true
-					},
-					error: this.client.emotes.error + " Da es keine weiteren gültigen Teilnehmer gab, gibt es keine Gewinner!"
-				}
-			})
-			.then(async (): Promise<any> => {
-				const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde neu ausgelost.", "success", "success");
-				return this.interaction.followUp({ embeds: [successEmbed] });
-			})
-			.catch(async (): Promise<any> => {
-				const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
-				return this.interaction.followUp({ embeds: [errorEmbed] });
-			});
+		const rerollGiveaway: boolean|Object = await this.client.giveawayManager.rerollGiveaway(id);
+		if(rerollGiveaway){
+			const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde neu ausgelost.", "success", "success");
+			return this.interaction.followUp({ embeds: [successEmbed] });
+		}else{
+			const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
+			return this.interaction.followUp({ embeds: [errorEmbed] });
+		}
 	}
 
 	private async delete(): Promise<void> {
 		const id: string = this.interaction.options.getString("id");
-		this.client.giveawayManager
-			.delete(id)
-			.then(async (): Promise<any> => {
-				const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde gelöscht.", "success", "success");
-				return this.interaction.followUp({ embeds: [successEmbed] });
-			})
-			.catch(async (): Promise<any> => {
-				const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
-				return this.interaction.followUp({ embeds: [errorEmbed] });
-			});
+		const deleteGiveaway: boolean = await this.client.giveawayManager.deleteGiveaway(id);
+		if(deleteGiveaway){
+			const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde gelöscht.", "success", "success");
+			return this.interaction.followUp({ embeds: [successEmbed] });
+		}else{
+			const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
+			return this.interaction.followUp({ embeds: [errorEmbed] });
+		}
 	}
 
 	private async list(): Promise<void> {
-		const guildGiveaways = this.client.giveawayManager.giveaways.filter((g: any): boolean => g.guildId === this.interaction.guild.id && !g.ended);
+		const guildGiveaways: any = (await this.client.giveawayManager.getGiveaways()).filter((g: any): boolean => g.guildId === this.interaction.guild.id && !g.ended);
 
 		const giveaways: any[] = [];
 
 		for (let giveaway of guildGiveaways) {
 			const prize = giveaway.prize;
-			const channel = await this.interaction.guild.channels.fetch(giveaway.channelId).catch(() => {});
+			const channel = await this.interaction.guild.channels.fetch(giveaway.channelId).catch((): void => {});
 			if (!channel) continue;
 			const winnerCount = giveaway.winnerCount;
-			const hostedBy = giveaway.hostedBy;
+			const hostedBy: any = await this.client.users.fetch(giveaway.hostedBy).catch((): void => {});
 			const startedAt = giveaway.startAt;
 			const endAt = giveaway.endAt;
 
@@ -235,26 +179,22 @@ export default class GiveawayCommand extends BaseCommand {
 				" **" +
 				prize +
 				"**\n" +
-				this.client.emotes.arrow +
+				this.client.emotes.channel +
 				"Channel: " +
 				channel.toString() +
 				"\n" +
-				this.client.emotes.arrow +
+				this.client.emotes.tada +
 				"Gewinner: " +
 				winnerCount +
 				"\n" +
-				this.client.emotes.arrow +
+				this.client.emotes.user +
 				"Veranstaltet durch: " +
-				hostedBy +
+				hostedBy.toString() +
 				"\n" +
-				this.client.emotes.arrow +
-				"Gestartet <t:" +
-				Math.round(startedAt / 1000) +
-				":R>\n" +
-				this.client.emotes.arrow +
-				"Endet <t:" +
-				Math.round(endAt / 1000) +
-				":R>\n\n";
+				this.client.emotes.calendar +
+				"Gestartet " + this.client.utils.getDiscordTimestamp(startedAt, "R") + "\n" +
+				this.client.emotes.reminder +
+				"Endet " + this.client.utils.getDiscordTimestamp(endAt, "R") + "\n\n";
 			giveaways.push(text);
 		}
 

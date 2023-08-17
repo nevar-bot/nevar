@@ -19,7 +19,6 @@ import * as toml from "toml";
 import * as fs from "fs";
 import * as util from "util";
 
-import giveawaysHandler from "@handlers/giveaway";
 import Logger from "@helpers/Logger";
 
 // @ts-ignore - File 'emojis.json' is not under 'rootDir' 'src/'
@@ -29,6 +28,8 @@ import { ChannelTypes } from "@helpers/ChannelTypes";
 import { AiChatPrompts } from "@helpers/AiChatPrompts";
 import Utils from "@helpers/Utils";
 import Levels from "@helpers/Levels";
+import GiveawaysManager from "@helpers/Giveaways";
+
 
 import logSchema from "@schemas/Log";
 import guildSchema from "@schemas/Guild";
@@ -99,7 +100,7 @@ export default class BaseClient extends DiscordClient {
 		this.commands = new Collection();
 		this.contextMenus = new Collection();
 
-		this.giveawayManager = giveawaysHandler(this);
+		this.giveawayManager = new GiveawaysManager(this);
 		this.logger = Logger;
 		this.utils = Utils;
 		this.levels = Levels;
