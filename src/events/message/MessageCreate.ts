@@ -275,7 +275,7 @@ export default class {
 				timeout: 10 * 1000
 			});
 
-			const response: AxiosResponse | void = await AxiosInstance.post("https://beta.purgpt.xyz/openai/chat/completions", body, {
+			const response: AxiosResponse | void = await AxiosInstance.post("https://beta.purgpt.xyz/v1/chat/completions", body, {
 				headers,
 				validateStatus: (): boolean => true
 			}).catch((e): void => {
