@@ -20,7 +20,8 @@
        "@helpers/*": ["./src/helpers/*"],
        "@structures/*": ["./src/structures/*"],
        "@schemas/*": ["./src/database/schemas/*"],
-       "@api/*": ["./src/api/*"]
+       "@api/*": ["./src/api/*"],
+       "@dashboard/*": ["./src/dashboard/*"]
      },
 
     "resolveJsonModule": true,

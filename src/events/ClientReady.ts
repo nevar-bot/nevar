@@ -11,6 +11,7 @@ import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";
 import youtubeNotifier from "@handlers/youtubeNotifier";
 import endGiveaways from "@handlers/endGiveaways";
+import dashboard from "@dashboard/app";
 import api from "@api/app";
 import BaseClient from "@structures/BaseClient";
 
@@ -39,6 +40,8 @@ export default class {
 		/* Initiate presence handler */
 		handlePresence(client);
 
+		/* Initiate dashboard */
+		dashboard.init(client);
 		/* Initiate handlers */
 		TOPGG.init(client);
 		unbanMembers.init(client);

@@ -1,0 +1,33 @@
+doctype html
+html(lang='de')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+
+        title #{client.user.username} - Login
+        link(rel='icon', href=favicon, type='image/x-icon')
+
+        link(rel='stylesheet', href='/css/style.css')
+
+    body.hold-transition.login-page.dark-mode
+        .login-box
+            .card.card-outline.card-primary
+                .card-header.text-center
+                    a.h1(href='/')
+                        b #{client.user.username}
+                        | Dash
+                .card-body
+                    p.login-box-msg Melde dich an, um loszulegen
+                    .social-auth-links.text-center.mt-2.mb-3
+                        a.btn.btn-block.btn-primary(href='/auth/login')
+                            i.fa-brands.fa-discord
+                            |  Mit Discord anmelden
+
+        // JQuery
+        script(src='/js/jquery.min.js')
+        // Bootstrap
+        script(src='/js/bootstrap.bundle.min.js')
+        // AdminLTE
+        script(src='/js/adminlte.js')
+        // FontAwesome
+        script(src='https://kit.fontawesome.com/477541b8bd.js', crossorigin='anonymous')

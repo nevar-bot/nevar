@@ -1,0 +1,153 @@
+doctype html
+html(lang='de')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+
+        title #{client.user.username} - Server
+        link(rel='icon', href=favicon, type='image/x-icon')
+
+        // CSS
+        link(rel='stylesheet', href='/css/style.css')
+        link(rel='stylesheet', href='/css/OverlayScrollbars.min.css')
+
+    body.hold-transition.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
+        .wrapper
+            // Preloader
+            .preloader.flex-column.justify-content-center.align-items-center
+                img.animation__wobble(src=`${favicon}`, alt='Preloader logo', height='60', width='60')
+
+            // Top Navbar
+            nav.main-header.navbar.navbar-expand.navbar-dark
+                // Links
+                ul.navbar-nav
+                    li.nav-item
+                        a.nav-link(data-widget='pushmenu', href='#', role='button')
+                            i.fas.fa-bars
+                    li.nav-item.d-none.d-sm-inline-block
+                        a.nav-link(href='https://nevar.eu') Website
+                    li.nav-item.d-none.d-sm-inline-block
+                        a.nav-link(href='https://nevar.eu/support') Discord
+                // Rechts
+                ul.navbar-nav.ml-auto
+                    li.nav-item
+                        a.nav-link(href='/auth/logout', role='button' data-toggle="tooltip" data-placement="left" title="Abmelden")
+                            i.fa-solid.fa-right-from-bracket
+
+            // Sidebar
+            aside.main-sidebar.sidebar-dark-primary.elevation-4
+                // Logo
+                a.brand-link(href='/')
+                    img.brand-image.img-circle.elevation-3(src=`${favicon}`, alt='Logo', style='opacity: .8')
+                    span.brand-text.font-weight-light #{client.user.username}
+
+                // Sidebar
+                .sidebar
+                    .user-panel.mt-3.pb-3.mb-3.d-flex
+                        .image
+                            img.img-circle.elevation-2(src=avatarUrl, alt='User Image')
+                        .info
+                            a.d-block(href='#') #{username}
+                    // Menü
+                    nav.mt-2
+                        ul.nav.nav-pills.nav-sidebar.flex-column(data-widget='treeview', role='menu', data-accordion='false')
+                            li.nav-header Allgemeines
+                            li.nav-item
+                                a.nav-link.active(href="#")
+                                    i.nav-icon.fa-solid.fa-inbox
+                                    p
+                                        | Server
+                            li.nav-item
+                                a.nav-link(href='#')
+                                    i.nav-icon.fa-solid.fa-bars-staggered
+                                    p
+                                        | Weiterführendes
+                                        i.fas.fa-angle-left.right
+                                ul.nav.nav-treeview
+                                    li.nav-item
+                                        a.nav-link(href='pages/layout/top-nav.html')
+                                            i.far.fa-circle.nav-icon
+                                            p Website
+                                    li.nav-item
+                                        a.nav-link(href='pages/layout/top-nav-sidebar.html')
+                                            i.far.fa-circle.nav-icon
+                                            p Discord
+                                    li.nav-item
+                                        a.nav-link(href='pages/layout/top-nav-sidebar.html')
+                                            i.far.fa-circle.nav-icon
+                                            p Datenschutzerklärung
+                                    li.nav-item
+                                        a.nav-link(href='pages/layout/top-nav-sidebar.html')
+                                            i.far.fa-circle.nav-icon
+                                            p Impressum
+            .content-wrapper
+                .content-header
+                    .container-fluid
+                        .row.mb-2
+                            .col-sm-6
+                                h1.m-0 Willkommen, #{displayName}!
+                section.content
+                    .container-fluid
+                        // Guild boxes
+                        .row
+                            each guild in guilds
+                                .col-12.col-sm-6.col-md-3
+                                    .info-box
+                                        span.info-box-icon.elevation-1
+                                            if guild.icon
+                                                img(src=`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=256`, alt="Guild icon", style="height: 100%; width: 100%; object-fit: contain;border-radius:5px;")
+                                            else
+                                                img(src=`https://i.pinimg.com/1200x/cf/fe/55/cffe5555095a6772627f5322be67448e.jpg`, alt="Guild icon", style="height: 100%; width: 100%; object-fit: contain;border-radius:5px;")
+                                        .info-box-content
+                                            span.info-box-text #{guild.name}
+                                            span.info-box-number
+                                                |
+                                                a(href=`/dashboard/${guild.id}`) Server verwalten
+                    .container-fluid(style='margin-top: 10rem;')
+                        .row
+                            each guild in notInvitedGuilds
+                                .col-12.col-sm-6.col-md-3
+                                    .info-box(style="filter: grayscale(70%);")
+                                        span.info-box-icon.elevation-1
+                                            if guild.icon
+                                                img(src=`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}?size=256`, alt="Guild icon", style="height: 100%; width: 100%; object-fit: contain;border-radius:5px;")
+                                            else
+                                                img(src=`https://i.pinimg.com/1200x/cf/fe/55/cffe5555095a6772627f5322be67448e.jpg`, alt="Guild icon", style="height: 100%; width: 100%; object-fit: contain;border-radius:5px;")
+                                        .info-box-content
+                                            span.info-box-text #{guild.name}
+                                            span.info-box-number
+                                                |
+                                                a(href=`${inviteUrl}&guild_id=${guild.id}&disable_guild_select=true`) #{client.user.username} einladen
+
+
+aside.control-sidebar.control-sidebar-dark
+
+footer.main-footer
+    strong
+        | Copyright &copy; 2023&nbsp;
+        a(href='https://nevar.eu') Nevar.eu
+        | . All rights reserved.
+    .float-right.d-none.d-sm-inline-block
+        strong
+            | Designed by&nbsp;
+            a(href='https://adminlte.io') AdminLTE.io
+
+// JQuery
+script(src='/js/jquery.min.js')
+// Bootstrap
+script(src='/js/bootstrap.bundle.min.js')
+// overlayScrollbars
+script(src='/js/jquery.overlayScrollbars.min.js')
+// AdminLTE App
+script(src='/js/adminlte.js')
+// PAGE PLUGINS
+// jQuery Mapael
+script(src='/js/jquery.mousewheel.js')
+script(src='/js/raphael.min.js')
+script(src='/js/jquery.mapael.min.js')
+// FontAwesome
+script(src='https://kit.fontawesome.com/477541b8bd.js', crossorigin='anonymous')
+script.
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })

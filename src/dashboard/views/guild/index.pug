@@ -1,0 +1,237 @@
+doctype html
+html(lang='de')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+
+        title #{client.user.username} - #{guild.name}
+        link(rel='icon', href=favicon, type='image/x-icon')
+
+        // CSS
+        link(rel='stylesheet', href='/css/style.css')
+        link(rel='stylesheet', href='/css/OverlayScrollbars.min.css')
+
+    body.hold-transition.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
+        .wrapper
+            // Preloader
+            .preloader.flex-column.justify-content-center.align-items-center
+                img.animation__wobble(src='/img/logo_transparent.png', alt='Nevar Logo', height='60', width='60')
+            // Navbar
+            nav.main-header.navbar.navbar-expand.navbar-dark
+                // Links
+                ul.navbar-nav
+                    li.nav-item
+                        a.nav-link(data-widget='pushmenu', href='#', role='button')
+                            i.fas.fa-bars
+                        li.nav-item.d-none.d-sm-inline-block
+                            a.nav-link(href='/dashboard') Server-Auswahl
+                        li.nav-item.d-none.d-sm-inline-block
+                            a.nav-link(href='https://nevar.eu') Website
+                        li.nav-item.d-none.d-sm-inline-block
+                            a.nav-link(href='https://nevar.eu/support') Discord
+                // Rechts
+                ul.navbar-nav.ml-auto
+                    li.nav-item
+                        a.nav-link(href='/auth/logout', role='button' data-toggle="tooltip" data-placement="left" title="Abmelden")
+                            i.fa-solid.fa-right-from-bracket
+            aside.main-sidebar.sidebar-dark-primary.elevation-4
+                // Logo
+                a.brand-link(href=`/dashboard/${guild.id}`)
+                    img.brand-image.img-circle.elevation-3(src=`${guild.iconURL()}`, alt='Guild Logo', style='opacity: .8')
+                    span.brand-text.font-weight-light #{guild.name}
+                // Sidebar
+                .sidebar
+                    .user-panel.mt-3.pb-3.mb-3.d-flex
+                        .image
+                            img.img-circle.elevation-2(src=avatarUrl, alt='User Image')
+                        .info
+                            a.d-block(href='#') #{user.username}
+                    // Menü
+                    nav.mt-2
+                        ul.nav.nav-pills.nav-sidebar.flex-column(data-widget='treeview', role='menu', data-accordion='false')
+                            li.nav-header Allgemeines
+                            li.nav-item
+                                a.nav-link.active(href=`/dashboard/${guild.id}`)
+                                    i.nav-icon.fa-solid.fa-inbox
+                                    p
+                                        | Übersicht
+                            li.nav-item
+                                a.nav-link(href='#')
+                                    i.nav-icon.fa-solid.fa-bars-staggered
+                                    p
+                                        | Weiterführendes
+                                        i.fas.fa-angle-left.right
+                                ul.nav.nav-treeview
+                                    li.nav-item
+                                        a.nav-link(href='https://nevar.eu')
+                                            i.far.fa-circle.nav-icon
+                                            p Website
+                                    li.nav-item
+                                        a.nav-link(href='https://nevar.eu/support')
+                                            i.far.fa-circle.nav-icon
+                                            p Discord
+                                    li.nav-item
+                                        a.nav-link(href='https://nevar.eu/privacy')
+                                            i.far.fa-circle.nav-icon
+                                            p Datenschutzerklärung
+                                    li.nav-item
+                                        a.nav-link(href='https://nevar.eu/imprint')
+                                            i.far.fa-circle.nav-icon
+                                            p Impressum
+                            li.nav-header AI-Funktionen
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/aichat`)
+                                    i.nav-icon.fa-solid.fa-brain
+                                    p
+                                        | Chat
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/aimod`)
+                                    i.nav-icon.fa.solid.fa-ban
+                                    p
+                                        | Moderation
+                            li.nav-header Systemnachrichten
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/welcome`)
+                                    i.nav-icon.fa.solid.fa-right-to-bracket
+                                    p
+                                        | Willkommen
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/farewell`)
+                                    i.nav-icon.fa-solid.fa-right-from-bracket
+                                    p
+                                        | Verabschiedung
+                            li.nav-header Automatisierung
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/autodelete`)
+                                    i.nav-icon.fa-solid.fa-trash
+                                    p
+                                        | Autodelete
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/autoreact`)
+                                    i.nav-icon.fa-solid.fa-face-smile
+                                    p
+                                        | Autoreact
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/autorole`)
+                                    i.nav-icon.fa-solid.fa-plus
+                                    p
+                                        | Autorole
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/logging`)
+                                    i.nav-icon.fa-regular.fa-file-lines
+                                    p
+                                        | Logging
+                            li.nav-header Levelsystem
+                            li.nav-item
+                                a.nav-link(href='#')
+                                    i.nav-icon.fa-solid.fa-star
+                                    p
+                                        | Levelsystem
+                                        i.fas.fa-angle-left.right
+                                ul.nav.nav-treeview
+                                    li.nav-item
+                                        a.nav-link(href=`/dashboard/${guild.id}/levelsystem`)
+                                            i.far.fa-circle.nav-icon
+                                            p Allgemeines
+                                    li.nav-item
+                                        a.nav-link(href=`/dashboard/${guild.id}/levelsystem/doublexp`)
+                                            i.far.fa-circle.nav-icon
+                                            p Doppel-XP
+                                    li.nav-item
+                                        a.nav-link(href=`/dashboard/${guild.id}/levelsystem/roles`)
+                                            i.far.fa-circle.nav-icon
+                                            p Rollen
+                                    li.nav-item
+                                        a.nav-link(href=`/dashboard/${guild.id}/levelsystem/exclude`)
+                                            i.far.fa-circle.nav-icon
+                                            p Exkludieren
+                            li.nav-header Sonstiges
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/join2create`)
+                                    i.nav-icon.fa-solid.fa-microphone
+                                    p
+                                        | Join2Create
+                            li.nav-item
+                                a.nav-link(href=`/dashboard/${guild.id}/youtubenotifier`)
+                                    i.nav-icon.fa-brands.fa-youtube
+                                    p
+                                        | Youtube-Notifier
+            .content-wrapper
+                .content-header
+                    .container-fluid
+                        .row.mb-2
+                            .col-sm-6
+                                h1.m-0 Übersicht
+                            .col-sm-6
+                                ol.breadcrumb.float-sm-right
+                                    li.breadcrumb-item
+                                        a(href='/dashboard') Server
+                                    li.breadcrumb-item.active #{guild.name}
+                section.content
+                    .container-fluid
+                        // Info boxes
+                        .row
+                            .col-12.col-sm-6.col-md-3
+                                .info-box.mb-3
+                                    span.info-box-icon.bg-success.elevation-1
+                                        i.fa-solid.fa-terminal
+                                    .info-box-content
+                                        span.info-box-text Befehle genutzt
+                                        span.info-box-number #{guild.commandCount}
+                            .col-12.col-sm-6.col-md-3
+                                .info-box
+                                    span.info-box-icon.bg-info.elevation-1
+                                        i.fa-solid.fa-users
+                                    .info-box-content
+                                        span.info-box-text Mitglieder
+                                        span.info-box-number #{guild.memberCount}
+                                    // /.info-box-content
+                                // /.info-box
+                            // /.col
+                            .clearfix.hidden-md-up
+                            .col-12.col-sm-6.col-md-3
+                                .info-box.mb-3
+                                    span.info-box-icon.bg-danger.elevation-1
+                                        i.fa-solid.fa-hashtag
+                                    .info-box-content
+                                        span.info-box-text Channel
+                                        span.info-box-number #{guild.channels.cache.size}
+                            .col-12.col-sm-6.col-md-3
+                                .info-box.mb-3
+                                    span.info-box-icon.bg-warning.elevation-1
+                                        i.fa-solid.fa-flag
+                                    .info-box-content
+                                        span.info-box-text Rollen
+                                        span.info-box-number #{guild.roles.cache.size}
+
+
+aside.control-sidebar.control-sidebar-dark
+
+footer.main-footer
+    strong
+        | Copyright &copy; 2023&nbsp;
+        a(href='https://nevar.eu') Nevar.eu
+        | . All rights reserved.
+    .float-right.d-none.d-sm-inline-block
+        strong
+            | Designed by&nbsp;
+            a(href='https://adminlte.io') AdminLTE.io
+
+// JQuery
+script(src='/js/jquery.min.js')
+// Bootstrap
+script(src='/js/bootstrap.bundle.min.js')
+// overlayScrollbars
+script(src='/js/jquery.overlayScrollbars.min.js')
+// AdminLTE
+script(src='/js/adminlte.js')
+// jQuery Mapael
+script(src='/js/jquery.mousewheel.js')
+script(src='/js/raphael.min.js')
+script(src='/js/jquery.mapael.min.js')
+// FontAwesome
+script(src='https://kit.fontawesome.com/477541b8bd.js', crossorigin='anonymous')
+script.
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
