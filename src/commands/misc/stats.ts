@@ -62,7 +62,7 @@ export default class StatsCommand extends BaseCommand {
 		const botVersion: any = packageJson.version;
 		const nodeVer: string = process.version.replace("v", "");
 		const djsV: string = require("discord.js").version;
-  const tsV: string = require("typescript").version;
+		const tsV: string = require("typescript").version;
 		const date: Date = new Date(Date.now());
 		let month: string = date.toLocaleString("de-DE", { month: "long" });
 		month = month.charAt(0).toUpperCase() + month.slice(1);
@@ -127,10 +127,10 @@ export default class StatsCommand extends BaseCommand {
 			" NodeJS-Version: **" +
 			nodeVer +
 			"**\n" +
-   this.client.emotes.typescript +
-   " Typescript-Version: **" +
-   tsV +
-   "**";
+			this.client.emotes.typescript +
+			" Typescript-Version: **" +
+			tsV +
+			"**";
 
 		const statsEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		statsEmbed.setThumbnail(this.client.user!.displayAvatarURL());

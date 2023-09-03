@@ -1,5 +1,8 @@
+import { Request, Response } from "express";
+
 export default {
-    getIndex(req: any, res: any): void {
-        res.status(301).redirect("/dashboard");
-    },
-}
+	get(req: Request, res: Response): void {
+		/* redirect to dashboard */
+		res.status(301).redirect("/dashboard");
+	}
+};

@@ -91,7 +91,11 @@ export default class BlockCommand extends BaseCommand {
 
 		// target is already blocked
 		if (targetData.blocked.state) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Diese/r Nutzer/-in oder Server ist bereits blockiert.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Diese/r Nutzer/-in oder Server ist bereits blockiert.",
+				"error",
+				"error"
+			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -130,13 +134,21 @@ export default class BlockCommand extends BaseCommand {
 
 		// no target found
 		if (!targetData) {
-			const noTargetEmbed: EmbedBuilder = this.client.createEmbed("Es wurde kein/e Nutzer/-in oder Server mit dieser ID gefunden.", "error", "error");
+			const noTargetEmbed: EmbedBuilder = this.client.createEmbed(
+				"Es wurde kein/e Nutzer/-in oder Server mit dieser ID gefunden.",
+				"error",
+				"error"
+			);
 			return this.message.reply({ embeds: [noTargetEmbed] });
 		}
 
 		// target is not blocked
 		if (!targetData.blocked.state) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Diese/r Nutzer/-in oder Server ist nicht blockiert.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Diese/r Nutzer/-in oder Server ist nicht blockiert.",
+				"error",
+				"error"
+			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 

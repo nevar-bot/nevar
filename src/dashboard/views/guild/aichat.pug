@@ -1,0 +1,45 @@
+include ../templates/head
+body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed.wrapper
+    include ../templates/topbar
+    include ../templates/sidebar-guild
+    .content-wrapper
+        include ../templates/breadcrumbs
+        section.content.container-fluid
+            if saved === true
+                .alert.alert-success.alert-dismissible
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-check
+                        | Daten übernommen
+                    | Die Einstellungen wurden erfolgreich gespeichert.
+            .callout.callout-info
+                h5 Erklärung
+                p Der AI-Chat bietet die Möglichkeit, in einem ausgewählten Kanal mit #{client.user.username} schreiben zu können. Dieser kann dabei verschiedene zur Verfügung stehende Rollen einnehmen.
+            .card.card-default
+                .card-header
+                    h3.card-title Einstellungen
+                    .card-tools
+                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                            i.fas.fa-minus
+                .card-body
+                    .row
+                        .col-md-6
+                            form(action=`/dashboard/${guild.id}/aichat/save` method='post')
+                                .form-group
+                                    label Status
+                                    select.form-control(name="status" style='width: 100%;')
+                                        option(value="true" selected=(guildData.settings.aiChat ? guildData.settings.aiChat.enabled : false)) aktiviert
+                                        option(value="false" selected=!(guildData.settings.aiChat ? guildData.settings.aiChat.enabled : false)) deaktiviert
+                                .form-group
+                                    label Kanal
+                                    select.form-control(name="channel" style='width: 100%;')
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.aiChat ? channel[1].id === guildData.settings.aiChat.channel : false)) #{channel[1].name}
+                                .form-group
+                                    label Modus
+                                    select.form-control(name="mode" style='width: 100%;')
+                                        each value, key in client.aiChatPrompts.prompts
+                                            option(value=key, selected=(guildData.settings.aiChat ? key === guildData.settings.aiChat.mode : false)) #{value.name}
+                                button.btn.btn-block.btn-primary(type='submit') Speichern
+include ../templates/footer

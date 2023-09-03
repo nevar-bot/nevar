@@ -84,18 +84,18 @@ export default class UserinfoCommand extends BaseCommand {
 			" Displayname: **" +
 			displayName +
 			"**\n" +
-   this.client.emotes.label +
-   "Server-Displayname: **" +
-   memberDisplayName +
-   "**\n" +
+			this.client.emotes.label +
+			"Server-Displayname: **" +
+			memberDisplayName +
+			"**\n" +
 			this.client.emotes.user +
 			" Nutzername: **" +
 			name +
 			"**\n" +
-   this.client.emotes.bot +
-   " Bot: **" +
-   bot +
-   "**\n\n" +
+			this.client.emotes.bot +
+			" Bot: **" +
+			bot +
+			"**\n\n" +
 			this.client.emotes.calendar +
 			" Account erstellt am: **" +
 			createdAt +
@@ -114,8 +114,8 @@ export default class UserinfoCommand extends BaseCommand {
 			"**\n\n### " +
 			this.client.emotes.shine +
 			" Badges:\n**" +
-			badges.join("\n")
-   + "**";
+			badges.join("\n") +
+			"**";
 
 		const searchServerEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		searchServerEmbed.setTitle(this.client.emotes.information + " Informationen zu " + member.user.username);

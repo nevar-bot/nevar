@@ -39,7 +39,10 @@ export default class LeaderboardCommand extends BaseCommand {
 				"### " +
 					emote +
 					" " +
-					user.displayName + " (*@" + user.username + "*)" +
+					user.displayName +
+					" (*@" +
+					user.username +
+					"*)" +
 					"\n" +
 					this.client.emotes.shine2 +
 					" Level " +

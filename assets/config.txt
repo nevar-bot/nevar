@@ -80,6 +80,21 @@ OPENAI = ""
 # perspectiveapi.com
 GOOGLE = ""
 
+[ dashboard ]
+# Whether the dashboard should be enabled*
+ENABLED = false
+# If so, a port must be specified
+PORT = 80
+# The callback uri you defined in the discord developer portal*
+CALLBACK_URI = ""
+# The client secret of your discord application*
+CLIENT_SECRET = ""
+# A random string that is used to encrypt the session*
+# You can generate one with the following command:
+# node -e "console.log([...Array(64)].map(_=>(Math.random()*36|0).toString(36)).join(''))"
+SESSION_SECRET = ""
+
+
 # All presences are defined here
 [[ presence ]]
 STATUS = "online" # The bot's status [online, idle, dnd, invisible]

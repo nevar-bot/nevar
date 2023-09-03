@@ -48,8 +48,7 @@ export default class {
 		}
 
 		for (let afkUser of afkUsers) {
-			const awayText: string =
-				"Begründung: " + afkUser.reason + "\n" + this.client.emotes.reminder + " Abwesend seit: " + afkUser.since;
+			const awayText: string = "Begründung: " + afkUser.reason + "\n" + this.client.emotes.reminder + " Abwesend seit: " + afkUser.since;
 
 			const isAwayEmbed: EmbedBuilder = this.client.createEmbed("{0}", "reminder", "normal", awayText);
 			isAwayEmbed.setTitle(this.client.emotes.status.idle + " " + afkUser.displayName + " (@" + afkUser.name + ")" + " ist aktuell abwesend!");

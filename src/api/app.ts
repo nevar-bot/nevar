@@ -1,5 +1,4 @@
 import express, { Express } from "express";
-import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import fs from "fs";
@@ -9,7 +8,7 @@ export default {
 		const app: Express = express();
 
 		app.use(helmet());
-		app.use(bodyParser.json());
+		app.use(express.json());
 		app.use(cors());
 
 		const files: string[] = fs.readdirSync("./build/api/routes");

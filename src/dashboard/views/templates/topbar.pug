@@ -1,0 +1,18 @@
+// Top Navbar
+nav.main-header.navbar.navbar-expand.navbar-dark
+    // Linke Seite
+    ul.navbar-nav
+        li.nav-item
+            a.nav-link(data-widget='pushmenu', href='#', role='button')
+                i.fas.fa-bars
+            li.nav-item.d-none.d-sm-inline-block
+                a.nav-link(href='/dashboard') Server-Auswahl
+            li.nav-item.d-none.d-sm-inline-block
+                a.nav-link(href='https://nevar.eu') Website
+            li.nav-item.d-none.d-sm-inline-block
+                a.nav-link(href='https://nevar.eu/support') Discord
+    // Rechte Seite
+    ul.navbar-nav.ml-auto
+        li.nav-item
+            a.nav-link(href='/auth/logout', role='button' data-toggle="tooltip" data-placement="left" title="Abmelden")
+                i.fa-solid.fa-right-from-bracket

@@ -1,35 +1,44 @@
-/*-- https://github.com/geshan/expressjs-structure/blob/master/index.js --*/
-/*-- https://stackoverflow.com/questions/74976480/discord-oauth2-with-node-js --*/
-
-import express, {Express} from 'express';
-import bodyParser from "body-parser";
-import BaseClient from "@structures/BaseClient";
+import express, { Express } from "express";
+import session from "express-session";
 import path from "path";
 import cookieParser from "cookie-parser";
+import BaseClient from "@structures/BaseClient";
+import compression from "compression";
 
 import IndexRoute from "@dashboard/routes/IndexRoute";
 import DashboardRoute from "@dashboard/routes/DashboardRoute";
 import AuthRoute from "@dashboard/routes/AuthRoute";
 
-
 export default {
-    init(client: BaseClient): void {
-        const app = express();
+	init(client: BaseClient): void {
+		const { SESSION_SECRET, PORT } = client.config.dashboard;
+		const app: Express = express();
 
-        app.set("view engine", "pug");
-        app.use(bodyParser.json());
-        app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(cookieParser());
+		// Middleware
+		app.use(compression(), express.json(), express.urlencoded({ extended: true }), cookieParser());
 
-        /* set routes */
-        app.use("/", IndexRoute);
-        app.use("/dashboard", DashboardRoute);
-        app.use("/auth", AuthRoute);
+		// Session
+		app.use(
+			session({
+				secret: SESSION_SECRET,
+				resave: false,
+				saveUninitialized: true,
+			})
+		);
 
-        app.set("views", path.join(__dirname, "views"));
-        app.use(express.static(path.join(__dirname, "public")));
-        app.listen(3000,  (): void => {
-            client.logger.success("Dashboard listening on port 3000");
-        })
-    }
-}
+		// Set view engine and static files
+		app.set("view engine", "pug");
+		app.set("views", path.join(__dirname, "views"));
+		app.use(express.static(path.join(__dirname, "public")));
+
+		// Routes
+		app.use("/", IndexRoute);
+		app.use("/dashboard", DashboardRoute);
+		app.use("/auth", AuthRoute);
+
+		// Start server
+		app.listen(PORT, (): void => {
+			client.logger.success(`Dashboard is running on port ${PORT}`);
+		});
+	},
+};

@@ -1,0 +1,44 @@
+aside.main-sidebar.sidebar-dark-primary.elevation-4
+    // Logo
+    a.brand-link(href=`/dashboard`)
+        img.brand-image.img-circle.elevation-3(src=`${client.user.displayAvatarURL()}`, alt='Bot Logo', style='opacity: .8')
+        span.brand-text.font-weight-light #{client.user.username}
+    // Sidebar
+    .sidebar
+        .user-panel.mt-3.pb-3.mb-3.d-flex
+            .image
+                img.img-circle.elevation-2(src=avatarUrl, alt='User Image')
+            .info
+                a.d-block(href='#') #{user.username}
+        // Menü
+        nav.mt-2
+            ul.nav.nav-pills.nav-sidebar.flex-column(data-widget='treeview', role='menu', data-accordion='false')
+                li.nav-header Allgemeines
+                li.nav-item
+                    a.nav-link(href=`/dashboard` class=module === "overview" ? 'active' : '')
+                        i.nav-icon.fa-solid.fa-inbox
+                        p
+                            | Übersicht
+                li.nav-item
+                    a.nav-link(href='#')
+                        i.nav-icon.fa-solid.fa-bars-staggered
+                        p
+                            | Weiterführendes
+                            i.fas.fa-angle-left.right
+                    ul.nav.nav-treeview
+                        li.nav-item
+                            a.nav-link(href='https://nevar.eu')
+                                i.far.fa-circle.nav-icon
+                                p Website
+                        li.nav-item
+                            a.nav-link(href='https://nevar.eu/support')
+                                i.far.fa-circle.nav-icon
+                                p Discord
+                        li.nav-item
+                            a.nav-link(href='https://nevar.eu/privacy')
+                                i.far.fa-circle.nav-icon
+                                p Datenschutzerklärung
+                        li.nav-item
+                            a.nav-link(href='https://nevar.eu/imprint')
+                                i.far.fa-circle.nav-icon
+                                p Impressum

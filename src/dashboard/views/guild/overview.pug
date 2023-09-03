@@ -1,0 +1,39 @@
+include ../templates/head
+body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed.wrapper
+    include ../templates/topbar
+    include ../templates/sidebar-guild
+    .content-wrapper
+        include ../templates/breadcrumbs
+        section.content
+            .container-fluid
+                .row
+                    .col-12.col-sm-6.col-md-3
+                        .info-box.mb-3
+                            span.info-box-icon.bg-success.elevation-1
+                                i.fa-solid.fa-terminal
+                            .info-box-content
+                                span.info-box-text Befehle genutzt
+                                span.info-box-number #{executedCommandsCount}
+                    .col-12.col-sm-6.col-md-3
+                        .info-box
+                            span.info-box-icon.bg-info.elevation-1
+                                i.fa-solid.fa-users
+                            .info-box-content
+                                span.info-box-text Mitglieder
+                                span.info-box-number #{guild.memberCount}
+                    .clearfix.hidden-md-up
+                    .col-12.col-sm-6.col-md-3
+                        .info-box.mb-3
+                            span.info-box-icon.bg-danger.elevation-1
+                                i.fa-solid.fa-hashtag
+                            .info-box-content
+                                span.info-box-text Channel
+                                span.info-box-number #{guild.channels.cache.size}
+                    .col-12.col-sm-6.col-md-3
+                        .info-box.mb-3
+                            span.info-box-icon.bg-warning.elevation-1
+                                i.fa-solid.fa-flag
+                            .info-box-content
+                                span.info-box-text Rollen
+                                span.info-box-number #{guild.roles.cache.size}
+include ../templates/footer

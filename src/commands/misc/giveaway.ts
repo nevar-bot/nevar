@@ -119,7 +119,7 @@ export default class GiveawayCommand extends BaseCommand {
 			entrantIds: [],
 			hostedBy: this.interaction.user.id,
 			winnerIds: [],
-			exemptMembers: [],
+			exemptMembers: []
 		});
 		const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde gestartet.", "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
@@ -128,10 +128,10 @@ export default class GiveawayCommand extends BaseCommand {
 	private async end(): Promise<void> {
 		const id: string = this.interaction.options.getString("id");
 		const endGiveaway: boolean = await this.client.giveawayManager.endGiveaway(id);
-		if(endGiveaway){
+		if (endGiveaway) {
 			const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde beendet.", "success", "success");
 			return this.interaction.followUp({ embeds: [successEmbed] });
-		}else{
+		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -139,11 +139,11 @@ export default class GiveawayCommand extends BaseCommand {
 
 	private async reroll(): Promise<void> {
 		const id: string = this.interaction.options.getString("id");
-		const rerollGiveaway: boolean|Object = await this.client.giveawayManager.rerollGiveaway(id);
-		if(rerollGiveaway){
+		const rerollGiveaway: boolean | Object = await this.client.giveawayManager.rerollGiveaway(id);
+		if (rerollGiveaway) {
 			const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde neu ausgelost.", "success", "success");
 			return this.interaction.followUp({ embeds: [successEmbed] });
-		}else{
+		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -152,17 +152,19 @@ export default class GiveawayCommand extends BaseCommand {
 	private async delete(): Promise<void> {
 		const id: string = this.interaction.options.getString("id");
 		const deleteGiveaway: boolean = await this.client.giveawayManager.deleteGiveaway(id);
-		if(deleteGiveaway){
+		if (deleteGiveaway) {
 			const successEmbed: EmbedBuilder = this.client.createEmbed("Das Gewinnspiel wurde gelöscht.", "success", "success");
 			return this.interaction.followUp({ embeds: [successEmbed] });
-		}else{
+		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed("Mit der ID habe ich kein Gewinnspiel gefunden.", "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 	}
 
 	private async list(): Promise<void> {
-		const guildGiveaways: any = (await this.client.giveawayManager.getGiveaways()).filter((g: any): boolean => g.guildId === this.interaction.guild.id && !g.ended);
+		const guildGiveaways: any = (await this.client.giveawayManager.getGiveaways()).filter(
+			(g: any): boolean => g.guildId === this.interaction.guild.id && !g.ended
+		);
 
 		const giveaways: any[] = [];
 
@@ -192,9 +194,13 @@ export default class GiveawayCommand extends BaseCommand {
 				hostedBy.toString() +
 				"\n" +
 				this.client.emotes.calendar +
-				"Gestartet " + this.client.utils.getDiscordTimestamp(startedAt, "R") + "\n" +
+				"Gestartet " +
+				this.client.utils.getDiscordTimestamp(startedAt, "R") +
+				"\n" +
 				this.client.emotes.reminder +
-				"Endet " + this.client.utils.getDiscordTimestamp(endAt, "R") + "\n\n";
+				"Endet " +
+				this.client.utils.getDiscordTimestamp(endAt, "R") +
+				"\n\n";
 			giveaways.push(text);
 		}
 

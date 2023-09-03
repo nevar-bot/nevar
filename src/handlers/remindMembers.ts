@@ -23,7 +23,7 @@ export default {
 							.fetch(memberData.id)
 							.then((member: GuildMember): void => {
 								const reminderAgo: string = client.utils.getDiscordTimestamp(reminder.startDate, "R");
-								const reminderStarted: string = client.utils.getDiscordTimestamp(reminder.startDate, "f")
+								const reminderStarted: string = client.utils.getDiscordTimestamp(reminder.startDate, "f");
 								const text: string =
 									"### " +
 									client.emotes.reminder +

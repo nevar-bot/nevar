@@ -233,7 +233,6 @@ export default class Utils {
 		return String.fromCodePoint(...[...countryCode.toUpperCase()].map((x) => 0x1f1a5 + x.charCodeAt(0)));
 	}
 
-
 	/**
 	 * Erstellt einen Discord-Timestamp
 	 *
@@ -249,10 +248,10 @@ export default class Utils {
 	 *   - "r": Relatives Zeitformat (z.B. "vor 5 Minuten")
 	 * @returns {string} Generierter Discord-Timestamp
 	 */
-	static getDiscordTimestamp(time: string, type: "t"|"T"|"d"|"D"|"f"|"F"|"R"|undefined): string {
-		if(!type){
+	static getDiscordTimestamp(time: string, type: "t" | "T" | "d" | "D" | "f" | "F" | "R" | undefined): string {
+		if (!type) {
 			return "<t:" + moment(time).unix() + ">";
-		}else{
+		} else {
 			return "<t:" + moment(time).unix() + ":" + type + ">";
 		}
 	}

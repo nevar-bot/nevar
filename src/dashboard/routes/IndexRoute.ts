@@ -3,6 +3,6 @@ const router: Router = express.Router();
 
 import IndexController from "@dashboard/controllers/IndexController";
 
-router.get("/", IndexController.getIndex);
+router.get("/", IndexController.get);
 
 export default router;

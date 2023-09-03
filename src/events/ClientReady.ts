@@ -41,7 +41,8 @@ export default class {
 		handlePresence(client);
 
 		/* Initiate dashboard */
-		dashboard.init(client);
+		if (config.dashboard["ENABLED"]) dashboard.init(client);
+
 		/* Initiate handlers */
 		TOPGG.init(client);
 		unbanMembers.init(client);

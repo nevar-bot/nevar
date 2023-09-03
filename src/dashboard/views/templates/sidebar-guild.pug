@@ -1,0 +1,122 @@
+aside.main-sidebar.sidebar-dark-primary.elevation-4
+    // Logo
+    a.brand-link(href=`/dashboard/${guild.id}`)
+        img.brand-image.img-circle.elevation-3(src=`${guild.iconURL() ? guild.iconURL() : `https://cdn.discordapp.com/embed/avatars/${Math.floor(Math.random() * 6)}.png`}`, alt='Guild Logo', style='opacity: .8')
+        span.brand-text.font-weight-light #{guild.name}
+    // Sidebar
+    .sidebar
+        .user-panel.mt-3.pb-3.mb-3.d-flex
+            .image
+                img.img-circle.elevation-2(src=avatarUrl, alt='User Image')
+            .info
+                a.d-block #{user.username}
+        // Menü
+        nav.mt-2
+            ul.nav.nav-pills.nav-sidebar.flex-column(data-widget='treeview', role='menu', data-accordion='false')
+                li.nav-header Allgemeines
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}` class=module === "overview" ? 'active' : '')
+                        i.nav-icon.fa-solid.fa-inbox
+                        p
+                            | Übersicht
+                li.nav-item
+                    a.nav-link(href='#')
+                        i.nav-icon.fa-solid.fa-bars-staggered
+                        p
+                            | Weiterführendes
+                            i.fas.fa-angle-left.right
+                    ul.nav.nav-treeview
+                        li.nav-item
+                            a.nav-link(href='https://nevar.eu')
+                                i.far.fa-circle.nav-icon
+                                p Website
+                        li.nav-item
+                            a.nav-link(href='https://nevar.eu/support')
+                                i.far.fa-circle.nav-icon
+                                p Discord
+                        li.nav-item
+                            a.nav-link(href='https://nevar.eu/privacy')
+                                i.far.fa-circle.nav-icon
+                                p Datenschutzerklärung
+                        li.nav-item
+                            a.nav-link(href='https://nevar.eu/imprint')
+                                i.far.fa-circle.nav-icon
+                                p Impressum
+                li.nav-header AI-Funktionen
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/aichat` class=module === "aichat" ? 'active' : '')
+                        i.nav-icon.fa-solid.fa-brain
+                        p
+                            | Chat
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/aimod` class=module === "aimod" ? 'active' : '')
+                        i.nav-icon.fa.solid.fa-ban
+                        p
+                            | Moderation
+                li.nav-header Systemnachrichten
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/welcome` class=module === "welcome" ? 'active' : '')
+                        i.nav-icon.fa.solid.fa-right-to-bracket
+                        p
+                            | Willkommen
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/farewell` class=module === "farewell" ? 'active' : '')
+                        i.nav-icon.fa-solid.fa-right-from-bracket
+                        p
+                            | Verabschiedung
+                li.nav-header Automatisierung
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/autodelete` class=module === "autodelete" ? 'active' : '')
+                        i.nav-icon.fa-solid.fa-trash
+                        p
+                            | Autodelete
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/autoreact` class=module === "autoreact" ? 'active' : '')
+                        i.nav-icon.fa-solid.fa-face-smile
+                        p
+                            | Autoreact
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/autorole` class=module === "autorole" ? 'active' : '')
+                        i.nav-icon.fa-solid.fa-plus
+                        p
+                            | Autorole
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/logging` class=module === "logging" ? 'active' : '')
+                        i.nav-icon.fa-regular.fa-file-lines
+                        p
+                            | Logging
+                li.nav-header Levelsystem
+                li.nav-item
+                    a.nav-link(href='#')
+                        i.nav-icon.fa-solid.fa-star
+                        p
+                            | Levelsystem
+                            i.fas.fa-angle-left.right
+                    ul.nav.nav-treeview
+                        li.nav-item
+                            a.nav-link(href=`/dashboard/${guild.id}/levelsystem` class=module === "levelsystem_main" ? 'active' : '')
+                                i.far.fa-circle.nav-icon
+                                p Allgemeines
+                        li.nav-item
+                            a.nav-link(href=`/dashboard/${guild.id}/levelsystem/doublexp` class=module === "levelsystem_doublexp" ? 'active' : '')
+                                i.far.fa-circle.nav-icon
+                                p Doppel-XP
+                        li.nav-item
+                            a.nav-link(href=`/dashboard/${guild.id}/levelsystem/roles` class=module === "levelsystem_roles" ? 'active' : '')
+                                i.far.fa-circle.nav-icon
+                                p Rollen
+                        li.nav-item
+                            a.nav-link(href=`/dashboard/${guild.id}/levelsystem/exclude` class=module === "levelsystem_exclude" ? 'active' : '')
+                                i.far.fa-circle.nav-icon
+                                p Exkludieren
+                li.nav-header Sonstiges
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/join2create` class=module === "join2create" ? 'active' : '')
+                        i.nav-icon.fa-solid.fa-microphone
+                        p
+                            | Join2Create
+                li.nav-item
+                    a.nav-link(href=`/dashboard/${guild.id}/youtubenotifier` class=module === "youtubenotifier" ? 'active' : '')
+                        i.nav-icon.fa-brands.fa-youtube
+                        p
+                            | Youtube-Notifier
