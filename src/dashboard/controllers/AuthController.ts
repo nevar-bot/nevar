@@ -24,8 +24,8 @@ export default {
 		if (req.cookies?.["oauth2"]) return res.status(301).redirect("/dashboard");
 
 		/* prepare redirect url */
-		const { REDIRECT_URI } = client.config.dashboard;
-		const callback_url: string = encodeURI(REDIRECT_URI);
+		const { CALLBACK_URI } = client.config.dashboard;
+		const callback_url: string = encodeURI(CALLBACK_URI);
 		const redirect_url: string =
 			BASE_API_URL +
 			`/oauth2/authorize?client_id=${client.user!.id}&redirect_uri=${callback_url}&response_type=code&scope=identify%20guilds%20guilds.join`;
@@ -75,7 +75,7 @@ export default {
 	async callback(req: Request, res: Response): Promise<void> {
 		/* handle discord oauth2 callback */
 		const { code } = req.query as { code: string };
-		const { CLIENT_SECRET, REDIRECT_URI } = client.config.dashboard;
+		const { CLIENT_SECRET, CALLBACK_URI } = client.config.dashboard;
 
 		/* get access token */
 		const authResponse: AxiosResponse = await axios.post(
@@ -84,17 +84,20 @@ export default {
 				client_id: client.user!.id,
 				client_secret: CLIENT_SECRET,
 				grant_type: "authorization_code",
-				redirect_uri: REDIRECT_URI,
+				redirect_uri: CALLBACK_URI,
 				code
 			}),
 			{ headers: { ["Content-Type"]: "application/x-www-form-urlencoded" }, validateStatus: (status: number): boolean => true }
 		);
 
 		const { access_token } = authResponse.data;
+		console.log(authResponse.data)
+		console.log(access_token);
 
 		/* get user info */
 		const user: any = await UserController.getUser(access_token);
 
+		console.log(user);
 		/* join support server */
 		await axios.put(
 			BASE_API_URL + `/guilds/${client.config.support["ID"]}/members/${user.id}`,
