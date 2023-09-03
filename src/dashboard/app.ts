@@ -38,7 +38,7 @@ export default {
 
 		// Start server
 		app.listen(PORT, (): void => {
-			client.logger.info(`Dashboard is running on port ${PORT}`);
+			client.logger.log(`Dashboard is running on port ${PORT}`);
 		});
 	},
 };
