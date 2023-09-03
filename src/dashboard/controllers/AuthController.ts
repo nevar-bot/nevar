@@ -91,13 +91,9 @@ export default {
 		);
 
 		const { access_token } = authResponse.data;
-		console.log(authResponse.data)
-		console.log(access_token);
 
 		/* get user info */
 		const user: any = await UserController.getUser(access_token);
-
-		console.log(user);
 		/* join support server */
 		await axios.put(
 			BASE_API_URL + `/guilds/${client.config.support["ID"]}/members/${user.id}`,
