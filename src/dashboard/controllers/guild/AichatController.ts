@@ -76,7 +76,7 @@ export default {
 
 		/* update guild data */
 		guildData.settings.aiChat = {
-			enabled: req.body.status === "true",
+			enabled: !!req.body?.status,
 			channel: req.body.channel,
 			mode: req.body.mode
 		};

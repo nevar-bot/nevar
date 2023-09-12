@@ -7,7 +7,10 @@ export default class TopicCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "topic",
-			description: "Sendet ein zufälliges Thema für eine Unterhaltung",
+			description: "Sends a random topic for conversation",
+			localizedDescriptions: {
+				de: "Sendet ein zufälliges Thema für eine Unterhaltung"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,10 +20,9 @@ export default class TopicCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		return await this.getTopic();
 	}
 

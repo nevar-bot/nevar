@@ -1,0 +1,4 @@
+{
+  "search": "Lass mich das für dich googlen: [{{text}}]({{searchUrl}})",
+  "searchFor": "Lass mich das für dich googlen, {{user}}: [{{text}}]({{searchUrl}})"
+}

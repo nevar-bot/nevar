@@ -13,6 +13,8 @@ export default {
 
 		/* get guild id */
 		const guildId: string = req.params.guildId;
+		console.log(guildId);
+		console.log(req.params);
 
 		/* check if user is logged in */
 		if (!(await AuthController.isLoggedIn(req))) {

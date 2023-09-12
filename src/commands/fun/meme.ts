@@ -7,7 +7,10 @@ export default class MemeCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "meme",
-			description: "Sendet zufällig gewählte Memes",
+			description: "Sends randomly selected memes",
+			localizedDescriptions: {
+				de: "Sendet zufällig gewählte Memes"
+			},
 			cooldown: 3 * 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,10 +20,9 @@ export default class MemeCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		return await this.sendMeme(interaction.member);
 	}
 
@@ -35,7 +37,7 @@ export default class MemeCommand extends BaseCommand {
 		memes = [...this.client.utils.shuffleArray(memes)];
 
 		const reloadId: string = member.user.id + "_reload";
-		const reloadButton: ButtonBuilder = this.client.createButton(reloadId, "Neu laden", "Secondary", "loading");
+		const reloadButton: ButtonBuilder = this.client.createButton(reloadId, this.translate("fun/meme:reload"), "Secondary", "loading");
 
 		function generateMemeEmbed(): EmbedBuilder {
 			const meme = memes[Math.floor(Math.random() * memes.length)];

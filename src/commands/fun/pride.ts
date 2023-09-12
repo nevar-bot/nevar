@@ -8,24 +8,33 @@ export default class PrideCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "pride",
-			description: "Sendet einen Avatar mit Pride-Filter",
+			description: "Sends an avatar with Pride filter",
+			localizedDescriptions: {
+				de: "Sendet einen Avatar mit Pride-Filter"
+			},
 			cooldown: 3 * 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option.setName("nutzer").setDescription("Wähle ein Mitglied").setRequired(false)
+					option
+						.setName("user")
+						.setDescription("Choose a member")
+						.setDescriptionLocalizations({
+							de: "Wähle ein Mitglied"
+						})
+						.setRequired(false)
 				)
 			}
 		});
 	}
 
-	private interaction: any;
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 
 		let user: any = interaction.member.user;
-		if (interaction.options.getUser("nutzer")) user = interaction.options.getUser("nutzer");
+		if (interaction.options.getUser("user")) user = interaction.options.getUser("user");
 
 		return await this.getPrideAvatar(user);
 	}
@@ -81,7 +90,7 @@ export default class PrideCommand extends BaseCommand {
 		});
 
 		const prideAvatarEmbed: EmbedBuilder = this.client.createEmbed("", "", "normal");
-		prideAvatarEmbed.setTitle("Pride-Avatar von " + user.username);
+		prideAvatarEmbed.setTitle(this.translate("fun/pride:text", { user: user.displayName }));
 		prideAvatarEmbed.setImage("attachment://pride.png");
 
 		return this.interaction.followUp({
