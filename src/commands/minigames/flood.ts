@@ -7,7 +7,10 @@ export default class FloodCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "flood",
-			description: "Du musst das gesamte Spielfeld mit einer Farbe füllen",
+			description: "You have to fill the whole playing field with one color",
+			localizedDescriptions: {
+				de: "Du musst das gesamte Spielfeld mit einer Farbe füllen"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,10 +20,9 @@ export default class FloodCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.startGame();
 	}
 
@@ -62,7 +64,7 @@ class FloodGame extends BaseGame {
 		this.maxTurns = Math.floor((25 * (this.length * 2)) / 26);
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
-			"Züge: " + this.turns + "/" + this.maxTurns + "\n\n" + this.getBoardContent(),
+			this.interaction.guild.translate("minigames/flood:embedDescription", { turns: this.turns, maxTurns: this.maxTurns, board: this.getBoardContent() }),
 			"arrow",
 			"normal"
 		);
@@ -90,7 +92,7 @@ class FloodGame extends BaseGame {
 			if (!update) return;
 
 			const embed: EmbedBuilder = this.options.client.createEmbed(
-				"Züge: " + this.turns + "/" + this.maxTurns + "\n\n" + this.getBoardContent(),
+				this.interaction.guild.translate("minigames/flood:embedDescription", { turns: this.turns, maxTurns: this.maxTurns, board: this.getBoardContent() }),
 				"arrow",
 				"normal"
 			);
@@ -115,16 +117,16 @@ class FloodGame extends BaseGame {
 
 	private endGame(msg: any, result: any): any {
 		const GameOverMessage: string = result
-			? "Du hast das Spiel nach **{turns}** Zügen gewonnen."
-			: "Du hast das Spiel nach **{turns}** Zügen verloren.";
+			? this.interaction.guild.translate("minigames/flood:win", { turns: String(this.turns )})
+			: this.interaction.guild.translate("minigames/flood:lose", { turns: String(this.turns) });
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
-			"Spiel beendet\n" +
-				this.options.client.emotes.arrow +
-				" " +
-				GameOverMessage.replace("{turns}", String(this.turns)) +
-				"\n\n" +
-				this.getBoardContent(),
+			this.interaction.guild.translate("minigames/flood:end") +
+			this.options.client.emotes.arrow +
+			" " +
+			GameOverMessage +
+			"\n\n" +
+			this.getBoardContent(),
 			"rocket",
 			"normal"
 		);

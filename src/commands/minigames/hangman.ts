@@ -7,7 +7,10 @@ export default class HangmanCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "hangman",
-			description: "Errate das Wort rechtzeitig",
+			description: "Guess the word in time",
+			localizedDescriptions: {
+				de: "Errate das Wort rechtzeitig"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,10 +20,9 @@ export default class HangmanCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.startGame();
 	}
 
@@ -33,97 +35,6 @@ export default class HangmanCommand extends BaseCommand {
 		await game.startGame();
 	}
 }
-
-const words: string[] = [
-	"Auto",
-	"Haus",
-	"Stadt",
-	"Land",
-	"Fluss",
-	"Garten",
-	"Schule",
-	"Bibliothek",
-	"Kino",
-	"Museum",
-	"Musik",
-	"Kunst",
-	"Sport",
-	"Urlaub",
-	"Reise",
-	"Natur",
-	"Umwelt",
-	"Gesundheit",
-	"Lebensweise",
-	"Kochen",
-	"Backen",
-	"Wein",
-	"Bier",
-	"Alkohol",
-	"Wasser",
-	"Feuer",
-	"Luft",
-	"Erde",
-	"Himmel",
-	"Sonne",
-	"Mond",
-	"Sterne",
-	"Kosmos",
-	"Zeit",
-	"Geschichte",
-	"Zukunft",
-	"Wissenschaft",
-	"Technologie",
-	"Innovation",
-	"Philosophie",
-	"Religion",
-	"Mythologie",
-	"Fantasie",
-	"Literatur",
-	"Sprache",
-	"Grammatik",
-	"Vokabeln",
-	"Film",
-	"Fernsehen",
-	"Serien",
-	"Dokumentation",
-	"Drama",
-	"Action",
-	"Thriller",
-	"Horror",
-	"Romanze",
-	"Animation",
-	"Superhelden",
-	"Krieg",
-	"Frieden",
-	"Politik",
-	"Gesellschaft",
-	"Wirtschaft",
-	"Arbeit",
-	"Karriere",
-	"Geld",
-	"Bank",
-	"Versicherung",
-	"Handel",
-	"Marketing",
-	"Kunden",
-	"Produktion",
-	"Transport",
-	"Logistik",
-	"Internet",
-	"Socialmedia",
-	"Apps",
-	"Spiele",
-	"Onlineshopping",
-	"Mode",
-	"Schmuck",
-	"Kosmetik",
-	"Geschenke",
-	"Haustiere",
-	"Tiere",
-	"Pflanzen",
-	"Farben",
-	"Formen"
-];
 
 class HangmanGame extends BaseGame {
 	public hangman: any;
@@ -142,6 +53,7 @@ class HangmanGame extends BaseGame {
 			boots: "👞👞"
 		};
 
+		const words: string[] = this.interaction.guild.translate("minigames/hangman:words");
 		options.theme = Object.keys(words)[Math.floor(Math.random() * Object.keys(words).length)];
 
 		this.hangman = options.hangman;
@@ -198,10 +110,10 @@ class HangmanGame extends BaseGame {
 	}
 
 	public async startGame(): Promise<void> {
-		await this.interaction.deferReply().catch(() => {});
+		await this.interaction.deferReply().catch((): void => {});
 
 		const description: string =
-			this.getBoardContent() + "\n" + this.client.emotes.arrow + " **Wort (" + this.word.length + " Buchstaben)**\n" + this.getWordEmojis();
+			this.getBoardContent() + "\n" + this.interaction.guild.translate("minigames/hangman:hint", { e: this.client.emotes, wordLength: this.word.length }) + "\n" + this.getWordEmojis();
 		const hangmanEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
 		hangmanEmbed.setTitle("Hangman");
 		hangmanEmbed.setThumbnail(this.client.user!.displayAvatarURL());
@@ -236,16 +148,14 @@ class HangmanGame extends BaseGame {
 			const description: string =
 				this.getBoardContent() +
 				"\n" +
-				this.client.emotes.question +
-				" **Geratene Buchstaben**\n" +
+				this.interaction.guild.translate("minigames/hangman:guessedLetters", { e: this.client.emotes }) +
+				"\n" +
 				this.client.emotes.arrow +
 				" " +
 				this.guessed.join(", ") +
 				"\n\n" +
-				this.client.emotes.arrow +
-				" **Wort (" +
-				this.word.length +
-				" Buchstaben)**\n" +
+				this.interaction.guild.translate("minigames/hangman:hint", { e: this.client.emotes, wordLength: this.word.length }) +
+				"\n" +
 				this.getWordEmojis();
 
 			const hangmanEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
@@ -265,18 +175,18 @@ class HangmanGame extends BaseGame {
 
 	private endGame(msg: any, result: any): any {
 		const GameOverMessage: string = result
-			? "Du hast gewonnen. Das Wort war **{word}**."
-			: "Du hast leider verloren. Das richtige Wort wäre **{word}** gewesen.";
+			? this.interaction.guild.translate("minigames/hangman:win", { word: this.word })
+			: this.interaction.guild.translate("minigames/hangman:lose", { word: this.word });
 
 		const description: string =
 			this.getBoardContent() +
 			"\n" +
 			(this.guessed.length
-				? this.client.emotes.question + " **Geratene Buchstaben**\n" + this.client.emotes.arrow + " " + this.guessed.join(", ") + "\n\n"
+				? this.interaction.guild.translate("minigames/hangman:guessedLetters", { e: this.client.emotes }) + "\n" + this.client.emotes.arrow + " " + this.guessed.join(", ") + "\n\n"
 				: "") +
 			this.client.emotes.arrow +
 			" " +
-			GameOverMessage.replace("{word}", this.word);
+			GameOverMessage;
 		this.getWordEmojis();
 
 		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");

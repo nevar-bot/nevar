@@ -7,7 +7,10 @@ export default class SnakeCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "snake",
-			description: "Friss möglichst viele Äpfel, um länger zu werden",
+			description: "Eat as many apples as possible to grow longer",
+			localizedDescriptions: {
+				de: "Friss möglichst viele Äpfel, um länger zu werden"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,10 +20,9 @@ export default class SnakeCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.startGame();
 	}
 
@@ -129,7 +131,7 @@ class SnakeGame extends BaseGame {
 		this.updateFoodLoc();
 
 		const snakeEmbed: EmbedBuilder = this.client.createEmbed(
-			" Punkte: " + this.score + "\n\n" + this.getBoardContent(undefined),
+			" " + this.interaction.guild.translate("minigames/snake:points") + " " + this.score + "\n\n" + this.getBoardContent(undefined),
 			"arrow",
 			"normal"
 		);
@@ -163,7 +165,7 @@ class SnakeGame extends BaseGame {
 		}
 
 		const snakeEmbed: EmbedBuilder = this.client.createEmbed(
-			" Punkte: " + this.score + "\n\n" + this.getBoardContent(undefined),
+			" " + this.interaction.guild.translate("minigames/snake:points") + " " + this.score + "\n\n" + this.getBoardContent(undefined),
 			"arrow",
 			"normal"
 		);
@@ -175,7 +177,7 @@ class SnakeGame extends BaseGame {
 
 	private endGame(msg: any): any {
 		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(
-			"Das Spiel ist vorbei, du hast " + this.score + " Punkte erreicht.\n\n" + this.getBoardContent(true),
+			this.interaction.guild.translate("minigames/snake:end", { points: this.score }) + "\n\n" + this.getBoardContent(true),
 			"arrow",
 			"normal"
 		);

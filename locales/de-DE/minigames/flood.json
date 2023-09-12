@@ -1,0 +1,6 @@
+{
+  "embedDescription": "Züge: {{turns}}/{{maxTurns}}\n\n{{board}}",
+  "end": "Spiel beendet\n",
+  "lose": "Du hast das Spiel nach **{{turns}}** Zügen verloren.",
+  "win": "Du hast das Spiel nach **{{turns}}** Zügen gewonnen."
+}
