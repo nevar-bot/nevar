@@ -6,36 +6,43 @@ export default class AfkCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "afk",
-			description: "Markiert dich als abwesend",
+			description: "Marks you as absent",
+			localizedDescriptions: {
+				de: "Markiert dich als abwesend"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option.setName("grund").setDescription("Warum bist du abwesend?").setRequired(false)
+					option
+						.setName("reason")
+						.setDescription("Why are you absent?")
+						.setDescriptionLocalizations({
+							de: "Warum bist du abwesend?"
+						})
+						.setRequired(false)
 				)
 			}
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.setAfk(interaction.member, interaction.options.getString("grund"), data);
+		this.guild = interaction.guild;
+		await this.setAfk(interaction.member, interaction.options.getString("reason"), data);
 	}
 
 	private async setAfk(member: any, reason: string, data: any) {
 		if (data.user.afk.state) {
 			const afkSince: any = data.user.afk.since;
-			const reason: string = data.user.afk.reason || "Kein Grund angegeben";
+			const reason: string = data.user.afk.reason || this.translate("misc/afk:noReason");
 
 			const relativeTime: string = this.client.utils.getDiscordTimestamp(afkSince, "f");
 			const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
-				"Willkommen zurück! Du warst abwesend seit {0}.",
+				this.translate("misc/afk:welcomeBack", { time: relativeTime, reason }),
 				"reminder",
-				"normal",
-				relativeTime + " (" + reason + ")"
+				"normal"
 			);
 
 			data.user.afk = {
@@ -58,10 +65,9 @@ export default class AfkCommand extends BaseCommand {
 		await data.user.save();
 
 		const afkEmbed: EmbedBuilder = this.client.createEmbed(
-			"Bis später! Du bist jetzt abwesend: {0}.",
+			this.translate("misc/afk:afk", { reason: reason || this.translate("misc/afk:noReason") }),
 			"reminder",
-			"normal",
-			reason || "Kein Grund angegeben"
+			"normal"
 		);
 		return this.interaction.followUp({ embeds: [afkEmbed] });
 	}

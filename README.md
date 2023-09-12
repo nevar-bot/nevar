@@ -11,8 +11,6 @@ Nevar is a simple, lightweight, and fast discord bot built with discord.js and t
 
 ## Authors
 - [@1887jonas](https://www.github.com/1887jonas)
-- [@Fedox-die-Ente](https://www.github.com/Fedox-die-Ente)
-
 ## Run
 Clone the project
 ```bash
@@ -39,7 +37,7 @@ Rename the `config-sample.toml` to `config.toml` and fill in with your data
 Start the bot
 ```bash
   npm start // Run in production mode
-  npm run dev // Run in development mode
+  npm run start:dev // Run in development mode
 ```
 
 ## Feedback

@@ -1,0 +1,5 @@
+{
+  "noReason": "Kein Grund angegeben",
+  "welcomeBack": "Willkommen zurück! Du warst AFK seit {{time}} ({{reason}}).",
+  "afk": "Bis später! Du bist jetzt abwesend: {{reason}}"
+}

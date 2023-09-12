@@ -1,12 +1,17 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import fs from "fs";
+import path from "path";
 
 export default class CreditsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "credits",
-			description: "Zeigt die Credits für dieses Projekt an",
+			description: "Displays the credits for this project",
+			localizedDescriptions: {
+				de: "Zeigt die Credits für dieses Projekt an"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -16,84 +21,24 @@ export default class CreditsCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.showCredits();
 	}
 
 	private async showCredits() {
-		const credits: string =
-			"## HTTP-Anfragen\n" +
-			this.client.emotes.arrow +
-			" [axios](https://npmjs.com/package/axios) - HTTP Anfragen\n" +
-			"## Express und Middleware\n" +
-			this.client.emotes.arrow +
-			" [express](https://npmjs.com/package/express) - Web-Framework\n" +
-			this.client.emotes.arrow +
-			" [body-parser](https://npmjs.com/package/body-parser) - Parsing von HTTP Requests\n" +
-			this.client.emotes.arrow +
-			" [cors](https://npmjs.com/package/cors) - Cross-Origin Resource Sharing Middleware\n" +
-			this.client.emotes.arrow +
-			" [helmet](https://npmjs.com/package/helmet) - HTTP-Header-Sicherheits-Middleware\n" +
-			"## Datenbank\n" +
-			this.client.emotes.arrow +
-			" [mongoose](https://npmjs.com/package/mongoose) - MongoDB ODM\n" +
-			"## Discord\n" +
-			this.client.emotes.arrow +
-			" [discord.js](https://npmjs.com/package/discord.js) - Discord Client\n" +
-			this.client.emotes.arrow +
-			" [topgg-autoposter](https://www.npmjs.com/package/topgg-autoposter) - Top.gg Bot-Statistiken\n" +
-			"## Bildverarbeitung und -manipulation\n" +
-			this.client.emotes.arrow +
-			" [canvacord](https://npmjs.com/package/canvacord) - Bildmanipulation für Discord\n" +
-			this.client.emotes.arrow +
-			" [jimp](https://npmjs.com/package/jimp) - Bildverarbeitung\n" +
-			"## Zeit- und Zeitzonen-Handling\n" +
-			this.client.emotes.arrow +
-			" [moment](https://npmjs.com/package/moment) - Datums- und Zeitmanipulation\n" +
-			this.client.emotes.arrow +
-			" [moment-timezone](https://npmjs.com/package/moment-timezone) - Zeitzonen-Unterstützung für moment\n" +
-			this.client.emotes.arrow +
-			" [enhanced-ms](https://npmjs.com/package/enhanced-ms) - Zeitkonvertierung\n" +
-			this.client.emotes.arrow +
-			" [node-schedule](https://npmjs.com/package/node-schedule) - Cronjobs\n" +
-			"## Mathematische Berechnungen\n" +
-			this.client.emotes.arrow +
-			" [mathjs](https://npmjs.com/package/mathjs) - Mathematische Berechnungen\n" +
-			"## Sonstiges\n" +
-			this.client.emotes.arrow +
-			" [chalk](https://npmjs.com/package/chalk) - Terminaltext-Styling\n" +
-			this.client.emotes.arrow +
-			" [source-map-support](https://npmjs.com/package/source-map-support) - Source-Map-Unterstützung\n" +
-			this.client.emotes.arrow +
-			" [node-emoji](https://npmjs.com/package/node-emoji) - Emoji-Konvertierung\n" +
-			this.client.emotes.arrow +
-			" [perspective-api-client](https://npmjs.com/package/perspective-api-client) - Google Perspective API Client\n" +
-			this.client.emotes.arrow +
-			" [googleapis](https://npmjs.com/package/googleapis) - Google APIs\n" +
-			this.client.emotes.arrow +
-			" [toml](https://npmjs.com/package/toml) - TOML-Parser und -Encoder\n" +
-			this.client.emotes.arrow +
-			" [module-alias](https://npmjs.com/package/module-alias) - Erstellung von Aliasen für Module\n" +
-			this.client.emotes.arrow +
-			" [typescript](https://npmjs.com/package/typescript) - Typisierter JavaScript-Compiler\n" +
-			this.client.emotes.arrow +
-			" [prettier](https://npmjs.com/package/prettier) - Code-Formatter für Typescript\n" +
-			this.client.emotes.arrow +
-			" [eslint](https://npmjs.com/package/eslint) - Linter für Typescript\n" +
-			this.client.emotes.arrow +
-			" [i18next](https://npmjs.com/package/i18next) - Internationalisierung\n" +
-			this.client.emotes.arrow +
-			" [lodash](https://npmjs.com/package/lodash) - Utility-Bibliothek\n" +
-			this.client.emotes.arrow +
-			" [icons](https://discord.gg/9AtkECMX2P) - Emojis für " +
-			this.client.user!.username;
+		const { dependencies } = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../../package.json"), "utf8"));
 
-		const creditsEmbed: EmbedBuilder = this.client.createEmbed(credits, null, "normal");
+		const dependenciesArray: any[] = Object.entries(dependencies).map(([name, version]) => ({ name, version: (version as string).replace("^", "") }));
+
+		const creditsString: string = dependenciesArray
+			.map(dependency => `${this.client.emotes.arrow} [${dependency.name}](https://npmjs.com/package/${dependency.name}) - ${dependency.version}`)
+			.join("\n") + `\n${this.client.emotes.arrow} [icons](https://discord.gg/9AtkECMX2P)`;
+
+		const creditsEmbed: EmbedBuilder = this.client.createEmbed(creditsString, null, "normal");
 		creditsEmbed.setThumbnail(this.client.user!.displayAvatarURL());
-		creditsEmbed.setTitle("Credits für " + this.client.user!.username);
+		creditsEmbed.setTitle(this.translate("misc/credits:title", { name: this.client.user!.username }));
 
 		return this.interaction.followUp({ embeds: [creditsEmbed] });
 	}
