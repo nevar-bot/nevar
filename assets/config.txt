@@ -89,10 +89,12 @@ PORT = 80
 CALLBACK_URI = ""
 # The client secret of your discord application*
 CLIENT_SECRET = ""
-# A random string that is used to encrypt the session*
-# You can generate one with the following command:
+# A random string that is used to encrypt the session, generate one with the following command:
 # node -e "console.log([...Array(64)].map(_=>(Math.random()*36|0).toString(36)).join(''))"
 SESSION_SECRET = ""
+# A hexadecimal string that is used to encrypt access token cookies, must be 32 bytes long. Generate one with the following command:
+# node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+ENCRYPTION_KEY = ""
 
 
 # All presences are defined here

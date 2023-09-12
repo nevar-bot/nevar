@@ -1,27 +1,74 @@
 import { Request, Response } from "express";
 import { client } from "@src/app";
 import axios, { AxiosResponse } from "axios";
+import * as crypto from "crypto";
 
 import UserController from "@dashboard/controllers/UserController";
 
 const BASE_API_URL: string = "https://discord.com/api";
 
+function encryptAccessToken(access_token: string): string {
+	/* generate iv */
+	const iv: Buffer = crypto.randomBytes(16);
+
+	/* get encryption key */
+	const key: string = client.config.dashboard["ENCRYPTION_KEY"];
+
+	/* encrypt access token */
+	const cipher: crypto.CipherGCM = crypto.createCipheriv("aes-256-gcm", Buffer.from(key, 'hex'), iv);
+
+	let encrypted: string = cipher.update(access_token, 'utf8', 'hex');
+	encrypted += cipher.final('hex');
+
+	const authTag: Buffer = cipher.getAuthTag();
+
+	/* return encrypted access token */
+	return `${iv.toString("hex")}:${authTag.toString('hex')}:${encrypted}`;
+}
+
+function decryptAccessToken(encrypted_access_token: string): string|null {
+	/* split encrypted access token */
+	const parts: string[] = encrypted_access_token.split(":");
+
+	/* get encryption key and iv */
+	const key: string = client.config.dashboard["ENCRYPTION_KEY"];
+	const iv: Buffer = Buffer.from(parts.shift()!, "hex");
+
+	/* get auth tag and encrypted text */
+	const authTag: Buffer = Buffer.from(parts.shift()!, 'hex');
+	const encryptedText: Buffer = Buffer.from(parts.join(":"), "hex");
+
+	/* decrypt access token */
+	const decipher: any = crypto.createDecipheriv("aes-256-gcm", Buffer.from(key, 'hex'), iv);
+	decipher.setAuthTag(authTag);
+
+	/* return decrypted access token */
+	let decrypted: string;
+	try {
+		decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+		decrypted += decipher.final('utf8');
+	} catch (err) {
+		return null;
+	}
+
+	return decrypted;
+}
+
 export default {
 	getAccessToken(req: Request): string | null {
-		/* get oauth2 cookie */
-		const cookie = req.cookies?.["oauth2"];
-		if (!cookie) return null;
+		/* get encrypted access_token */
+		const encrypted_access_token = req.cookies?.["access_token"];
+		if (!encrypted_access_token) return null;
 
-		/* get access token */
-		const { access_token } = JSON.parse(cookie);
-		if (!access_token) return null;
+		/* decrypt access token */
+		const access_token: string|null = decryptAccessToken(encrypted_access_token);
 
 		return access_token;
 	},
 
 	async login(req: Request, res: Response): Promise<void> {
 		/* user is already logged in */
-		if (req.cookies?.["oauth2"]) return res.status(301).redirect("/dashboard");
+		if (req.cookies?.["access_token"]) return res.status(301).redirect("/dashboard");
 
 		/* prepare redirect url */
 		const { CALLBACK_URI } = client.config.dashboard;
@@ -35,11 +82,13 @@ export default {
 	},
 
 	async isLoggedIn(req: Request): Promise<boolean> {
-		/* get access token */
-		const cookie = req.cookies?.["oauth2"];
-		if (!cookie) return false;
+		/* get encrypted access token */
+		const encrypted_access_token = req.cookies?.["access_token"];
+		if (!encrypted_access_token) return false;
 
-		const { access_token } = JSON.parse(cookie);
+		/* decrypt access token */
+		const access_token: string|null = decryptAccessToken(encrypted_access_token);
+		if(!access_token) return false;
 
 		/* check if access token is valid */
 		const userData: AxiosResponse = await axios.get("https://discord.com/api/users/@me", {
@@ -104,18 +153,22 @@ export default {
 			}
 		);
 
+		/* encrypt access token */
+		const encrypted_access_token: string = encryptAccessToken(access_token);
+
 		/* set access token cookie */
-		res.cookie("oauth2", JSON.stringify({ access_token }), { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
+		res.cookie("access_token", encrypted_access_token, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
 		res.status(301).redirect("/dashboard");
 	},
 
 	async logout(req: Request, res: Response): Promise<boolean | void> {
-		/* get access token */
-		const cookie = req.cookies?.["oauth2"];
-		if (!cookie) return false;
+		/* get encrypted access token */
+		const encrypted_access_token = req.cookies?.["access_token"];
+		if (!encrypted_access_token) return false;
 
-		const { access_token } = JSON.parse(cookie);
-		if (!access_token) return false;
+		/* decrypt access token */
+		const access_token: string|null = decryptAccessToken(encrypted_access_token);
+		if(!access_token) return false;
 
 		const { CLIENT_SECRET } = client.config.dashboard;
 
@@ -127,7 +180,7 @@ export default {
 		);
 
 		/* clear cookie */
-		res.clearCookie("oauth2");
+		res.clearCookie("access_token");
 		return res.status(301).redirect("/");
 	}
 };
