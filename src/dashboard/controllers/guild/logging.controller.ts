@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { client } from "@src/app";
 
-import AuthController from "@dashboard/controllers/AuthController";
-import UserController from "@dashboard/controllers/UserController";
-import ErrorController from "@dashboard/controllers/ErrorController";
+import AuthController from "@dashboard/controllers/auth.controller";
+import UserController from "@dashboard/controllers/user.controller";
+import ErrorController from "@dashboard/controllers/error.controller";
 
 export default {
     async get(req: Request, res: Response): Promise<void> {
@@ -36,10 +36,10 @@ export default {
         delete (req as any).session.saved;
 
         /* render page */
-        res.render("guild/aimod", {
+        res.render("guild/logging", {
             client: client,
-            title: "AI-Moderation",
-            module: "aimod",
+            title: "Logging",
+            module: "logging",
             guild: client.guilds.cache.get(guildId),
             guildData: await client.findOrCreateGuild(guildId),
             user: user,
@@ -75,14 +75,10 @@ export default {
         const guildData: any = await client.findOrCreateGuild(guildId);
 
         /* update guild data */
-        guildData.settings.aiChat = {
-            enabled: req.body.status === "true",
-            channel: req.body.channel,
-            mode: req.body.mode
-        };
+        // TODO
 
         /* save guild data */
-        guildData.markModified("settings.aiChat");
+        guildData.markModified("");
         await guildData.save();
 
         (req as any).session.saved = true;
@@ -91,6 +87,6 @@ export default {
         await client.wait(500);
 
         /* redirect */
-        res.status(200).redirect("/dashboard/" + req.params.guildId + "/aichat");
+        res.status(200).redirect("/dashboard/" + req.params.guildId + "/logging");
     }
 };

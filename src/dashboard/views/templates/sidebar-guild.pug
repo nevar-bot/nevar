@@ -86,7 +86,7 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4
                         p
                             | Logging
                 li.nav-header Levelsystem
-                li.nav-item
+                li.nav-item(class=(module.startsWith('levelsystem_') ? 'menu-open' : ''))
                     a.nav-link(href='#')
                         i.nav-icon.fa-solid.fa-star
                         p
@@ -94,7 +94,7 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4
                             i.fas.fa-angle-left.right
                     ul.nav.nav-treeview
                         li.nav-item
-                            a.nav-link(href=`/dashboard/${guild.id}/levelsystem` class=module === "levelsystem_main" ? 'active' : '')
+                            a.nav-link(href=`/dashboard/${guild.id}/levelsystem/general` class=module === "levelsystem_main" ? 'active' : '')
                                 i.far.fa-circle.nav-icon
                                 p Allgemeines
                         li.nav-item

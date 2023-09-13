@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { client } from "@src/app";
 
-import AuthController from "@dashboard/controllers/AuthController";
-import UserController from "@dashboard/controllers/UserController";
+import AuthController from "@dashboard/controllers/auth.controller";
+import UserController from "@dashboard/controllers/user.controller";
 
 export default {
 	async get(req: Request, res: Response): Promise<void> {

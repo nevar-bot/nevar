@@ -3,7 +3,7 @@ import { client } from "@src/app";
 import axios, { AxiosResponse } from "axios";
 import * as crypto from "crypto";
 
-import UserController from "@dashboard/controllers/UserController";
+import UserController from "@dashboard/controllers/user.controller";
 
 const BASE_API_URL: string = "https://discord.com/api";
 

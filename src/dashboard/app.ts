@@ -8,6 +8,7 @@ import compression from "compression";
 import IndexRoute from "@dashboard/routes/IndexRoute";
 import DashboardRoute from "@dashboard/routes/DashboardRoute";
 import AuthRoute from "@dashboard/routes/AuthRoute";
+import ErrorRoute from "@dashboard/routes/ErrorRoute";
 
 export default {
 	init(client: BaseClient): void {
@@ -35,6 +36,7 @@ export default {
 		app.use("/", IndexRoute);
 		app.use("/dashboard", DashboardRoute);
 		app.use("/auth", AuthRoute);
+		app.use("*", ErrorRoute);
 
 		// Start server
 		app.listen(PORT, (): void => {
