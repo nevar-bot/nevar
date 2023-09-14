@@ -37,9 +37,13 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                                 option(value=channel[1].id, selected=(guildData.settings.welcome ? channel[1].id === guildData.settings.welcome.channel : false)) #{channel[1].name}
                                 .form-group
                                     label Typ
-                                    select.form-control(name="type" autocomplete="off" class="selectpicker")
+                                    select.form-control(name="type" id="typeSelect" autocomplete="off" class="selectpicker")
                                         option(value="embed", selected=(guildData.settings.welcome ? guildData.settings.welcome.type === "embed" : false)) Embed
                                         option(value="text", selected=(guildData.settings.welcome ? guildData.settings.welcome.type === "text" : false)) Text
+
+                                .form-group.form-check(id="profilepicture")
+                                    input.form-check-input(type='checkbox', autocomplete='off' name='profilepicture' id='profilepictureCheck' data-form-type='other', checked=(guildData.settings.welcome ? guildData.settings.welcome.profilePicture : false))
+                                    label.form-check-label(for='profilepictureCheck') Profilbild im Embed anzeigen
 
                                 .form-group
                                     label Nachricht
@@ -77,11 +81,15 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                                         |  -
                                                         |  #{variable.description}
 
-                                .form-group
-                                    label Autorollen
-                                    select.form-control(name="autoroles" autocomplete="off" class="selectpicker" multiple data-live-search="true")
-                                        each role in [...guild.roles.cache]
-                                            option(value=role[1].id, selected=(guildData.settings.welcome ? guildData.settings.welcome.autoroles.includes(role[1].id) : false)) #{role[1].name}
-
                                 button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../templates/footer
+
+script.
+    document.addEventListener('DOMContentLoaded', () => {
+        const typeSelector = document.getElementById('typeSelect');
+        const embedOptions = document.getElementById('profilepicture');
+        typeSelector.addEventListener('change', () => {
+            embedOptions.style.display = typeSelector.value === 'embed' ? 'block' : 'none';
+        });
+        embedOptions.style.display = typeSelector.value === 'embed' ? 'block' : 'none';
+    });
