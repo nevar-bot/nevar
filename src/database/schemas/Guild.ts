@@ -72,13 +72,15 @@ const GuildSchema: Schema = new mongoose.Schema({
 				channel: null,
 				type: null,
 				message: null,
+				profilePicture: true,
 				autoroles: []
 			},
 			farewell: {
 				enabled: false,
 				channel: null,
 				type: null,
-				message: null
+				message: null,
+				profilePicture: true
 			},
 			aiModeration: {
 				enabled: false,

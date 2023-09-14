@@ -75,10 +75,18 @@ export default {
         const guildData: any = await client.findOrCreateGuild(guildId);
 
         /* update guild data */
-        // TODO
+        guildData.settings.joinToCreate = {
+            enabled: !!req.body.status,
+            channel: req.body.channel,
+            category: req.body.category,
+            userLimit: parseInt(req.body.userlimit),
+            bitrate: parseInt(req.body.bitrate),
+            defaultName: req.body.name,
+            channels: guildData.settings.joinToCreate.channels
+        }
 
         /* save guild data */
-        guildData.markModified("");
+        guildData.markModified("settings.joinToCreate");
         await guildData.save();
 
         (req as any).session.saved = true;

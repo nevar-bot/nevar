@@ -14,11 +14,85 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                     | Die Einstellungen wurden erfolgreich gespeichert.
             .callout.callout-info
                 h5 Erklärung
-                p TODO
-            .alert.alert-danger.alert
-                h5
-                    i.icon.fas.fa-ban
-                    |  Hinweis
-                | Das Einstellen des #{title}-Moduls im Web-Dashboard ist derzeit nicht möglich.
-                | Bitte nutze dafür den Discord-Bot.
+                p Join2Create erstellt automatisch einen Channel, wenn ein Nutzer einem bestimmten Sprachkanal beitritt.
+            .card.card-default
+                .card-header
+                    h3.card-title Einstellungen
+                    .card-tools
+                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                            i.fas.fa-minus
+                .card-body
+                    .row
+                        .col-md-6
+                            form(action=`/dashboard/${guild.id}/join2create/save` method='post')
+                                .form-check
+                                    input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.joinToCreate ? guildData.settings.joinToCreate.enabled : false))
+                                    label.form-check-label(for='statusCheck') Aktiviert
+                                br
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Wie der Kanal standardmäßig genannt wird") Standard-Name
+                                    input.form-control(name='name' autocomplete='off' type='text' value=(guildData.settings.joinToCreate.defaultName ? guildData.settings.joinToCreate.defaultName : ''))
+
+                                .card.card-default.collapsed-card
+                                    .card-header
+                                        h3.card-title Variablen
+                                        .card-tools
+                                            button.btn.btn-tool(type='button', data-card-widget='collapse')
+                                                i.fas.fa-plus
+                                    .card-body
+                                        .row
+                                            .col-md-12
+                                                | Folgende Variablen können im Namen verwendet werden:
+                                                -
+                                                    var variables = [
+                                                        {code: '{user}', description: 'Name des Mitglieds'},
+                                                        {
+                                                            code: '{count}',
+                                                            description: 'Anzahl der insgesamten Join2Create-Kanälen'
+                                                        },
+                                                    ]
+                                                each variable in variables
+                                                    div
+                                                        code= variable.code
+                                                        |  -
+                                                        |  #{variable.description}
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="In welcher Kategorie die Kanäle erstellt werden") Kategorie
+                                    select.form-control(name="category" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 4
+                                                option(value=channel[1].id, selected=(guildData.settings.joinToCreate ? channel[1].id === guildData.settings.joinToCreate.category : false)) #{channel[1].name}
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Welchem Kanal man für einen eigenen Kanal beitreten muss") Channel
+                                    select.form-control(name="channel" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 2
+                                                option(value=channel[1].id, selected=(guildData.settings.joinToCreate ? channel[1].id === guildData.settings.joinToCreate.channel : false)) #{channel[1].name}
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Wieviele Nutzer den Kanälen maximal beitreten dürfen") Nutzerlimit (0 = unbegrenzt)
+                                    input.form-control(name='userlimit' autocomplete='off' type='text' value=(guildData.settings.joinToCreate.userLimit ? guildData.settings.joinToCreate.userLimit : 0))
+
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Die Bitrate der Kanäle in kbps") Bitrate
+                                    input.form-control(name='bitrate' autocomplete='off' type='text' value=(guildData.settings.joinToCreate.bitrate ? guildData.settings.joinToCreate.bitrate : 64))
+
+                                button.btn.btn-block.btn-primary(type='submit') Speichern
+
 include ../templates/footer
+
+script.
+    $("input[name='userlimit']").TouchSpin({
+        min: 0,
+        max: 100,
+        step: 1,
+        decimals: 0,
+        postfix: "Nutzer"
+    });
+
+    $("input[name='bitrate']").TouchSpin({
+        min: 8,
+        max: 96,
+        step: 1,
+        decimals: 0,
+        postfix: "kbps"
+    });
