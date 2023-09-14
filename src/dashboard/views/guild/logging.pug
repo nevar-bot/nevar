@@ -14,11 +14,69 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                     | Die Einstellungen wurden erfolgreich gespeichert.
             .callout.callout-info
                 h5 Erklärung
-                p TODO
-            .alert.alert-danger.alert
-                h5
-                    i.icon.fas.fa-ban
-                    |  Hinweis
-                | Das Einstellen des #{title}-Moduls im Web-Dashboard ist derzeit nicht möglich.
-                | Bitte nutze dafür den Discord-Bot.
+                p Logging ist eine Funktion, die es ermöglicht, bestimmte Ereignisse des Servers zu protokollieren.
+            .card.card-default
+                .card-header
+                    h3.card-title Einstellungen
+                    .card-tools
+                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                            i.fas.fa-minus
+                .card-body
+                    .row
+                        .col-md-6
+                            form(action=`/dashboard/${guild.id}/logging/save` method='post')
+                                .form-check
+                                    input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.logs ? guildData.settings.logs.enabled : false))
+                                    label.form-check-label(for='statusCheck') Aktiviert
+                                br
+                                .form-group
+                                    label Moderations-Logs
+                                    select.form-control(name="moderation" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.moderation === null) : true)) Deaktivieren
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.moderation : false)) #{channel[1].name}
+
+                                .form-group
+                                    label Mitglied-Logs
+                                    select.form-control(name="member" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.member === null) : true)) Deaktivieren
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.member : false)) #{channel[1].name}
+
+                                .form-group
+                                    label Server-Logs
+                                    select.form-control(name="guild" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.guild === null) : true)) Deaktivieren
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.guild : false)) #{channel[1].name}
+
+                                .form-group
+                                    label Rollen-Logs
+                                    select.form-control(name="role" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.role === null) : true)) Deaktivieren
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.role : false)) #{channel[1].name}
+
+                                .form-group
+                                    label Thread-Logs
+                                    select.form-control(name="thread" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.thread === null) : true)) Deaktivieren
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.thread : false)) #{channel[1].name}
+
+                                .form-group
+                                    label Channel-Logs
+                                    select.form-control(name="channel" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.channel === null) : true)) Deaktivieren
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.channel : false)) #{channel[1].name}
+
+                                button.btn.btn-block.btn-primary(type='submit') Speichern
+
 include ../templates/footer

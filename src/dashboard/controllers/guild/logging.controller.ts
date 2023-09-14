@@ -75,10 +75,20 @@ export default {
         const guildData: any = await client.findOrCreateGuild(guildId);
 
         /* update guild data */
-        // TODO
+        guildData.settings.logs = {
+            enabled: !!req.body.status,
+            channels: {
+                moderation: req.body.moderation !== "null" ? req.body.moderation : null,
+                member: req.body.member !== "null" ? req.body.member : null,
+                guild: req.body.guild !== "null" ? req.body.guild : null,
+                role: req.body.role !== "null" ? req.body.role : null,
+                thread: req.body.thread !== "null" ? req.body.thread : null,
+                channel: req.body.channel !== "null" ? req.body.channel : null
+            }
+        }
 
         /* save guild data */
-        guildData.markModified("");
+        guildData.markModified("settings.logs");
         await guildData.save();
 
         (req as any).session.saved = true;
