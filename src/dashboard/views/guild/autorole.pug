@@ -14,11 +14,23 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                     | Die Einstellungen wurden erfolgreich gespeichert.
             .callout.callout-info
                 h5 Erklärung
-                p TODO
-            .alert.alert-danger.alert
-                h5
-                    i.icon.fas.fa-ban
-                    |  Hinweis
-                | Das Einstellen des #{title}-Moduls im Web-Dashboard ist derzeit nicht möglich.
-                | Bitte nutze dafür den Discord-Bot.
+                p Autorollen werden neuen Mitgliedern beim Betreten des Servers automatisch zugewiesen.
+            .card.card-default
+                .card-header
+                    h3.card-title Einstellungen
+                    .card-tools
+                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                            i.fas.fa-minus
+                .card-body
+                    .row
+                        .col-md-6
+                            form(action=`/dashboard/${guild.id}/autorole/save` method='post')
+                                .form-group
+                                    label Autorollen
+                                    select.form-control(name="autoroles" autocomplete="off" class="selectpicker" multiple data-live-search="true")
+                                        each role in [...guild.roles.cache]
+                                            if role[1].id !== guild.id && !role[1].managed
+                                                option(value=role[1].id, selected=(guildData.settings.welcome ? guildData.settings.welcome.autoroles.includes(role[1].id) : false)) #{role[1].name}
+
+                                button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../templates/footer

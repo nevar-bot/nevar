@@ -74,11 +74,21 @@ export default {
         /* get guild data */
         const guildData: any = await client.findOrCreateGuild(guildId);
 
+        /* get autoroles */
+        let autoroles: string[] = [];
+        if(req.body.autoroles){
+            if(typeof req.body.autoroles === "string"){
+                autoroles = [req.body.autoroles];
+            }else{
+                autoroles = req.body.autoroles;
+            }
+        }
+
         /* update guild data */
-        // TODO
+        guildData.settings.welcome.autoroles = autoroles;
 
         /* save guild data */
-        guildData.markModified("");
+        guildData.markModified("settings.welcome.autoroles");
         await guildData.save();
 
         (req as any).session.saved = true;
