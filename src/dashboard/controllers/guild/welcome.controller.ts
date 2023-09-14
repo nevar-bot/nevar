@@ -74,11 +74,27 @@ export default {
         /* get guild data */
         const guildData: any = await client.findOrCreateGuild(guildId);
 
+        /* get autoroles */
+        let autoroles: string[] = [];
+        if(req.body.autoroles) {
+            if(typeof req.body.autoroles === "string") {
+                autoroles = [req.body.autoroles];
+            }else{
+                autoroles = req.body.autoroles;
+            }
+        }
+
         /* update guild data */
-        // TODO
+        guildData.settings.welcome = {
+            enabled: !!req.body.status,
+            channel: req.body.channel,
+            type: req.body.type,
+            message: req.body.message,
+            autoroles: autoroles
+        };
 
         /* save guild data */
-        guildData.markModified("");
+        guildData.markModified("settings.welcome");
         await guildData.save();
 
         (req as any).session.saved = true;

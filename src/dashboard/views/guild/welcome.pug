@@ -14,11 +14,74 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                     | Die Einstellungen wurden erfolgreich gespeichert.
             .callout.callout-info
                 h5 Erklärung
-                p TODO
-            .alert.alert-danger.alert
-                h5
-                    i.icon.fas.fa-ban
-                    |  Hinweis
-                | Das Einstellen des #{title}-Moduls im Web-Dashboard ist derzeit nicht möglich.
-                | Bitte nutze dafür den Discord-Bot.
+                p Die Willkommensnachricht begrüßt neue Mitglieder, und kann wenn gewünscht automatisch Rollen vergeben.
+            .card.card-default
+                .card-header
+                    h3.card-title Einstellungen
+                    .card-tools
+                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                            i.fas.fa-minus
+                .card-body
+                    .row
+                        .col-md-6
+                            form(action=`/dashboard/${guild.id}/welcome/save` method='post')
+                                .form-check
+                                    input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.welcome ? guildData.settings.welcome.enabled : false))
+                                    label.form-check-label(for='statusCheck') Aktiviert
+                                br
+                                .form-group
+                                    label Begrüßungskanal
+                                    select.form-control(name="channel" autocomplete='off' class='selectpicker' data-live-search="true")
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.welcome ? channel[1].id === guildData.settings.welcome.channel : false)) #{channel[1].name}
+                                .form-group
+                                    label Typ
+                                    select.form-control(name="type" autocomplete="off" class="selectpicker")
+                                        option(value="embed", selected=(guildData.settings.welcome ? guildData.settings.welcome.type === "embed" : false)) Embed
+                                        option(value="text", selected=(guildData.settings.welcome ? guildData.settings.welcome.type === "text" : false)) Text
+
+                                .form-group
+                                    label Nachricht
+                                    textarea.form-control(name='message' autocomplete='off' rows='3') #{guildData.settings.welcome ? guildData.settings.welcome.message : ""}
+
+                                .card.card-default.collapsed-card
+                                    .card-header
+                                        h3.card-title Variablen
+                                        .card-tools
+                                            button.btn.btn-tool(type='button', data-card-widget='collapse')
+                                                i.fas.fa-plus
+                                    .card-body
+                                        .row
+                                            .col-md-12
+                                                | Folgende Variablen können in der Nachricht verwendet werden:
+                                                -
+                                                    var variables = [
+                                                        { code: '{user}', description: 'erwähnt das Mitglied' },
+                                                        { code: '{user:username}', description: 'der Nutzername des Mitglieds' },
+                                                        { code: '{user:displayname}', description: 'der Anzeigename des Mitglieds' },
+                                                        { code: '{user:id}', description:'ID des Mitglieds' },
+                                                        { code: '{server:name}', description: 'Name des Servers' },
+                                                        { code: '{server:id}', description: 'ID des Servers' },
+                                                        { code: '{server:membercount}', description: 'Anzahl an Mitgliedern des Servers' },
+                                                        { code: '{inviter}', description: 'Erwähnt den Einladenden' },
+                                                        { code: '{inviter:username}', description: 'der Nutzername des Einladenden' },
+                                                        { code: '{inviter:displayname}', description: 'der Anzeigename des Einladenden' },
+                                                        { code: '{inviter:id}', description: 'ID des Einladenden' },
+                                                        { code: '{inviter:invites}', description: 'Anzahl der Einladungen des Einladenden' },
+                                                        { code: '{newline}', description: 'Fügt eine neue Zeile ein' }
+                                                    ]
+                                                each variable in variables
+                                                    div
+                                                        code= variable.code
+                                                        |  -
+                                                        |  #{variable.description}
+
+                                .form-group
+                                    label Autorollen
+                                    select.form-control(name="autoroles" autocomplete="off" class="selectpicker" multiple data-live-search="true")
+                                        each role in [...guild.roles.cache]
+                                            option(value=role[1].id, selected=(guildData.settings.welcome ? guildData.settings.welcome.autoroles.includes(role[1].id) : false)) #{role[1].name}
+
+                                button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../templates/footer
