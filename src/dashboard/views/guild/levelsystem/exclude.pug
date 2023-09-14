@@ -14,11 +14,29 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                     | Die Einstellungen wurden erfolgreich gespeichert.
             .callout.callout-info
                 h5 Erklärung
-                p TODO
-            .alert.alert-danger.alert
-                h5
-                    i.icon.fas.fa-ban
-                    |  Hinweis
-                | Das Einstellen des #{title}-Moduls im Web-Dashboard ist derzeit nicht möglich.
-                | Bitte nutze dafür den Discord-Bot.
+                p Channel oder Rollen die vom Levelsystem nicht berücksichtigt werden sollen, können hier ausgeschlossen werden.
+            .card.card-default
+                .card-header
+                    h3.card-title Einstellungen
+                    .card-tools
+                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                            i.fas.fa-minus
+                .card-body
+                    .row
+                        .col-md-6
+                            form(action=`/dashboard/${guild.id}/levelsystem/exclude/save` method='post')
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Rollen welche vom Levelsystem nicht berücksichtigt werden") Rollen
+                                    select.form-control(name="roles" autocomplete="off" class="selectpicker" multiple data-live-search="true")
+                                        each role in [...guild.roles.cache]
+                                            if role[1].id !== guild.id && !role[1].managed
+                                                option(value=role[1].id, selected=(guildData.settings.levels ? guildData.settings.levels.exclude.roles.includes(role[1].id) : false)) #{role[1].name}
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Channel welche vom Levelsystem nicht berücksichtigt werden") Channel
+                                    select.form-control(name="channels" autocomplete="off" class="selectpicker" multiple data-live-search="true")
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.levels ? guildData.settings.levels.exclude.channels.includes(channel[1].id) : false)) #{channel[1].name}
+
+                                button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../../templates/footer

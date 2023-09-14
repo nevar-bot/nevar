@@ -27,10 +27,10 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                             form(action=`/dashboard/${guild.id}/logging/save` method='post')
                                 .form-check
                                     input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.logs ? guildData.settings.logs.enabled : false))
-                                    label.form-check-label(for='statusCheck') Aktiviert
+                                    label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Ob das Logging aktiviert oder deaktiviert ist") Aktiviert
                                 br
                                 .form-group
-                                    label Moderations-Logs
+                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Moderations-Ereignisse gesendet werden") Moderations-Logs
                                     select.form-control(name="moderation" autocomplete='off' class='selectpicker' data-live-search="true")
                                         option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.moderation === null) : true)) Deaktivieren
                                         each channel in [...guild.channels.cache]
@@ -38,7 +38,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                                 option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.moderation : false)) #{channel[1].name}
 
                                 .form-group
-                                    label Mitglied-Logs
+                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Mitglied-Ereignisse gesendet werden") Mitglied-Logs
                                     select.form-control(name="member" autocomplete='off' class='selectpicker' data-live-search="true")
                                         option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.member === null) : true)) Deaktivieren
                                         each channel in [...guild.channels.cache]
@@ -46,7 +46,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                                 option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.member : false)) #{channel[1].name}
 
                                 .form-group
-                                    label Server-Logs
+                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Server-Ereignisse gesendet werden") Server-Logs
                                     select.form-control(name="guild" autocomplete='off' class='selectpicker' data-live-search="true")
                                         option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.guild === null) : true)) Deaktivieren
                                         each channel in [...guild.channels.cache]
@@ -54,7 +54,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                                 option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.guild : false)) #{channel[1].name}
 
                                 .form-group
-                                    label Rollen-Logs
+                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Rollen-Ereignisse gesendet werden") Rollen-Logs
                                     select.form-control(name="role" autocomplete='off' class='selectpicker' data-live-search="true")
                                         option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.role === null) : true)) Deaktivieren
                                         each channel in [...guild.channels.cache]
@@ -62,7 +62,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                                 option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.role : false)) #{channel[1].name}
 
                                 .form-group
-                                    label Thread-Logs
+                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Thread-Ereignisse gesendet werden") Thread-Logs
                                     select.form-control(name="thread" autocomplete='off' class='selectpicker' data-live-search="true")
                                         option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.thread === null) : true)) Deaktivieren
                                         each channel in [...guild.channels.cache]
@@ -70,7 +70,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                                 option(value=channel[1].id, selected=(guildData.settings.logs ? channel[1].id === guildData.settings.logs.channels.thread : false)) #{channel[1].name}
 
                                 .form-group
-                                    label Channel-Logs
+                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Channel-Ereignisse gesendet werden") Channel-Logs
                                     select.form-control(name="channel" autocomplete='off' class='selectpicker' data-live-search="true")
                                         option(value="null", selected=(guildData.settings.logs ? (guildData.settings.logs.channels.channel === null) : true)) Deaktivieren
                                         each channel in [...guild.channels.cache]

@@ -74,11 +74,33 @@ export default {
         /* get guild data */
         const guildData: any = await client.findOrCreateGuild(guildId);
 
+        /* get excluded channels */
+        let excludedChannels: string[] = [];
+        if (req.body.channels) {
+            if(typeof req.body.channels === "string") {
+                excludedChannels = [req.body.channels];
+            }else{
+                excludedChannels = req.body.channels;
+            }
+        }
+
+        /* get excluded roles */
+        let excludedRoles: string[] = [];
+        if (req.body.roles) {
+            if(typeof req.body.roles === "string") {
+                excludedRoles = [req.body.roles];
+            }else{
+                excludedRoles = req.body.roles;
+            }
+        }
         /* update guild data */
-        // TODO
+        guildData.settings.levels.exclude = {
+            channels: excludedChannels,
+            roles: excludedRoles
+        }
 
         /* save guild data */
-        guildData.markModified("");
+        guildData.markModified("settings.levels.exclude");
         await guildData.save();
 
         (req as any).session.saved = true;

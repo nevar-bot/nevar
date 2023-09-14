@@ -74,11 +74,20 @@ export default {
         /* get guild data */
         const guildData: any = await client.findOrCreateGuild(guildId);
 
+        /* get double xp roles */
+        let doubleXP: string[] = [];
+        if (req.body.doublexp) {
+            if(typeof req.body.doublexp === "string") {
+                doubleXP = [req.body.doublexp];
+            }else{
+                doubleXP = req.body.doublexp;
+            }
+        }
         /* update guild data */
-        // TODO
+        guildData.settings.levels.doubleXP = doubleXP;
 
         /* save guild data */
-        guildData.markModified("");
+        guildData.markModified("settings.levels.doubleXP");
         await guildData.save();
 
         (req as any).session.saved = true;

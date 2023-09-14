@@ -27,26 +27,26 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                         form(action=`/dashboard/${guild.id}/farewell/save` method='post')
                             .form-check
                                 input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.farewell ? guildData.settings.farewell.enabled : false))
-                                label.form-check-label(for='statusCheck') Aktiviert
+                                label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Ob die Verabschiedungsnachricht aktiviert oder deaktiviert ist") Aktiviert
                             br
                             .form-group
-                                label Verabschiedungskanal
+                                label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Verabschiedungsnachricht gesendet wird") Verabschiedungskanal
                                 select.form-control(name="channel" autocomplete='off' class='selectpicker' data-live-search="true")
                                     each channel in [...guild.channels.cache]
                                         if channel[1].type === 0
                                             option(value=channel[1].id, selected=(guildData.settings.farewell ? channel[1].id === guildData.settings.farewell.channel : false)) #{channel[1].name}
                             .form-group
-                                label Typ
+                                label(data-toggle="tooltip" data-placement="top" title="Ob die Verabschiedungsnachricht als Text oder Embed gesendet wird") Typ
                                 select.form-control(name="type" id="typeSelect" autocomplete="off" class="selectpicker")
                                     option(value="embed", selected=(guildData.settings.farewell ? guildData.settings.farewell.type === "embed" : false)) Embed
                                     option(value="text", selected=(guildData.settings.farewell ? guildData.settings.farewell.type === "text" : false)) Text
 
                             .form-group.form-check(id="profilepicture")
                                 input.form-check-input(type='checkbox', autocomplete='off' name='profilepicture' id='profilepictureCheck' data-form-type='other', checked=(guildData.settings.farewell ? guildData.settings.farewell.profilePicture : false))
-                                label.form-check-label(for='profilepictureCheck') Profilbild im Embed anzeigen
+                                label.form-check-label(for='profilepictureCheck' data-toggle="tooltip" data-placement="top" title="Ob im Embed das Profilbild des Nutzers angezeigt wird") Profilbild im Embed anzeigen
 
                             .form-group
-                                label Nachricht
+                                label(data-toggle="tooltip" data-placement="top" title="Die Nachricht welche gesendet wird") Nachricht
                                 textarea.form-control(name='message' autocomplete='off' rows='3') #{guildData.settings.farewell ? guildData.settings.farewell.message : ""}
 
                             .card.card-default.collapsed-card

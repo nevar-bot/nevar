@@ -27,27 +27,27 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                             form(action=`/dashboard/${guild.id}/aimod/save` method='post')
                                 .form-check
                                     input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.aiModeration ? guildData.settings.aiModeration.enabled : false))
-                                    label.form-check-label(for='statusCheck') Aktiviert
+                                    label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Ob die AI-Moderation aktiviert oder deaktiviert ist") Aktiviert
                                 br
                                 .form-group
-                                    label Warn-Kanal
+                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Moderatoren gewarnt werden sollen") Warn-Kanal
                                     select.form-control(name="alertChannel" autocomplete='off' class='selectpicker' data-live-search="true")
                                         each channel in [...guild.channels.cache]
                                             if channel[1].type === 0
                                                 option(value=channel[1].id, selected=(guildData.settings.aiModeration ? channel[1].id === guildData.settings.aiModeration.alertChannel : false)) #{channel[1].name}
                                 .form-group
-                                    label Schwellenwert
+                                    label(data-toggle="tooltip" data-placement="top" title="Ab welchem Wert eine Warnung gesendet werden soll") Schwellenwert
                                     input.form-control(name='threshold' autocomplete='off' type='text' value=(guildData.settings.aiModeration.threshold ? guildData.settings.aiModeration.threshold : 0.6))
 
                                 .form-group
-                                    label Ignorierte Channel
+                                    label(data-toggle="tooltip" data-placement="top" title="Welche Kanäle von der AI-Moderation ignoriert werden") Ignorierte Channel
                                     select.form-control(name="excludedChannels" autocomplete="off" class="selectpicker" multiple data-live-search="true")
                                         each channel in [...guild.channels.cache]
                                             if channel[1].type === 0
                                                 option(value=channel[1].id, selected=(guildData.settings.aiModeration ? guildData.settings.aiModeration.excludedChannels.includes(channel[1].id) : false)) #{channel[1].name}
 
                                 .form-group
-                                    label Ignorierte Rollen
+                                    label(data-toggle="tooltip" data-placement="top" title="Welche Rollen von der AI-Moderation ignoriert werden") Ignorierte Rollen
                                     select.form-control(name="excludedRoles" autocomplete="off" class="selectpicker" multiple data-live-search="true")
                                         each role in [...guild.roles.cache]
                                             option(value=role[1].id, selected=(guildData.settings.aiModeration ? guildData.settings.aiModeration.excludedRoles.includes(role[1].id) : false)) #{role[1].name}

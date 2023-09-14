@@ -14,11 +14,93 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                     | Die Einstellungen wurden erfolgreich gespeichert.
             .callout.callout-info
                 h5 Erklärung
-                p TODO
-            .alert.alert-danger.alert
-                h5
-                    i.icon.fas.fa-ban
-                    |  Hinweis
-                | Das Einstellen des #{title}-Moduls im Web-Dashboard ist derzeit nicht möglich.
-                | Bitte nutze dafür den Discord-Bot.
+                p Konfiguriert allgemeine Einstellungen des Levelsystems.
+            .card.card-default
+                .card-header
+                    h3.card-title Einstellungen
+                    .card-tools
+                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                            i.fas.fa-minus
+                .card-body
+                    .row
+                        .col-md-6
+                            form(action=`/dashboard/${guild.id}/levelsystem/general/save` method='post')
+                                .form-check
+                                    input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.levels ? guildData.settings.levels.enabled : false))
+                                    label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Ob das Levelsystem aktiviert oder deaktiviert ist") Aktiviert
+                                br
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Level-UP Nachricht gesendet wird") Kanal
+                                    select.form-control(name="channel" autocomplete='off' class="selectpicker" data-live-search="true")
+                                        option(value="current" selected=(guildData.settings.levels ? guildData.settings.levels.channel === null : false)) Aktueller Kanal
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.levels ? channel[1].id === guildData.settings.levels.channel : false)) #{channel[1].name}
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Die Nachricht welche beim Level-Aufstieg gesendet wird") Nachricht
+                                    input.form-control(name='message' autocomplete='off' type='text' value=(guildData.settings.levels.message ? guildData.settings.levels.message : ''))
+
+                                .card.card-default.collapsed-card
+                                    .card-header
+                                        h3.card-title Variablen
+                                        .card-tools
+                                            button.btn.btn-tool(type='button', data-card-widget='collapse')
+                                                i.fas.fa-plus
+                                    .card-body
+                                        .row
+                                            .col-md-12
+                                                | Folgende Variablen können im Namen verwendet werden:
+                                                -
+                                                    var variables = [
+                                                        { code: '{user}', description: 'Erwähnt das Mitglied' },
+                                                        { code: '{user:username}', description: 'der Nutzername des Mitglieds' },
+                                                        { code: '{user:displayname}', description: 'der Anzeigename des Mitglieds' },
+                                                        { code: '{user:id}', description: 'ID des Mitglieds' },
+                                                        { code: '{server:name}', description: 'Name des Servers' },
+                                                        { code: '{server:id}', description: 'ID des Servers' },
+                                                        { code: '{server:membercount}', description: 'Anzahl an Mitgliedern des Servers' },
+                                                        { code: '{level}', description: 'Zeigt das neue Level an' },
+                                                    ]
+                                                each variable in variables
+                                                    div
+                                                        code= variable.code
+                                                        |  -
+                                                        |  #{variable.description}
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Minimale XP die vergeben werden können") Minimale XP
+                                    input.form-control(name='minxp' autocomplete='off' type='text' value=(guildData.settings.levels.xp.min ? guildData.settings.levels.xp.min : 1))
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Maximale XP die vergeben werden können") Maximale XP
+                                    input.form-control(name='maxxp' autocomplete='off' type='text' value=(guildData.settings.levels.xp.max ? guildData.settings.levels.xp.max : 30))
+                                button.btn.btn-block.btn-primary(type='submit') Speichern
+
 include ../../templates/footer
+
+script.
+    $("input[name='minxp'], input[name='maxxp']").TouchSpin({
+        min: 1,
+        max: 200,
+        step: 1,
+        decimals: 0,
+        postfix: "XP"
+    });
+
+    $("input[name='minxp']").on('change', function () {
+        const minVal = parseInt($(this).val());
+        const maxInput = $("input[name='maxxp']");
+        const maxVal = parseInt(maxInput.val());
+
+        if (minVal >= maxVal) {
+            maxInput.val(minVal + 1).trigger('change');
+        }
+    });
+
+    $("input[name='maxxp']").on('change', function () {
+        const maxVal = parseInt($(this).val());
+        const minInput = $("input[name='minxp']");
+        const minVal = parseInt(minInput.val());
+
+        if (maxVal <= minVal) {
+            minInput.val(maxVal - 1).trigger('change');
+        }
+    });

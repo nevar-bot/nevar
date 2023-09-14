@@ -75,10 +75,16 @@ export default {
         const guildData: any = await client.findOrCreateGuild(guildId);
 
         /* update guild data */
-        // TODO
+        guildData.settings.levels.enabled = !!req.body.status;
+        guildData.settings.levels.channel = req.body.channel !== "current" ? req.body.channel : null;
+        guildData.settings.levels.message = req.body.message;
+        guildData.settings.levels.xp = {
+            min: parseInt(req.body.minxp),
+            max: parseInt(req.body.maxxp)
+        }
 
         /* save guild data */
-        guildData.markModified("");
+        guildData.markModified("settings.levels");
         await guildData.save();
 
         (req as any).session.saved = true;
@@ -87,6 +93,6 @@ export default {
         await client.wait(500);
 
         /* redirect */
-        res.status(200).redirect("/dashboard/" + req.params.guildId + "/levelsystem");
+        res.status(200).redirect("/dashboard/" + req.params.guildId + "/levelsystem/general");
     }
 };
