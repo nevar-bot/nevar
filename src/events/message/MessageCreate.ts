@@ -267,7 +267,7 @@ export default class {
 			};
 
 			const body: any = {
-				model: "gpt-4",
+				model: "gpt-3.5-turbo",
 				messages: this.client.aiChat.get(message.guild.id)
 			};
 
