@@ -12,13 +12,79 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                         i.icon.fas.fa-check
                         | Daten übernommen
                     | Die Einstellungen wurden erfolgreich gespeichert.
-            .callout.callout-info
-                h5 Erklärung
-                p TODO
-            .alert.alert-danger.alert
-                h5
-                    i.icon.fas.fa-ban
-                    |  Hinweis
-                | Das Einstellen des #{title}-Moduls im Web-Dashboard ist derzeit nicht möglich.
-                | Bitte nutze dafür den Discord-Bot.
+        .callout.callout-info
+            h5 Erklärung
+            p Die Verabschiedungsnachricht wird gesendet, wenn ein Mitglied den Server verlässt.
+        .card.card-default
+            .card-header
+                h3.card-title Einstellungen
+                .card-tools
+                    button.btn.btn-tool(type='button', data-card-widget='collapse')
+                        i.fas.fa-minus
+            .card-body
+                .row
+                    .col-md-6
+                        form(action=`/dashboard/${guild.id}/farewell/save` method='post')
+                            .form-check
+                                input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.farewell ? guildData.settings.farewell.enabled : false))
+                                label.form-check-label(for='statusCheck') Aktiviert
+                            br
+                            .form-group
+                                label Verabschiedungskanal
+                                select.form-control(name="channel" autocomplete='off' class='selectpicker' data-live-search="true")
+                                    each channel in [...guild.channels.cache]
+                                        if channel[1].type === 0
+                                            option(value=channel[1].id, selected=(guildData.settings.farewell ? channel[1].id === guildData.settings.farewell.channel : false)) #{channel[1].name}
+                            .form-group
+                                label Typ
+                                select.form-control(name="type" id="typeSelect" autocomplete="off" class="selectpicker")
+                                    option(value="embed", selected=(guildData.settings.farewell ? guildData.settings.farewell.type === "embed" : false)) Embed
+                                    option(value="text", selected=(guildData.settings.farewell ? guildData.settings.farewell.type === "text" : false)) Text
+
+                            .form-group.form-check(id="profilepicture")
+                                input.form-check-input(type='checkbox', autocomplete='off' name='profilepicture' id='profilepictureCheck' data-form-type='other', checked=(guildData.settings.farewell ? guildData.settings.farewell.profilePicture : false))
+                                label.form-check-label(for='profilepictureCheck') Profilbild im Embed anzeigen
+
+                            .form-group
+                                label Nachricht
+                                textarea.form-control(name='message' autocomplete='off' rows='3') #{guildData.settings.farewell ? guildData.settings.farewell.message : ""}
+
+                            .card.card-default.collapsed-card
+                                .card-header
+                                    h3.card-title Variablen
+                                    .card-tools
+                                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                                            i.fas.fa-plus
+                                .card-body
+                                    .row
+                                        .col-md-12
+                                            | Folgende Variablen können in der Nachricht verwendet werden:
+                                            -
+                                                var variables = [
+                                                    {code: '{user}', description: 'erwähnt das Mitglied'},
+                                                    {code: '{user:username}', description: 'der Nutzername des Mitglieds'},
+                                                    {code: '{user:displayname}', description: 'der Anzeigename des Mitglieds'},
+                                                    {code: '{user:id}', description: 'ID des Mitglieds'},
+                                                    {code: '{server:name}', description: 'Name des Servers'},
+                                                    {code: '{server:id}', description: 'ID des Servers'},
+                                                    { code: '{server:membercount}', description: 'Anzahl an Mitgliedern des Servers' },
+                                                    {code: '{newline}', description: 'Fügt eine neue Zeile ein'}
+                                                ]
+                                            each variable in variables
+                                                div
+                                                    code= variable.code
+                                                    |  -
+                                                    |  #{variable.description}
+
+                            button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../templates/footer
+
+script.
+    document.addEventListener('DOMContentLoaded', () => {
+        const typeSelector = document.getElementById('typeSelect');
+        const embedOptions = document.getElementById('profilepicture');
+        typeSelector.addEventListener('change', () => {
+            embedOptions.style.display = typeSelector.value === 'embed' ? 'block' : 'none';
+        });
+        embedOptions.style.display = typeSelector.value === 'embed' ? 'block' : 'none';
+    });

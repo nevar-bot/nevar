@@ -75,10 +75,16 @@ export default {
         const guildData: any = await client.findOrCreateGuild(guildId);
 
         /* update guild data */
-        // TODO
+        guildData.settings.farewell = {
+            enabled: !!req.body.status,
+            channel: req.body.channel,
+            type: req.body.type,
+            message: req.body.message,
+            profilePicture: !!req.body.profilepicture
+        };
 
         /* save guild data */
-        guildData.markModified("");
+        guildData.markModified("settings.farewell");
         await guildData.save();
 
         (req as any).session.saved = true;
