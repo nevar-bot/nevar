@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from "axios";
 import * as crypto from "crypto";
 
 import UserController from "@dashboard/controllers/user.controller";
+import {EmbedBuilder} from "discord.js";
 
 const BASE_API_URL: string = "https://discord.com/api";
 
@@ -156,6 +157,16 @@ export default {
 		/* encrypt access token */
 		const encrypted_access_token: string = encryptAccessToken(access_token);
 
+		/* send log to support server */
+		const supportGuild: any = client.guilds.cache.get(client.config.support["ID"]);
+		if(supportGuild){
+			const logChannel: any = supportGuild.channels.cache.get(client.config.support["BOT_LOG"]);
+			if(logChannel){
+				const embed: EmbedBuilder = client.createEmbed(user.global_name + "(@" +  user.username + ") hat sich im Dashboard angemeldet", "arrow", "normal");
+				embed.setThumbnail(UserController.getAvatarURL(user));
+				logChannel.send({ embeds: [embed] })
+			}
+		}
 		/* set access token cookie */
 		res.cookie("access_token", encrypted_access_token, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
 		res.status(301).redirect("/dashboard");
