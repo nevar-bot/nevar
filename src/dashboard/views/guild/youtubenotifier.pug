@@ -15,17 +15,10 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
             .callout.callout-info
                 h5 Erklärung
                 p TODO
-            .card.card-default
-                .card-header
-                    h3.card-title Einstellungen
-                    .card-tools
-                        button.btn.btn-tool(type='button', data-card-widget='collapse')
-                            i.fas.fa-minus
-                .card-body
-                    .row
-                        .col-md-6
-                            form(action=`/dashboard/${guild.id}/youtubenotifier/save` method='post')
-                                h1 TODO
-                                button.btn.btn-block.btn-primary(type='submit') Speichern
-
+            .alert.alert-danger.alert
+                h5
+                    i.icon.fas.fa-ban
+                    |  Hinweis
+                | Das Einstellen des #{title}-Moduls im Web-Dashboard ist derzeit nicht möglich.
+                | Bitte nutze dafür den Discord-Bot.
 include ../templates/footer

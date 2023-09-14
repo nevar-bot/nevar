@@ -31,13 +31,13 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                 br
                                 .form-group
                                     label Kanal
-                                    select.form-control(name="channel" style='width: 100%;' autocomplete='off')
+                                    select.form-control(name="channel" autocomplete='off' class="selectpicker" data-live-search="true")
                                         each channel in [...guild.channels.cache]
                                             if channel[1].type === 0
                                                 option(value=channel[1].id, selected=(guildData.settings.aiChat ? channel[1].id === guildData.settings.aiChat.channel : false)) #{channel[1].name}
                                 .form-group
                                     label Modus
-                                    select.form-control(name="mode" style='width: 100%;' autocomplete='off')
+                                    select.form-control(name="mode" autocomplete='off' class="selectpicker" data-live-search="true")
                                         each value, key in client.aiChatPrompts.prompts
                                             option(value=key, selected=(guildData.settings.aiChat ? key === guildData.settings.aiChat.mode : false)) #{value.name}
                                 button.btn.btn-block.btn-primary(type='submit') Speichern

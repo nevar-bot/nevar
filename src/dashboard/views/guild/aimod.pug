@@ -31,13 +31,27 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                 br
                                 .form-group
                                     label Warn-Kanal
-                                    select.form-control-dark(name="alertChannel" style='width: 100%;' autocomplete='off')
+                                    select.form-control(name="alertChannel" autocomplete='off' class='selectpicker' data-live-search="true")
                                         each channel in [...guild.channels.cache]
                                             if channel[1].type === 0
                                                 option(value=channel[1].id, selected=(guildData.settings.aiModeration ? channel[1].id === guildData.settings.aiModeration.alertChannel : false)) #{channel[1].name}
                                 .form-group
                                     label Schwellenwert
                                     input.form-control(name='threshold' autocomplete='off' type='text' value=(guildData.settings.aiModeration.threshold ? guildData.settings.aiModeration.threshold : 0.6))
+
+                                .form-group
+                                    label Ignorierte Channel
+                                    select.form-control(name="excludedChannels" autocomplete="off" class="selectpicker" multiple data-live-search="true")
+                                        each channel in [...guild.channels.cache]
+                                            if channel[1].type === 0
+                                                option(value=channel[1].id, selected=(guildData.settings.aiModeration ? guildData.settings.aiModeration.excludedChannels.includes(channel[1].id) : false)) #{channel[1].name}
+
+                                .form-group
+                                    label Ignorierte Rollen
+                                    select.form-control(name="excludedRoles" autocomplete="off" class="selectpicker" multiple data-live-search="true")
+                                        each role in [...guild.roles.cache]
+                                            option(value=role[1].id, selected=(guildData.settings.aiModeration ? guildData.settings.aiModeration.excludedRoles.includes(role[1].id) : false)) #{role[1].name}
+
                                 button.btn.btn-block.btn-primary(type='submit') Speichern
 
 include ../templates/footer

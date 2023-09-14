@@ -51,6 +51,7 @@ export default {
     },
 
     async post(req: Request, res: Response): Promise<void> {
+        console.log(req.body);
         /* get access token */
         const access_token: string | null = AuthController.getAccessToken(req);
 
@@ -74,15 +75,37 @@ export default {
         /* get guild data */
         const guildData: any = await client.findOrCreateGuild(guildId);
 
+        /* get excluded channels */
+        let excludedChannels: string[] = [];
+        if(req.body?.excludedChannels){
+            if(typeof req.body.excludedChannels === "string") {
+                excludedChannels = [req.body.excludedChannels];
+            }else{
+                excludedChannels = req.body.excludedChannels;
+            }
+        }
+
+        /* get excluded roles */
+        let excludedRoles: string[] = [];
+        if(req.body?.excludedRoles){
+            if(typeof req.body.excludedRoles === "string") {
+                excludedRoles = [req.body.excludedRoles];
+            }else{
+                excludedRoles = req.body.excludedRoles;
+            }
+        }
+
         /* update guild data */
-        guildData.settings.aiChat = {
-            enabled: req.body.status === "true",
-            channel: req.body.channel,
-            mode: req.body.mode
+        guildData.settings.aiModeration = {
+            enabled: !!req.body?.status,
+            excludedChannels: excludedChannels,
+            excludedRoles: excludedRoles,
+            threshold: parseFloat(req.body.threshold),
+            alertChannel: req.body.alertChannel
         };
 
         /* save guild data */
-        guildData.markModified("settings.aiChat");
+        guildData.markModified("settings.aiModeration");
         await guildData.save();
 
         (req as any).session.saved = true;
@@ -91,6 +114,6 @@ export default {
         await client.wait(500);
 
         /* redirect */
-        res.status(200).redirect("/dashboard/" + req.params.guildId + "/aichat");
+        res.status(200).redirect("/dashboard/" + req.params.guildId + "/aimod");
     }
 };
