@@ -275,14 +275,13 @@ export default class {
 				timeout: 10 * 1000
 			});
 
-			const response: AxiosResponse | void = await AxiosInstance.post("https://beta.purgpt.xyz/v1/chat/completions", body, {
+			const response: AxiosResponse | void = await AxiosInstance.post("https://api.openai.com/v1/chat/completions", body, {
 				headers,
 				validateStatus: (): boolean => true
 			}).catch((e): void => {
 				console.log(e);
 			});
 
-			console.log(response);
 			if (response?.data?.choices?.[0]) {
 				this.client.aiChat.get(message.guild.id)!.push({
 					role: "assistant",
