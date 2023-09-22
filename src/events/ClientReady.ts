@@ -10,6 +10,7 @@ import unbanMembers from "@handlers/unbanMembers";
 import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";
 import youtubeNotifier from "@handlers/youtubeNotifier";
+import twitchNotifier from "@handlers/twitchNotifier";
 import endGiveaways from "@handlers/endGiveaways";
 import dashboard from "@dashboard/app";
 import api from "@api/app";
@@ -49,6 +50,7 @@ export default class {
 		unmuteMembers.init(client);
 		remindMembers.init(client);
 		youtubeNotifier.init(client);
+		twitchNotifier.init(client);
 		endGiveaways.init(client);
 		if (config.api["ENABLED"]) api.init(client);
 

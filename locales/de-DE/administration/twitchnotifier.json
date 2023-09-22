@@ -1,0 +1,21 @@
+{
+  "errors": {
+    "missingChannelName": "Du musst einen Twitch-Kanal-Namen angeben.",
+    "cantFindChannel": "Der Kanal konnte nicht gefunden werden.",
+    "limitExceeded": "Es können nur maximal 3 Kanäle überwacht werden.",
+    "alreadyAdded": "Dieser Kanal wird bereits überwacht.",
+    "notAdded": "Dieser Kanal wird nicht überwacht.",
+    "missingStatus": "Du musst einen Status wählen.",
+    "statusAlready": "Der YouTube-Notifier ist bereits {{status}}.",
+    "missingChannel": "Du musst einen Kanal auswählen.",
+    "channelAlready": "YouTube-Videos werden bereits in {{channel}} gesendet."
+  },
+  "added": "[{{name}}]({{url}}) wird ab jetzt überwacht.",
+  "removed": "[{{name}}]({{url}}) wird ab jetzt nicht mehr überwacht.",
+  "statusSet": "Der YouTube-Notifier wurde {{status}}.",
+  "channelSet": "YouTube-Videos werden ab jetzt in {{channel}} gesendet.",
+  "list": {
+    "title": "Überwachte Twitch-Kanäle",
+    "empty": "Es werden keine Kanäle überwacht."
+  }
+}

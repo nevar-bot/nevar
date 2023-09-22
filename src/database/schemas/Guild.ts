@@ -99,6 +99,11 @@ const GuildSchema: Schema = new mongoose.Schema({
 					enabled: false,
 					channels: [],
 					announcementChannel: null
+				},
+				twitch: {
+					enabled: false,
+					channels: [],
+					announcementChannel: null
 				}
 			},
 			muterole: null,

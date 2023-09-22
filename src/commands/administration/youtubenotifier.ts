@@ -153,7 +153,7 @@ export default class Youtubenotifier extends BaseCommand {
 
 		const channel: any = await this.getChannelNameFromId(channelId);
 		if (channel) {
-			if (data.guild.settings.notifiers.youtube.channels.length > 3) {
+			if (data.guild.settings.notifiers.youtube.channels.length >= 3) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("administration/youtubenotifier:errors:limitExceeded"),
 					"error",
