@@ -247,17 +247,16 @@ export default class {
 				);
 				return message.reply({ embeds: [blockedMessageEmbed] });
 			}
-			if (!this.client.aiChat.has(message.guild.id)) {
-				/* set ai mode */
-				this.client.aiChat.set(message.guild.id, []);
-				const prompt: string = this.client.aiChatPrompts.default + this.client.aiChatPrompts.prompts[data.guild.settings.aiChat.mode].prompt;
-				this.client.aiChat.get(message.guild.id)!.push({ role: "system", content: prompt });
-			}
+
+			if (!this.client.aiChat.has(message.guild.id)) this.client.aiChat.set(message.guild.id, []);
+
+			const prompt: string = this.client.aiChatPrompts.default + this.client.aiChatPrompts.prompts[data.guild.settings.aiChat.mode].prompt;
+			this.client.aiChat.get(message.guild.id)!.push({ role: "system", content: prompt });
 
 			await message.channel.sendTyping();
 			this.client.aiChat.get(message.guild.id)!.push({
 				role: "user",
-				content: message.author.displayName + ": " + message.content
+				content: message.content
 			});
 
 			/* send request */
@@ -272,15 +271,13 @@ export default class {
 			};
 
 			const AxiosInstance: AxiosInstance = axios.create({
-				timeout: 10 * 1000
+				timeout: 15 * 1000
 			});
 
 			const response: AxiosResponse | void = await AxiosInstance.post("https://api.openai.com/v1/chat/completions", body, {
 				headers,
 				validateStatus: (): boolean => true
-			}).catch((e): void => {
-				console.log(e);
-			});
+			}).catch((): void => {});
 
 			if (response?.data?.choices?.[0]) {
 				this.client.aiChat.get(message.guild.id)!.push({
@@ -292,7 +289,7 @@ export default class {
 				});
 			} else {
 				message.reply({
-					content: this.client.emotes.error + " Leider ist ein **unerwarteter Fehler** aufgetreten. Bitte versuche es später erneut."
+					content: this.client.emotes.error + " Das hat leider nicht geklappt :(\n" + this.client.emotes.arrow + " Bitte versuche es später erneut."
 				});
 			}
 		}
