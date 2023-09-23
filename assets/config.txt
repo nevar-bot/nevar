@@ -22,7 +22,7 @@ BOT_TOKEN = ""
 MONGO_CONNECTION = ""
 # Used as embed author url*
 WEBSITE = ""
-# All the IDs of the owners of the bot*
+# All the IDs of the owners of the bot
 OWNER_IDS = []
 
 [ support ]
@@ -49,7 +49,7 @@ TRANSPARENT_COLOR = "#36393F"
 # Whether the API should be enabled*
 ENABLED = true
 # If so, a port must be specified
-PORT = 80
+PORT = 8075
 
 [ channels ]
 # ID and design of the channel where the current number of servers is displayed (the already existing variable in {} is automatically replaced)
@@ -67,15 +67,13 @@ VOTE_COUNT_NAME = "🤍 ➜ {count} votes"
 VOTE_ANNOUNCEMENT_ID = ""
 
 [ apikeys ]
-# All of the following APIs offer a free API key and no paid subscription is required
-# discordbotlist.com
+# Most of the following APIs offer a free API key and no paid subscription is required, but some, such as openai.com, require a paid subscription.
+# top.gg
 TOP_GG = ""
 TOP_GG_AUTH = ""
-# Amari bot
-AMARI_BOT = ""
 # openweathermap.org/api
 WEATHER = ""
-# purgpt.xyz
+# platform.openai.com
 OPENAI = ""
 # perspectiveapi.com
 GOOGLE = ""
@@ -100,8 +98,9 @@ ENCRYPTION_KEY = ""
 # All presences are defined here
 [[ presence ]]
 STATUS = "online" # The bot's status [online, idle, dnd, invisible]
-TYPE = "Competing" # Status type for the bot [Playing | Listening | Watching | Competing]
+TYPE = "Competing" # Status type for the bot [Playing | Listening | Watching | Competing | Streaming | Custom]
 MESSAGE = "{guilds} Servern" # The message that is displayed
+URL = "" # Only needed for streaming
 
 [[ presence]]
 STATUS = "online"
