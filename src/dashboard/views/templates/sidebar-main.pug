@@ -19,7 +19,7 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4
                         i.nav-icon.fa-solid.fa-inbox
                         p
                             | Übersicht
-                li.nav-item
+                li.nav-item(class=(module.startsWith('further_') ? 'menu-open' : ''))
                     a.nav-link(href='#')
                         i.nav-icon.fa-solid.fa-bars-staggered
                         p
@@ -35,10 +35,10 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4
                                 i.far.fa-circle.nav-icon
                                 p Discord
                         li.nav-item
-                            a.nav-link(href='https://nevar.eu/privacy')
+                            a.nav-link(href='/privacy' class=module === "further_privacy" ? 'active' : '')
                                 i.far.fa-circle.nav-icon
                                 p Datenschutzerklärung
                         li.nav-item
-                            a.nav-link(href='https://nevar.eu/imprint')
+                            a.nav-link(href='/imprint' class=module === "further_imprint" ? 'active' : '')
                                 i.far.fa-circle.nav-icon
                                 p Impressum
