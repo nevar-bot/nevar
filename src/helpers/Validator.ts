@@ -104,6 +104,8 @@ export default class Validator {
 				["apikeys", "WEATHER"],
 				["apikeys", "OPENAI"],
 				["apikeys", "GOOGLE"],
+				["apikeys", "TWITCH_CLIENT_ID"],
+				["apikeys", "TWITCH_CLIENT_SECRET"],
 			]
 		);
 
