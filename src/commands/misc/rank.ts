@@ -23,10 +23,14 @@ export default class RankCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.showRank();
+		await this.showRank(data);
 	}
 
-	private async showRank(): Promise<void> {
+	private async showRank(data: any): Promise<void> {
+		if(!data.guild.settings.levels.enabled){
+			return this.interaction.followUp({ content: this.client.emotes.error + " Das Levelsystem ist auf diesem Server deaktiviert." });
+		}
+
 		const user: any = this.interaction.options.getUser("mitglied") || this.interaction.user;
 
 		const userData: any = {
@@ -62,7 +66,7 @@ export default class RankCommand extends BaseCommand {
 				});
 				return this.interaction.followUp({ files: [attachment] });
 			}else{
-				return this.interaction.followUp({ content: this.client.emotes.error + " Das Levelsystem ist auf diesem Server deaktiviert." });
+				return this.interaction.followUp({ content: this.client.emotes.error + " Der Nutzer hat noch keine XP gesammelt." });
 			}
 
 		});

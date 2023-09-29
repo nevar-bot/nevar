@@ -20,10 +20,14 @@ export default class LeaderboardCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.sendLeaderboard();
+		await this.sendLeaderboard(data);
 	}
 
-	private async sendLeaderboard(): Promise<any> {
+	private async sendLeaderboard(data: any): Promise<any> {
+		if(!data.guild.settings.levels.enabled){
+			return this.interaction.followUp({ content: this.client.emotes.error + " Das Levelsystem ist auf diesem Server deaktiviert." });
+		}
+
 		const leaderboardData: any[] = [
 			...(await this.client.levels.computeLeaderboard(
 				this.client,
@@ -58,6 +62,7 @@ export default class LeaderboardCommand extends BaseCommand {
 		}
 		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(beautifiedLeaderboard.join("\n\n"), null, "normal");
 		leaderboardEmbed.setThumbnail(this.interaction.guild.iconURL());
+		if(beautifiedLeaderboard.length === 0) leaderboardEmbed.setDescription(this.client.emotes.error + " Es haben noch keine Mitglieder XP gesammelt.");
 		return this.interaction.followUp({ embeds: [leaderboardEmbed] });
 	}
 }
