@@ -214,34 +214,35 @@ export default class HelpCommand extends BaseCommand {
 							})
 					  ]
 			});
-			if (canFitOnePage) return;
-
 			const paginationCollector = helpEmbedSent.createMessageComponentCollector({
 				filter: (i: any): boolean => i.user.id === this.interaction.user.id,
 				componentType: ComponentType.Button
 			});
+			if(canFitOnePage) paginationCollector.stop();
 
-			currentIndex = 0;
+			if (!canFitOnePage){
+				currentIndex = 0;
 
-			paginationCollector.on("collect", async (paginationInteraction: any): Promise<void> => {
-				if (paginationInteraction.customId === backId || paginationInteraction.customId === forwardId) {
-					paginationInteraction.customId === backId ? (currentIndex -= 5) : (currentIndex += 5);
+				paginationCollector.on("collect", async (paginationInteraction: any): Promise<void> => {
+					if (paginationInteraction.customId === backId || paginationInteraction.customId === forwardId) {
+						paginationInteraction.customId === backId ? (currentIndex -= 5) : (currentIndex += 5);
 
-					await paginationInteraction.deferUpdate().catch(() => {});
-					await helpEmbedSent.edit({
-						embeds: [await generateEmbed(currentIndex)],
-						components: [
-							new ActionRowBuilder({
-								components: [
-									...(currentIndex ? [backButton] : []),
-									...(currentIndex + 5 < formattedCommands.length ? [forwardButton] : []),
-									homeButton
-								]
-							})
-						]
-					});
-				}
-			});
+						await paginationInteraction.deferUpdate().catch(() => {});
+						await helpEmbedSent.edit({
+							embeds: [await generateEmbed(currentIndex)],
+							components: [
+								new ActionRowBuilder({
+									components: [
+										...(currentIndex ? [backButton] : []),
+										...(currentIndex + 5 < formattedCommands.length ? [forwardButton] : []),
+										homeButton
+									]
+								})
+							]
+						});
+					}
+				});
+			}
 
 			const homeCollector = helpEmbedSent.createMessageComponentCollector({
 				filter: (i: any): boolean => i.customId === this.interaction.user.id + "_home"
