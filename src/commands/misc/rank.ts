@@ -52,14 +52,19 @@ export default class RankCommand extends BaseCommand {
 			.setProgressBarTrack("#ffffff")
 
 			// XP
-			.setCurrentXP(userData.level.cleanXp)
-			.setRequiredXP(userData.level.cleanNextLevelXp);
+			.setCurrentXP(userData.level.cleanXp || 0)
+			.setRequiredXP(userData.level.cleanNextLevelXp || 0);
 
 		rank.build().then((data: any): void => {
-			const attachment: AttachmentBuilder = new AttachmentBuilder(data, {
-				name: "level-" + userData.user.id + ".png"
-			});
-			return this.interaction.followUp({ files: [attachment] });
+			if(userData.level){
+				const attachment: AttachmentBuilder = new AttachmentBuilder(data, {
+					name: "level-" + userData.user.id + ".png"
+				});
+				return this.interaction.followUp({ files: [attachment] });
+			}else{
+				return this.interaction.followUp({ content: this.client.emotes.error + " Das Levelsystem ist auf diesem Server deaktiviert." });
+			}
+
 		});
 	}
 }
