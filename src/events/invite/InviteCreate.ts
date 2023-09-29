@@ -22,6 +22,7 @@ export default class {
 
 		/* Add invite to user */
 		const memberData: any = await this.client.findOrCreateMember(inviter.id, guild.id);
+		if(!memberData) return;
 		if (!memberData.invites) memberData.invites = [];
 		memberData.invites.push({
 			code: invite.code,

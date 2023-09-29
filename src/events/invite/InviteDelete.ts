@@ -17,6 +17,7 @@ export default class {
 
 		/* Remove invite from user */
 		const memberData: any = await this.client.findOrCreateMember(invite.inviterId, guild.id);
+		if(!memberData) return;
 		if (!memberData.invites) memberData.invites = [];
 		memberData.invites = memberData.invites.filter((i: any): boolean => i.code !== invite.code);
 		memberData.markModified("invites");
