@@ -5,6 +5,7 @@ const ms: any = ems("de");
 // @ts-ignore - Could not find a declaration file for module 'perspective-api-client'
 import Perspective from "perspective-api-client";
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import OpenAI from "openai";
 
 export default class {
 	private client: BaseClient;
@@ -260,36 +261,26 @@ export default class {
 			});
 
 			/* send request */
-			const headers: any = {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + this.client.config.apikeys["OPENAI"]
-			};
-
-			const body: any = {
-				model: "gpt-3.5-turbo",
-				messages: this.client.aiChat.get(message.guild.id)
-			};
-
-			const AxiosInstance: AxiosInstance = axios.create({
-				timeout: 15 * 1000
+			const openai: OpenAI = new OpenAI({
+				apiKey: this.client.config.apikeys["OPENAI"]
 			});
 
-			const response: AxiosResponse | void = await AxiosInstance.post("https://api.openai.com/v1/chat/completions", body, {
-				headers,
-				validateStatus: (): boolean => true
-			}).catch((): void => {});
+			const response: any = await openai.chat.completions.create({
+				model: "gpt-3.5-turbo",
+				messages: this.client.aiChat.get(message.guild.id)
+			});
 
-			if (response?.data?.choices?.[0]) {
+			const responseMessage: string|undefined = response?.choices[0]?.message.content;
+
+			if(responseMessage){
 				this.client.aiChat.get(message.guild.id)!.push({
 					role: "assistant",
-					content: response.data.choices[0].message.content
+					content: responseMessage
 				});
+				message.reply({ content: responseMessage });
+			}else{
 				message.reply({
-					content: response.data.choices[0].message.content
-				});
-			} else {
-				message.reply({
-					content: this.client.emotes.error + " Das hat leider nicht geklappt :(\n" + this.client.emotes.arrow + " Bitte versuche es später erneut."
+					content: this.client.emotes.error + " Das hat leider nicht funktioniert. Bitte versuche es später erneut."
 				});
 			}
 		}
