@@ -70,7 +70,28 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                 p
                                     | Hierzu sowie zu weiteren Fragen zum Thema Datenschutz k&ouml;nnen Sie sich jederzeit an uns
                                     | wenden.
-                                h2 2. Hosting
+                                h2 2. Speicherung von Discord Access Tokens
+                                p Wir verwenden Discord Access Tokens, um die reibungslose Funktionalität dieses Dashboards sicherzustellen.
+                                p Jedes Mal, wenn du dich hier mit deinem Discord-Account anmeldest, generiert Discord einen Access-Token und übermittelt ihn an uns.
+                                p Diese Token haben eine Gültigkeitsdauer von sieben Tagen und ermöglichen es uns, bestimmte Funktionen der Discord API in deinem Namen auszuführen.
+                                p Wir erhalten dabei folgende OAuth2-Berechtigungen
+                                ul
+                                    li "identify" ermöglicht uns den Zugriff auf deine Nutzerdaten. Deine E-Mail-Adresse ist dabei nicht einsehbar.
+                                    | Wir erhalten dabei das&nbsp;
+                                    a(href="https://discord.com/developers/docs/resources/user#user-object" target='_blank' rel='noopener') User Objekt&nbsp;
+                                    | von Discord.
+                                    li "guilds" gestattet uns den Zugriff auf die Liste der Server, wo du Mitglied bist.
+                                    li "guilds.join" ermöglicht es, neue Server für dich zu betreten. Wir verwenden diese Berechtigung ausschließlich für unseren Support-Server.
+                                p Es ist wichtig zu wissen, dass wir keinerlei dieser Daten auf unserem Server speichern. Sie werden lediglich zur Anzeige im Dashboard verwendet.
+                                p Damit du dich nicht jedes Mal neu anmelden musst wenn du das Dashboard besuchst, speichern wir deinen Access-Token.
+                                p Folgende Vorgehensweise wenden wir dabei an:
+                                ul
+                                    li Dein Access-Token wird niemals auf unserem Server gespeichert. Er bleibt ausschließlich in deinem Browser gespeichert.
+                                    li Vor der Speicherung verschlüsseln wir den Token sicher, damit Dritte die möglicherweise auf den Token zugreifen könnten, ihn nicht verwenden können.
+                                p Wenn du der Verwendung von Cookies zugestimmt hast, wird der verschlüsselte Token in einem Cookie gespeichert. Nach Ablauf der sieben Tage musst du dich erneut anmelden.
+                                p Wenn du der Verwendung von Cookies widersprochen hast, speichern wir den verschlüsselten Token in der Browser-Session. Ein erneutes Anmelden ist erforderlich nach jedem Neustarten des Browsers.
+                                p Wenn du dich abmeldest, senden wir eine entsprechende Anfrage an Discord, um den Token zu widerrufen. Dadurch wird dieser ungültig und kann nicht mehr verwendet werden.
+                                h2 3. Hosting
                                 p Wir hosten die Inhalte unserer Website bei folgendem Anbieter:
                                 h3 Externes Hosting
                                 |
@@ -97,7 +118,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                 |
                                 p Wir setzen folgende(n) Hoster ein:
                                 p Prohosting24
-                                h2 3. Allgemeine Hinweise und Pflicht&shy;informationen
+                                h2 4. Allgemeine Hinweise und Pflicht&shy;informationen
                                 h3 Datenschutz
                                 |
                                 p
@@ -296,7 +317,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                     | und Informationsmaterialien wird hiermit widersprochen. Die Betreiber der Seiten behalten sich ausdr&uuml;cklich
                                     | rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-E-Mails,
                                     | vor.
-                                h2 4. Datenerfassung auf dieser Website
+                                h2 5. Datenerfassung auf dieser Website
                                 h3 Cookies
                                 |
                                 p
@@ -362,7 +383,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                     | Erfassung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein
                                     | berechtigtes Interesse an der technisch fehlerfreien Darstellung und der Optimierung seiner Website &ndash;
                                     | hierzu m&uuml;ssen die Server-Log-Files erfasst werden.
-                                h2 5. Analyse-Tools und Werbung
+                                h2 6. Analyse-Tools und Werbung
                                 h3 Matomo
                                 |
                                 p Diese Website benutzt den Open Source Webanalysedienst Matomo.
@@ -400,7 +421,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                     | Analysedaten bei uns verbleiben und nicht weitergegeben werden.
                                 #matomo-opt-out
                                 script(src='https://mtm.nevar.eu/index.php?module=CoreAdminHome&action=optOutJS&divId=matomo-opt-out&language=auto&backgroundColor=000000&fontColor=ffffff&fontSize=12px&fontFamily=Arial&showIntro=1')
-                                h2 6. Plugins und Tools
+                                h2 7. Plugins und Tools
                                 h3 Font Awesome (lokales Hosting)
                                 |
                                 p
