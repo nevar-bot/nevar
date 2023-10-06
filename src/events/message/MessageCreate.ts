@@ -4,7 +4,6 @@ import ems from "enhanced-ms";
 const ms: any = ems("de");
 // @ts-ignore - Could not find a declaration file for module 'perspective-api-client'
 import Perspective from "perspective-api-client";
-import axios, { AxiosInstance, AxiosResponse } from "axios";
 import OpenAI from "openai";
 
 export default class {
@@ -265,12 +264,13 @@ export default class {
 				apiKey: this.client.config.apikeys["OPENAI"]
 			});
 
-			const response: any = await openai.chat.completions.create({
+			const messages: any = this.client.aiChat.get(message.guild.id)
+			const response: OpenAI.Chat.Completions.ChatCompletion = await openai.chat.completions.create({
 				model: "gpt-3.5-turbo",
-				messages: this.client.aiChat.get(message.guild.id)
+				messages: messages
 			});
 
-			const responseMessage: string|undefined = response?.choices[0]?.message.content;
+			const responseMessage: string|null = response?.choices[0]?.message.content;
 
 			if(responseMessage){
 				this.client.aiChat.get(message.guild.id)!.push({
