@@ -1,5 +1,6 @@
 include ./templates/head
 body.login-page.dark-mode
+    include ./templates/cookieBanner
     .login-box
         .card.card-outline.card-primary
             .card-header.text-center
@@ -17,3 +18,45 @@ body.login-page.dark-mode
 script(src='/js/jquery.min.js')
 script(src='/js/bootstrap.min.js')
 script(src='/js/adminlte.min.js')
+
+script.
+    $(function () {
+        if (getCookie("cookieConsent") === null) {
+            $('.toast').toast('show')
+        }
+
+        $("#cookie-accept").click(function () {
+            $('.toast').toast("hide");
+            setCookie("cookieConsent", "true", 365);
+        });
+
+        $("#cookie-deny").click(function () {
+            $('.toast').toast("hide");
+            setCookie("cookieConsent", "false", 365);
+        });
+    });
+
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const cookies = document.cookie.split(";");
+        for (const element of cookies) {
+            let cookie = element;
+            while (cookie.charAt(0) === " ") {
+                cookie = cookie.substring(1, cookie.length);
+            }
+            if (cookie.indexOf(nameEQ) === 0) {
+                return cookie.substring(nameEQ.length, cookie.length);
+            }
+        }
+        return null;
+    }

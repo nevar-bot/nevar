@@ -109,14 +109,20 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4
                             a.nav-link(href=`/dashboard/${guild.id}/levelsystem/exclude` class=module === "levelsystem_exclude" ? 'active' : '')
                                 i.far.fa-circle.nav-icon
                                 p Exkludieren
+                li.nav-header Soziale Medien
+                    li.nav-item
+                        a.nav-link(href=`/dashboard/${guild.id}/youtubenotifier` class=module === "youtubenotifier" ? 'active' : '')
+                            i.nav-icon.fa-brands.fa-youtube
+                            p
+                                | Youtube-Notifier
+                    li.nav-item
+                        a.nav-link(href=`/dashboard/${guild.id}/twitchnotifier` class=module === "twitchnotifier" ? 'active' : '')
+                            i.nav-icon.fa-brands.fa-twitch
+                            p
+                                | Twitch-Notifier
                 li.nav-header Sonstiges
                 li.nav-item
                     a.nav-link(href=`/dashboard/${guild.id}/join2create` class=module === "join2create" ? 'active' : '')
                         i.nav-icon.fa-solid.fa-microphone
                         p
                             | Join2Create
-                li.nav-item
-                    a.nav-link(href=`/dashboard/${guild.id}/youtubenotifier` class=module === "youtubenotifier" ? 'active' : '')
-                        i.nav-icon.fa-brands.fa-youtube
-                        p
-                            | Youtube-Notifier

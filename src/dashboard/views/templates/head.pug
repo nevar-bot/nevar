@@ -12,3 +12,36 @@ html(lang='de')
         link(rel='stylesheet' href='/css/fontawesome/css/all.min.css')
         link(rel='stylesheet' href='/css/bootstrap-touchspin.min.css')
         link(rel='stylesheet' href='/css/bootstrap-select.min.css')
+
+        script.
+            if(getCookie("cookieConsent") === "true"){
+                var _paq = window._paq = window._paq || [];
+                _paq.push(['disableCookies']);
+                _paq.push(['trackPageView']);
+                _paq.push(['enableLinkTracking']);
+                (function () {
+                    var u = "//mtm.nevar.eu/";
+                    _paq.push(['setTrackerUrl', u + 'matomo.php']);
+                    _paq.push(['setSiteId', '2']);
+                    var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+                    g.async = true;
+                    g.src = u + 'matomo.js';
+                    s.parentNode.insertBefore(g, s);
+                })();
+            }
+
+            function getCookie(name) {
+                const nameEQ = name + "=";
+                const cookies = document.cookie.split(";");
+                for (const element of cookies) {
+                    let cookie = element;
+                    while (cookie.charAt(0) === " ") {
+                        cookie = cookie.substring(1, cookie.length);
+                    }
+                    if (cookie.indexOf(nameEQ) === 0) {
+                        return cookie.substring(nameEQ.length, cookie.length);
+                    }
+                }
+                return null;
+            }
+

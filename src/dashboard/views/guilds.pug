@@ -8,6 +8,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                     .row.mb-2.col-sm-6
                         h1.m-0 Willkommen, #{user.global_name}!
             section.content.container-fluid
+                include ./templates/cookieBanner
                 .row
                     each guild in guilds
                         .col-12.col-sm-6.col-md-3
