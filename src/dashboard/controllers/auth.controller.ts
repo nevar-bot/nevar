@@ -201,8 +201,17 @@ export default {
 
 	async logout(req: Request, res: Response): Promise<boolean | void> {
 		/* get encrypted access token */
-		const encrypted_access_token = req.cookies?.["access_token"];
-		if (!encrypted_access_token) return false;
+		let encrypted_access_token: string;
+		if(req.cookies?.["cookieConsent"] === "true"){
+			encrypted_access_token = req.cookies?.["access_token"];
+			if(!encrypted_access_token) return false;
+		}else{
+			// cookies not accepted, access token saved in session
+			const session: any = req.session;
+			encrypted_access_token = session?.access_token;
+			if(!encrypted_access_token) return false;
+		}
+		if(!encrypted_access_token) return false;
 
 		/* decrypt access token */
 		const access_token: string|null = decryptAccessToken(encrypted_access_token);
@@ -218,7 +227,12 @@ export default {
 		);
 
 		/* clear cookie */
-		res.clearCookie("access_token");
+		if(req.cookies?.["cookieConsent"] === "true"){
+			res.clearCookie("access_token");
+		}else{
+			const session: any = req.session;
+			delete session.access_token;
+		}
 		return res.status(301).redirect("/");
 	}
 };
