@@ -1,0 +1,11 @@
+.fixed-bottom.p-4(style='z-index: 9999;')
+    .toast.bg-dark.text-white.w-100.mw-100(role='alert', data-autohide='false')
+        .toast-body.p-4.d-flex.flex-column
+            h4 Wir respektieren Ihre Privatsphäre
+            p
+                | Wir verwenden Cookies, um Ihr Nutzungserlebnis zu verbessern und Ihnen personalisierte Inhalte anbieten zu können. Durch Klicken auf 'Akzeptieren' stimmen Sie der Verwendung von Cookies gemäß unserer Datenschutzerklärung zu.
+            .ml-auto
+                button#cookie-deny.btn.btn-outline-light.mr-3(type='button')
+                    | Ablehnen
+                button#cookie-accept.btn.btn-light(type='button')
+                    | Akzeptieren

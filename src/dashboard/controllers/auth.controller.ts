@@ -58,13 +58,25 @@ function decryptAccessToken(encrypted_access_token: string): string|null {
 export default {
 	getAccessToken(req: Request): string | null {
 		/* get encrypted access_token */
-		const encrypted_access_token = req.cookies?.["access_token"];
-		if (!encrypted_access_token) return null;
+		if(req.cookies?.["cookieConsent"] === "true"){
+			const encrypted_access_token = req.cookies?.["access_token"];
+			if (!encrypted_access_token) return null;
 
-		/* decrypt access token */
-		const access_token: string|null = decryptAccessToken(encrypted_access_token);
+			/* decrypt access token */
+			const access_token: string|null = decryptAccessToken(encrypted_access_token);
 
-		return access_token;
+			return access_token;
+		}else{
+			// cookies not accepted, access token saved in session
+			const session: any = req.session;
+			const encrypted_access_token = session?.access_token;
+			if (!encrypted_access_token) return null;
+
+			const access_token: string|null = decryptAccessToken(encrypted_access_token);
+
+			return access_token;
+		}
+
 	},
 
 	async login(req: Request, res: Response): Promise<void> {
@@ -84,8 +96,16 @@ export default {
 
 	async isLoggedIn(req: Request): Promise<boolean> {
 		/* get encrypted access token */
-		const encrypted_access_token = req.cookies?.["access_token"];
-		if (!encrypted_access_token) return false;
+		let encrypted_access_token: string;
+		if(req.cookies?.["cookieConsent"] === "true"){
+			encrypted_access_token = req.cookies?.["access_token"];
+			if(!encrypted_access_token) return false;
+		}else{
+			// cookies not accepted, access token saved in session
+			const session: any = req.session;
+			encrypted_access_token = session?.access_token;
+			if(!encrypted_access_token) return false;
+		}
 
 		/* decrypt access token */
 		const access_token: string|null = decryptAccessToken(encrypted_access_token);
@@ -167,8 +187,15 @@ export default {
 				logChannel.send({ embeds: [embed] })
 			}
 		}
-		/* set access token cookie */
-		res.cookie("access_token", encrypted_access_token, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
+		/* check if cookie consent is given */
+		if(req.cookies?.["cookieConsent"] === "true"){
+			/* set access token cookie */
+			res.cookie("access_token", encrypted_access_token, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
+		}else{
+			// cookies not accepted, save access token in session
+			const session: any = req.session;
+			session.access_token = encrypted_access_token;
+		}
 		res.status(301).redirect("/dashboard");
 	},
 
