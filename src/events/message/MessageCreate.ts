@@ -266,9 +266,36 @@ export default class {
 
 			const messages: any = this.client.aiChat.get(message.guild.id)
 			const response: OpenAI.Chat.Completions.ChatCompletion = await openai.chat.completions.create({
-				model: "gpt-3.5-turbo",
+				model: "gpt-3.5-turbo-16k",
 				messages: messages
 			});
+
+			if((response as any)?.status > 400 && (response as any)?.status < 500){
+				message.reply({
+					content: this.client.emotes.error + " Error " + (response as any)?.status + ": " + (response as any)?.error.message
+				});
+
+				/* check if context is too long */
+				if((response as any).status === 400 && (response as any).error.code === "context_length_exceeded"){
+					/* remove old messages */
+					let messagesArray: any = this.client.aiChat.get(message.guild.id);
+					function removeOldestItems(arr: any, numItems: number): void {
+						let index: number = 0;
+						while (index < arr.length && numItems > 0) {
+							if (arr[index].role !== "system") {
+								arr.splice(index, 1);
+								numItems--;
+							} else {
+								index++;
+							}
+						}
+					}
+
+					removeOldestItems(messagesArray, 20);
+
+					this.client.aiChat.set(message.guild.id, messagesArray);
+				}
+			}
 
 			const responseMessage: string|null = response?.choices[0]?.message.content;
 
