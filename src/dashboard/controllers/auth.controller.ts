@@ -8,7 +8,8 @@ import {EmbedBuilder} from "discord.js";
 
 const BASE_API_URL: string = "https://discord.com/api";
 
-function encryptAccessToken(access_token: string): string {
+
+function encryptString(access_token: string): string {
 	/* generate iv */
 	const iv: Buffer = crypto.randomBytes(16);
 
@@ -27,7 +28,7 @@ function encryptAccessToken(access_token: string): string {
 	return `${iv.toString("hex")}:${authTag.toString('hex')}:${encrypted}`;
 }
 
-function decryptAccessToken(encrypted_access_token: string): string|null {
+function decryptString(encrypted_access_token: string): string|null {
 	/* split encrypted access token */
 	const parts: string[] = encrypted_access_token.split(":");
 
@@ -63,7 +64,7 @@ export default {
 			if (!encrypted_access_token) return null;
 
 			/* decrypt access token */
-			const access_token: string|null = decryptAccessToken(encrypted_access_token);
+			const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
 
 			return access_token;
 		}else{
@@ -72,7 +73,7 @@ export default {
 			const encrypted_access_token = session?.access_token;
 			if (!encrypted_access_token) return null;
 
-			const access_token: string|null = decryptAccessToken(encrypted_access_token);
+			const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
 
 			return access_token;
 		}
@@ -94,31 +95,86 @@ export default {
 		res.status(301).redirect(redirect_url);
 	},
 
-	async isLoggedIn(req: Request): Promise<boolean> {
-		/* get encrypted access token */
+	async isLoggedIn(req: Request, res: Response): Promise<boolean | string> {
+		let refreshed_token: boolean = false;
 		let encrypted_access_token: string;
-		if(req.cookies?.["cookieConsent"] === "true"){
+		// check if cookies are accepted
+		if (req.cookies?.["cookieConsent"] === "true") {
 			encrypted_access_token = req.cookies?.["access_token"];
-			if(!encrypted_access_token) return false;
-		}else{
+
+			if (!encrypted_access_token) return false;
+
+			// calculate expiry date
+			const oneDayInMs: number = 24 * 60 * 60 * 1000;
+			const { value, expiry } = JSON.parse(encrypted_access_token);
+
+			if (expiry - Date.now() < oneDayInMs) {
+				// access token expires in less than one day, refresh
+				const access_token: string | null = decryptString(value);
+				const refresh_token: string | null = decryptString(JSON.parse(req.cookies?.["refresh_token"]).value);
+
+				if (access_token && refresh_token) {
+					const { CLIENT_SECRET } = client.config.dashboard;
+
+					const refreshResponse: AxiosResponse = await axios.post(
+						BASE_API_URL + "/oauth2/token",
+						new URLSearchParams({
+							client_id: client.user!.id,
+							client_secret: CLIENT_SECRET,
+							grant_type: "refresh_token",
+							refresh_token: refresh_token,
+						}),
+						{ headers: { "Content-Type": "application/x-www-form-urlencoded" }
+						});
+
+						/* encrypt acccess and refresh token */
+						const new_access_token: string = encryptString(refreshResponse.data.access_token);
+						const new_refresh_token: string = encryptString(refreshResponse.data.refresh_token);
+
+						/* set access and refresh cookie */
+						const access_token_cookie: string = JSON.stringify({
+							value: new_access_token,
+							expiry: Date.now() + 604800000
+						});
+
+						const refresh_token_cookie: string = JSON.stringify({
+							value: new_refresh_token,
+							expiry: null
+						});
+
+						res.cookie("access_token", access_token_cookie, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
+						res.cookie("refresh_token", refresh_token_cookie, { secure: false, httpOnly: true });
+
+						refreshed_token = true;
+				}
+			}
+		} else {
 			// cookies not accepted, access token saved in session
 			const session: any = req.session;
 			encrypted_access_token = session?.access_token;
-			if(!encrypted_access_token) return false;
+
+			if (!encrypted_access_token) return false;
 		}
 
-		/* decrypt access token */
-		const access_token: string|null = decryptAccessToken(encrypted_access_token);
-		if(!access_token) return false;
+		if (!refreshed_token) {
+			/* Entschlüssele das Zugriffstoken */
+			const { value } = JSON.parse(encrypted_access_token);
+			const access_token: string | null = decryptString(value);
 
-		/* check if access token is valid */
-		const userData: AxiosResponse = await axios.get("https://discord.com/api/users/@me", {
-			headers: { authorization: `Bearer ${access_token}` },
-			validateStatus: (status: number): boolean => true
-		});
+			if (!access_token) return false;
 
-		return Boolean(userData.data?.id && access_token);
+			// check if access token is valid
+			const userData: AxiosResponse = await axios.get("https://discord.com/api/users/@me", {
+				headers: { authorization: `Bearer ${access_token}` },
+				validateStatus: (status: number): boolean => true
+			});
+
+			return Boolean(userData.data?.id && access_token);
+		} else {
+			return "refreshed_token";
+		}
 	},
+
 
 	renderLogin(res: Response): void {
 		/* render login page */
@@ -160,7 +216,7 @@ export default {
 			{ headers: { ["Content-Type"]: "application/x-www-form-urlencoded" }, validateStatus: (status: number): boolean => true }
 		);
 
-		const { access_token } = authResponse.data;
+		const { access_token, refresh_token } = authResponse.data;
 
 		/* get user info */
 		const user: any = await UserController.getUser(access_token);
@@ -174,8 +230,9 @@ export default {
 			}
 		);
 
-		/* encrypt access token */
-		const encrypted_access_token: string = encryptAccessToken(access_token);
+		/* encrypt access and refresh token */
+		const encrypted_access_token: string = encryptString(access_token);
+		const encrypted_refresh_token: string = encryptString(refresh_token);
 
 		/* send log to support server */
 		const supportGuild: any = client.guilds.cache.get(client.config.support["ID"]);
@@ -189,12 +246,26 @@ export default {
 		}
 		/* check if cookie consent is given */
 		if(req.cookies?.["cookieConsent"] === "true"){
-			/* set access token cookie */
-			res.cookie("access_token", encrypted_access_token, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
+			/* set access and refresh token cookie */
+			const access_token_cookie: string = JSON.stringify({
+				value: encrypted_access_token,
+				expiry: Date.now() + 604800000
+			});
+			const refresh_token_cookie: string = JSON.stringify({
+				value: encrypted_refresh_token,
+				expiry: null
+			});
+
+			res.cookie("access_token", access_token_cookie, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
+			res.cookie("refresh_token", refresh_token_cookie, { secure: false, httpOnly: true });
 		}else{
 			// cookies not accepted, save access token in session
 			const session: any = req.session;
-			session.access_token = encrypted_access_token;
+			const sessionObject: string = JSON.stringify({
+				value: encrypted_access_token,
+				expiry: Date.now() + 604800000
+			})
+			session.access_token = sessionObject;
 		}
 		res.status(301).redirect("/dashboard");
 	},
@@ -202,19 +273,19 @@ export default {
 	async logout(req: Request, res: Response): Promise<boolean | void> {
 		/* get encrypted access token */
 		let encrypted_access_token: string;
+		let encrypted_refresh_token: string|undefined;
 		if(req.cookies?.["cookieConsent"] === "true"){
 			encrypted_access_token = req.cookies?.["access_token"];
-			if(!encrypted_access_token) return false;
+			encrypted_refresh_token = req.cookies?.["refresh_token"];
 		}else{
 			// cookies not accepted, access token saved in session
 			const session: any = req.session;
 			encrypted_access_token = session?.access_token;
-			if(!encrypted_access_token) return false;
 		}
 		if(!encrypted_access_token) return false;
 
 		/* decrypt access token */
-		const access_token: string|null = decryptAccessToken(encrypted_access_token);
+		const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
 		if(!access_token) return false;
 
 		const { CLIENT_SECRET } = client.config.dashboard;
@@ -222,13 +293,24 @@ export default {
 		/* revoke access token */
 		await axios.post(
 			BASE_API_URL + "/oauth2/token/revoke",
-			new URLSearchParams({ client_id: client.user!.id, client_secret: CLIENT_SECRET, token: access_token }),
+			new URLSearchParams({ client_id: client.user!.id, client_secret: CLIENT_SECRET, token: access_token, token_type_hint: "access_token" }),
 			{ headers: { ["Content-Type"]: "application/x-www-form-urlencoded" }, validateStatus: (status: number): boolean => true }
 		);
+
+		/* revoke refresh token */
+		if(encrypted_refresh_token){
+			const refresh_token: string|null = decryptString(JSON.parse(encrypted_refresh_token).value);
+			await axios.post(
+				BASE_API_URL + "/oauth2/token/revoke",
+				new URLSearchParams({ client_id: client.user!.id, client_secret: CLIENT_SECRET, token: (refresh_token as string), token_type_hint: "refresh_token" }),
+				{ headers: { ["Content-Type"]: "application/x-www-form-urlencoded" }, validateStatus: (status: number): boolean => true }
+			);
+		}
 
 		/* clear cookie */
 		if(req.cookies?.["cookieConsent"] === "true"){
 			res.clearCookie("access_token");
+			res.clearCookie("refresh_token");
 		}else{
 			const session: any = req.session;
 			delete session.access_token;

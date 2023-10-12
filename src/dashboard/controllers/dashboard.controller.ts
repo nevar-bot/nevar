@@ -6,12 +6,15 @@ import UserController from "@dashboard/controllers/user.controller";
 
 export default {
 	async get(req: Request, res: Response): Promise<void> {
+		const isLoggedIn: boolean|string = await AuthController.isLoggedIn(req, res);
+		if (!isLoggedIn) {
+			return AuthController.renderLogin(res);
+		}else if(isLoggedIn === "refreshed_token"){
+			return res.redirect("back");
+		}
+
 		/* get access token */
 		const access_token: string | null = AuthController.getAccessToken(req);
-
-		if (!(await AuthController.isLoggedIn(req))) {
-			return AuthController.renderLogin(res);
-		}
 
 		/* get user and user guilds */
 		const [user, userGuilds] = await Promise.all([UserController.getUser(access_token), UserController.getGuilds(access_token)]);

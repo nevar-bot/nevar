@@ -13,7 +13,7 @@ export default {
         const guildId: string = req.params.guildId;
 
         /* check if user is logged in */
-        if (!(await AuthController.isLoggedIn(req))) {
+        if (!(await AuthController.isLoggedIn(req, res))) {
             return AuthController.renderLogin(res);
         }
 
@@ -58,7 +58,7 @@ export default {
         const guildId: string = req.params.guildId;
 
         /* check if user is logged in */
-        if (!(await AuthController.isLoggedIn(req))) {
+        if (!(await AuthController.isLoggedIn(req, res))) {
             return AuthController.renderLogin(res);
         }
 

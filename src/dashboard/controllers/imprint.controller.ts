@@ -9,8 +9,11 @@ export default {
         const access_token: string | null = AuthController.getAccessToken(req);
 
         /* if user is not logged in, redirect to website imprint */
-        if (!(await AuthController.isLoggedIn(req))) {
-            return res.status(302).redirect("https://nevar.eu/imprint");
+        const isLoggedIn: boolean|string = await AuthController.isLoggedIn(req, res);
+        if (!isLoggedIn) {
+            return AuthController.renderLogin(res);
+        }else if(isLoggedIn === "refreshed_token"){
+            return res.redirect("back");
         }
 
         /* get user info */

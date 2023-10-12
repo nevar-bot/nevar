@@ -70,10 +70,11 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                 p
                                     | Hierzu sowie zu weiteren Fragen zum Thema Datenschutz k&ouml;nnen Sie sich jederzeit an uns
                                     | wenden.
-                                h2 2. Speicherung von Discord Access Tokens
-                                p Wir verwenden Discord Access Tokens, um die reibungslose Funktionalität dieses Dashboards sicherzustellen.
-                                p Jedes Mal, wenn du dich hier mit deinem Discord-Account anmeldest, generiert Discord einen Access-Token und übermittelt ihn an uns.
-                                p Diese Token haben eine Gültigkeitsdauer von sieben Tagen und ermöglichen es uns, bestimmte Funktionen der Discord API in deinem Namen auszuführen.
+                                h2 2. Speicherung von Discord Access/Refresh Tokens
+                                p Wir verwenden Discord Access- sowie Refresh-Tokens, um die reibungslose Funktionalität dieses Dashboards sicherzustellen.
+                                p Jedes Mal, wenn du dich hier mit deinem Discord-Account anmeldest, generiert Discord diese beiden Tokens und übermittelt sie an uns.
+                                p Der Access-Token hat eine Gültigkeitsdauer von sieben Tagen und ermöglicht es uns, bestimmte Funktionen der Discord API in deinem Namen auszuführen.
+                                p Der Refresh-Token dient dazu, den Access-Token kurz vor dessen Ablauf zu erneuern.
                                 p Wir erhalten dabei folgende OAuth2-Berechtigungen
                                 ul
                                     li "identify" ermöglicht uns den Zugriff auf deine Nutzerdaten. Deine E-Mail-Adresse ist dabei nicht einsehbar.
@@ -82,15 +83,14 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                     | von Discord.
                                     li "guilds" gestattet uns den Zugriff auf die Liste der Server, wo du Mitglied bist.
                                     li "guilds.join" ermöglicht es, neue Server für dich zu betreten. Wir verwenden diese Berechtigung ausschließlich für unseren Support-Server.
-                                p Es ist wichtig zu wissen, dass wir keinerlei dieser Daten auf unserem Server speichern. Sie werden lediglich zur Anzeige im Dashboard verwendet.
-                                p Damit du dich nicht jedes Mal neu anmelden musst wenn du das Dashboard besuchst, speichern wir deinen Access-Token.
+                                p Damit du dich nicht jedes Mal neu anmelden musst wenn du das Dashboard besuchst, speichern wir deinen Access- sowie Refresh-Token.
                                 p Folgende Vorgehensweise wenden wir dabei an:
                                 ul
-                                    li Dein Access-Token wird niemals auf unserem Server gespeichert. Er bleibt ausschließlich in deinem Browser gespeichert.
-                                    li Vor der Speicherung verschlüsseln wir den Token sicher, damit Dritte die möglicherweise auf den Token zugreifen könnten, ihn nicht verwenden können.
-                                p Wenn du der Verwendung von Cookies zugestimmt hast, wird der verschlüsselte Token in einem Cookie gespeichert. Nach Ablauf der sieben Tage musst du dich erneut anmelden.
-                                p Wenn du der Verwendung von Cookies widersprochen hast, speichern wir den verschlüsselten Token in der Browser-Session. Ein erneutes Anmelden ist erforderlich nach jedem Neustarten des Browsers.
-                                p Wenn du dich abmeldest, senden wir eine entsprechende Anfrage an Discord, um den Token zu widerrufen. Dadurch wird dieser ungültig und kann nicht mehr verwendet werden.
+                                    li Dein Access- sowie Refresh-Token werden niemals auf unserem Server gespeichert. Sie bleiben ausschließlich in deinem Browser.
+                                    li Vor der Speicherung verschlüsseln wir die Tokens sicher, damit Dritte die möglicherweise auf die Tokens zugreifen könnten, sie nicht verwenden können.
+                                p Wenn du der Verwendung von Cookies zugestimmt hast, werden die verschlüsselten Tokens in einem Cookie gespeichert. Nach Ablauf der Gültigkeitsdauer des Access-Tokens (meist 7 Tage) versuchen wir, diesen mithilfe des Refresh-Tokens zu erneuern. Klappt das nicht, musst du dich erneut anmelden.
+                                p Wenn du der Verwendung von Cookies widersprochen hast, speichern wir ausschließlich den verschlüsselten Access-Token in der Browser-Session, der Refresh-Token kommt hierbei nicht zum Einsatz. Ein erneutes Anmelden ist nach jedem Neustarten des Browsers erforderlich.
+                                p Wenn du dich abmeldest, senden wir eine entsprechende Anfrage an Discord, um beide Tokens zu widerrufen. Dadurch werden diese ungültig und können nicht mehr verwendet werden.
                                 h2 3. Hosting
                                 p Wir hosten die Inhalte unserer Website bei folgendem Anbieter:
                                 h3 Externes Hosting
