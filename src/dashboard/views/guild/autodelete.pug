@@ -59,6 +59,7 @@ include ../templates/footer
 script.
     $("input[name='deleteTime']").TouchSpin({
         min: 1,
+        max: 604800,
         step: 1,
         decimals: 0,
         postfix: "Sekunden"
