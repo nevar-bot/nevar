@@ -13,14 +13,53 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                         i.icon.fas.fa-check
                         | Daten übernommen
                     | Die Einstellungen wurden erfolgreich gespeichert.
+            if saveError === true
+                .alert.alert-danger.alert-dismissible
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-times
+                        | Fehler
+                    | Beim Speichern der Einstellungen ist ein Fehler aufgetreten. Möglicherweise wurden nicht alle Daten übernommen.
             .callout.callout-info
                 h5 Erklärung
                 p Der Autodelete löscht neue Nachrichten in einem Kanal nach einer festgelegten Zeit. Davon ausgenommen sind Nachrichten, welche innerhalb des Zeitraums angepinnt wurden.
-            .alert.alert-danger.alert
+
+            .alert.alert-warning.alert
                 h5
-                    i.icon.fas.fa-ban
+                    i.icon.fa-solid.fa-triangle-exclamation
                     |  Hinweis
-                | Das Ändern von Autodelete-Einstellungen im Web-Dashboard ist derzeit noch nicht möglich.
+                | Aktuell können im Web-Dashboard nur bestehende Autodelete-Objekte bearbeitet werden. Das Hinzufügen sowie Entfernen ist noch nicht möglich.
                 br
                 | Bitte nutze dafür den Discord-Bot.
+
+            form(action=`/dashboard/${guild.id}/autodelete/save` method='post')
+                each autodelete in guildData.settings.autodelete
+                    if guild.channels.cache.get(autodelete.channel)
+                        .card.card-default(id='autodelete-#{autodelete.channel}')
+                            .card-header
+                                h3.card-title #{guild.channels.cache.get(autodelete.channel).name}
+                                .card-tools
+                                    button.btn.btn-tool(type='button', data-card-widget='collapse')
+                                        i.fas.fa-minus
+                            .card-body
+                                .row
+                                    .col-md-6
+                                        .form-group
+                                            label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal der Autodelete sein soll") Kanal
+                                            select.form-control(name="channel" autocomplete='off' class="selectpicker" data-live-search="true")
+                                                each channel in [...guild.channels.cache]
+                                                    if channel[1].type === 0
+                                                        option(value=autodelete.channel + "_" + channel[1].id, selected=(channel[1].id === autodelete.channel)) #{channel[1].name}
+                                        .form-group
+                                            label(data-toggle="tooltip" data-placement="top" title="Nach wieviel Sekunden neue Nachrichten gelöscht werden sollen") Zeit
+                                            input.form-control(name='deleteTime' autocomplete='off' type='text' value=(autodelete.time / 1000))
+                button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../templates/footer
+
+script.
+    $("input[name='deleteTime']").TouchSpin({
+        min: 1,
+        step: 1,
+        decimals: 0,
+        postfix: "Sekunden"
+    });

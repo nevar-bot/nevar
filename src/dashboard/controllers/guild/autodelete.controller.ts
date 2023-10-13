@@ -36,7 +36,9 @@ export default {
 
         /* check if data was saved */
         const dataSaved: boolean = !!(req as any).session.saved;
+        const saveError: boolean = !!(req as any).session.saveError;
         delete (req as any).session.saved;
+        delete (req as any).session.saveError;
 
         /* render page */
         res.render("guild/autodelete", {
@@ -49,7 +51,8 @@ export default {
             avatarUrl: UserController.getAvatarURL(user),
 
             /* extra data */
-            saved: dataSaved
+            saved: dataSaved,
+            saveError: saveError
         });
     },
 
@@ -81,13 +84,26 @@ export default {
         const guildData: any = await client.findOrCreateGuild(guildId);
 
         /* update guild data */
-        // TODO
+        try {
+            for(const channel of req.body.channel){
+                const time = req.body.deleteTime[req.body.channel.indexOf(channel)];
+                if(!time) continue;
 
-        /* save guild data */
-        guildData.markModified("");
-        await guildData.save();
+                const oldChannel: string = channel.split("_")[0];
+                const newChannel: string = channel.split("_")[1];
 
-        (req as any).session.saved = true;
+                guildData.settings.autodelete.find((x: any): boolean => x.channel === oldChannel).time = parseInt(time) * 1000;
+                guildData.settings.autodelete.find((x: any): boolean => x.channel === oldChannel).channel = newChannel;
+            }
+
+            /* save guild data */
+            guildData.markModified("settings.autodelete");
+            await guildData.save();
+
+            (req as any).session.saved = true;
+        }catch(e){
+            (req as any).session.saveError = true;
+        }
 
         /* avoid rate limits */
         await client.wait(500);
