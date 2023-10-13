@@ -9,6 +9,14 @@ import {EmbedBuilder} from "discord.js";
 const BASE_API_URL: string = "https://discord.com/api";
 
 
+function isJsonString(str: string): boolean {
+	try {
+		JSON.parse(str);
+	}catch(e){
+		return false;
+	}
+	return true;
+}
 function encryptString(access_token: string): string {
 	/* generate iv */
 	const iv: Buffer = crypto.randomBytes(16);
@@ -62,6 +70,7 @@ export default {
 		if(req.cookies?.["cookieConsent"] === "true"){
 			const encrypted_access_token = req.cookies?.["access_token"];
 			if (!encrypted_access_token) return null;
+			if(!isJsonString(encrypted_access_token)) return null;
 
 			/* decrypt access token */
 			const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
@@ -72,6 +81,7 @@ export default {
 			const session: any = req.session;
 			const encrypted_access_token = session?.access_token;
 			if (!encrypted_access_token) return null;
+			if(!isJsonString(encrypted_access_token)) return null;
 
 			const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
 
@@ -103,6 +113,7 @@ export default {
 			encrypted_access_token = req.cookies?.["access_token"];
 
 			if (!encrypted_access_token) return false;
+			if(!isJsonString(encrypted_access_token)) return false;
 
 			// calculate expiry date
 			const oneDayInMs: number = 24 * 60 * 60 * 1000;
@@ -154,6 +165,7 @@ export default {
 			encrypted_access_token = session?.access_token;
 
 			if (!encrypted_access_token) return false;
+			if(!isJsonString(encrypted_access_token)) return false;
 		}
 
 		if (!refreshed_token) {
@@ -283,6 +295,7 @@ export default {
 			encrypted_access_token = session?.access_token;
 		}
 		if(!encrypted_access_token) return false;
+		if(!isJsonString(encrypted_access_token)) return false;
 
 		/* decrypt access token */
 		const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
