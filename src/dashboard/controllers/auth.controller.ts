@@ -92,7 +92,7 @@ export default {
 
 	async login(req: Request, res: Response): Promise<void> {
 		/* user is already logged in */
-		if (req.cookies?.["access_token"] || (req.session as any).access_token) return res.status(301).redirect("/dashboard");
+		if (req.cookies?.["access_token"] && isJsonString(req.cookies?.["access_token"])|| (req.session as any).access_token && isJsonString((req.session as any).access_token)) return res.status(301).redirect("/dashboard");
 
 		/* prepare redirect url */
 		const { CALLBACK_URI } = client.config.dashboard;
