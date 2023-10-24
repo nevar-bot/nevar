@@ -51,14 +51,14 @@ If you have any feedback, please reach out to us at [hello@nevar.eu](mailto:hell
 ## License
 Distributed under the AGPLv3 License. See `LICENSE` for more information.
 
-[contributors-shield]: https://img.shields.io/github/contributors/nevar-bot/nevar-ts.svg?style=for-the-badge
-[contributors-url]: https://github.com/nevar-bot/nevar-ts/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/nevar-bot/nevar.svg?style=for-the-badge
+[contributors-url]: https://github.com/nevar-bot/nevar/graphs/contributors
 [node-shield]:https://img.shields.io/badge/NODE-%3E%3D%2020.0.0-2?style=for-the-badge&color=c634f7
 [node-url]:https://node.js.org
-[license-shield]: https://img.shields.io/github/license/nevar-bot/nevar-ts.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/nevar-bot/nevar.svg?style=for-the-badge
 [license-url]:https://choosealicense.com/licenses/agpl-3.0/
-[stars-shield]:https://img.shields.io/github/stars/nevar-bot/nevar-ts.svg?style=for-the-badge
-[stars-url]:https://github.com/nevar-bot/nevar-ts/stargazers
+[stars-shield]:https://img.shields.io/github/stars/nevar-bot/nevar.svg?style=for-the-badge
+[stars-url]:https://github.com/nevar-bot/nevar/stargazers
 [banner-url]:https://i.imgur.com/AwsvHQ5.png
 [website-url]:https://nevar.eu
 [instagram-shield]:https://img.shields.io/badge/instagram-E1306C?style=for-the-badge&logo=instagram&logoColor=white
