@@ -82,6 +82,7 @@ const GuildSchema: Schema = new mongoose.Schema({
 				message: null,
 				profilePicture: true
 			},
+			polls: [],
 			aiModeration: {
 				enabled: false,
 				excludedChannels: [],

@@ -142,6 +142,18 @@
       "update": "<:nevar_member_update:1061720751847264277>"
     }
   },
+  "poll": {
+    "bright": {
+      "start": "<:nevar_poll_bright_start:1166809508157337681>",
+      "middle": "<:nevar_poll_bright_middle:1166809690643116032>",
+      "end": "<:nevar_poll_bright_end:1166809819341127740>"
+    },
+    "dark": {
+      "start": "<:nevar_poll_dark_start:1166809941739319390>",
+      "middle": "<:nevar_poll_dark_middle:1166810054859698246>",
+      "end": "<:nevar_poll_dark_end:1166810162657513504>"
+    }
+  },
 
   "announce": "<:nevar_announce:1061706709992734761>",
   "award": "<:nevar_award:1061706742473433158>",

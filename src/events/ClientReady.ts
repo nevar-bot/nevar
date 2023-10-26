@@ -12,6 +12,7 @@ import remindMembers from "@handlers/remindMembers";
 import youtubeNotifier from "@handlers/youtubeNotifier";
 import twitchNotifier from "@handlers/twitchNotifier";
 import endGiveaways from "@handlers/endGiveaways";
+import updatePolls from "@handlers/updatePolls";
 import dashboard from "@dashboard/app";
 import api from "@api/app";
 import BaseClient from "@structures/BaseClient";
@@ -52,6 +53,7 @@ export default class {
 		youtubeNotifier.init(client);
 		twitchNotifier.init(client);
 		endGiveaways.init(client);
+		updatePolls.init(client);
 		if (config.api["ENABLED"]) api.init(client);
 
 		/* Support server stats channels */
