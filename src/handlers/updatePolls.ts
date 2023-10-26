@@ -58,7 +58,9 @@ export default {
 
                            const pollEmbed: EmbedBuilder = client.createEmbed(pollDescription, null, "normal");
 
-                           await pollMessage.edit({ embeds: [pollEmbed] });
+                           if(pollMessage.embeds[0].description.trim() !== pollEmbed.data.description!.trim()){
+                               await pollMessage.edit({ embeds: [pollEmbed] });
+                           }
                        })
                            .catch((): void => {});
                    }
