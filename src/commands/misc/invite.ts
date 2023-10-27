@@ -6,7 +6,10 @@ export default class InviteCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "invite",
-			description: "Gibt einen Überblick über wichtige Links",
+			description: "Lists all links that might interest you",
+			localizedDescriptions: {
+				de: "Listet alle Links auf, die dich interessieren könnten"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -16,10 +19,9 @@ export default class InviteCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.sendLinks();
 	}
 
@@ -27,7 +29,7 @@ export default class InviteCommand extends BaseCommand {
 		// First row
 		const inviteButton: ButtonBuilder = this.client.createButton(
 			null,
-			"Einladen",
+			this.translate("misc/invite:invite"),
 			"Link",
 			this.client.emotes.growth_up,
 			false,
@@ -35,7 +37,7 @@ export default class InviteCommand extends BaseCommand {
 		);
 		const supportButton: ButtonBuilder = this.client.createButton(
 			null,
-			"Support",
+			this.translate("misc/invite:support"),
 			"Link",
 			this.client.emotes.discord,
 			false,
@@ -43,26 +45,26 @@ export default class InviteCommand extends BaseCommand {
 		);
 		const websiteButton: ButtonBuilder = this.client.createButton(
 			null,
-			"Website",
+			this.translate("misc/invite:web"),
 			"Link",
 			this.client.emotes.text,
 			false,
 			this.client.config.general["WEBSITE"]
 		);
-		const voteButton: ButtonBuilder = this.client.createButton(
+		const dashboardButton: ButtonBuilder = this.client.createButton(
 			null,
-			"Voten",
+			this.translate("misc/invite:dashboard"),
 			"Link",
-			this.client.emotes.topgg,
+			this.client.emotes.settings,
 			false,
-			"https://top.gg/" + this.client!.user!.id + "/vote"
+			"https://cp.nevar.eu"
 		);
-		const buttonRow: any = this.client.createMessageComponentsRow(inviteButton, supportButton, websiteButton, voteButton); // test
+		const buttonRow: any = this.client.createMessageComponentsRow(inviteButton, supportButton, websiteButton, dashboardButton); // test
 
 		// Second row
 		const xButton: ButtonBuilder = this.client.createButton(
 			null,
-			"X (Twitter)",
+			this.translate("misc/invite:x"),
 			"Link",
 			this.client.emotes.socials.x,
 			false,
@@ -70,7 +72,7 @@ export default class InviteCommand extends BaseCommand {
 		);
 		const instagramButton: ButtonBuilder = this.client.createButton(
 			null,
-			"Instagram",
+			this.translate("misc/invite:instagram"),
 			"Link",
 			this.client.emotes.socials.instagram,
 			false,
@@ -78,23 +80,24 @@ export default class InviteCommand extends BaseCommand {
 		);
 		const githubButton: ButtonBuilder = this.client.createButton(
 			null,
-			"GitHub",
+			this.translate("misc/invite:github"),
 			"Link",
 			this.client.emotes.socials.github,
 			false,
 			"https://github.com/nevar-bot"
 		);
-		const donateButton: ButtonBuilder = this.client.createButton(
+		const voteButton: ButtonBuilder = this.client.createButton(
 			null,
-			"Unterstützen",
+			this.translate("misc/invite:vote"),
 			"Link",
-			this.client.emotes.gift,
+			this.client.emotes.topgg,
 			false,
-			"https://prohosting24.de/cp/donate/nevar"
+			"https://top.gg/" + this.client.user!.id + "/vote"
 		);
-		const buttonRow2: any = this.client.createMessageComponentsRow(xButton, instagramButton, githubButton, donateButton);
 
-		const text: string = "### " + this.client.emotes.discover + " Folgende Links könnten dich interessieren:";
+		const buttonRow2: any = this.client.createMessageComponentsRow(voteButton, xButton, instagramButton, githubButton);
+
+		const text: string = "### " + this.client.emotes.discover + " " + this.translate("misc/invite:text");
 		const linksEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		linksEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
