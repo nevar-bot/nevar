@@ -6,7 +6,10 @@ export default class LeaderboardCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "leaderboard",
-			description: "Sendet das Level-Leaderboard",
+			description: "Sends the level leaderboard",
+			localizedDescriptions: {
+				de: "Sendet das Level-Leaderboard"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -16,16 +19,16 @@ export default class LeaderboardCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.sendLeaderboard(data);
 	}
 
 	private async sendLeaderboard(data: any): Promise<any> {
 		if(!data.guild.settings.levels.enabled){
-			return this.interaction.followUp({ content: this.client.emotes.error + " Das Levelsystem ist auf diesem Server deaktiviert." });
+			return this.interaction.followUp({ content: this.client.emotes.error + " " + this.translate("misc/leaderboard:errors:levelsystemIsDisabled") });
 		}
 
 		const leaderboardData: any[] = [
@@ -49,7 +52,7 @@ export default class LeaderboardCommand extends BaseCommand {
 					"*)" +
 					"\n" +
 					this.client.emotes.shine2 +
-					" Level " +
+					" " + this.translate("misc/leaderboard:level") + " " +
 					user.level +
 					"\n" +
 					this.client.emotes.shine2 +
@@ -57,12 +60,12 @@ export default class LeaderboardCommand extends BaseCommand {
 					this.client.format(user.xp) +
 					" / " +
 					this.client.format(this.client.levels.xpFor(user.level + 1)) +
-					" XP"
+					" " + this.translate("misc/leaderboard:xp")
 			);
 		}
 		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(beautifiedLeaderboard.join("\n\n"), null, "normal");
 		leaderboardEmbed.setThumbnail(this.interaction.guild.iconURL());
-		if(beautifiedLeaderboard.length === 0) leaderboardEmbed.setDescription(this.client.emotes.error + " Es haben noch keine Mitglieder XP gesammelt.");
+		if(beautifiedLeaderboard.length === 0) leaderboardEmbed.setDescription(this.client.emotes.error + " " + this.translate("misc/leaderboard:errors:noXp"));
 		return this.interaction.followUp({ embeds: [leaderboardEmbed] });
 	}
 }

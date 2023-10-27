@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "levelsystemIsDisabled": "Das Levelsystem ist auf diesem Server deaktiviert.",
+    "noXp": "Es haben noch keine Mitglieder XP gesammelt."
+  },
+  "level": "Level",
+  "xp": "XP"
+}
