@@ -6,7 +6,10 @@ export default class MyinvitesCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "myinvites",
-			description: "Zeigt Statistiken zu deinen Einladungen",
+			description: "Shows statistics about your invitations",
+			localizedDescriptions: {
+				de: "Zeigt Statistiken zu deinen Einladungen"
+			},
 			cooldown: 3 * 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -16,10 +19,9 @@ export default class MyinvitesCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.showInvites(data.member);
 	}
 
@@ -50,15 +52,15 @@ export default class MyinvitesCommand extends BaseCommand {
 					invite.code +
 					"\n" +
 					this.client.emotes.users +
-					" Verwendungen: **" +
+					" " + this.translate("misc/myinvites:usages") + ": **" +
 					invite.uses +
 					"**\n" +
 					this.client.emotes.leave +
-					" Server verlassen: **" +
+					" " + this.translate("misc/myinvites:guildLeft") + ": **" +
 					(invite.left || 0) +
 					"**\n" +
 					this.client.emotes.error +
-					" Gefälscht: **" +
+					" " + this.translate("misc/myinvites:fake") + ": **" +
 					(invite.fake || 0) +
 					"**\n"
 			);
@@ -68,8 +70,8 @@ export default class MyinvitesCommand extends BaseCommand {
 			this.interaction,
 			5,
 			invitesData,
-			"Deine Einladungen",
-			"Du hast noch keine Nutzer/-innen eingeladen",
+			this.translate("misc/myinvites:yourInvites"),
+			this.translate("misc/myinvites:noInvites"),
 			null
 		);
 	}
