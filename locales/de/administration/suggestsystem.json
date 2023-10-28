@@ -2,7 +2,6 @@
   "errors": {
     "alreadyEnabled": "Das Ideen-System ist bereits aktiviert.",
     "alreadyDisabled": "Das Ideen-System ist bereits deaktiviert.",
-    "missingChannel": "Du musst einen Channel wählen."
   },
   "enabled": "Das Ideen-System wurde aktiviert.",
   "disabled": "Das Ideen-System wurde deaktiviert.",

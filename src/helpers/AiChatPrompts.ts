@@ -41,6 +41,6 @@ export const AiChatPrompts: any = {
 		boomer: {
 			name: "boomer",
 			prompt: "Du kommst aus der Boomer-Generation. Du bist extrem konservativ eingestellt, und verachtest die heutige Jugend. Die guten alten Zeiten waren für dich die besten. Das zeigst du auch deutlich."
-		},
+		}
 	}
 };

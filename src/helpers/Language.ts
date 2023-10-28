@@ -4,16 +4,16 @@ import * as path from "path";
 import fs from "fs";
 
 async function walkDirectory(dir: any, namespaces: any[] = [], folderName = "") {
-	const files = await fs.readdirSync(dir);
+	const files: string[] = await fs.readdirSync(dir);
 
 	const languages = [];
 	for (const file of files) {
 		const stat = await fs.statSync(path.join(dir, file));
 		if (stat.isDirectory()) {
-			const isLanguage = file.includes("-");
+			const isLanguage: any = file.match(/^[a-z]{2}(-[A-Z]{2})?$/);
 			if (isLanguage) languages.push(file);
 
-			const folder = await walkDirectory(path.join(dir, file), namespaces, isLanguage ? "" : `${file}/`);
+			const folder = await walkDirectory(path.join(dir, file), namespaces, isLanguage ? "" : file + "/");
 
 			namespaces = folder.namespaces;
 		} else {
@@ -39,7 +39,7 @@ export async function languages() {
 	await i18next.init({
 		backend: options,
 		debug: false,
-		fallbackLng: "de-DE",
+		fallbackLng: "de",
 		returnObjects: true,
 		initImmediate: false,
 		interpolation: {
@@ -50,5 +50,5 @@ export async function languages() {
 		preload: languages
 	});
 
-	return new Map(languages.map((item) => [item, i18next.getFixedT(item)]));
+	return new Map(languages.map((item: string) => [item, i18next.getFixedT(item)]));
 }

@@ -120,13 +120,13 @@ export default class EmbedCommand extends BaseCommand {
 		const color: any = this.interaction.options.getString("color") || this.client.config.embeds["DEFAULT_COLOR"];
 
 		if (color && !this.client.utils.stringIsHexColor(color)) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/embed:errors:colorHasToBeHex"), "error", "error");
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:colorHasToBeHex"), "error", "error");
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
 		if (authorIcon && !authorIcon.contentType.startsWith("image/")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/embed:errors:authorIconHasToBeImage"),
+				this.translate("errors:authorIconHasToBeImage"),
 				"error",
 				"error"
 			);
@@ -135,7 +135,7 @@ export default class EmbedCommand extends BaseCommand {
 
 		if (thumbnail && !thumbnail.contentType.startsWith("image/")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/embed:errors:thumbnailHasToBeImage"),
+				this.translate("errors:thumbnailHasToBeImage"),
 				"error",
 				"error"
 			);
@@ -144,7 +144,7 @@ export default class EmbedCommand extends BaseCommand {
 
 		if (image && !image.contentType.startsWith("image/")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/embed:errors:imageHasToBeImage"),
+				this.translate("errors:imageHasToBeImage"),
 				"error",
 				"error"
 			);
@@ -153,7 +153,7 @@ export default class EmbedCommand extends BaseCommand {
 
 		if (footerIcon && !footerIcon.contentType.startsWith("image/")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/embed:errors:footerIconHasToBeImage"),
+				this.translate("errors:footerIconHasToBeImage"),
 				"error",
 				"error"
 			);
@@ -189,18 +189,18 @@ export default class EmbedCommand extends BaseCommand {
 		if (webhook) {
 			webhook.send({ embeds: [embed] }).catch(() => {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("basics:errors:unexpected", { support: this.client.support }),
+					this.translate("basics:errors:unexpected", { support: this.client.support }, true),
 					"error",
 					"error"
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			});
 			webhook.delete().catch((e: any): void => {});
-			const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/embed:sent"), "success", "success");
+			const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("sent"), "success", "success");
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:unexpected", { support: this.client.support }),
+				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
 				"error",
 				"error"
 			);

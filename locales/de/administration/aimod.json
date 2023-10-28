@@ -4,7 +4,6 @@
   },
   "exclude": {
     "errors": {
-      "missingChannelOrRole": "Du musst einen Channel oder eine Rolle angeben.",
       "isAlreadyDisabledInChannel": "In {{channel}} ist die AI-gestützte Chatmoderation bereits deaktiviert.",
       "isNotDisabledInChannel": "In {{channel}} ist die AI-gestützte Chatmoderation nicht deaktiviert.",
       "isAlreadyDisabledForRole": "Für {{role}} ist die AI-gestützte Chatmoderation bereits deaktiviert.",

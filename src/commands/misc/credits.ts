@@ -30,11 +30,18 @@ export default class CreditsCommand extends BaseCommand {
 	private async showCredits() {
 		const { dependencies } = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../../package.json"), "utf8"));
 
-		const dependenciesArray: any[] = Object.entries(dependencies).map(([name, version]) => ({ name, version: (version as string).replace("^", "") }));
+		const dependenciesArray: any[] = Object.entries(dependencies).map(([name, version]) => ({
+			name,
+			version: (version as string).replace("^", "")
+		}));
 
-		const creditsString: string = dependenciesArray
-			.map(dependency => `${this.client.emotes.arrow} [${dependency.name}](https://npmjs.com/package/${dependency.name}) - ${dependency.version}`)
-			.join("\n") + `\n${this.client.emotes.arrow} [icons](https://discord.gg/9AtkECMX2P)`;
+		const creditsString: string =
+			dependenciesArray
+				.map(
+					(dependency) =>
+						`${this.client.emotes.arrow} [${dependency.name}](https://npmjs.com/package/${dependency.name}) - ${dependency.version}`
+				)
+				.join("\n") + `\n${this.client.emotes.arrow} [icons](https://discord.gg/9AtkECMX2P)`;
 
 		const creditsEmbed: EmbedBuilder = this.client.createEmbed(creditsString, null, "normal");
 		creditsEmbed.setThumbnail(this.client.user!.displayAvatarURL());

@@ -15,10 +15,10 @@ export default {
 		const guildId: string = req.params.guildId;
 
 		/* check if user is logged in */
-		const isLoggedIn: boolean|string = await AuthController.isLoggedIn(req, res);
+		const isLoggedIn: boolean | string = await AuthController.isLoggedIn(req, res);
 		if (!isLoggedIn) {
 			return AuthController.renderLogin(res);
-		}else if(isLoggedIn === "refreshed_token"){
+		} else if (isLoggedIn === "refreshed_token") {
 			return res.redirect("back");
 		}
 

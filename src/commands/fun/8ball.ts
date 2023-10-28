@@ -15,13 +15,9 @@ export default class EightballCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option
-						.setRequired(true)
-						.setName("question")
-						.setDescription("Enter your question")
-						.setDescriptionLocalizations({
-							de: "Gib deine Frage ein"
-						})
+					option.setRequired(true).setName("question").setDescription("Enter your question").setDescriptionLocalizations({
+						de: "Gib deine Frage ein"
+					})
 				)
 			}
 		});

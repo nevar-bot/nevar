@@ -6,10 +6,10 @@ import UserController from "@dashboard/controllers/user.controller";
 
 export default {
 	async get(req: Request, res: Response): Promise<void> {
-		const isLoggedIn: boolean|string = await AuthController.isLoggedIn(req, res);
+		const isLoggedIn: boolean | string = await AuthController.isLoggedIn(req, res);
 		if (!isLoggedIn) {
 			return AuthController.renderLogin(res);
-		}else if(isLoggedIn === "refreshed_token"){
+		} else if (isLoggedIn === "refreshed_token") {
 			return res.redirect("back");
 		}
 

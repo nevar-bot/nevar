@@ -4,7 +4,7 @@ import BaseClient from "@structures/BaseClient";
 export default class BaseCommand {
 	public client: BaseClient;
 	public conf: object;
-	public help: object;
+	public help: any;
 	public slashCommand: object;
 	public guild: any;
 	public interaction: any;
@@ -60,8 +60,10 @@ export default class BaseCommand {
 		this.slashCommand = slashCommand;
 	}
 
-	protected translate(key: string, args?: any): any {
-		if (!this.guild) return null;
-		return this.guild.translate(key, args);
+	protected translate(key: string, args?: any, isFullPath?: boolean): any {
+		let languageKey: string = key;
+		if (!isFullPath) languageKey = this.help.category.toLowerCase() + "/" + this.help.name + ":" + key;
+		if (!this.guild) return "Please provide a guild!";
+		return this.guild.translate(languageKey, args);
 	}
 }

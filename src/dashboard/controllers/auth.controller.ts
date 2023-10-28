@@ -4,15 +4,14 @@ import axios, { AxiosResponse } from "axios";
 import * as crypto from "crypto";
 
 import UserController from "@dashboard/controllers/user.controller";
-import {EmbedBuilder} from "discord.js";
+import { EmbedBuilder } from "discord.js";
 
 const BASE_API_URL: string = "https://discord.com/api";
-
 
 function isJsonString(str: string): boolean {
 	try {
 		JSON.parse(str);
-	}catch(e){
+	} catch (e) {
 		return false;
 	}
 	return true;
@@ -25,18 +24,18 @@ function encryptString(access_token: string): string {
 	const key: string = client.config.dashboard["ENCRYPTION_KEY"];
 
 	/* encrypt access token */
-	const cipher: crypto.CipherGCM = crypto.createCipheriv("aes-256-gcm", Buffer.from(key, 'hex'), iv);
+	const cipher: crypto.CipherGCM = crypto.createCipheriv("aes-256-gcm", Buffer.from(key, "hex"), iv);
 
-	let encrypted: string = cipher.update(access_token, 'utf8', 'hex');
-	encrypted += cipher.final('hex');
+	let encrypted: string = cipher.update(access_token, "utf8", "hex");
+	encrypted += cipher.final("hex");
 
 	const authTag: Buffer = cipher.getAuthTag();
 
 	/* return encrypted access token */
-	return `${iv.toString("hex")}:${authTag.toString('hex')}:${encrypted}`;
+	return `${iv.toString("hex")}:${authTag.toString("hex")}:${encrypted}`;
 }
 
-function decryptString(encrypted_access_token: string): string|null {
+function decryptString(encrypted_access_token: string): string | null {
 	/* split encrypted access token */
 	const parts: string[] = encrypted_access_token.split(":");
 
@@ -45,18 +44,18 @@ function decryptString(encrypted_access_token: string): string|null {
 	const iv: Buffer = Buffer.from(parts.shift()!, "hex");
 
 	/* get auth tag and encrypted text */
-	const authTag: Buffer = Buffer.from(parts.shift()!, 'hex');
+	const authTag: Buffer = Buffer.from(parts.shift()!, "hex");
 	const encryptedText: Buffer = Buffer.from(parts.join(":"), "hex");
 
 	/* decrypt access token */
-	const decipher: any = crypto.createDecipheriv("aes-256-gcm", Buffer.from(key, 'hex'), iv);
+	const decipher: any = crypto.createDecipheriv("aes-256-gcm", Buffer.from(key, "hex"), iv);
 	decipher.setAuthTag(authTag);
 
 	/* return decrypted access token */
 	let decrypted: string;
 	try {
-		decrypted = decipher.update(encryptedText, 'hex', 'utf8');
-		decrypted += decipher.final('utf8');
+		decrypted = decipher.update(encryptedText, "hex", "utf8");
+		decrypted += decipher.final("utf8");
 	} catch (err) {
 		return null;
 	}
@@ -67,32 +66,35 @@ function decryptString(encrypted_access_token: string): string|null {
 export default {
 	getAccessToken(req: Request): string | null {
 		/* get encrypted access_token */
-		if(req.cookies?.["cookieConsent"] === "true"){
+		if (req.cookies?.["cookieConsent"] === "true") {
 			const encrypted_access_token = req.cookies?.["access_token"];
 			if (!encrypted_access_token) return null;
-			if(!isJsonString(encrypted_access_token)) return null;
+			if (!isJsonString(encrypted_access_token)) return null;
 
 			/* decrypt access token */
-			const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
+			const access_token: string | null = decryptString(JSON.parse(encrypted_access_token).value);
 
 			return access_token;
-		}else{
+		} else {
 			// cookies not accepted, access token saved in session
 			const session: any = req.session;
 			const encrypted_access_token = session?.access_token;
 			if (!encrypted_access_token) return null;
-			if(!isJsonString(encrypted_access_token)) return null;
+			if (!isJsonString(encrypted_access_token)) return null;
 
-			const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
+			const access_token: string | null = decryptString(JSON.parse(encrypted_access_token).value);
 
 			return access_token;
 		}
-
 	},
 
 	async login(req: Request, res: Response): Promise<void> {
 		/* user is already logged in */
-		if (req.cookies?.["access_token"] && isJsonString(req.cookies?.["access_token"])|| (req.session as any).access_token && isJsonString((req.session as any).access_token)) return res.status(301).redirect("/dashboard");
+		if (
+			(req.cookies?.["access_token"] && isJsonString(req.cookies?.["access_token"])) ||
+			((req.session as any).access_token && isJsonString((req.session as any).access_token))
+		)
+			return res.status(301).redirect("/dashboard");
 
 		/* prepare redirect url */
 		const { CALLBACK_URI } = client.config.dashboard;
@@ -113,7 +115,7 @@ export default {
 			encrypted_access_token = req.cookies?.["access_token"];
 
 			if (!encrypted_access_token) return false;
-			if(!isJsonString(encrypted_access_token)) return false;
+			if (!isJsonString(encrypted_access_token)) return false;
 
 			// calculate expiry date
 			const oneDayInMs: number = 24 * 60 * 60 * 1000;
@@ -133,30 +135,30 @@ export default {
 							client_id: client.user!.id,
 							client_secret: CLIENT_SECRET,
 							grant_type: "refresh_token",
-							refresh_token: refresh_token,
+							refresh_token: refresh_token
 						}),
-						{ headers: { "Content-Type": "application/x-www-form-urlencoded" }
-						});
+						{ headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+					);
 
-						/* encrypt acccess and refresh token */
-						const new_access_token: string = encryptString(refreshResponse.data.access_token);
-						const new_refresh_token: string = encryptString(refreshResponse.data.refresh_token);
+					/* encrypt acccess and refresh token */
+					const new_access_token: string = encryptString(refreshResponse.data.access_token);
+					const new_refresh_token: string = encryptString(refreshResponse.data.refresh_token);
 
-						/* set access and refresh cookie */
-						const access_token_cookie: string = JSON.stringify({
-							value: new_access_token,
-							expiry: Date.now() + 604800000
-						});
+					/* set access and refresh cookie */
+					const access_token_cookie: string = JSON.stringify({
+						value: new_access_token,
+						expiry: Date.now() + 604800000
+					});
 
-						const refresh_token_cookie: string = JSON.stringify({
-							value: new_refresh_token,
-							expiry: null
-						});
+					const refresh_token_cookie: string = JSON.stringify({
+						value: new_refresh_token,
+						expiry: null
+					});
 
-						res.cookie("access_token", access_token_cookie, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
-						res.cookie("refresh_token", refresh_token_cookie, { secure: false, httpOnly: true });
+					res.cookie("access_token", access_token_cookie, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
+					res.cookie("refresh_token", refresh_token_cookie, { secure: false, httpOnly: true });
 
-						refreshed_token = true;
+					refreshed_token = true;
 				}
 			}
 		} else {
@@ -165,7 +167,7 @@ export default {
 			encrypted_access_token = session?.access_token;
 
 			if (!encrypted_access_token) return false;
-			if(!isJsonString(encrypted_access_token)) return false;
+			if (!isJsonString(encrypted_access_token)) return false;
 		}
 
 		if (!refreshed_token) {
@@ -186,7 +188,6 @@ export default {
 			return "refreshed_token";
 		}
 	},
-
 
 	renderLogin(res: Response): void {
 		/* render login page */
@@ -248,16 +249,20 @@ export default {
 
 		/* send log to support server */
 		const supportGuild: any = client.guilds.cache.get(client.config.support["ID"]);
-		if(supportGuild){
+		if (supportGuild) {
 			const logChannel: any = supportGuild.channels.cache.get(client.config.support["BOT_LOG"]);
-			if(logChannel){
-				const embed: EmbedBuilder = client.createEmbed(user.global_name + "(@" +  user.username + ") hat sich im Dashboard angemeldet", "arrow", "normal");
+			if (logChannel) {
+				const embed: EmbedBuilder = client.createEmbed(
+					user.global_name + "(@" + user.username + ") hat sich im Dashboard angemeldet",
+					"arrow",
+					"normal"
+				);
 				embed.setThumbnail(UserController.getAvatarURL(user));
-				logChannel.send({ embeds: [embed] })
+				logChannel.send({ embeds: [embed] });
 			}
 		}
 		/* check if cookie consent is given */
-		if(req.cookies?.["cookieConsent"] === "true"){
+		if (req.cookies?.["cookieConsent"] === "true") {
 			/* set access and refresh token cookie */
 			const access_token_cookie: string = JSON.stringify({
 				value: encrypted_access_token,
@@ -270,13 +275,13 @@ export default {
 
 			res.cookie("access_token", access_token_cookie, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
 			res.cookie("refresh_token", refresh_token_cookie, { secure: false, httpOnly: true });
-		}else{
+		} else {
 			// cookies not accepted, save access token in session
 			const session: any = req.session;
 			const sessionObject: string = JSON.stringify({
 				value: encrypted_access_token,
 				expiry: Date.now() + 604800000
-			})
+			});
 			session.access_token = sessionObject;
 		}
 		res.status(301).redirect("/dashboard");
@@ -285,21 +290,21 @@ export default {
 	async logout(req: Request, res: Response): Promise<boolean | void> {
 		/* get encrypted access token */
 		let encrypted_access_token: string;
-		let encrypted_refresh_token: string|undefined;
-		if(req.cookies?.["cookieConsent"] === "true"){
+		let encrypted_refresh_token: string | undefined;
+		if (req.cookies?.["cookieConsent"] === "true") {
 			encrypted_access_token = req.cookies?.["access_token"];
 			encrypted_refresh_token = req.cookies?.["refresh_token"];
-		}else{
+		} else {
 			// cookies not accepted, access token saved in session
 			const session: any = req.session;
 			encrypted_access_token = session?.access_token;
 		}
-		if(!encrypted_access_token) return false;
-		if(!isJsonString(encrypted_access_token)) return false;
+		if (!encrypted_access_token) return false;
+		if (!isJsonString(encrypted_access_token)) return false;
 
 		/* decrypt access token */
-		const access_token: string|null = decryptString(JSON.parse(encrypted_access_token).value);
-		if(!access_token) return false;
+		const access_token: string | null = decryptString(JSON.parse(encrypted_access_token).value);
+		if (!access_token) return false;
 
 		const { CLIENT_SECRET } = client.config.dashboard;
 
@@ -311,20 +316,25 @@ export default {
 		);
 
 		/* revoke refresh token */
-		if(encrypted_refresh_token){
-			const refresh_token: string|null = decryptString(JSON.parse(encrypted_refresh_token).value);
+		if (encrypted_refresh_token) {
+			const refresh_token: string | null = decryptString(JSON.parse(encrypted_refresh_token).value);
 			await axios.post(
 				BASE_API_URL + "/oauth2/token/revoke",
-				new URLSearchParams({ client_id: client.user!.id, client_secret: CLIENT_SECRET, token: (refresh_token as string), token_type_hint: "refresh_token" }),
+				new URLSearchParams({
+					client_id: client.user!.id,
+					client_secret: CLIENT_SECRET,
+					token: refresh_token as string,
+					token_type_hint: "refresh_token"
+				}),
 				{ headers: { ["Content-Type"]: "application/x-www-form-urlencoded" }, validateStatus: (status: number): boolean => true }
 			);
 		}
 
 		/* clear cookie */
-		if(req.cookies?.["cookieConsent"] === "true"){
+		if (req.cookies?.["cookieConsent"] === "true") {
 			res.clearCookie("access_token");
 			res.clearCookie("refresh_token");
-		}else{
+		} else {
 			const session: any = req.session;
 			delete session.access_token;
 		}

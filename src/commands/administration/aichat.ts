@@ -117,13 +117,13 @@ export default class AichatCommand extends BaseCommand {
 
 		const selectNameMenu: StringSelectMenuBuilder = new StringSelectMenuBuilder()
 			.setCustomId(`${this.interaction.user.id}-aichat-mode`)
-			.setPlaceholder(this.translate("administration/aichat:mode:selectMenuDescription"));
+			.setPlaceholder(this.translate("mode:selectBehavior"));
 
 		for (const mode of availableModes) {
 			selectNameMenu.addOptions(
 				new StringSelectMenuOptionBuilder()
 					.setLabel(mode.name)
-					.setDescription(this.translate("administration/aichat:mode:selectMenuItem", { mode }))
+					.setDescription(this.translate("mode:behaviorDescription", { mode }))
 					.setValue(mode.mode)
 					.setEmoji(this.client.emotes.bot)
 					.setDefault(mode.mode === data.guild.settings.aiChat.mode)
@@ -132,7 +132,7 @@ export default class AichatCommand extends BaseCommand {
 
 		const row: any = this.client.createMessageComponentsRow(selectNameMenu);
 
-		const embed: EmbedBuilder = this.client.createEmbed(this.translate("administration/aichat:mode:chooseEmbedDescription"), "arrow", "normal");
+		const embed: EmbedBuilder = this.client.createEmbed(this.translate("mode:selectBehavior"), "arrow", "normal");
 		const message: any = await this.interaction.followUp({
 			embeds: [embed],
 			components: [row]
@@ -153,7 +153,7 @@ export default class AichatCommand extends BaseCommand {
 			await data.guild.save();
 
 			const confirmationEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/aichat:mode:set", { mode: chosenMode }),
+				this.translate("mode:set", { mode: chosenMode }),
 				"success",
 				"normal"
 			);
@@ -172,7 +172,7 @@ export default class AichatCommand extends BaseCommand {
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!channel) {
 			const missingOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/aichat:channel:errors:missingChannel"),
+				this.translate("basics:errors:missingChannel", {}, true),
 				"error",
 				"error"
 			);
@@ -184,7 +184,7 @@ export default class AichatCommand extends BaseCommand {
 		await data.guild.save();
 
 		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/aichat:channel:set", { channel: channel.toString() }),
+			this.translate("channel:set", { channel: channel.toString() }),
 			"success",
 			"normal"
 		);
@@ -194,7 +194,7 @@ export default class AichatCommand extends BaseCommand {
 	private async setStatus(status: string, data: any): Promise<void> {
 		if (!status) {
 			const missingOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/aichat:status:errors:missingStatus"),
+				this.translate("basics:errors:missingStatus", {}, true),
 				"error",
 				"error"
 			);
@@ -209,9 +209,9 @@ export default class AichatCommand extends BaseCommand {
 		data.guild.markModified("settings.aiChat");
 		await data.guild.save();
 
-		const statusString: string = statuses[status] ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const statusString: string = statuses[status] ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/aichat:status:set", { status: statusString }),
+			this.translate("status:set", { status: statusString }),
 			"success",
 			"normal"
 		);

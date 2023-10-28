@@ -218,9 +218,9 @@ export default class HelpCommand extends BaseCommand {
 				filter: (i: any): boolean => i.user.id === this.interaction.user.id,
 				componentType: ComponentType.Button
 			});
-			if(canFitOnePage) paginationCollector.stop();
+			if (canFitOnePage) paginationCollector.stop();
 
-			if (!canFitOnePage){
+			if (!canFitOnePage) {
 				currentIndex = 0;
 
 				paginationCollector.on("collect", async (paginationInteraction: any): Promise<void> => {

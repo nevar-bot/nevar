@@ -214,9 +214,9 @@ export default class WelcomeCommand extends BaseCommand {
 
 	private async setStatus(status: any, data: any): Promise<void> {
 		if (data.guild.settings.welcome.enabled === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:alreadyStatus", { status: statusString }),
+				this.translate("status:errors:alreadySet", { status: statusString }),
 				"error",
 				"error",
 				statusString
@@ -228,9 +228,9 @@ export default class WelcomeCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.enabled");
 		await data.guild.save();
 
-		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/welcome:statusSet", { status: statusString }),
+			this.translate("status:set", { status: statusString }),
 			"success",
 			"success",
 			statusString
@@ -241,7 +241,7 @@ export default class WelcomeCommand extends BaseCommand {
 	private async sendPreview(data: any): Promise<void> {
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -249,7 +249,7 @@ export default class WelcomeCommand extends BaseCommand {
 		}
 		if (!data.guild.settings.welcome.channel || !this.client.channels.cache.get(data.guild.settings.welcome.channel)) {
 			const noChannelEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:noChannelSet"),
+				this.translate("preview:errors:noChannel"),
 				"error",
 				"error"
 			);
@@ -257,14 +257,14 @@ export default class WelcomeCommand extends BaseCommand {
 		}
 		if (!data.guild.settings.welcome.message) {
 			const noMessageEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:noMessageSet"),
+				this.translate("preview:errors:noMessage"),
 				"error",
 				"error"
 			);
 			return this.interaction.followUp({ embeds: [noMessageEmbed] });
 		}
 		if (!data.guild.settings.welcome.type) {
-			const noTypeEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:errors:noTypeSet"), "error", "error");
+			const noTypeEmbed: EmbedBuilder = this.client.createEmbed(this.translate("preview:errors:noType"), "error", "error");
 			return this.interaction.followUp({ embeds: [noTypeEmbed] });
 		}
 
@@ -309,14 +309,14 @@ export default class WelcomeCommand extends BaseCommand {
 			await channel.send({ content: message }).catch((e: any): void => {});
 		}
 
-		const testExecutedEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:testSent"), "success", "success");
+		const testExecutedEmbed: EmbedBuilder = this.client.createEmbed(this.translate("preview:sent"), "success", "success");
 		return this.interaction.followUp({ embeds: [testExecutedEmbed] });
 	}
 
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -328,7 +328,7 @@ export default class WelcomeCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/welcome:channelSet", { channel: channel.toString() }),
+			this.translate("channel:set", { channel: channel.toString() }),
 			"success",
 			"success"
 		);
@@ -338,7 +338,7 @@ export default class WelcomeCommand extends BaseCommand {
 	private async setType(type: any, data: any): Promise<void> {
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -347,9 +347,9 @@ export default class WelcomeCommand extends BaseCommand {
 
 		if (data.guild.settings.welcome.type === type) {
 			const statusString: string =
-				type === "embed" ? this.translate("administration/welcome:types:embed") : this.translate("administration/welcome:types:text");
+				type === "embed" ? this.translate("type:embed") : this.translate("type:text");
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:sameType", { type: statusString }),
+				this.translate("type:errors:sameType", { type: statusString }),
 				"error",
 				"error",
 				statusString
@@ -362,9 +362,9 @@ export default class WelcomeCommand extends BaseCommand {
 		await data.guild.save();
 
 		const statusString: string =
-			type === "embed" ? this.translate("administration/welcome:types:embed") : this.translate("administration/welcome:types:text");
+			type === "embed" ? this.translate("type:embed") : this.translate("type:text");
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/welcome:typeSet", { type: statusString }),
+			this.translate("type:set", { type: statusString }),
 			"success",
 			"success"
 		);
@@ -374,7 +374,7 @@ export default class WelcomeCommand extends BaseCommand {
 	private async setMessage(message: string, data: any): Promise<void> {
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -385,18 +385,18 @@ export default class WelcomeCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.message");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/welcome:messageSet"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("message:set"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	async showVariables(): Promise<void> {
-		const variables: string[] = this.translate("administration/welcome:variables:list");
+		const variables: string[] = this.translate("variables:list");
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
 			10,
 			variables,
-			this.translate("administration/welcome:variables:title"),
-			this.translate("administration/welcome:variables:empty"),
+			this.translate("variables:title"),
+			this.translate("variables:empty"),
 			"shine"
 		);
 	}
@@ -409,7 +409,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -418,7 +418,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 		if (data.guild.settings.welcome.type === "text") {
 			const embedNotEnabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:typeHasToBeEmbed"),
+				this.translate("thumbnail:errors:typeNoEmbed"),
 				"error",
 				"error"
 			);
@@ -426,9 +426,9 @@ export default class WelcomeCommand extends BaseCommand {
 		}
 
 		if (data.guild.settings.welcome.profilePicture === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:sameTypeThumbnail", { status: statusString }),
+				this.translate("thumbnail:errors:alreadySet", { status: statusString }),
 				"error",
 				"error"
 			);
@@ -439,9 +439,9 @@ export default class WelcomeCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.profilePicture");
 		await data.guild.save();
 
-		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/welcome:thumbnailSet", { status: statusString }),
+			this.translate("thumbnail:set", { status: statusString }),
 			"success",
 			"success",
 			statusString
@@ -457,7 +457,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -466,7 +466,7 @@ export default class WelcomeCommand extends BaseCommand {
 
 		if (data.guild.settings.welcome.type === "text") {
 			const embedNotEnabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:errors:typeHasToBeEmbed"),
+				this.translate("color:errors:typeNotEmbed"),
 				"error",
 				"error"
 			);
@@ -474,7 +474,7 @@ export default class WelcomeCommand extends BaseCommand {
 		} else if (data.guild.settings.welcome.type === "embed") {
 			if (!this.client.utils.stringIsHexColor(color)) {
 				const invalidColorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/welcome:errors:invalidColor"),
+					this.translate("color:errors:invalid"),
 					"error",
 					"error"
 				);
@@ -487,7 +487,7 @@ export default class WelcomeCommand extends BaseCommand {
 			await data.guild.save();
 
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/welcome:colorSet", { color: color }),
+				this.translate("color:set", { color: color }),
 				"success",
 				"success",
 				color

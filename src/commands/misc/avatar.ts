@@ -1,6 +1,6 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
-import {EmbedBuilder, SlashCommandBuilder} from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export default class AvatarCommand extends BaseCommand {
 	public constructor(client: BaseClient) {

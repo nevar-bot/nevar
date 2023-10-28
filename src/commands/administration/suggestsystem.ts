@@ -87,7 +87,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 	private async enable(data: any): Promise<void> {
 		if (data.guild.settings.suggestions.enabled) {
 			const isAlreadyEnabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/suggestsystem:errors:alreadyEnabled"),
+				this.translate("errors:alreadyEnabled"),
 				"error",
 				"error"
 			);
@@ -97,14 +97,14 @@ export default class SuggestsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.suggestions.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:enabled"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("enabled"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async disable(data: any): Promise<void> {
 		if (!data.guild.settings.suggestions.enabled) {
 			const isAlreadyDisabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/suggestsystem:errors:alreadyDisabled"),
+				this.translate("errors:alreadyDisabled"),
 				"error",
 				"error"
 			);
@@ -114,14 +114,14 @@ export default class SuggestsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.suggestions.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/suggestsystem:disabled"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("disabled"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!channel) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/suggestsystem:errors:missingChannel"),
+				this.translate("basics:errors:missingChannel", {}, true),
 				"error",
 				"error"
 			);
@@ -132,7 +132,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/suggestsystem:channelSet", { channel: channel.toString() }),
+			this.translate("channelSet", { channel: channel.toString() }),
 			"success",
 			"success"
 		);
@@ -142,7 +142,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 	private async setReviewChannel(channel: any, data: any): Promise<void> {
 		if (!channel) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/suggestsystem:errors:missingChannel"),
+				this.translate("basics:errors:missingChannel", {}, true),
 				"error",
 				"error"
 			);
@@ -153,7 +153,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/suggestsystem:reviewChannelSet", { channel: channel.toString() }),
+			this.translate("reviewChannelSet", { channel: channel.toString() }),
 			"success",
 			"success"
 		);

@@ -101,7 +101,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Invalid options */
 		if (!time || !ms(time) || !channel || !channel.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/autodelete:errors:invalidChannelOrTime"),
+				this.translate("errors:missingChannelOrTime"),
 				"error",
 				"error"
 			);
@@ -111,7 +111,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Already exists for this channel */
 		if (data.guild.settings.autodelete.find((x: any): boolean => x?.channel === channel.id)) {
 			const alreadyExistsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/autodelete:errors:alreadySetInChannel", { channel: channel.toString() }),
+				this.translate("errors:alreadySetInChannel", { channel: channel.toString() }),
 				"error",
 				"error"
 			);
@@ -124,7 +124,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Time is too short */
 		if (timeInMs < 1000) {
 			const tooShortEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/autodelete:errors:timeLessThanOneSecond"),
+				this.translate("errors:timeLessThanOneSecond"),
 				"error",
 				"error"
 			);
@@ -134,7 +134,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Time is too long */
 		if (timeInMs > 7 * 24 * 60 * 60 * 1000) {
 			const tooLongEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/autodelete:errors:timeMoreThan1Week"),
+				this.translate("errors:timeMoreThan1Week"),
 				"error",
 				"error"
 			);
@@ -150,7 +150,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/autodelete:set", { channel: channel.toString(), time: msInTime }),
+			this.translate("set", { channel: channel.toString(), time: msInTime }),
 			"success",
 			"success"
 		);
@@ -161,7 +161,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Invalid options */
 		if (!channel || !channel.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/autodelete:errors:invalidChannel"),
+				this.translate("basics:errors:missingChannel", {}, true),
 				"error",
 				"error"
 			);
@@ -171,7 +171,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* No autodelete for this channel */
 		if (!data.guild.settings.autodelete.find((x: any): boolean => x?.channel === channel.id)) {
 			const doesntExistEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/autodelete:errors:notSetInChannel", { channel: channel.toString() }),
+				this.translate("errors:notSetInChannel", { channel: channel.toString() }),
 				"error",
 				"error"
 			);
@@ -184,7 +184,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/autodelete:removed", { channel: channel.toString() }),
+			this.translate("removed", { channel: channel.toString() }),
 			"success",
 			"success"
 		);
@@ -201,12 +201,12 @@ export default class AutodeleteCommand extends BaseCommand {
 			if (cachedChannel)
 				autodeleteArray.push(
 					" " +
-						this.translate("administration/autodelete:list:channel") +
+						this.translate("list:channel") +
 						": " +
 						cachedChannel.toString() +
 						"\n" +
 						" " +
-						this.translate("administration/autodelete:list:time") +
+						this.translate("list:time") +
 						": " +
 						ms(element.time) +
 						"\n"
@@ -218,7 +218,7 @@ export default class AutodeleteCommand extends BaseCommand {
 			5,
 			autodeleteArray,
 			"Autodelete",
-			this.translate("administration/autodelete:list:empty"),
+			this.translate("list:empty"),
 			"channel"
 		);
 	}

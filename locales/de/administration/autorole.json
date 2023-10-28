@@ -1,6 +1,5 @@
 {
   "errors": {
-    "invalidRole": "Du musst eine Rolle auswählen.",
     "cantUseEveryone": "Die @everyone Rolle kann nicht als eine Autorolle hinzugefügt werden.",
     "roleIsManaged": "Rollen welche durch eine Integration verwaltet werden, können nicht als Autorolle hinzugefügt werden.",
     "roleIsTooHigh": "Da {{role}} eine höhere oder gleiche Position wie meine höchste Rolle ({{botRole}}) hat, kann sie nicht als Autorolle hinzugefügt werden.",

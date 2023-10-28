@@ -50,31 +50,19 @@ export default class AddemojiCommand extends BaseCommand {
 
 		/* No emoji or link given */
 		if (!stringIsCustomEmoji(emoji) && !stringIsUrl(emoji)) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/addemoji:errors:invalidEmojiOrLink"),
-				"error",
-				"error"
-			);
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:invalidEmojiOrLink"), "error", "error");
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
 		/* Given link is not an image */
 		if (stringIsUrl(emoji) && !urlIsImage(emoji)) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/addemoji:errors:invalidLinkExtension"),
-				"error",
-				"error"
-			);
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:invalidLinkExtension"), "error", "error");
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
 		/* Image link given but no name */
 		if (stringIsUrl(emoji) && urlIsImage(emoji) && !name) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/addemoji:errors:missingName"),
-				"error",
-				"error"
-			);
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:missingName"), "error", "error");
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -88,6 +76,7 @@ export default class AddemojiCommand extends BaseCommand {
 		}
 
 		try {
+			/* Create emoji */
 			const createdEmote = await guild.emojis.create({
 				attachment: emote.url,
 				name: emote.name,
@@ -95,7 +84,7 @@ export default class AddemojiCommand extends BaseCommand {
 			});
 			/* Created emoji */
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/addemoji:created", {
+				this.translate("created", {
 					emoji: createdEmote.toString()
 				}),
 				"success",
@@ -105,7 +94,7 @@ export default class AddemojiCommand extends BaseCommand {
 		} catch (exception) {
 			/* Error while creating emoji */
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:unexpected", { support: this.client.support }),
+				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
 				"error",
 				"error"
 			);

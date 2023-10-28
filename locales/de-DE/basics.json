@@ -1,9 +1,0 @@
-{
-  "back": "Zurück",
-  "further": "Weiter",
-  "enabled": "aktiviert",
-  "disabled": "deaktiviert",
-  "errors": {
-    "unexpected": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut, oder kontaktiere unseren [Support]({{support}})."
-  }
-}

@@ -1,29 +1,27 @@
 {
+  "errors": {
+    "disabled": "Das Levelsystem ist deaktiviert.",
+  },
   "status": {
     "errors": {
-      "isAlready": "Das Levelsystem ist bereits {{status}}."
+      "alreadySet": "Das Levelsystem ist bereits {{status}}."
     },
     "set": "Das Levelsystem wurde {{status}}."
   },
   "channel": {
-    "errors": {
-      "isDisabled": "Das Levelsystem ist deaktiviert."
-    },
-    "channelChosen": "in {{channel}}",
-    "channelCurrent": "im jeweils aktuellen Channel",
+    "selectedChannel": "in {{channel}}",
+    "currentChannel": "im jeweils aktuellen Channel",
     "set": "Level-Up Nachrichten kommen absofort {{channel}}."
   },
   "message": {
     "errors": {
-      "isDisabled": "Das Levelsystem ist deaktiviert.",
-      "messageTooLong": "Die Level-Nachricht darf maximal 2.000 Zeichen lang sein. Deine ist {{length}} Zeichen lang."
+      "tooLong": "Die Level-Nachricht darf maximal 2.000 Zeichen lang sein. Deine ist {{length}} Zeichen lang."
     },
     "set": "Die Level-Up Nachricht wurde geändert."
   },
   "roles": {
     "errors": {
-      "isDisabled": "Das Levelsystem ist deaktiviert.",
-      "missingLevelOrRole": "Du musst eine Rolle und ein Level eingeben.",
+      "missingLevelOrRole": "Du musst eine Rolle und ein Level wählen.",
       "missingRole": "Du musst eine Rolle wählen.",
       "roleAlreadyAdded": "Diese Rolle ist bereits als Levelrolle hinzugefügt.",
       "isNotAdded": "{{role}} ist keine Levelrolle.",
@@ -42,8 +40,6 @@
   },
   "doublexp": {
     "errors": {
-      "isDisabled": "Das Levelsystem ist deaktiviert.",
-      "missingRole": "Du musst eine Rolle wählen.",
       "alreadyAdded": "Diese Rolle ist bereits als Doppel-XP Rolle hinzugefügt.",
       "notAdded": "{{role}} ist keine Doppel-XP Rolle.",
       "cantUseEveryone": "Die @everyone Rolle kann nicht als eine Doppel-XP Rolle hinzugefügt werden.",
@@ -58,7 +54,6 @@
   },
   "xp": {
     "errors": {
-      "isDisabled": "Das Levelsystem ist deaktiviert.",
       "minCantBeHigherThanMax": "Der Minimalwert darf den Maximalwert nicht überschreiten."
     },
     "set": "Der Minimalwert wurde auf {{min}} und der Maximalwert auf {{min}} gesetzt."
@@ -79,7 +74,6 @@
   },
   "preview": {
     "errors": {
-      "isDisabled": "Das Levelsystem ist deaktiviert.",
       "noMessageSet": "Es wurde keine Nachricht für die Level-Up Nachricht festgelegt.",
       "cantSend": "Die Level-Up Nachricht konnte nicht gesendet werden."
     },

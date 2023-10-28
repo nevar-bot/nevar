@@ -52,15 +52,21 @@ export default class MyinvitesCommand extends BaseCommand {
 					invite.code +
 					"\n" +
 					this.client.emotes.users +
-					" " + this.translate("misc/myinvites:usages") + ": **" +
+					" " +
+					this.translate("misc/myinvites:usages") +
+					": **" +
 					invite.uses +
 					"**\n" +
 					this.client.emotes.leave +
-					" " + this.translate("misc/myinvites:guildLeft") + ": **" +
+					" " +
+					this.translate("misc/myinvites:guildLeft") +
+					": **" +
 					(invite.left || 0) +
 					"**\n" +
 					this.client.emotes.error +
-					" " + this.translate("misc/myinvites:fake") + ": **" +
+					" " +
+					this.translate("misc/myinvites:fake") +
+					": **" +
 					(invite.fake || 0) +
 					"**\n"
 			);

@@ -144,7 +144,7 @@ export default class Youtubenotifier extends BaseCommand {
 	private async addNotifier(channelId: string, data: any): Promise<void> {
 		if (!channelId) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:errors:missingChannelId"),
+				this.translate("errors:missingChannelId"),
 				"error",
 				"error"
 			);
@@ -155,7 +155,7 @@ export default class Youtubenotifier extends BaseCommand {
 		if (channel) {
 			if (data.guild.settings.notifiers.youtube.channels.length >= 3) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/youtubenotifier:errors:limitExceeded"),
+					this.translate("errors:limitExceeded"),
 					"error",
 					"error"
 				);
@@ -164,7 +164,7 @@ export default class Youtubenotifier extends BaseCommand {
 
 			if (data.guild.settings.notifiers.youtube.channels.find((channel: any): boolean => channel.id === channelId)) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/youtubenotifier:errors:alreadyAdded"),
+					this.translate("errors:alreadyAdded"),
 					"error",
 					"error"
 				);
@@ -179,14 +179,14 @@ export default class Youtubenotifier extends BaseCommand {
 			await data.guild.save();
 
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:added", { name: channel.username, url: "https://youtube.com/channel/" + channelId }),
+				this.translate("added", { name: channel.username, url: "https://youtube.com/channel/" + channelId }),
 				"success",
 				"success"
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:errors:cantFindChannel"),
+				this.translate("errors:cantFindChannel"),
 				"error",
 				"error",
 				channelId
@@ -198,7 +198,7 @@ export default class Youtubenotifier extends BaseCommand {
 	private async removeNotifier(channelId: string, data: any): Promise<void> {
 		if (!channelId) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:errors:missingChannelId"),
+				this.translate("errors:missingChannelId"),
 				"error",
 				"error"
 			);
@@ -214,14 +214,14 @@ export default class Youtubenotifier extends BaseCommand {
 
 			const channel: any = await this.getChannelNameFromId(channelId);
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:removed", { name: channel.username, url: "https://youtube.com/channel/" + channelId }),
+				this.translate("removed", { name: channel.username, url: "https://youtube.com/channel/" + channelId }),
 				"success",
 				"success"
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:errors:notAdded"),
+				this.translate("errors:notAdded"),
 				"error",
 				"error"
 			);
@@ -240,8 +240,8 @@ export default class Youtubenotifier extends BaseCommand {
 			this.interaction,
 			3,
 			channels,
-			this.translate("administration/youtubenotifier:list:title"),
-			this.translate("administration/youtubenotifier:list:empty"),
+			this.translate("list:title"),
+			this.translate("list:empty"),
 			"link"
 		);
 	}
@@ -249,7 +249,7 @@ export default class Youtubenotifier extends BaseCommand {
 	private async setStatus(status: string, data: any): Promise<void> {
 		if (!["on", "off"].includes(status)) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:errors:missingStatus"),
+				this.translate("errors:missingStatus"),
 				"error",
 				"error",
 				status
@@ -258,10 +258,10 @@ export default class Youtubenotifier extends BaseCommand {
 		}
 
 		const statusBool: boolean = status === "on";
-		const statusString: string = statusBool ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const statusString: string = statusBool ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 		if (data.guild.settings.notifiers.youtube.enabled === statusBool) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:errors:statusAlready", { status: statusString }),
+				this.translate("errors:statusAlready", { status: statusString }),
 				"error",
 				"error"
 			);
@@ -273,7 +273,7 @@ export default class Youtubenotifier extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/youtubenotifier:statusSet", { status: statusString }),
+			this.translate("statusSet", { status: statusString }),
 			"success",
 			"success"
 		);
@@ -283,7 +283,7 @@ export default class Youtubenotifier extends BaseCommand {
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!channel) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:errors:missingChannel"),
+				this.translate("basics:errors:missingChannel", {}, true),
 				"error",
 				"error"
 			);
@@ -292,7 +292,7 @@ export default class Youtubenotifier extends BaseCommand {
 
 		if (data.guild.settings.notifiers.youtube.announcementChannel === channel.id) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/youtubenotifier:errors:channelAlready", { channel: channel.toString() }),
+				this.translate("errors:channelAlready", { channel: channel.toString() }),
 				"error",
 				"error"
 			);
@@ -304,7 +304,7 @@ export default class Youtubenotifier extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/youtubenotifier:channelSet", { channel: channel.toString() }),
+			this.translate("channelSet", { channel: channel.toString() }),
 			"success",
 			"success"
 		);

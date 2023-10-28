@@ -1,0 +1,97 @@
+{
+  "errors": {
+    "disabled": "Die Verabschiedungsnachricht ist deaktiviert."
+  },
+  "status": {
+    "errors": {
+      "alreadySet": "Die Verabschiedungsnachricht ist bereits {{status}}."
+    },
+    "set": "Die Verabschiedungsnachricht wurde {{status}}."
+  },
+  "preview": {
+    "errors": {
+      "noChannel": "Es ist kein Channel für die Verabschiedungsnachricht eingestellt.",
+      "noMessage": "Es ist keine Nachricht für die Verabschiedungsnachricht eingestellt.",
+      "noType": "Es ist kein Typ für die Verabschiedungsnachricht eingestellt."
+    },
+    "sent": "Die Verabschiedungsnachricht wurde gesendet."
+  },
+  "channel": {
+    "set": "Die Verabschiedungsnachricht wird ab jetzt in {{channel}} gesendet."
+  },
+  "type": {
+    "errors": {
+      "alreadySet": "Die Verabschiedungsnachricht wird bereits als {{type}} gesendet."
+    },
+    "text": "Textnachricht",
+    "embed": "Embed",
+    "set": "Die Verabschiedungsnachricht wird ab jetzt als {{type}} gesendet."
+  },
+  "message": {
+    "set": "Die Verabschiedungsnachricht wurde geändert."
+  },
+  "variables": {
+    "list": [
+      "**{user}** - Erwähnt das Mitglied",
+      "**{user:username}** - Der Nutzername des Mitglieds",
+      "**{user:displayname}** - Der Anzeigename des Mitglieds",
+      "**{user:id}** - ID des Mitglieds",
+      "**{server:name}** - Name des Servers",
+      "**{server:id}** - ID des Servers",
+      "**{server:membercount}** - Anzahl an Mitgliedern des Servers",
+      "**{newline}** - Fügt eine neue Zeile ein"
+    ],
+    "title": "Verfügbare Variablen",
+    "empty": "Es sind keine Variablen verfügbar."
+  },
+  "thumbnail": {
+    "errors": {
+      "typeNotEmbed": "Der Typ der Verabschiedungsnachricht muss auf Embed gesetzt sein.",
+      "alreadySet": "Das Profilbild im Embed ist bereits {{status}}."
+    },
+    "set": "Das Profilbild im Embed wurde {{status}}."
+  },
+  "color": {
+    "errors": {
+      "typeNotEmbed": "Der Typ der Verabschiedungsnachricht muss auf Embed gesetzt sein.",
+      "colorNotHex": "Du musst eine gültige Farbe im HEX-Format angeben."
+    },
+    "set": "Die Farbe des Embeds wurde auf {{color}} geändert."
+  },
+  "errors": {
+    "alreadyStatus": "Die Verabschiedungsnachricht ist bereits {{status}}.",
+    "isDisabled": "Die Verabschiedungsnachricht ist deaktiviert.",
+    "noChannelSet": "Es wurde kein Channel für die Verabschiedungsnachricht festgelegt.",
+    "noMessageSet": "Es wurde keine Nachricht für die Verabschiedungsnachricht festgelegt.",
+    "noTypeSet": "Es wurde kein Typ für die Verabschiedungsnachricht festgelegt.",
+    "sameType": "Die Verabschiedungsnachricht wird bereits als {{type}} gesendet.",
+    "typeHasToBeEmbed": "Der Typ der Verabschiedungsnachricht muss auf Embed gesetzt sein.",
+    "invalidColor": "Du musst eine gültige Farbe im HEX-Format angeben.",
+    "sameTypeThumbnail": "Das Profilbild im Embed ist bereits {{status}}."
+  },
+  "statusSet": "Die Verabschiedungsnachricht wurde {{status}}.",
+  "testSent": "Die Verabschiedungsnachricht wurde gesendet.",
+  "channelSet": "Die Verabschiedungsnachricht wird ab jetzt in {{channel}} gesendet.",
+  "typeSet": "Die Verabschiedungsnachricht wird ab jetzt als {{type}} gesendet.",
+  "messageSet": "Die Verabschiedungsnachricht wurde geändert.",
+  "colorSet": "Die Farbe des Embeds wurde auf {{color}} geändert.",
+  "thumbnailSet": "Das Profilbild im Embed wurde {{status}}.",
+  "types": {
+    "text": "Textnachricht",
+    "embed": "Embed"
+  },
+  "variables": {
+    "list": [
+      "**{user}** - Erwähnt das Mitglied",
+      "**{user:username}** - Der Nutzername des Mitglieds",
+      "**{user:displayname}** - Der Anzeigename des Mitglieds",
+      "**{user:id}** - ID des Mitglieds",
+      "**{server:name}** - Name des Servers",
+      "**{server:id}** - ID des Servers",
+      "**{server:membercount}** - Anzahl an Mitgliedern des Servers",
+      "**{newline}** - Fügt eine neue Zeile ein"
+    ],
+    "title": "Verfügbare Variablen",
+    "empty": "Es sind keine Variablen verfügbar."
+  }
+}

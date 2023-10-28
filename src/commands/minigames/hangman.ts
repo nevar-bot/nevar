@@ -113,7 +113,11 @@ class HangmanGame extends BaseGame {
 		await this.interaction.deferReply().catch((): void => {});
 
 		const description: string =
-			this.getBoardContent() + "\n" + this.interaction.guild.translate("minigames/hangman:hint", { e: this.client.emotes, wordLength: this.word.length }) + "\n" + this.getWordEmojis();
+			this.getBoardContent() +
+			"\n" +
+			this.interaction.guild.translate("minigames/hangman:hint", { e: this.client.emotes, wordLength: this.word.length }) +
+			"\n" +
+			this.getWordEmojis();
 		const hangmanEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
 		hangmanEmbed.setTitle("Hangman");
 		hangmanEmbed.setThumbnail(this.client.user!.displayAvatarURL());
@@ -182,7 +186,12 @@ class HangmanGame extends BaseGame {
 			this.getBoardContent() +
 			"\n" +
 			(this.guessed.length
-				? this.interaction.guild.translate("minigames/hangman:guessedLetters", { e: this.client.emotes }) + "\n" + this.client.emotes.arrow + " " + this.guessed.join(", ") + "\n\n"
+				? this.interaction.guild.translate("minigames/hangman:guessedLetters", { e: this.client.emotes }) +
+				  "\n" +
+				  this.client.emotes.arrow +
+				  " " +
+				  this.guessed.join(", ") +
+				  "\n\n"
 				: "") +
 			this.client.emotes.arrow +
 			" " +

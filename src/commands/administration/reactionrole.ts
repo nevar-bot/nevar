@@ -74,7 +74,7 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Role is @everyone */
 		if (role.id === this.interaction.guild.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/reactionrole:errors:cantUseEveryone"),
+				this.translate("errors:cantUseEveryone"),
 				"error",
 				"error"
 			);
@@ -84,7 +84,7 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Role is managed */
 		if (role.managed) {
 			const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/reactionrole:errors:cantUseManaged"),
+				this.translate("errors:cantUseManaged"),
 				"error",
 				"error"
 			);
@@ -94,7 +94,7 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Role is too high */
 		if (this.interaction.guild.members.me.roles.highest.position <= role.position) {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/reactionrole:errors:cantUseHigherRole", {
+				this.translate("errors:cantUseHigherRole", {
 					role: role.toString(),
 					botrole: this.interaction.guild.members.me.roles.highest.toString()
 				}),
@@ -108,7 +108,7 @@ export default class ReactionroleCommand extends BaseCommand {
 		const { stringIsEmoji, stringIsCustomEmoji } = Utils;
 		if (!stringIsEmoji(emote) && !stringIsCustomEmoji(emote)) {
 			const invalidEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/reactionrole:errors:invalidEmoji"),
+				this.translate("errors:invalidEmoji"),
 				"error",
 				"error"
 			);
@@ -121,7 +121,7 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Emoji is not available */
 		if (stringIsCustomEmoji(originEmote) && !this.client.emojis.cache.find((e: any): boolean => e.id === emote)) {
 			const unusableEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/reactionrole:errors:unusableEmoji"),
+				this.translate("errors:unusableEmoji"),
 				"error",
 				"error"
 			);
@@ -134,7 +134,7 @@ export default class ReactionroleCommand extends BaseCommand {
 		/* Message not found */
 		if (!message) {
 			const messageNotFoundEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/reactionrole:errors:messageNotFound"),
+				this.translate("errors:messageNotFound"),
 				"error",
 				"error"
 			);
@@ -159,14 +159,14 @@ export default class ReactionroleCommand extends BaseCommand {
 
 		await message.react(emote).catch(() => {
 			const reactionFailedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/reactionrole:errors:cantReactToMessage"),
+				this.translate("errors:cantReactToMessage"),
 				"error",
 				"error"
 			);
 			return this.interaction.followUp({ embeds: [reactionFailedEmbed] });
 		});
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/reactionrole:added"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("added"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

@@ -23,9 +23,9 @@ import Logger from "@helpers/Logger";
 
 // @ts-ignore - File 'emojis.json' is not under 'rootDir' 'src/'
 import * as emotes from "@assets/emojis.json";
-import {permissions} from "@helpers/Permissions";
-import {ChannelTypes} from "@helpers/ChannelTypes";
-import {AiChatPrompts} from "@helpers/AiChatPrompts";
+import { permissions } from "@helpers/Permissions";
+import { ChannelTypes } from "@helpers/ChannelTypes";
+import { AiChatPrompts } from "@helpers/AiChatPrompts";
 import Utils from "@helpers/Utils";
 import Levels from "@helpers/Levels";
 import GiveawaysManager from "@helpers/Giveaways";
@@ -83,8 +83,12 @@ export default class BaseClient extends DiscordClient {
 				GatewayIntentBits.MessageContent
 			],
 			partials: [
-				Partials.User, Partials.Channel, Partials.GuildMember,
-				Partials.Message, Partials.Reaction, Partials.GuildScheduledEvent,
+				Partials.User,
+				Partials.Channel,
+				Partials.GuildMember,
+				Partials.Message,
+				Partials.Reaction,
+				Partials.GuildScheduledEvent,
 				Partials.ThreadMember
 			],
 			allowedMentions: {

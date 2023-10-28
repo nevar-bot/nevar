@@ -121,7 +121,7 @@ export default class SetlogCommand extends BaseCommand {
 		data.guild.markModified("settings.logs");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/setlog:set"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("set"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

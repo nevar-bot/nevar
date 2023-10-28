@@ -25,7 +25,7 @@ export default {
 			session({
 				secret: SESSION_SECRET,
 				resave: false,
-				saveUninitialized: true,
+				saveUninitialized: true
 			})
 		);
 
@@ -46,5 +46,5 @@ export default {
 		app.listen(PORT, (): void => {
 			client.logger.log(`Dashboard is running on port ${PORT}`);
 		});
-	},
+	}
 };

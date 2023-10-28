@@ -1,0 +1,13 @@
+{
+  "mode": {
+    "selectBehavior": "Wähle einen Verhaltensmodus",
+    "behaviorDescription": "Die KI verhält sich {{mode.name}}",
+    "set": "Der Verhaltensmodus wurde auf {{mode}} gesetzt."
+  },
+  "channel": {
+    "set": "Der KI-Chat ist ab jetzt in {{channel}} aktiv."
+  },
+  "status": {
+    "set": "Der KI-Chat ist jetzt {{status}}."
+  }
+}

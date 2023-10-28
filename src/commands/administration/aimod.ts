@@ -210,9 +210,9 @@ export default class AimodCommand extends BaseCommand {
 		data.guild.markModified("settings.aiModeration.status");
 		await data.guild.save();
 
-		const localeStatus: string = status === "on" ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const localeStatus: string = status === "on" ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/aimod:status:set", { status: localeStatus }),
+			this.translate("status:set", { status: localeStatus }),
 			"success",
 			"normal"
 		);
@@ -223,7 +223,7 @@ export default class AimodCommand extends BaseCommand {
 		if (action === "add") {
 			if (!channel && !role) {
 				const embed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/aimod:exclude:errors:missingChannelOrRole"),
+					this.translate("basics:errors:missingChannelOrRole", {}, true),
 					"error",
 					"error"
 				);
@@ -232,7 +232,7 @@ export default class AimodCommand extends BaseCommand {
 			if (channel) {
 				if (data.guild.settings.aiModeration.excludedChannels.includes(channel.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						this.translate("administration/aimod:exclude:errors:isAlreadyDisabledInChannel", { channel: channel.toString() }),
+						this.translate("exclude:errors:isAlreadyDisabledInChannel", { channel: channel.toString() }),
 						"error",
 						"error"
 					);
@@ -243,7 +243,7 @@ export default class AimodCommand extends BaseCommand {
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/aimod:exclude:disabledInChannel", { channel: channel.toString() }),
+					this.translate("exclude:disabledInChannel", { channel: channel.toString() }),
 					"success",
 					"success"
 				);
@@ -252,7 +252,7 @@ export default class AimodCommand extends BaseCommand {
 			if (role) {
 				if (data.guild.settings.aiModeration.excludedRoles.includes(role.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						this.translate("administration/aimod:exclude:errors:isAlreadyDisabledForRole", { role: role.toString() }),
+						this.translate("errors:isAlreadyDisabledForRole", { role: role.toString() }),
 						"error",
 						"error"
 					);
@@ -263,7 +263,7 @@ export default class AimodCommand extends BaseCommand {
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/aimod:exclude:disabledForRole", { role: role.toString() }),
+					this.translate("exclude:disabledForRole", { role: role.toString() }),
 					"success",
 					"success",
 					role.toString()
@@ -275,7 +275,7 @@ export default class AimodCommand extends BaseCommand {
 		if (action === "remove") {
 			if (!channel && !role) {
 				const embed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/aimod:exclude:errors:missingChannelOrRole"),
+					this.translate("basics:errors:missingChannelOrRole", {}, true),
 					"error",
 					"error"
 				);
@@ -284,7 +284,7 @@ export default class AimodCommand extends BaseCommand {
 			if (channel) {
 				if (!data.guild.settings.aiModeration.excludedChannels.includes(channel.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						this.translate("administration/aimod:exclude:errors:isNotDisabledInChannel", { channel: channel.toString() }),
+						this.translate("exclude:errors:isNotDisabledInChannel", { channel: channel.toString() }),
 						"error",
 						"error"
 					);
@@ -297,7 +297,7 @@ export default class AimodCommand extends BaseCommand {
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/aimod:exclude:enabledInChannel", { channel: channel.toString() }),
+					this.translate("exclude:enabledInChannel", { channel: channel.toString() }),
 					"success",
 					"success"
 				);
@@ -306,7 +306,7 @@ export default class AimodCommand extends BaseCommand {
 			if (role) {
 				if (!data.guild.settings.aiModeration.excludedRoles.includes(role.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						this.translate("administration/aimod:exclude:errors:isNotDisabledForRole", { role: role.toString() }),
+						this.translate("exclude:errors:isNotDisabledForRole", { role: role.toString() }),
 						"error",
 						"error"
 					);
@@ -319,7 +319,7 @@ export default class AimodCommand extends BaseCommand {
 				await data.guild.save();
 
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/aimod:exclude:enabledForRole", { role: role.toString() }),
+					this.translate("exclude:enabledForRole", { role: role.toString() }),
 					"success",
 					"success"
 				);
@@ -344,8 +344,8 @@ export default class AimodCommand extends BaseCommand {
 				this.interaction,
 				10,
 				excludedChannelsAndRoles,
-				this.translate("administration/aimod:exclude:list:title"),
-				this.translate("administration/aimod:exclude:list:empty"),
+				this.translate("exclude:list:title"),
+				this.translate("exclude:list:empty"),
 				""
 			);
 		}
@@ -357,7 +357,7 @@ export default class AimodCommand extends BaseCommand {
 		await data.guild.save();
 
 		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/aimod:threshold:set", { threshold: number }),
+			this.translate("threshold:set", { threshold: number }),
 			"success",
 			"success",
 			number
@@ -371,7 +371,7 @@ export default class AimodCommand extends BaseCommand {
 		await data.guild.save();
 
 		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/aimod:channel:set", { channel: channel.toString() }),
+			this.translate("channel:set", { channel: channel.toString() }),
 			"success",
 			"success"
 		);
@@ -379,13 +379,13 @@ export default class AimodCommand extends BaseCommand {
 	}
 
 	private async explain(): Promise<void> {
-		const explainText: string = this.translate("administration/aimod:explain:text", {
+		const explainText: string = this.translate("explain:text", {
 			e: this.client.emotes,
 			clientname: this.client.user!.username
 		}).join("\n");
 
 		const embed: EmbedBuilder = this.client.createEmbed(explainText, null, "normal");
-		embed.setTitle(this.client.emotes.flags.CertifiedModerator + " " + this.translate("administration/aimod:explain:title"));
+		embed.setTitle(this.client.emotes.flags.CertifiedModerator + " " + this.translate("explain:title"));
 		return this.interaction.followUp({ embeds: [embed] });
 	}
 }

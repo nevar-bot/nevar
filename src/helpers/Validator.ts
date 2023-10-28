@@ -43,31 +43,28 @@ export default class Validator {
 		const config = toml.parse(fs.readFileSync("./config.toml", "utf-8"));
 
 		// Validate Mandatory Fields
-		this.checkMandatoryFields(
-			config,
-			[
-				["general", "BOT_TOKEN"],
-				["general", "MONGO_CONNECTION"],
-				["general", "WEBSITE"],
-				["support", "ID"],
-				["support", "INVITE"],
-				["support", "BOT_LOG"],
-				["support", "ERROR_LOG"],
-				["embeds", "FOOTER_TEXT"],
-				["embeds", "DEFAULT_COLOR"],
-				["embeds", "SUCCESS_COLOR"],
-				["embeds", "WARNING_COLOR"],
-				["embeds", "ERROR_COLOR"],
-				["embeds", "TRANSPARENT_COLOR"],
-			]
-		);
+		this.checkMandatoryFields(config, [
+			["general", "BOT_TOKEN"],
+			["general", "MONGO_CONNECTION"],
+			["general", "WEBSITE"],
+			["support", "ID"],
+			["support", "INVITE"],
+			["support", "BOT_LOG"],
+			["support", "ERROR_LOG"],
+			["embeds", "FOOTER_TEXT"],
+			["embeds", "DEFAULT_COLOR"],
+			["embeds", "SUCCESS_COLOR"],
+			["embeds", "WARNING_COLOR"],
+			["embeds", "ERROR_COLOR"],
+			["embeds", "TRANSPARENT_COLOR"]
+		]);
 
 		// Validate Type
 		this.validateType(
 			config,
 			[
 				["api", "ENABLED"],
-				["dashboard", "ENABLED"],
+				["dashboard", "ENABLED"]
 			],
 			"boolean"
 		);
@@ -79,35 +76,29 @@ export default class Validator {
 		}
 
 		if (config.dashboard["ENABLED"]) {
-			this.checkMandatoryFields(
-				config,
-				[
-					["dashboard", "PORT"],
-					["dashboard", "CALLBACK_URI"],
-					["dashboard", "CLIENT_SECRET"],
-					["dashboard", "SESSION_SECRET"],
-					["dashboard", "ENCRYPTION_KEY"],
-				]
-			);
+			this.checkMandatoryFields(config, [
+				["dashboard", "PORT"],
+				["dashboard", "CALLBACK_URI"],
+				["dashboard", "CLIENT_SECRET"],
+				["dashboard", "SESSION_SECRET"],
+				["dashboard", "ENCRYPTION_KEY"]
+			]);
 		}
 
 		// Validate Optional Fields
-		this.checkOptionalFields(
-			config,
-			[
-				["channels", "SERVER_COUNT_ID"],
-				["channels", "USER_COUNT_ID"],
-				["channels", "VOTE_COUNT_ID"],
-				["channels", "VOTE_ANNOUNCEMENT_ID"],
-				["apikeys", "TOP_GG"],
-				["apikeys", "TOP_GG_AUTH"],
-				["apikeys", "WEATHER"],
-				["apikeys", "OPENAI"],
-				["apikeys", "GOOGLE"],
-				["apikeys", "TWITCH_CLIENT_ID"],
-				["apikeys", "TWITCH_CLIENT_SECRET"],
-			]
-		);
+		this.checkOptionalFields(config, [
+			["channels", "SERVER_COUNT_ID"],
+			["channels", "USER_COUNT_ID"],
+			["channels", "VOTE_COUNT_ID"],
+			["channels", "VOTE_ANNOUNCEMENT_ID"],
+			["apikeys", "TOP_GG"],
+			["apikeys", "TOP_GG_AUTH"],
+			["apikeys", "WEATHER"],
+			["apikeys", "OPENAI"],
+			["apikeys", "GOOGLE"],
+			["apikeys", "TWITCH_CLIENT_ID"],
+			["apikeys", "TWITCH_CLIENT_SECRET"]
+		]);
 
 		Logger.success("TOML: Validated config file");
 	}

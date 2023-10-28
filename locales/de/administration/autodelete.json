@@ -1,7 +1,6 @@
 {
   "errors": {
-    "invalidChannelOrTime": "Du musst einen Channel und eine Zeit eingeben.",
-    "invalidChannel": "Du musst einen Channel eingeben.",
+    "missingChannelOrTime": "Du musst einen Channel und eine Zeit wählen.",
     "alreadySetInChannel": "In {{channel}} ist bereits ein Autodelete eingerichtet.",
     "notSetInChannel": "In {{channel}} ist kein Autodelete eingerichtet.",
     "timeLessThanOneSecond": "Die Zeit muss mindestens 1 Sekunde betragen.",

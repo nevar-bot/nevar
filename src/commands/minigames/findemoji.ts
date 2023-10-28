@@ -20,7 +20,6 @@ export default class FindemojiCommand extends BaseCommand {
 		});
 	}
 
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
@@ -54,11 +53,7 @@ class FindemojiGame extends BaseGame {
 		this.emojis = this.shuffleArray(this.emojis).slice(0, 8);
 		this.emoji = this.emojis[Math.floor(Math.random() * this.emojis.length)];
 
-		const findEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-			this.interaction.guild.translate("minigames/findemoji:text"),
-			"arrow",
-			"normal"
-		);
+		const findEmojiEmbed: EmbedBuilder = this.client.createEmbed(this.interaction.guild.translate("minigames/findemoji:text"), "arrow", "normal");
 		findEmojiEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		const msg: any = await this.sendMessage({

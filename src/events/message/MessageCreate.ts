@@ -264,19 +264,19 @@ export default class {
 				apiKey: this.client.config.apikeys["OPENAI"]
 			});
 
-			const messages: any = this.client.aiChat.get(message.guild.id)
+			const messages: any = this.client.aiChat.get(message.guild.id);
 			const response: OpenAI.Chat.Completions.ChatCompletion = await openai.chat.completions.create({
 				model: "gpt-3.5-turbo-16k",
 				messages: messages
 			});
 
-			if((response as any)?.status > 400 && (response as any)?.status < 500){
+			if ((response as any)?.status > 400 && (response as any)?.status < 500) {
 				message.reply({
 					content: this.client.emotes.error + " Error " + (response as any)?.status + ": " + (response as any)?.error.message
 				});
 
 				/* check if context is too long */
-				if((response as any).status === 400 && (response as any).error.code === "context_length_exceeded"){
+				if ((response as any).status === 400 && (response as any).error.code === "context_length_exceeded") {
 					/* remove old messages */
 					let messagesArray: any = this.client.aiChat.get(message.guild.id);
 					function removeOldestItems(arr: any, numItems: number): void {
@@ -297,15 +297,15 @@ export default class {
 				}
 			}
 
-			const responseMessage: string|null = response?.choices[0]?.message.content;
+			const responseMessage: string | null = response?.choices[0]?.message.content;
 
-			if(responseMessage){
+			if (responseMessage) {
 				this.client.aiChat.get(message.guild.id)!.push({
 					role: "assistant",
 					content: responseMessage
 				});
 				message.reply({ content: responseMessage });
-			}else{
+			} else {
 				message.reply({
 					content: this.client.emotes.error + " Das hat leider nicht funktioniert. Bitte versuche es später erneut."
 				});

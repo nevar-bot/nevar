@@ -7,7 +7,6 @@
     "cantFindChannel": "Der Kanal konnte nicht gefunden werden.",
     "missingStatus": "Du musst einen Status wählen.",
     "statusAlready": "Der YouTube-Notifier ist bereits {{status}}.",
-    "missingChannel": "Du musst einen Kanal auswählen.",
     "channelAlready": "YouTube-Videos werden bereits in {{channel}} gesendet."
   },
   "added": "[{{name}}]({{url}}) wird ab jetzt überwacht.",

@@ -19,7 +19,7 @@ declare module "discord.js" {
 
 Guild.prototype.translate = function (key: string, args: any = null): any {
 	// @ts-ignore
-	const language: any = this.client.locales.get(this.data?.locale || "de-DE");
+	const language: any = this.client.locales.get(this.data?.locale || "de");
 	return language(key, args);
 };
 

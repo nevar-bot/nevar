@@ -64,7 +64,11 @@ class FloodGame extends BaseGame {
 		this.maxTurns = Math.floor((25 * (this.length * 2)) / 26);
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
-			this.interaction.guild.translate("minigames/flood:embedDescription", { turns: this.turns, maxTurns: this.maxTurns, board: this.getBoardContent() }),
+			this.interaction.guild.translate("minigames/flood:embedDescription", {
+				turns: this.turns,
+				maxTurns: this.maxTurns,
+				board: this.getBoardContent()
+			}),
 			"arrow",
 			"normal"
 		);
@@ -92,7 +96,11 @@ class FloodGame extends BaseGame {
 			if (!update) return;
 
 			const embed: EmbedBuilder = this.options.client.createEmbed(
-				this.interaction.guild.translate("minigames/flood:embedDescription", { turns: this.turns, maxTurns: this.maxTurns, board: this.getBoardContent() }),
+				this.interaction.guild.translate("minigames/flood:embedDescription", {
+					turns: this.turns,
+					maxTurns: this.maxTurns,
+					board: this.getBoardContent()
+				}),
 				"arrow",
 				"normal"
 			);
@@ -117,16 +125,16 @@ class FloodGame extends BaseGame {
 
 	private endGame(msg: any, result: any): any {
 		const GameOverMessage: string = result
-			? this.interaction.guild.translate("minigames/flood:win", { turns: String(this.turns )})
+			? this.interaction.guild.translate("minigames/flood:win", { turns: String(this.turns) })
 			: this.interaction.guild.translate("minigames/flood:lose", { turns: String(this.turns) });
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
 			this.interaction.guild.translate("minigames/flood:end") +
-			this.options.client.emotes.arrow +
-			" " +
-			GameOverMessage +
-			"\n\n" +
-			this.getBoardContent(),
+				this.options.client.emotes.arrow +
+				" " +
+				GameOverMessage +
+				"\n\n" +
+				this.getBoardContent(),
 			"rocket",
 			"normal"
 		);

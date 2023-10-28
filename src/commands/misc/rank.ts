@@ -27,7 +27,7 @@ export default class RankCommand extends BaseCommand {
 	}
 
 	private async showRank(data: any): Promise<void> {
-		if(!data.guild.settings.levels.enabled){
+		if (!data.guild.settings.levels.enabled) {
 			return this.interaction.followUp({ content: this.client.emotes.error + " Das Levelsystem ist auf diesem Server deaktiviert." });
 		}
 
@@ -60,15 +60,14 @@ export default class RankCommand extends BaseCommand {
 			.setRequiredXP(userData.level.cleanNextLevelXp || 0);
 
 		rank.build().then((data: any): void => {
-			if(userData.level){
+			if (userData.level) {
 				const attachment: AttachmentBuilder = new AttachmentBuilder(data, {
 					name: "level-" + userData.user.id + ".png"
 				});
 				return this.interaction.followUp({ files: [attachment] });
-			}else{
+			} else {
 				return this.interaction.followUp({ content: this.client.emotes.error + " Der Nutzer hat noch keine XP gesammelt." });
 			}
-
 		});
 	}
 }

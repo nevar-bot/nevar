@@ -86,7 +86,7 @@ export default class AddstickerCommand extends BaseCommand {
 		/* No emoji or link given */
 		if (!stringIsUrl(url) || !urlIsImage(url) || !stringIsEmoji(emoji) || !nodeEmoji.find(emoji)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/addsticker:errors:invalidEmojiOrLink"),
+				this.translate("errors:invalidEmojiOrLink"),
 				"error",
 				"error"
 			);
@@ -99,10 +99,11 @@ export default class AddstickerCommand extends BaseCommand {
 		sticker.description = description;
 
 		try {
+			/* Create sticker */
 			await this.interaction.guild.stickers.create(sticker);
 			/* Created sticker */
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/addsticker:created", {
+				this.translate("created", {
 					sticker: name
 				}),
 				"success",
@@ -113,7 +114,7 @@ export default class AddstickerCommand extends BaseCommand {
 		} catch (e) {
 			/* Error while creating sticker */
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:unexpected", { support: this.client.support }),
+				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
 				"error",
 				"error"
 			);

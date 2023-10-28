@@ -15,13 +15,15 @@ export default class LetmegooglethatCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()
-					.addStringOption((option: any) => option
-						.setName("text")
-						.setDescription("Enter your search query")
-						.setDescriptionLocalizations({
-							de: "Gib deine Suchanfrage ein"
-						})
-						.setRequired(true))
+					.addStringOption((option: any) =>
+						option
+							.setName("text")
+							.setDescription("Enter your search query")
+							.setDescriptionLocalizations({
+								de: "Gib deine Suchanfrage ein"
+							})
+							.setRequired(true)
+					)
 					.addUserOption((option: any) =>
 						option
 							.setName("user")

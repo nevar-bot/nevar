@@ -371,9 +371,9 @@ export default class LevelsystemCommand extends BaseCommand {
 	private async setStatus(status: any, data: any): Promise<void> {
 		/* Status is already set */
 		if (data.guild.settings.levels.enabled === JSON.parse(status)) {
-			const text: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+			const text: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 			const infoEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:status:errors:isAlready", { status: text }),
+				this.translate("status:errors:alreadySet", { status: text }),
 				"error",
 				"error"
 			);
@@ -384,9 +384,9 @@ export default class LevelsystemCommand extends BaseCommand {
 		data.guild.settings.levels.enabled = JSON.parse(status);
 		data.guild.markModified("settings.levels.enabled");
 		await data.guild.save();
-		const text: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const text: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/levelsystem:status:set", { status: text }),
+			this.translate("status:set", { status: text }),
 			"success",
 			"success"
 		);
@@ -397,7 +397,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:channel:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -410,10 +410,10 @@ export default class LevelsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const text: string = channel
-			? this.translate("administration/levelsystem:channel:channelChosen", { channel: channel.toString() })
-			: this.translate("administration/levelsystem:channel:channelCurrent");
+			? this.translate("channel:selectedChannel", { channel: channel.toString() })
+			: this.translate("channel:currentChannel");
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/levelsystem:channel:set", { channel: text }),
+			this.translate("channel:set", { channel: text }),
 			"success",
 			"success"
 		);
@@ -424,7 +424,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:message:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -434,7 +434,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Message is too long */
 		if (message.length > 2000) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:message:errors:messageTooLong", { length: message.length }),
+				this.translate("message:errors:tooLong", { length: message.length }),
 				"error",
 				"error"
 			);
@@ -446,7 +446,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.levels.message");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/levelsystem:message:set"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("message:set"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -454,7 +454,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -464,7 +464,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Invalid options */
 		if (!role || !role.id || !level) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:missingLevelOrRole"),
+				this.translate("roles:errors:missingLevelOrRole"),
 				"error",
 				"error"
 			);
@@ -474,7 +474,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is already added */
 		if (data.guild.settings.levels.roles.find((r: any): boolean => r.role === role.id)) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:roleAlreadyAdded"),
+				this.translate("roles:errors:roleAlreadyAdded"),
 				"error",
 				"error"
 			);
@@ -484,7 +484,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is @everyone */
 		if (role.id === this.interaction.guild.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:cantUseEveryone"),
+				this.translate("roles:errors:cantUseEveryone"),
 				"error",
 				"error"
 			);
@@ -494,7 +494,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is managed */
 		if (role.managed) {
 			const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:cantUseManaged"),
+				this.translate("roles:errors:cantUseManaged"),
 				"error",
 				"error"
 			);
@@ -504,7 +504,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is too high */
 		if (this.interaction.guild.members.me.roles.highest.position <= role.position) {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:cantUseHigherRole", {
+				this.translate("roles:errors:cantUseHigherRole", {
 					role: role.toString(),
 					botrole: this.interaction.guild.members.me.roles.highest.toString()
 				}),
@@ -523,7 +523,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/levelsystem:roles:added", { role: role.toString() }),
+			this.translate("roles:added", { role: role.toString() }),
 			"success",
 			"success"
 		);
@@ -534,7 +534,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -544,7 +544,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Invalid options */
 		if (!role || !role.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:missingRole"),
+				this.translate("basics:errors:missingRole", {}, true),
 				"error",
 				"error"
 			);
@@ -554,7 +554,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is not a level role */
 		if (!data.guild.settings.levels.roles.find((r: any): boolean => r.role === role.id)) {
 			const isNoLevelroleEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:roles:errors:isNotAdded", { role: role.toString() }),
+				this.translate("roles:errors:isNotAdded", { role: role.toString() }),
 				"error",
 				"error"
 			);
@@ -567,7 +567,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/levelsystem:roles:removed", { role: role.toString() }),
+			this.translate("roles:removed", { role: role.toString() }),
 			"success",
 			"success"
 		);
@@ -583,13 +583,13 @@ export default class LevelsystemCommand extends BaseCommand {
 			if (cachedRole)
 				levelroles.push(
 					" " +
-						this.translate("administration/levelsystem:roles:list:role") +
+						this.translate("roles:list:role") +
 						": " +
 						cachedRole.toString() +
 						"\n" +
 						this.client.emotes.arrow +
 						" " +
-						this.translate("administration/levelsystem:roles:list:level") +
+						this.translate("roles:list:level") +
 						": " +
 						response[i].level
 				);
@@ -599,8 +599,8 @@ export default class LevelsystemCommand extends BaseCommand {
 			this.interaction,
 			5,
 			levelroles,
-			this.translate("administration/levelsystem:roles:list:title"),
-			this.translate("administration/levelsystem:roles:list:empty"),
+			this.translate("roles:list:title"),
+			this.translate("roles:list:empty"),
 			"ping"
 		);
 	}
@@ -609,7 +609,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:doublexp:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -619,7 +619,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Invalid options */
 		if (!role || !role.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:doublexp:errors:missingRole"),
+				this.translate("basics:errors:missingRole", {}, true),
 				"error",
 				"error"
 			);
@@ -629,7 +629,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is already added */
 		if (data.guild.settings.levels.doubleXP.includes(role.id)) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:doublexp:errors:alreadyAdded"),
+				this.translate("doublexp:errors:alreadyAdded"),
 				"error",
 				"error"
 			);
@@ -639,7 +639,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is @everyone */
 		if (role.id === this.interaction.guild.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:doublexp:errors:cantUseEveryone"),
+				this.translate("doublexp:errors:cantUseEveryone"),
 				"error",
 				"error"
 			);
@@ -649,7 +649,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is managed */
 		if (role.managed) {
 			const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:doublexp:errors:cantUseManaged"),
+				this.translate("doublexp:errors:cantUseManaged"),
 				"error",
 				"error"
 			);
@@ -662,7 +662,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/levelsystem:doublexp:added", { role: role.toString() }),
+			this.translate("doublexp:added", { role: role.toString() }),
 			"success",
 			"success"
 		);
@@ -673,7 +673,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:doublexp:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -683,7 +683,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Invalid options */
 		if (!role || !role.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:doublexp:errors:missingRole"),
+				this.translate("basics:errors:missingRole", {}, true),
 				"error",
 				"error"
 			);
@@ -693,7 +693,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is not a double xp role */
 		if (!data.guild.settings.levels.doubleXP.includes(role.id)) {
 			const isNoDoubleXPRoleEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:doublexp:errors:notAdded", { role: role.toString() }),
+				this.translate("doublexp:errors:notAdded", { role: role.toString() }),
 				"error",
 				"error",
 				role
@@ -709,7 +709,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/levelsystem:doublexp:removed", { role: role.toString() }),
+			this.translate("doublexp:removed", { role: role.toString() }),
 			"success",
 			"success"
 		);
@@ -729,8 +729,8 @@ export default class LevelsystemCommand extends BaseCommand {
 			this.interaction,
 			5,
 			doublexpRoles,
-			this.translate("administration/levelsystem:doublexp:list:title"),
-			this.translate("administration/levelsystem:doublexp:list:empty"),
+			this.translate("doublexp:list:title"),
+			this.translate("doublexp:list:empty"),
 			"ping"
 		);
 	}
@@ -739,7 +739,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:xp:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -749,7 +749,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Min is higher than max */
 		if (min > max) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:xp:errors:minCantBeHigherThanMax"),
+				this.translate("xp:errors:minCantBeHigherThanMax"),
 				"error",
 				"error"
 			);
@@ -765,7 +765,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/levelsystem:xp:set", { min: min, max: max }),
+			this.translate("xp:set", { min: min, max: max }),
 			"success",
 			"success"
 		);
@@ -773,13 +773,13 @@ export default class LevelsystemCommand extends BaseCommand {
 	}
 
 	private async listVariables(): Promise<void> {
-		const variables: string[] = this.translate("administration/levelsystem:variables:list");
+		const variables: string[] = this.translate("variables:list");
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
 			10,
 			variables,
-			this.translate("administration/levelsystem:variables:title"),
-			this.translate("administration/levelsystem:variables:empty"),
+			this.translate("variables:title"),
+			this.translate("variables:empty"),
 			"shine"
 		);
 	}
@@ -788,7 +788,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:preview:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -798,7 +798,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* No message set */
 		if (!data.guild.settings.levels.message) {
 			const noMessageEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:preview:errors:noMessageSet"),
+				this.translate("preview:errors:noMessageSet"),
 				"error",
 				"error"
 			);
@@ -825,14 +825,14 @@ export default class LevelsystemCommand extends BaseCommand {
 		try {
 			await channel.send({ content: message });
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:preview:sent"),
+				this.translate("preview:sent"),
 				"success",
 				"success"
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} catch (e) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:preview:errors:cantSend"),
+				this.translate("preview:errors:cantSend"),
 				"error",
 				"error"
 			);
@@ -853,7 +853,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:exclude:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -864,7 +864,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* No channel or role set */
 		if (!toExclude || (toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:exclude:errors:missingChannelOrRole"),
+				this.translate("basics:errors:missingChannelOrRole", {}, true),
 				"error",
 				"error"
 			);
@@ -875,7 +875,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			/* Channel is already on the blacklist */
 			if (data.guild.settings.levels.exclude.channels.includes(toExclude.id)) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/levelsystem:exclude:errors:alreadyAdded", { item: toExclude.toString() }),
+					this.translate("exclude:errors:alreadyAdded", { item: toExclude.toString() }),
 					"error",
 					"error"
 				);
@@ -887,7 +887,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			data.guild.markModified("settings.levels.exclude.channels");
 			await data.guild.save();
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:exclude:added", { item: toExclude.toString() }),
+				this.translate("exclude:added", { item: toExclude.toString() }),
 				"success",
 				"success"
 			);
@@ -896,7 +896,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			/* Role is already on the blacklist */
 			if (data.guild.settings.levels.exclude.roles.includes(toExclude.id)) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/levelsystem:exclude:errors:alreadyAdded", { item: toExclude.toString() }),
+					this.translate("exclude:errors:alreadyAdded", { item: toExclude.toString() }),
 					"error",
 					"error"
 				);
@@ -906,7 +906,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			/* Role is @everyone */
 			if (toExclude.id === this.interaction.guild.roles.everyone.id) {
 				const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/levelsystem:exclude:errors:cantUseEveryone"),
+					this.translate("exclude:errors:cantUseEveryone"),
 					"error",
 					"error"
 				);
@@ -916,7 +916,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			/* Role is managed */
 			if (toExclude.managed) {
 				const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/levelsystem:exclude:errors:cantUseManaged"),
+					this.translate("exclude:errors:cantUseManaged"),
 					"error",
 					"error"
 				);
@@ -930,7 +930,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			data.guild.markModified("settings.levels.exclude.roles");
 			await data.guild.save();
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:exclude:added", { item: toExclude.toString() }),
+				this.translate("exclude:added", { item: toExclude.toString() }),
 				"success",
 				"success"
 			);
@@ -951,7 +951,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:exclude:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -962,7 +962,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* No channel or role set */
 		if (!toExclude || (toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:exclude:errors:missingChannelOrRole"),
+				this.translate("basics:errors:missingChannelOrRole", {}, true),
 				"error",
 				"error"
 			);
@@ -973,7 +973,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			/* Channel is not on the blacklist */
 			if (!data.guild.settings.levels.exclude.channels.includes(toExclude.id)) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/levelsystem:exclude:errors:notAdded", { item: toExclude.toString() }),
+					this.translate("exclude:errors:notAdded", { item: toExclude.toString() }),
 					"error",
 					"error",
 					toExclude
@@ -986,7 +986,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			data.guild.markModified("settings.levels.exclude.channels");
 			await data.guild.save();
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:exclude:removed", { item: toExclude.toString() }),
+				this.translate("exclude:removed", { item: toExclude.toString() }),
 				"success",
 				"success",
 				toExclude
@@ -996,7 +996,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			/* Role is not on the blacklist */
 			if (!data.guild.settings.levels.exclude.roles.includes(toExclude.id)) {
 				const errorEmbed = this.client.createEmbed(
-					this.translate("administration/levelsystem:exclude:errors:notAdded", { item: toExclude.toString() }),
+					this.translate("exclude:errors:notAdded", { item: toExclude.toString() }),
 					"error",
 					"error",
 					toExclude
@@ -1009,7 +1009,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			data.guild.markModified("settings.levels.exclude.roles");
 			await data.guild.save();
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/levelsystem:exclude:removed", { item: toExclude.toString() }),
+				this.translate("exclude:removed", { item: toExclude.toString() }),
 				"success",
 				"success",
 				toExclude
@@ -1045,8 +1045,8 @@ export default class LevelsystemCommand extends BaseCommand {
 			this.interaction,
 			5,
 			excluded,
-			this.translate("administration/levelsystem:exclude:list:title"),
-			this.translate("administration/levelsystem:exclude:list:empty"),
+			this.translate("exclude:list:title"),
+			this.translate("exclude:list:empty"),
 			null
 		);
 	}

@@ -100,7 +100,7 @@ export default class Join2CreateCommand extends BaseCommand {
 		data.guild.markModified("settings.joinToCreate");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/join2create:set"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("set"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

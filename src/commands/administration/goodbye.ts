@@ -205,9 +205,9 @@ export default class GoodbyeCommand extends BaseCommand {
 
 	private async setStatus(status: any, data: any): Promise<void> {
 		if (data.guild.settings.farewell.enabled === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:alreadyStatus", { status: statusString }),
+				this.translate("status:errors:alreadySet", { status: statusString }),
 				"error",
 				"error"
 			);
@@ -218,9 +218,9 @@ export default class GoodbyeCommand extends BaseCommand {
 		data.guild.markModified("settings.farewell.enabled");
 		await data.guild.save();
 
-		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/goodbye:statusSet", { status: statusString }),
+			this.translate("status:set", { status: statusString }),
 			"success",
 			"success"
 		);
@@ -230,7 +230,7 @@ export default class GoodbyeCommand extends BaseCommand {
 	private async sendPreview(data: any): Promise<void> {
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -238,7 +238,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 		if (!data.guild.settings.farewell.channel || !this.client.channels.cache.get(data.guild.settings.farewell.channel)) {
 			const noChannelEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:noChannelSet"),
+				this.translate("preview:errors:noChannel"),
 				"error",
 				"error"
 			);
@@ -246,14 +246,14 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 		if (!data.guild.settings.farewell.message) {
 			const noMessageEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:noMessageSet"),
+				this.translate("preview:errors:noMessage"),
 				"error",
 				"error"
 			);
 			return this.interaction.followUp({ embeds: [noMessageEmbed] });
 		}
 		if (!data.guild.settings.farewell.type) {
-			const noTypeEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:errors:noTypeSet"), "error", "error");
+			const noTypeEmbed: EmbedBuilder = this.client.createEmbed(this.translate("preview:errors:noType"), "error", "error");
 			return this.interaction.followUp({ embeds: [noTypeEmbed] });
 		}
 
@@ -293,14 +293,14 @@ export default class GoodbyeCommand extends BaseCommand {
 			await channel.send({ content: message }).catch((e: any): void => {});
 		}
 
-		const testExecutedEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:testSent"), "success", "success");
+		const testExecutedEmbed: EmbedBuilder = this.client.createEmbed(this.translate("preview:sent"), "success", "success");
 		return this.interaction.followUp({ embeds: [testExecutedEmbed] });
 	}
 
 	private async setChannel(channel: any, data: any): Promise<void> {
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -312,7 +312,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/goodbye:channelSet", { channel: channel.toString() }),
+			this.translate("channel:set", { channel: channel.toString() }),
 			"success",
 			"success"
 		);
@@ -322,7 +322,7 @@ export default class GoodbyeCommand extends BaseCommand {
 	private async setType(type: any, data: any): Promise<any> {
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -331,9 +331,9 @@ export default class GoodbyeCommand extends BaseCommand {
 
 		if (data.guild.settings.farewell.type === type) {
 			const statusString: string =
-				type === "embed" ? this.translate("administration/goodbye:types:embed") : this.translate("administration/goodbye:types:text");
+				type === "embed" ? this.translate("type:embed") : this.translate("type:text");
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:sameType", { type: statusString }),
+				this.translate("type:errors:alreadySet", { type: statusString }),
 				"error",
 				"error",
 				statusString
@@ -346,9 +346,9 @@ export default class GoodbyeCommand extends BaseCommand {
 		await data.guild.save();
 
 		const statusString: string =
-			type === "embed" ? this.translate("administration/goodbye:types:embed") : this.translate("administration/goodbye:types:text");
+			type === "embed" ? this.translate("type:embed") : this.translate("type:text");
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/goodbye:typeSet", { type: statusString }),
+			this.translate("type:set", { type: statusString }),
 			"success",
 			"success",
 			statusString
@@ -359,7 +359,7 @@ export default class GoodbyeCommand extends BaseCommand {
 	private async setMessage(message: string, data: any): Promise<void> {
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -370,18 +370,18 @@ export default class GoodbyeCommand extends BaseCommand {
 		data.guild.markModified("settings.farewell.message");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("administration/goodbye:messageSet"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("message:set"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async showVariables(): Promise<void> {
-		const variables: string[] = this.translate("administration/goodbye:variables:list");
+		const variables: string[] = this.translate("variables:list");
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
 			10,
 			variables,
-			this.translate("administration/goodbye:variables:title"),
-			this.translate("administration/goodbye:variables:empty"),
+			this.translate("variables:title"),
+			this.translate("variables:empty"),
 			"shine"
 		);
 	}
@@ -394,7 +394,7 @@ export default class GoodbyeCommand extends BaseCommand {
 
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -403,7 +403,7 @@ export default class GoodbyeCommand extends BaseCommand {
 
 		if (data.guild.settings.farewell.type === "text") {
 			const embedNotEnabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:typeHasToBeEmbed"),
+				this.translate("thumbnail:errors:typeNotEmbed"),
 				"error",
 				"error"
 			);
@@ -411,9 +411,9 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 
 		if (data.guild.settings.farewell.thumbnail === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:sameTypeThumbnail", { status: statusString }),
+				this.translate("thumbnail:errors:alreadySet", { status: statusString }),
 				"error",
 				"error"
 			);
@@ -424,9 +424,9 @@ export default class GoodbyeCommand extends BaseCommand {
 		data.guild.markModified("settings.farewell.thumbnail");
 		await data.guild.save();
 
-		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/goodbye:thumbnailSet", { status: statusString }),
+			this.translate("thumbnail:set", { status: statusString }),
 			"success",
 			"success"
 		);
@@ -441,7 +441,7 @@ export default class GoodbyeCommand extends BaseCommand {
 
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:isDisabled"),
+				this.translate("errors:disabled"),
 				"error",
 				"error"
 			);
@@ -450,7 +450,7 @@ export default class GoodbyeCommand extends BaseCommand {
 
 		if (data.guild.settings.farewell.type === "text") {
 			const embedNotEnabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:errors:typeHasToBeEmbed"),
+				this.translate("color:errors:typeNotEmbed"),
 				"error",
 				"error"
 			);
@@ -458,7 +458,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		} else if (data.guild.settings.farewell.type === "embed") {
 			if (!this.client.utils.stringIsHexColor(color)) {
 				const invalidColorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("administration/goodbye:errors:invalidColor"),
+					this.translate("color:errors:colorNotHex"),
 					"error",
 					"error"
 				);
@@ -472,7 +472,7 @@ export default class GoodbyeCommand extends BaseCommand {
 			await data.guild.save();
 
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("administration/goodbye:colorSet", { color: color }),
+				this.translate("color:set", { color: color }),
 				"success",
 				"success"
 			);
