@@ -37,7 +37,7 @@ export default class MemeCommand extends BaseCommand {
 		memes = [...this.client.utils.shuffleArray(memes)];
 
 		const reloadId: string = member.user.id + "_reload";
-		const reloadButton: ButtonBuilder = this.client.createButton(reloadId, this.translate("fun/meme:reload"), "Secondary", "loading");
+		const reloadButton: ButtonBuilder = this.client.createButton(reloadId, this.translate("reload"), "Secondary", "loading");
 
 		function generateMemeEmbed(): EmbedBuilder {
 			const meme = memes[Math.floor(Math.random() * memes.length)];

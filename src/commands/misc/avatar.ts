@@ -44,7 +44,7 @@ export default class AvatarCommand extends BaseCommand {
 		const x2048 = user.displayAvatarURL({ extension: "png", size: 2048 });
 
 		const avatarEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("misc/avatar:links") + " [x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
+			this.translate("links") + " [x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
 			null,
 			"normal",
 			x64,
@@ -54,7 +54,7 @@ export default class AvatarCommand extends BaseCommand {
 			x1024,
 			x2048
 		);
-		avatarEmbed.setTitle(this.translate("misc/avatar:title", { user: user.displayName }));
+		avatarEmbed.setTitle(this.translate("title", { user: user.displayName }));
 		avatarEmbed.setImage(x256);
 
 		return this.interaction.followUp({ embeds: [avatarEmbed] });

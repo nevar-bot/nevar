@@ -28,7 +28,7 @@ export default class LeaderboardCommand extends BaseCommand {
 	private async sendLeaderboard(data: any): Promise<any> {
 		if (!data.guild.settings.levels.enabled) {
 			return this.interaction.followUp({
-				content: this.client.emotes.error + " " + this.translate("misc/leaderboard:errors:levelsystemIsDisabled")
+				content: this.client.emotes.error + " " + this.translate("errors:isDisabled")
 			});
 		}
 
@@ -54,7 +54,7 @@ export default class LeaderboardCommand extends BaseCommand {
 					"\n" +
 					this.client.emotes.shine2 +
 					" " +
-					this.translate("misc/leaderboard:level") +
+					this.translate("level") +
 					" " +
 					user.level +
 					"\n" +
@@ -64,13 +64,13 @@ export default class LeaderboardCommand extends BaseCommand {
 					" / " +
 					this.client.format(this.client.levels.xpFor(user.level + 1)) +
 					" " +
-					this.translate("misc/leaderboard:xp")
+					this.translate("xp")
 			);
 		}
 		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(beautifiedLeaderboard.join("\n\n"), null, "normal");
 		leaderboardEmbed.setThumbnail(this.interaction.guild.iconURL());
 		if (beautifiedLeaderboard.length === 0)
-			leaderboardEmbed.setDescription(this.client.emotes.error + " " + this.translate("misc/leaderboard:errors:noXp"));
+			leaderboardEmbed.setDescription(this.client.emotes.error + " " + this.translate("errors:noXp"));
 		return this.interaction.followUp({ embeds: [leaderboardEmbed] });
 	}
 }

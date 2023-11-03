@@ -6,46 +6,69 @@ export default class DeletedataCommand extends BaseCommand {
 	constructor(client: BaseClient) {
 		super(client, {
 			name: "deletedata",
-			description: "Löscht deine Daten aus unserer Datenbank",
+			description: "Deletes your data from our database",
+			localizedDescriptions: {
+				de: "Löscht deine Daten aus unserer Datenbank",
+			},
 			cooldown: 5000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
-						option.setName("daten").setDescription("Wähle, welche Daten wir löschen sollen").setRequired(true).addChoices(
+						option.setName("data")
+							.setDescription("Choose which data we should delete")
+							.setDescriptionLocalizations({
+								de: "Wähle, welche Daten wir löschen sollen"
+							})
+							.setRequired(true)
+							.addChoices(
 							{
-								name: "deine Nutzerdaten auf allen Servern",
+								name: "your user data on all servers",
+								nameLocalizations: {
+									de: "deine Nutzerdaten auf allen Servern"
+								},
 								value: "user"
 							},
 							{
-								name: "deine Mitgliedsdaten auf diesem Server",
+								name: "your membership data on this server",
+								nameLocalizations: {
+									de: "deine Mitgliedsdaten auf diesem Server"
+								},
 								value: "member"
 							},
 							{
-								name: "Daten dieses Servers",
+								name: "data of this server",
+								nameLocalizations: {
+									de: "Daten dieses Servers"
+								},
 								value: "guild"
 							}
 						)
 					)
 					.addStringOption((option: any) =>
-						option.setName("grund").setDescription("Teile uns gerne deinen Grund mit, damit wir uns verbessern können").setRequired(false)
+						option.setName("reason")
+							.setDescription("Please let us know your reason so that we can improve")
+							.setDescriptionLocalizations({
+								de: "Teile uns gerne deinen Grund mit, damit wir uns verbessern können"
+							})
+							.setRequired(false)
 					)
 			}
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.deleteData(interaction.member, interaction.options.getString("daten"), interaction.options.getString("grund"), data);
+		this.guild = interaction.guild;
+		await this.deleteData(interaction.member, interaction.options.getString("data"), interaction.options.getString("reason"), data);
 	}
 
 	private async deleteData(member: any, type: any, reason: any, data: any): Promise<any> {
 		if (type === "guild" && (await this.interaction.guild.fetchOwner()).user.id !== this.interaction.user.id) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				"Nur der Eigentümer dieses Servers kann die Serverdaten löschen",
+				this.translate("errors:ownerOnly"),
 				"error",
 				"error"
 			);
@@ -53,39 +76,24 @@ export default class DeletedataCommand extends BaseCommand {
 		}
 
 		const typeAffects: any = {
-			user: ["AFK-Daten", "Partner-Daten", "Bug-Hunter-Daten"],
-			member: ["Abstimmungs-Daten", "eingestellte Erinnerungen", "dein Level"],
-			guild: [
-				"Log-Channel",
-				"Join2Create",
-				"Ideen-Channel",
-				"alle Level-Einstellungen",
-				"Willkommensnachricht",
-				"Verabschiedungsnachricht",
-				"Mute-Rolle",
-				"Autodelete",
-				"Autoreact",
-				"Reactionroles",
-				"AI-gestützte Chatmoderation",
-				"AI-Chat"
-			]
+			user: this.translate("affected:user"),
+			member: this.translate("affected:member"),
+			guild: this.translate("affected:guild")
 		};
 
 		const types: any = {
-			user: "deine Nutzerdaten auf allen Servern",
-			member: "deine Mitgliedsdaten auf diesem Server",
-			guild: "die Daten dieses Servers"
+			user: this.translate("typeDescriptions:user"),
+			member: this.translate("typeDescriptions:member"),
+			guild: this.translate("typeDescriptions:guild")
 		};
 
 		const confirmationEmbed: EmbedBuilder = this.client.createEmbed(
-			"Bist du dir sicher, dass du **{0}** löschen möchtest? Folgende Daten sind davon betroffen:\n\n**{1}**",
+			this.translate("confirmation", { type: types[type], affected: this.client.emotes.arrow + " " + typeAffects[type].join("\n" + this.client.emotes.arrow + " ") }),
 			"warning",
-			"warning",
-			types[type],
-			this.client.emotes.arrow + " " + typeAffects[type].join("\n" + this.client.emotes.arrow + " ")
+			"warning"
 		);
-		const buttonYes: ButtonBuilder = this.client.createButton("yes", "Ja", "Success", "success");
-		const buttonNo: ButtonBuilder = this.client.createButton("no", "Nein", "Danger", "error");
+		const buttonYes: ButtonBuilder = this.client.createButton("yes", this.translate("basics:yes", {}, true), "Success", "success");
+		const buttonNo: ButtonBuilder = this.client.createButton("no", this.translate("basics:no", {}, true), "Danger", "error");
 		const buttonRow: any = this.client.createMessageComponentsRow(buttonYes, buttonNo);
 		const confirmationMessage: any = await this.interaction.followUp({
 			embeds: [confirmationEmbed],
@@ -100,7 +108,7 @@ export default class DeletedataCommand extends BaseCommand {
 
 		collector.on("collect", async (button: any): Promise<any> => {
 			if (button.customId === "no") {
-				const cancelEmbed: EmbedBuilder = this.client.createEmbed("Die Daten wurden **nicht** gelöscht.", "error", "error");
+				const cancelEmbed: EmbedBuilder = this.client.createEmbed(this.translate("noConfirmation"), "error", "error");
 				await button.update({ embeds: [cancelEmbed], components: [] });
 				return collector.stop();
 			}
@@ -115,7 +123,7 @@ export default class DeletedataCommand extends BaseCommand {
 					newUserdata.markModified("blocked");
 					await newUserdata.save();
 				}
-				const successEmbed: EmbedBuilder = this.client.createEmbed("Deine Nutzerdaten wurden erfolgreich gelöscht.", "success", "success");
+				const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("deleted:user"), "success", "success");
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
 				return this.client.alert(
@@ -141,7 +149,7 @@ export default class DeletedataCommand extends BaseCommand {
 					await newMemberdata.save();
 				}
 
-				const successEmbed: EmbedBuilder = this.client.createEmbed("Deine Mitgliedsdaten wurden erfolgreich gelöscht.", "success", "success");
+				const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("deleted:member"), "success", "success");
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
 				return this.client.alert(
@@ -166,7 +174,7 @@ export default class DeletedataCommand extends BaseCommand {
 					await newGuilddata.save();
 				}
 
-				const successEmbed: EmbedBuilder = this.client.createEmbed("Die Serverdaten wurden erfolgreich gelöscht.", "success", "success");
+				const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("deleted:guild"), "success", "success");
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
 				return this.client.alert(

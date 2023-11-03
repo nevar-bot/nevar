@@ -53,19 +53,19 @@ export default class MyinvitesCommand extends BaseCommand {
 					"\n" +
 					this.client.emotes.users +
 					" " +
-					this.translate("misc/myinvites:usages") +
+					this.translate("usages") +
 					": **" +
 					invite.uses +
 					"**\n" +
 					this.client.emotes.leave +
 					" " +
-					this.translate("misc/myinvites:guildLeft") +
+					this.translate("guildLeft") +
 					": **" +
 					(invite.left || 0) +
 					"**\n" +
 					this.client.emotes.error +
 					" " +
-					this.translate("misc/myinvites:fake") +
+					this.translate("fake") +
 					": **" +
 					(invite.fake || 0) +
 					"**\n"
@@ -76,8 +76,8 @@ export default class MyinvitesCommand extends BaseCommand {
 			this.interaction,
 			5,
 			invitesData,
-			this.translate("misc/myinvites:yourInvites"),
-			this.translate("misc/myinvites:noInvites"),
+			this.translate("yourInvites"),
+			this.translate("noInvites"),
 			null
 		);
 	}

@@ -8,7 +8,7 @@ const MEMBER_MENTION: RegExp = /<?@?!?(\d{17,20})>?/;
 
 declare module "discord.js" {
 	interface Guild {
-		translate(key: string): any;
+		translate(key: string, args: any): any;
 		findMatchingChannels(query: string, type?: ChannelType[]): any;
 		findMatchingRoles(query: string): any;
 		resolveMember(query: string, exact?: boolean): Promise<any>;

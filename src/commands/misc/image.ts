@@ -36,7 +36,7 @@ export default class ImageCommand extends BaseCommand {
 
 	private async generateImage(text: string): Promise<void> {
 		const answerMessage: any = await this.interaction.followUp({
-			content: this.client.emotes.loading + " " + this.translate("misc/image:generating")
+			content: this.client.emotes.loading + " " + this.translate("generating")
 		});
 
 		const openai: OpenAI = new OpenAI({

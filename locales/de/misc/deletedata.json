@@ -1,0 +1,43 @@
+{
+  "errors": {
+    "ownerOnly": "Nur der Eigentümer dieses Servers kann die Serverdaten löschen."
+  },
+  "typeDescriptions" : {
+    "user": "deine Nutzerdaten auf allen Servern",
+    "member": "deine Mitgliedsdaten auf diesem Server",
+    "guild": "die Daten dieses Servers"
+  },
+  "affected": {
+    "user": [
+      "AFK-Daten",
+      "Partner-Daten",
+      "Bug-Hunter-Daten"
+    ],
+    "member": [
+      "Abstimmungs-Daten",
+      "eingestellte Erinnerungen",
+      "dein Level"
+    ],
+    "guild": [
+      "Log-Channel",
+      "Join2Create",
+      "Ideen-Channel",
+      "alle Level-Einstellungen",
+      "Willkommensnachricht",
+      "Verabschiedungsnachricht",
+      "Mute-Rolle",
+      "Autodelete",
+      "Autoreact",
+      "Reactionroles",
+      "AI-gestützte Chatmoderation",
+      "AI-Chat"
+    ]
+  },
+  "confirmation": "Bist du dir sicher, dass du **{{type}}** löschen möchtest? Folgende Daten sind davon betroffen:\n\n**{{affected}}**",
+  "noConfirmation": "Die Daten wurden **nicht** gelöscht.",
+  "deleted": {
+    "user": "Deine Nutzerdaten wurden erfolgreich gelöscht.",
+    "member": "Deine Mitgliedsdaten wurden erfolgreich gelöscht.",
+    "guild": "Die Serverdaten wurden erfolgreich gelöscht."
+  }
+}

@@ -46,8 +46,8 @@ export default class LetmegooglethatCommand extends BaseCommand {
 	private async googleThat(text: string, user: any = null): Promise<void> {
 		const searchUrl: string = "https://google.com/search?q=" + encodeURIComponent(text);
 		const googleText: string = user
-			? this.translate("fun/letmegooglethat:searchFor", { user: user.displayName, text, searchUrl })
-			: this.translate("fun/letmegooglethat:search", { text, searchUrl });
+			? this.translate("searchFor", { user: user.displayName, text, searchUrl })
+			: this.translate("search", { text, searchUrl });
 		const letMeGoogleThatEmbed: EmbedBuilder = this.client.createEmbed(googleText, "search", "normal", text, searchUrl);
 		return this.interaction.followUp({ embeds: [letMeGoogleThatEmbed] });
 	}

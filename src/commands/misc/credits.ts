@@ -45,7 +45,7 @@ export default class CreditsCommand extends BaseCommand {
 
 		const creditsEmbed: EmbedBuilder = this.client.createEmbed(creditsString, null, "normal");
 		creditsEmbed.setThumbnail(this.client.user!.displayAvatarURL());
-		creditsEmbed.setTitle(this.translate("misc/credits:title", { name: this.client.user!.username }));
+		creditsEmbed.setTitle(this.translate("title", { name: this.client.user!.username }));
 
 		return this.interaction.followUp({ embeds: [creditsEmbed] });
 	}

@@ -64,6 +64,6 @@ export default class BaseCommand {
 		let languageKey: string = key;
 		if (!isFullPath) languageKey = this.help.category.toLowerCase() + "/" + this.help.name + ":" + key;
 		if (!this.guild) return "Please provide a guild!";
-		return this.guild.translate(languageKey, args);
+		return this.guild.translate(languageKey, args, true);
 	}
 }

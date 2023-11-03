@@ -30,7 +30,7 @@ export default class EightballCommand extends BaseCommand {
 	}
 
 	private async getAnswer(): Promise<void> {
-		const eightBallAnswers: string[] = this.translate("fun/8ball:answers");
+		const eightBallAnswers: string[] = this.translate("answers");
 		const randomAnswer: string = eightBallAnswers[Math.floor(Math.random() * eightBallAnswers.length)];
 		const eightBallEmbed: EmbedBuilder = this.client.createEmbed("{0}", "question", "normal", randomAnswer);
 		return this.interaction.followUp({ embeds: [eightBallEmbed] });

@@ -36,11 +36,11 @@ export default class AfkCommand extends BaseCommand {
 	private async setAfk(member: any, reason: string, data: any) {
 		if (data.user.afk.state) {
 			const afkSince: any = data.user.afk.since;
-			const reason: string = data.user.afk.reason || this.translate("misc/afk:noReason");
+			const reason: string = data.user.afk.reason || this.translate("noReason");
 
 			const relativeTime: string = this.client.utils.getDiscordTimestamp(afkSince, "f");
 			const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("misc/afk:welcomeBack", { time: relativeTime, reason }),
+				this.translate("welcomeBack", { time: relativeTime, reason }),
 				"reminder",
 				"normal"
 			);
@@ -65,7 +65,7 @@ export default class AfkCommand extends BaseCommand {
 		await data.user.save();
 
 		const afkEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("misc/afk:afk", { reason: reason || this.translate("misc/afk:noReason") }),
+			this.translate("afk", { reason: reason || this.translate("noReason") }),
 			"reminder",
 			"normal"
 		);

@@ -90,7 +90,7 @@ export default class PrideCommand extends BaseCommand {
 		});
 
 		const prideAvatarEmbed: EmbedBuilder = this.client.createEmbed("", "", "normal");
-		prideAvatarEmbed.setTitle(this.translate("fun/pride:text", { user: user.displayName }));
+		prideAvatarEmbed.setTitle(this.translate("text", { user: user.displayName }));
 		prideAvatarEmbed.setImage("attachment://pride.png");
 
 		return this.interaction.followUp({
