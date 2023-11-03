@@ -1,6 +1,7 @@
 import { Guild, ChannelType, Collection, GuildBasedChannel, Role, GuildMember, EmbedBuilder } from "discord.js";
 import BaseClient from "@structures/BaseClient";
 import i18next from "i18next";
+import guildDelete from "@events/guild/GuildDelete";
 
 const ROLE_MENTION: RegExp = /<?@?&?(\d{17,20})>?/;
 const CHANNEL_MENTION: RegExp = /<?#?(\d{17,20})>?/;
@@ -19,7 +20,10 @@ declare module "discord.js" {
 
 Guild.prototype.translate = function (key: string, args: any = null): any {
 	// @ts-ignore
-	const language: any = this.client.locales.get(this.data?.locale || "de");
+	let guildLocale: string = this.data?.locale || "de";
+	if(guildLocale.includes("-")) guildLocale = guildLocale.split("-")[0];
+	// @ts-ignore
+	const language: any = this.client.locales.get(guildLocale);
 	return language(key, args);
 };
 
