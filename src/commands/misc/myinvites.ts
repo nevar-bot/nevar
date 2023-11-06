@@ -31,7 +31,7 @@ export default class MyinvitesCommand extends BaseCommand {
 		const memberInvites: any = guildInvites.filter((i: any): boolean => i.inviterId === memberData.id);
 		for (let invite of memberInvites.values()) {
 			if (!this.client.invites.get(this.interaction.guild.id).has(invite.code))
-				this.client.invites.get(this.interaction.guild.id).set(invite.code, invite.uses);
+				this.client.invites.get(this.interaction.guild.id).set(invite.code, { uses: invite.uses, inviterId: invite.inviterId });
 			if (!memberData.invites) memberData.invites = [];
 			if (!memberData.invites.find((i: any): boolean => i.code === invite.code))
 				memberData.invites.push({
@@ -39,6 +39,7 @@ export default class MyinvitesCommand extends BaseCommand {
 					uses: invite.uses,
 					fake: 0
 				});
+			memberData.invites.find((i: any): boolean => i.code === invite.code).uses = invite.uses;
 		}
 		memberData.markModified("invites");
 		await memberData.save();
@@ -47,7 +48,7 @@ export default class MyinvitesCommand extends BaseCommand {
 		for (const invite of invites) {
 			invitesData.push(
 				"### " +
-					this.client.emotes.invite +
+					this.client.emotes.link +
 					" discord.gg/" +
 					invite.code +
 					"\n" +
@@ -74,7 +75,7 @@ export default class MyinvitesCommand extends BaseCommand {
 
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
-			5,
+			3,
 			invitesData,
 			this.translate("yourInvites"),
 			this.translate("noInvites"),
