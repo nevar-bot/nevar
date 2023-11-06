@@ -41,6 +41,7 @@ export default class MyinvitesCommand extends BaseCommand {
 				});
 			memberData.invites.find((i: any): boolean => i.code === invite.code).uses = invite.uses;
 		}
+		memberData.invites = memberData.invites.filter((i: any): boolean => guildInvites.has(i.code));
 		memberData.markModified("invites");
 		await memberData.save();
 		const invites = memberData.invites;
