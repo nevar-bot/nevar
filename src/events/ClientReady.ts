@@ -98,8 +98,8 @@ export default class {
 		client.guilds.cache.forEach((guild: Guild) => {
 			guild.invites
 				.fetch()
-				.then((invites: Collection<string, Invite>) => {
-					client.invites.set(guild.id, new Collection(invites.map((invite: Invite) => [invite.code, invite.uses])));
+				.then((invites: Collection<string, Invite>): void => {
+					client.invites.set(guild.id, new Collection(invites.map((invite) => [invite.code, { uses: invite.uses, inviterId: invite.inviterId }])));
 				})
 				.catch((): void => {});
 		});

@@ -17,7 +17,7 @@ export default class {
 		guild.invites
 			.fetch()
 			.then((invites: any): void => {
-				this.client.invites.set(guild.id, new Map(invites.map((invite: any): any => [invite.code, invite.uses])));
+				this.client.invites.set(guild.id, new Map(invites.map((invite: any) => [invite.code, { uses: invite.uses, inviterId: invite.inviterId }])));
 			})
 			.catch((e: any): void => {});
 

@@ -12,17 +12,25 @@ export default class {
 		if (!invite || !invite.guild) return;
 		const { guild } = invite;
 
-		/* Update invite cache */
+		/* Get invite from cache */
+		const cachedInvite: any = this.client.invites.get(guild.id).get(invite.code);
+		if (!cachedInvite) return;
+
+		/* Remove invite from cache */
 		this.client.invites.get(guild.id).delete(invite.code);
 
 		/* Remove invite from user */
-		const memberData: any = await this.client.findOrCreateMember(invite.inviterId, guild.id);
+		const { inviterId } = cachedInvite;
+
+		const memberData: any = await this.client.findOrCreateMember(inviterId, guild.id);
 		if (!memberData) return;
+
 		if (!memberData.invites) memberData.invites = [];
 		memberData.invites = memberData.invites.filter((i: any): boolean => i.code !== invite.code);
 		memberData.markModified("invites");
 		await memberData.save();
 
+		/* Send log */
 		let inviteDeleteText: string = this.client.emotes.link + " Link: " + invite.url;
 
 		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["InviteDelete"], limit: 1 }).catch((e: any): void => {});

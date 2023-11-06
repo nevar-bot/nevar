@@ -15,9 +15,10 @@ export default class {
 
 		/* Update invite cache */
 		if (this.client.invites.get(guild.id)) {
-			this.client.invites.get(guild.id).set(invite.code, invite.uses);
+			this.client.invites.get(guild.id).set(invite.code, { uses: invite.uses, inviterId: invite.inviterId });
 		} else {
-			this.client.invites.set(guild.id, new Collection().set(invite.code, invite.uses));
+			this.client.invites.set(guild.id, new Collection().set(invite.code, { uses: invite.uses, inviterId: invite.inviterId }));
+
 		}
 
 		/* Add invite to user */
