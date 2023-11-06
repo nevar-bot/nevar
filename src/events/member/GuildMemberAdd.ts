@@ -33,13 +33,13 @@ export default class {
 
 		/* Get used invite and inviter */
 		if (fetchedInvites && cachedInvites) {
-			inviteData.invite = fetchedInvites.find((i: any): boolean => i.uses > cachedInvites.get(i.code));
+			inviteData.invite = fetchedInvites.find((i: any): boolean => i.uses > cachedInvites.get(i.code).uses);
 			inviteData.inviter = await this.client.users.fetch(inviteData.invite?.inviterId).catch((e: any): void => {});
 			inviteData.totalInvites = [...fetchedInvites.values()]
 				.filter((invite): boolean => invite?.inviterId === inviteData.inviter?.id)
 				.reduce((total: any, invite: any): any => total + invite.uses, inviteData.totalInvites || 0);
 
-			this.client.invites.set(guild.id, new Collection(fetchedInvites.map((invite: any): any => [invite.code, invite.uses])));
+			this.client.invites.set(guild.id, new Collection(fetchedInvites.map((invite: any): any => [invite.code, { uses: invite.uses, inviterId: invite.inviterId}])));
 		}
 
 		/* Send log */
@@ -203,36 +203,44 @@ export default class {
 					});
 				}
 			}
+		}
 
-			/* Track invite stats */
-			if (inviteData.inviter && inviteData.invite && memberData) {
-				const inviterData: any = await this.client.findOrCreateMember(inviteData.inviter.id, guild.id);
-				if (!inviterData.invites) inviterData.invites = [];
-				if (inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code)) {
-					inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code).uses++;
-				} else {
-					inviterData.invites.push({
-						code: inviteData.invite.code,
-						uses: inviteData.invite.uses,
-						fake: 0,
-						left: 0
-					});
-				}
 
-				if (inviteData.inviter.id === member.user.id) inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code).fake++;
-				if (!memberData.inviteUsed) memberData.inviteUsed = null;
-				if (memberData.inviteUsed === inviteData.invite.code)
-					inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code).fake++;
-				if (memberData.inviteUsed === inviteData.invite.code)
-					inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code).left--;
-				memberData.inviteUsed = inviteData.invite.code;
+		/* Track invite stats */
+		if (inviteData.inviter && inviteData.invite && memberData) {
+			const inviterData: any = await this.client.findOrCreateMember(inviteData.inviter.id, guild.id);
+			if (!inviterData?.invites) inviterData.invites = [];
 
-				memberData.markModified("inviteUsed");
-				await memberData.save();
-
-				inviterData.markModified("invites");
-				await inviterData.save();
+			/* Check if invite is added to inviter data */
+			if (inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code)) {
+				inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code).uses++;
+			} else {
+				inviterData.invites.push({
+					code: inviteData.invite.code,
+					uses: inviteData.invite.uses,
+					fake: 0,
+					left: 0
+				});
 			}
+
+			/* Check for fake invites */
+			if (!memberData.inviteUsed) memberData.inviteUsed = null;
+
+			/* Member used invite more than once or used his own invite */
+			// Add one fake, remove one left
+			if (memberData.inviteUsed === inviteData.invite.code || inviteData.inviter.id === member.user.id)
+				inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code).fake++;
+			if (memberData.inviteUsed === inviteData.invite.code)
+				inviterData.invites.find((i: any): boolean => i.code === inviteData.invite.code).left--;
+
+			/* Set member invite used */
+			memberData.inviteUsed = inviteData.invite.code;
+
+			memberData.markModified("inviteUsed");
+			await memberData.save();
+
+			inviterData.markModified("invites");
+			await inviterData.save();
 		}
 	}
 }
