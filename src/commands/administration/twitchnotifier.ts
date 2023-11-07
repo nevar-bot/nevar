@@ -21,6 +21,9 @@ export default class TwitchnotifierCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
+							.setNameLocalizations({
+								de: "aktion"
+							})
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
 								de: "Wähle aus den folgenden Aktionen"
@@ -61,6 +64,9 @@ export default class TwitchnotifierCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("twitchchannel")
+							.setNameLocalizations({
+								de: "twitchkanal"
+							})
 							.setDescription("Enter the username of the Twitch channel here")
 							.setDescriptionLocalizations({
 								de: "Gib hier den Nutzernamen des Twitch-Kanals an"

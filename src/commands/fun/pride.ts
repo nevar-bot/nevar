@@ -19,6 +19,9 @@ export default class PrideCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
 						.setName("user")
+						.setNameLocalizations({
+							de: "mitglied"
+						})
 						.setDescription("Choose a member")
 						.setDescriptionLocalizations({
 							de: "Wähle ein Mitglied"

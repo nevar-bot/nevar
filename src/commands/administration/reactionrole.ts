@@ -39,6 +39,9 @@ export default class ReactionroleCommand extends BaseCommand {
 					.addRoleOption((option: any) =>
 						option
 							.setName("role")
+							.setNameLocalizations({
+								de: "rollen"
+							})
 							.setDescription("Select the role to be assigned")
 							.setDescriptionLocalizations({
 								de: "Wähle die Rolle, die vergeben werden soll"

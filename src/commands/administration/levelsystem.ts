@@ -70,6 +70,9 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("message")
+							.setNameLocalizations({
+								de: "nachricht"
+							})
 							.setDescription("Sets the level up message")
 							.setDescriptionLocalizations({
 								de: "Setzt die Level-Up Nachricht"
@@ -77,6 +80,9 @@ export default class LevelsystemCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("message")
+									.setNameLocalizations({
+										de: "nachricht"
+									})
 									.setDescription("Set the message")
 									.setDescriptionLocalizations({
 										de: "Lege die Nachricht fest"
@@ -87,6 +93,9 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("roles")
+							.setNameLocalizations({
+								de: "rollen"
+							})
 							.setDescription("Defines roles that are assigned when a certain level is reached")
 							.setDescriptionLocalizations({
 								de: "Legt Rollen fest, die bei Erreichen eines bestimmten Levels vergeben werden"
@@ -94,6 +103,9 @@ export default class LevelsystemCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
+									.setNameLocalizations({
+										de: "aktion"
+									})
 									.setDescription("Choose an action")
 									.setDescriptionLocalizations({
 										de: "Wähle eine Aktion"
@@ -126,6 +138,9 @@ export default class LevelsystemCommand extends BaseCommand {
 							.addRoleOption((option: any) =>
 								option
 									.setName("role")
+									.setNameLocalizations({
+										de: "rolle"
+									})
 									.setDescription("Choose a role")
 									.setDescriptionLocalizations({
 										de: "Wähle eine Rolle"
@@ -147,6 +162,9 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("doublexp")
+							.setNameLocalizations({
+								de: "doppelxp"
+							})
 							.setDescription("Determines which roles get double XP")
 							.setDescriptionLocalizations({
 								de: "Bestimmt, welche Rollen doppeltes XP bekommen"
@@ -154,6 +172,9 @@ export default class LevelsystemCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
+									.setNameLocalizations({
+										de: "aktion"
+									})
 									.setDescription("Choose an action")
 									.setDescriptionLocalizations({
 										de: "Wähle eine Aktion"
@@ -185,7 +206,10 @@ export default class LevelsystemCommand extends BaseCommand {
 							)
 							.addRoleOption((option: any) =>
 								option
-									.setName("rolle")
+									.setName("role")
+									.setNameLocalizations({
+										de: "rolle"
+									})
 									.setDescription("Choose a role")
 									.setDescriptionLocalizations({
 										de: "Wähle eine Rolle"
@@ -226,6 +250,9 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("variables")
+							.setNameLocalizations({
+								de: "variablen"
+							})
 							.setDescription("Lists all variables that can be used in the level-up message")
 							.setDescriptionLocalizations({
 								de: "Listet alle Variablen, die in der Level-Up Nachricht verwendet werden können"
@@ -239,6 +266,9 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("exclude")
+							.setNameLocalizations({
+								de: "exkludieren"
+							})
 							.setDescription("Adds a channel or role to the blacklist")
 							.setDescriptionLocalizations({
 								de: "Fügt einen Channel oder eine Rolle zur Blacklist hinzu"
@@ -246,6 +276,9 @@ export default class LevelsystemCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
+									.setNameLocalizations({
+										de: "aktion"
+									})
 									.setDescription("Choose an action")
 									.setDescriptionLocalizations({
 										de: "Wähle eine Aktion"
@@ -288,6 +321,9 @@ export default class LevelsystemCommand extends BaseCommand {
 							.addRoleOption((option: any) =>
 								option
 									.setName("role")
+									.setNameLocalizations({
+										de: "rolle"
+									})
 									.setDescription("Choose a role")
 									.setDescriptionLocalizations({
 										de: "Wähle eine Rolle"
@@ -359,7 +395,7 @@ export default class LevelsystemCommand extends BaseCommand {
 						await this.addExclude(interaction.options.getChannel("channel"), interaction.options.getRole("role"), data);
 						break;
 					case "remove":
-						await this.removeExclude(interaction.options.getChannel("channel"), interaction.options.getRole("rlle"), data);
+						await this.removeExclude(interaction.options.getChannel("channel"), interaction.options.getRole("role"), data);
 						break;
 					case "list":
 						await this.listExcluded(data);

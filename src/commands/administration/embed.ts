@@ -20,6 +20,9 @@ export default class EmbedCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("author")
+							.setNameLocalizations({
+								de: "autor"
+							})
 							.setDescription("Enter the name of the author")
 							.setDescriptionLocalizations({
 								de: "Gib den Namen des Autors ein"
@@ -38,6 +41,9 @@ export default class EmbedCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("title")
+							.setNameLocalizations({
+								de: "titel"
+							})
 							.setDescription("Enter the title of the embed")
 							.setDescriptionLocalizations({
 								de: "Gib den Titel des Embeds ein"
@@ -47,6 +53,9 @@ export default class EmbedCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("description")
+							.setNameLocalizations({
+								de: "beschreibung"
+							})
 							.setDescription("Enter the description of the embed")
 							.setDescriptionLocalizations({
 								de: "Gib die Beschreibung des Embeds ein"
@@ -65,6 +74,9 @@ export default class EmbedCommand extends BaseCommand {
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("image")
+							.setNameLocalizations({
+								de: "bild"
+							})
 							.setDescription("Choose the image of the embed")
 							.setDescriptionLocalizations({
 								de: "Wähle das Bild des Embeds"
@@ -92,6 +104,9 @@ export default class EmbedCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("color")
+							.setNameLocalizations({
+								de: "farbe"
+							})
 							.setDescription("Enter the color of the embed in HEX format")
 							.setDescriptionLocalizations({
 								de: "Gib die Farbe des Embeds im HEX-Format ein"

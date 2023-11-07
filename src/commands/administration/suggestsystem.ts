@@ -19,6 +19,9 @@ export default class SuggestsystemCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
+							.setNameLocalizations({
+								de: "aktion"
+							})
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
 								de: "Wähle aus den folgenden Aktionen"

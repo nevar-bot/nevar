@@ -17,6 +17,9 @@ export default class AfkCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
 					option
 						.setName("reason")
+						.setNameLocalizations({
+							de: "grund"
+						})
 						.setDescription("Why are you absent?")
 						.setDescriptionLocalizations({
 							de: "Warum bist du abwesend?"

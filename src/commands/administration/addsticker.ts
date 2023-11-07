@@ -50,6 +50,9 @@ export default class AddstickerCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("description")
+							.setNameLocalizations({
+								de: "beschreibung"
+							})
 							.setDescription("Enter a short description for the sticker")
 							.setDescriptionLocalizations({
 								de: "Gib eine kurze Beschreibung für den Sticker ein"

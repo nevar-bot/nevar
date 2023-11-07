@@ -18,6 +18,9 @@ export default class RankCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addUserOption((option: any) => option
 						.setName("member")
+						.setNameLocalizations({
+							de: "mitglied"
+						})
 						.setDescription("Select a member whose level card you would like to see")
 						.setDescriptionLocalizations({
 							de: "Wähle ein Mitglied, dessen Levelcard du sehen möchtest"

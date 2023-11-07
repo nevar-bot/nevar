@@ -29,6 +29,9 @@ export default class SetlogCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("members")
+							.setNameLocalizations({
+								de: "mitglieder"
+							})
 							.setDescription("Sets the channel in which member logs are sent")
 							.setDescriptionLocalizations({
 								de: "Setzt den Channel, in welchem Logs zu Mitgliedern gesendet werden"
@@ -49,6 +52,9 @@ export default class SetlogCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("roles")
+							.setNameLocalizations({
+								de: "rollen"
+							})
 							.setDescription("Sets the channel in which role logs are sent")
 							.setDescriptionLocalizations({
 								de: "Setzt den Channel, in welchem Logs zu Rollen gesendet werden"

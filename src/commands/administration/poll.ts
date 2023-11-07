@@ -19,6 +19,9 @@ export default class PollCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("title")
+							.setNameLocalizations({
+								de: "titel"
+							})
 							.setDescription("Give the poll a meaningful title")
 							.setDescriptionLocalizations({
 								de: "Gib der Umfrage einen aussagekräftigen Titel"
@@ -28,6 +31,9 @@ export default class PollCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("options")
+							.setNameLocalizations({
+								de: "optionen"
+							})
 							.setDescription("Enter the answer choices, separated by a comma")
 							.setDescriptionLocalizations({
 								de: "Gib die Antwortmöglichkeiten ein, getrennt durch ein Komma"

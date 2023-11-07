@@ -75,6 +75,9 @@ export default class WelcomeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("type")
+							.setNameLocalizations({
+								de: "typ"
+							})
 							.setDescription("Whether the welcome message is sent as an embed or as text")
 							.setDescriptionLocalizations({
 								de: "Ob die Willkommensnachricht als Embed oder als Text gesendet wird"
@@ -82,6 +85,9 @@ export default class WelcomeCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("type")
+									.setNameLocalizations({
+										de: "typ"
+									})
 									.setDescription("Choose a type")
 									.setDescriptionLocalizations({
 										de: "Wähle einen Typ"
@@ -102,6 +108,9 @@ export default class WelcomeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("message")
+							.setNameLocalizations({
+								de: "nachricht"
+							})
 							.setDescription("Defines the welcome message (variables see /welcome variables)")
 							.setDescriptionLocalizations({
 								de: "Definiert die Willkommensnachricht (Variablen siehe /welcome variables)"
@@ -109,6 +118,9 @@ export default class WelcomeCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("message")
+									.setNameLocalizations({
+										de: "nachricht"
+									})
 									.setDescription("Enter the message")
 									.setDescriptionLocalizations({
 										de: "Gib die Nachricht ein"
@@ -119,6 +131,9 @@ export default class WelcomeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("variables")
+							.setNameLocalizations({
+								de: "variablen"
+							})
 							.setDescription("Lists all variables that can be used in the welcome message")
 							.setDescriptionLocalizations({
 								de: "Listet alle Variablen, die in der Willkommensnachricht verwendet werden können"
@@ -127,13 +142,19 @@ export default class WelcomeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("color")
+							.setNameLocalizations({
+								de: "farbe"
+							})
 							.setDescription("The color of the embed (default: #5865F2)")
 							.setDescriptionLocalizations({
 								de: "Die Farbe des Embeds (Standard: #5865F2)"
 							})
 							.addStringOption((option: any) =>
 								option
-									.setName("farbe")
+									.setName("color")
+									.setNameLocalizations({
+										de: "farbe"
+									})
 									.setDescription("Enter a color in HEX format")
 									.setDescriptionLocalizations({
 										de: "Gib eine Farbe im HEX-Format ein"

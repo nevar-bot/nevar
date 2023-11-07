@@ -52,6 +52,9 @@ export default class AimodCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("exclude")
+							.setNameLocalizations({
+								de: "exkludieren"
+							})
 							.setDescription("Excludes a channel or role from AI-powered chat moderation")
 							.setDescriptionLocalizations({
 								de: "Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation"
@@ -59,6 +62,9 @@ export default class AimodCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
+									.setNameLocalizations({
+										de: "aktion"
+									})
 									.setDescription("Choose an action")
 									.setDescriptionLocalizations({
 										de: "Wähle eine Aktion"
@@ -91,6 +97,9 @@ export default class AimodCommand extends BaseCommand {
 							.addRoleOption((option: any) =>
 								option
 									.setName("role")
+									.setNameLocalizations({
+										de: "rolle"
+									})
 									.setDescription("Choose a role")
 									.setDescriptionLocalizations({
 										de: "Wähle eine Rolle"
@@ -156,7 +165,11 @@ export default class AimodCommand extends BaseCommand {
 							)
 					)
 					.addSubcommand((subcommand: any) =>
-						subcommand.setName("explain").setDescription("Explains AI-powered chat moderation").setDescriptionLocalizations({
+						subcommand.setName("explain")
+							.setNameLocalizations({
+								de: "erklärung"
+							})
+							.setDescription("Explains AI-powered chat moderation").setDescriptionLocalizations({
 							de: "Erklärt die AI-gestützte Chatmoderation"
 						})
 					)

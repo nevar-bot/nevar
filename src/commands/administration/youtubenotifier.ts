@@ -20,6 +20,9 @@ export default class Youtubenotifier extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
+							.setNameLocalizations({
+								de: "aktion"
+							})
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
 								de: "Wähle aus den folgenden Aktionen"
@@ -60,6 +63,9 @@ export default class Youtubenotifier extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("youtubechannel")
+							.setNameLocalizations({
+								de: "youtubekanal"
+							})
 							.setDescription("Enter the ID of the YouTube channel here")
 							.setDescriptionLocalizations({
 								de: "Gib hier die ID des YouTube-Kanals an"

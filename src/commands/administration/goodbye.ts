@@ -75,6 +75,9 @@ export default class GoodbyeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("type")
+							.setNameLocalizations({
+								de: "typ"
+							})
 							.setDescription("Whether the goodbye message is sent as an embed or as text")
 							.setDescriptionLocalizations({
 								de: "Ob die Verabschiedungsnachricht als Embed oder als Text gesendet wird"
@@ -82,6 +85,9 @@ export default class GoodbyeCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("type")
+									.setNameLocalizations({
+										de: "typ"
+									})
 									.setDescription("Choose a type")
 									.setDescriptionLocalizations({
 										de: "Wähle einen Typ"
@@ -93,6 +99,9 @@ export default class GoodbyeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("message")
+							.setNameLocalizations({
+								de: "nachricht"
+							})
 							.setDescription("Defines the goodbye message (for variables see /goodbye variables)")
 							.setDescriptionLocalizations({
 								de: "Definiert die Verabschiedungsnachricht (Variablen siehe /goodbye variables)"
@@ -100,6 +109,9 @@ export default class GoodbyeCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("message")
+									.setNameLocalizations({
+										de: "nachricht"
+									})
 									.setDescription("Enter the message")
 									.setDescriptionLocalizations({
 										de: "Gib die Nachricht ein"
@@ -110,6 +122,9 @@ export default class GoodbyeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("variables")
+							.setNameLocalizations({
+								de: "variablen"
+							})
 							.setDescription("Lists all variables that can be used in the goodbye message")
 							.setDescriptionLocalizations({
 								de: "Listet alle Variablen, die in der Verabschiedungsnachricht verwendet werden können"
@@ -118,6 +133,9 @@ export default class GoodbyeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("color")
+							.setNameLocalizations({
+								de: "farbe"
+							})
 							.setDescription("The color of the embed (default: #5865F2)")
 							.setDescriptionLocalizations({
 								de: "Die Farbe des Embeds (Standard: #5865F2)"
@@ -125,6 +143,9 @@ export default class GoodbyeCommand extends BaseCommand {
 							.addStringOption((option: any) =>
 								option
 									.setName("color")
+									.setNameLocalizations({
+										de: "farbe"
+									})
 									.setDescription("Enter a color in HEX format")
 									.setDescriptionLocalizations({
 										de: "Gib eine Farbe im HEX-Format ein"

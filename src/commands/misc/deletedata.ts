@@ -17,6 +17,9 @@ export default class DeletedataCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
 						option.setName("data")
+							.setNameLocalizations({
+								de: "daten"
+							})
 							.setDescription("Choose which data we should delete")
 							.setDescriptionLocalizations({
 								de: "Wähle, welche Daten wir löschen sollen"
@@ -25,21 +28,21 @@ export default class DeletedataCommand extends BaseCommand {
 							.addChoices(
 							{
 								name: "your user data on all servers",
-								nameLocalizations: {
+								name_localizations: {
 									de: "deine Nutzerdaten auf allen Servern"
 								},
 								value: "user"
 							},
 							{
 								name: "your membership data on this server",
-								nameLocalizations: {
+								name_localizations: {
 									de: "deine Mitgliedsdaten auf diesem Server"
 								},
 								value: "member"
 							},
 							{
 								name: "data of this server",
-								nameLocalizations: {
+								name_localizations: {
 									de: "Daten dieses Servers"
 								},
 								value: "guild"
@@ -48,6 +51,9 @@ export default class DeletedataCommand extends BaseCommand {
 					)
 					.addStringOption((option: any) =>
 						option.setName("reason")
+							.setNameLocalizations({
+								de: "grund"
+							})
 							.setDescription("Please let us know your reason so that we can improve")
 							.setDescriptionLocalizations({
 								de: "Teile uns gerne deinen Grund mit, damit wir uns verbessern können"

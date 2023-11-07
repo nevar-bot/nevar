@@ -22,6 +22,9 @@ export default class AutodeleteCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
+							.setNameLocalizations({
+								de: "aktion"
+							})
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
 								de: "Wähle aus den folgenden Aktionen"
@@ -64,6 +67,9 @@ export default class AutodeleteCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("time")
+							.setNameLocalizations({
+								de: "zeit"
+							})
 							.setRequired(false)
 							.setDescription("Enter after what time new messages should be deleted")
 							.setDescriptionLocalizations({

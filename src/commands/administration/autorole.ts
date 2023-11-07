@@ -20,6 +20,9 @@ export default class AutoroleCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
+							.setNameLocalizations({
+								de: "aktion"
+							})
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
 								de: "Wähle aus den folgenden Aktionen"
@@ -52,6 +55,9 @@ export default class AutoroleCommand extends BaseCommand {
 					.addRoleOption((option: any) =>
 						option
 							.setName("role")
+							.setNameLocalizations({
+								de: "rolle"
+							})
 							.setDescription("Choose a role")
 							.setDescriptionLocalizations({
 								de: "Wähle eine Rolle"

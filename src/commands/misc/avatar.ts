@@ -17,6 +17,9 @@ export default class AvatarCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addUserOption((option) =>
 					option
 						.setName("member")
+						.setNameLocalizations({
+							de: "mitglied"
+						})
 						.setDescription("Choose a member")
 						.setDescriptionLocalizations({
 							de: "Wähle ein Mitglied"

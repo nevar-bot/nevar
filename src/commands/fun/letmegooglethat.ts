@@ -27,6 +27,9 @@ export default class LetmegooglethatCommand extends BaseCommand {
 					.addUserOption((option: any) =>
 						option
 							.setName("user")
+							.setNameLocalizations({
+								de: "nutzer"
+							})
 							.setDescription("Choose for whom you want to perform the search query")
 							.setDescriptionLocalizations({
 								de: "Wähle für wen du die Suchanfrage durchführen möchtest"

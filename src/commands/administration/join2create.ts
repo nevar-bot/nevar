@@ -62,6 +62,9 @@ export default class Join2CreateCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("category")
+							.setNameLocalizations({
+								de: "kategorie"
+							})
 							.setDescription("Choose in which category the channels will be created")
 							.setDescriptionLocalizations({
 								de: "Wähle, in welcher Kategorie die Channel erstellt werden"
