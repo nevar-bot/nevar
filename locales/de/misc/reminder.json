@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "missingNameOrDuration": "Du musst einen Namen und eine Dauer angeben.",
+    "missingName": "Du musst einen Namen angeben.",
+    "noReminderWithThisName": "Es gibt keinen Reminder mit diesem Namen.",
+    "noReminders": "Du hast noch keine Reminder."
+  },
+  "created": "In {{duration}} werde ich dich erinnern.",
+  "deleted": "Der Reminder wurde gelöscht.",
+  "createdAt": "Erstellt am:",
+  "endsAt": "Endet am:",
+  "endsIn": "Endet in:",
+  "reminders": "Reminder"
+}
