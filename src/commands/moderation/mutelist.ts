@@ -26,9 +26,9 @@ export default class MutelistCommand extends BaseCommand {
 	}
 
 	private async showMuteList(data: any): Promise<void> {
-		let mutedUsers: any[] = [];
+		const mutedUsers: any[] = [];
 
-		for (let memberData of this.client.databaseCache.mutedUsers) {
+		for (const memberData of this.client.databaseCache.mutedUsers) {
 			if (memberData[1].guildID === this.interaction.guild.id) {
 				const victimData: any = memberData[1];
 				const member: any = await this.interaction.guild.resolveMember(victimData.id);

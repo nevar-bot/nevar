@@ -35,7 +35,7 @@ export default class TopvotersCommand extends BaseCommand {
 		const voters: any[] = [];
 
 		let i: number = 0;
-		for (let topVoter of topVoters) {
+		for (const topVoter of topVoters) {
 			const user: any = await this.client.users.fetch(topVoter.id).catch((): void => {});
 			if (user) {
 				i++;

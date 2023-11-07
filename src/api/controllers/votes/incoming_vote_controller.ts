@@ -72,7 +72,7 @@ export async function post(req: Request, res: Response) {
 		await channel
 			.send({ embeds: [voteEmbed], components: [buttonRow] })
 			.catch((e: any): void => {
-				console.log("Couldn't send vote announcement: " + e);
+				client.alertException(e, null, user.id, "Vote Announcement senden");
 			});
 
 		const voteObj: any = JSON.parse(fs.readFileSync("./assets/votes.json").toString());

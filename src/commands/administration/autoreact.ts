@@ -250,7 +250,7 @@ export default class AutoreactCommand extends BaseCommand {
 	}
 
 	private async showList(data: any): Promise<void> {
-		let response: any = data.guild.settings.autoreact;
+		const response: any = data.guild.settings.autoreact;
 		const sortedAutoReactArray: any[] = [];
 		const finalSortedAutoReactArray: any[] = [];
 
@@ -267,7 +267,7 @@ export default class AutoreactCommand extends BaseCommand {
 			}
 		}
 
-		for (let item in sortedAutoReactArray) {
+		for (const item in sortedAutoReactArray) {
 			finalSortedAutoReactArray.push(
 				" " +
 					this.translate("list:channel") +

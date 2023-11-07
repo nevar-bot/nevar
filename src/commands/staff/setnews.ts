@@ -24,7 +24,7 @@ export default class SetnewsCommand extends BaseCommand {
 		await this.setmessage(args.join(" "));
 	}
 	private async setmessage(message: string): Promise<void> {
-		let json: any = {
+		const json: any = {
 			timestamp: Date.now(),
 			text: message
 		};

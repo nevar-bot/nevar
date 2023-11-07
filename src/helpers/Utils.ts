@@ -2,6 +2,7 @@ import { lstatSync, readdirSync, Stats } from "fs";
 import { extname, join } from "path";
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
 import moment from "moment";
+import BaseClient from "@structures/BaseClient";
 
 declare module "moment" {
 	interface Duration {
@@ -62,7 +63,7 @@ export default class Utils {
 	}
 
 	static urlIsImage(str: string): boolean {
-		return str.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim) != null;
+		return str.match(/^http[^]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim) != null;
 	}
 
 	static stringIsCustomEmoji(str: string): boolean {

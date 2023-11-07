@@ -201,7 +201,7 @@ export default class AutoroleCommand extends BaseCommand {
 	}
 
 	private async showList(data: any): Promise<void> {
-		let response: any = data.guild.settings.welcome.autoroles;
+		const response: any = data.guild.settings.welcome.autoroles;
 		const autorolesArray: any[] = [];
 
 		for (let i: number = 0; i < response.length; i++) {

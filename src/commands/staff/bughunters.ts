@@ -119,7 +119,7 @@ export default class BughuntersCommand extends BaseCommand {
 			.find({ "bughunter.state": true })
 			.toArray();
 		let bughunters: any[] = [];
-		for (let userdata of bughuntersdata) {
+		for (const userdata of bughuntersdata) {
 			const user: any = await this.client.users.fetch(userdata.id).catch(() => {});
 			bughunters.push(user.username);
 		}

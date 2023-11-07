@@ -67,7 +67,7 @@ export default class PollCommand extends BaseCommand {
 		let pollDescription: string = "## " + title + "\n\n";
 
 		let i: number = 0;
-		for (let option of optionsArray) {
+		for (const option of optionsArray) {
 			if (option === "") {
 				optionsArray.splice(i, 1);
 				continue;

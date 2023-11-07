@@ -210,13 +210,13 @@ export default class BlockCommand extends BaseCommand {
 	}
 
 	private async listBlocked(): Promise<void> {
-		let blocked: any[] = [];
+		const blocked: any[] = [];
 
 		// blocked users
 		const blockedUsers = await this.client.usersData.find({
 			"blocked.state": true
 		});
-		for (let userData of blockedUsers) {
+		for (const userData of blockedUsers) {
 			const user: any = await this.client.users.fetch(userData.id).catch(() => {});
 			const text: string =
 				" **" +
@@ -245,7 +245,7 @@ export default class BlockCommand extends BaseCommand {
 		const blockedGuilds = await this.client.guildsData.find({
 			"blocked.state": true
 		});
-		for (let guildData of blockedGuilds) {
+		for (const guildData of blockedGuilds) {
 			const guild: any = await this.client.guilds.fetch(guildData.id).catch(() => {});
 			const text: string =
 				" **" +

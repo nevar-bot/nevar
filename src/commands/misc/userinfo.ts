@@ -96,7 +96,7 @@ export default class UserinfoCommand extends BaseCommand {
 			);
 
 		// Discord badges
-		for (let flag of userFlags) {
+		for (const flag of userFlags) {
 			if (flags[flag]) badges.push(this.client.emotes.flags[flag] + " " + flags[flag]);
 		}
 

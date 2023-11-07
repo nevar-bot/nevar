@@ -41,7 +41,7 @@ export default class LeaderboardCommand extends BaseCommand {
 		];
 
 		const beautifiedLeaderboard: any[] = [];
-		for (let user of leaderboardData) {
+		for (const user of leaderboardData) {
 			const emote: any =
 				user.position < 4 ? this.client.emotes[user.position] : this.client.emotes.arrow;
 			beautifiedLeaderboard.push(

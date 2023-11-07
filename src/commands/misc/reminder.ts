@@ -169,7 +169,7 @@ export default class ReminderCommand extends BaseCommand {
 
 	private async listReminders(data: any): Promise<void> {
 		const reminders: any[] = [];
-		for (let reminder of data.member.reminders) {
+		for (const reminder of data.member.reminders) {
 			const text: string =
 				"### " +
 				this.client.emotes.reminder +

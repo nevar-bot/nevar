@@ -33,7 +33,7 @@ export default class MyinvitesCommand extends BaseCommand {
 		const memberInvites: any = guildInvites.filter(
 			(i: any): boolean => i.inviterId === memberData.id
 		);
-		for (let invite of memberInvites.values()) {
+		for (const invite of memberInvites.values()) {
 			if (!this.client.invites.get(this.interaction.guild.id).has(invite.code))
 				this.client.invites
 					.get(this.interaction.guild.id)

@@ -63,7 +63,7 @@ export default class HelpCommand extends BaseCommand {
 		};
 
 		// Create a category list
-		for (let command of this.client.commands) {
+		for (const command of this.client.commands) {
 			if (!categoriesList.includes(categories[command[1].help.category])) {
 				categoriesList.push(categories[command[1].help.category]);
 			}
@@ -124,7 +124,7 @@ export default class HelpCommand extends BaseCommand {
 			.setPlaceholder("Wähle eine Kategorie");
 
 		// Add the categories to the select menu
-		for (let category of categoriesList) {
+		for (const category of categoriesList) {
 			if (
 				category === "Staff" &&
 				!data.user.staff.state &&
@@ -188,7 +188,7 @@ export default class HelpCommand extends BaseCommand {
 				);
 
 			let formattedCommands: any[] = [];
-			for (let command of commandsArray) {
+			for (const command of commandsArray) {
 				const commandId: any = commandIds.find(
 					(s: any): boolean => s.name === command.help.name
 				)?.id;
@@ -236,7 +236,7 @@ export default class HelpCommand extends BaseCommand {
 			);
 
 			const generateEmbed = async (start: any): Promise<EmbedBuilder> => {
-				let current: any[] = formattedCommands.slice(start, start + 5);
+				const current: any[] = formattedCommands.slice(start, start + 5);
 
 				const pages: any = {
 					total: Math.ceil(commandsArray.length / 5),

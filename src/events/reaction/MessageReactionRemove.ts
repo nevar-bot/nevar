@@ -13,13 +13,13 @@ export default class {
 
 		const guildData: any = await this.client.findOrCreateGuild(reaction.message.guild.id);
 
-		for (let reactionRole of guildData.settings.reactionroles) {
+		for (const reactionRole of guildData.settings.reactionroles) {
 			const channelId: string = reactionRole.channelId;
 			const messageId: string = reactionRole.messageId;
 			const emojiId: string = reactionRole.emoteId;
 			const roleId: string = reactionRole.roleId;
 
-			let emoji: any = reaction.emoji.id ? reaction.emoji.id : reaction.emoji.name;
+			const emoji: any = reaction.emoji.id ? reaction.emoji.id : reaction.emoji.name;
 
 			if (
 				reaction.message.channel.id === channelId &&

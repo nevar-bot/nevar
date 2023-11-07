@@ -25,7 +25,7 @@ export default class ServerlistCommand extends BaseCommand {
 	private async showServerList(): Promise<void> {
 		const servers: any[] = [];
 
-		for (let guild of this.client.guilds.cache) {
+		for (const guild of this.client.guilds.cache) {
 			const text: string =
 				"### " +
 				this.client.emotes.discord +

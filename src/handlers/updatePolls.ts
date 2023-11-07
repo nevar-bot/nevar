@@ -45,7 +45,7 @@ export default {
 
 								let i: number = 0;
 
-								for (let option of options) {
+								for (const option of options) {
 									const vote: any = votePercentages.find(
 										(vote: any): boolean => vote.emoji === circles[i]
 									);

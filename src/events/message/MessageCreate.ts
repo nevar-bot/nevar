@@ -347,7 +347,7 @@ export default class {
 					(response as any).error.code === "context_length_exceeded"
 				) {
 					/* remove old messages */
-					let messagesArray: any = this.client.aiChat.get(message.guild.id);
+					const messagesArray: any = this.client.aiChat.get(message.guild.id);
 					function removeOldestItems(arr: any, numItems: number): void {
 						let index: number = 0;
 						while (index < arr.length && numItems > 0) {
@@ -477,7 +477,7 @@ export default class {
 
 			/* excluded roles and channels */
 			if (data.guild.settings.levels.exclude) {
-				for (let excludedRoleId of data.guild.settings.levels.exclude.roles) {
+				for (const excludedRoleId of data.guild.settings.levels.exclude.roles) {
 					if (message.member.roles.cache.get(excludedRoleId)) return;
 				}
 				for (let excludedChannelId of data.guild.settings.levels.exclude.channels) {
@@ -490,7 +490,7 @@ export default class {
 				data.guild.settings.levels.doubleXP &&
 				data.guild.settings.levels.doubleXP.length > 0
 			) {
-				for (let doubleXP of data.guild.settings.levels.doubleXP) {
+				for (const doubleXP of data.guild.settings.levels.doubleXP) {
 					if (message.member.roles.cache.get(doubleXP)) {
 						xp = xp * 2;
 					}
@@ -517,7 +517,7 @@ export default class {
 						data.guild.settings.levels.roles &&
 						data.guild.settings.levels.roles.length > 0
 					) {
-						for (let levelRole of data.guild.settings.levels.roles) {
+						for (const levelRole of data.guild.settings.levels.roles) {
 							const roleId: any = levelRole.role;
 							const level: any = levelRole.level;
 							if (Number(level) === newLevel || Number(level) < newLevel) {

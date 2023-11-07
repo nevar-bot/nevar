@@ -47,7 +47,7 @@ export default class XpForCommand extends BaseCommand {
 		const maxXp = data.guild.settings.levels.xp.max;
 		const averageXp: number = Math.round((minXp + maxXp) / 2);
 		const neededXp: string = this.client.format(this.client.levels.xpFor(level));
-		const timeoutLengthInSeconds: 15 = 15;
+		const timeoutLengthInSeconds: number = 15;
 		const neededTime: string = secondsToTime(
 			(this.client.levels.xpFor(level) / averageXp) * timeoutLengthInSeconds
 		);

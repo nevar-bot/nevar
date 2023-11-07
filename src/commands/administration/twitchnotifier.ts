@@ -265,7 +265,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		const apiClient: ApiClient = new ApiClient({ authProvider });
 
 		const channels: any[] = [];
-		for (let channel of data.guild.settings.notifiers.twitch.channels) {
+		for (const channel of data.guild.settings.notifiers.twitch.channels) {
 			const user: HelixUser | null = await apiClient.users.getUserById(channel.id);
 			if (!user) continue;
 			channels.push("[" + user.name + "](https://www.twitch.tv/" + user.name + ")");

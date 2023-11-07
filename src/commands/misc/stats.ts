@@ -33,12 +33,12 @@ export default class StatsCommand extends BaseCommand {
 		const head_staffs: any[] = [];
 		const staffs: any[] = [];
 
-		for (let ownerId of this.client.config.general["OWNER_IDS"]) {
+		for (const ownerId of this.client.config.general["OWNER_IDS"]) {
 			const headStaff: any = await this.client.users.fetch(ownerId).catch((): void => {});
 			head_staffs.push("**" + headStaff.displayName + "** (@" + headStaff.username + ")");
 		}
 
-		for (let userdata of staffsdata) {
+		for (const userdata of staffsdata) {
 			const user: any = await this.client.users.fetch(userdata.id).catch(() => {});
 			if (userdata.staff.role === "head-staff") {
 				if (!head_staffs.includes("**" + user.displayName + "** (@" + user.username + ")"))

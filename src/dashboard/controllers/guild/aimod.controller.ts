@@ -58,7 +58,6 @@ export default {
 	},
 
 	async post(req: Request, res: Response): Promise<void> {
-		console.log(req.body);
 		/* get access token */
 		const access_token: string | null = AuthController.getAccessToken(req);
 

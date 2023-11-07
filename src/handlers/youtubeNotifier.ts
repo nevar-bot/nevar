@@ -34,7 +34,7 @@ export default {
 				client.guilds.cache.map(async (guild: Guild): Promise<void> => {
 					const guildData: any = await client.findOrCreateGuild(guild.id);
 					if (guildData.settings?.notifiers?.youtube?.enabled) {
-						for (let channel of guildData.settings.notifiers.youtube.channels) {
+						for (const channel of guildData.settings.notifiers.youtube.channels) {
 							const lastVideo: any = await getLastVideo(youtube, channel.id);
 							if (lastVideo && channel.lastVideoId !== lastVideo.id) {
 								guildData.settings.notifiers.youtube.channels.find(

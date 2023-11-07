@@ -91,7 +91,7 @@ export default class {
 						)
 					);
 
-				let votes: any = JSON.parse(fs.readFileSync("./assets/votes.json").toString());
+				const votes: any = JSON.parse(fs.readFileSync("./assets/votes.json").toString());
 
 				const date: Date = new Date();
 				let month: string = date.toLocaleString("de-DE", {
@@ -99,8 +99,8 @@ export default class {
 				});
 				month = month.charAt(0).toUpperCase() + month.slice(1);
 
-				let months: string[] = moment.months();
-				let voteMonth: string = months[new Date(Date.now()).getMonth()];
+				const months: string[] = moment.months();
+				const voteMonth: string = months[new Date(Date.now()).getMonth()];
 				if (voteChannel) {
 					voteChannel.setName(
 						config.channels["VOTE_COUNT_NAME"]

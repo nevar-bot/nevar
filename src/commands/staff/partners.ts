@@ -119,7 +119,7 @@ export default class PartnersCommand extends BaseCommand {
 			.find({ "partner.state": true })
 			.toArray();
 		let partners: any[] = [];
-		for (let userdata of partnersdata) {
+		for (const userdata of partnersdata) {
 			const user: any = await this.client.users.fetch(userdata.id).catch(() => {});
 			partners.push(user.username);
 		}

@@ -27,9 +27,9 @@ export default class BanlistCommand extends BaseCommand {
 	}
 
 	private async showBanList(): Promise<void> {
-		let bannedUsers: any[] = [];
+		const bannedUsers: any[] = [];
 		const bans: any = await this.interaction.guild.bans.fetch().catch((): void => {});
-		for (let ban of bans) {
+		for (const ban of bans) {
 			const memberData: any = await this.client.findOrCreateMember(
 				ban[1].user.id,
 				this.interaction.guild.id

@@ -254,7 +254,7 @@ export default class Youtubenotifier extends BaseCommand {
 
 	private async listNotifiers(data: any): Promise<void> {
 		const channels: any[] = [];
-		for (let channel of data.guild.settings.notifiers.youtube.channels) {
+		for (const channel of data.guild.settings.notifiers.youtube.channels) {
 			const channelData: any = await this.getChannelNameFromId(channel.id);
 			channels.push(
 				"[" + channelData.username + "](https://www.youtube.com/channel/" + channel.id + ")"

@@ -229,7 +229,7 @@ export default class GiveawayCommand extends BaseCommand {
 
 		const giveaways: any[] = [];
 
-		for (let giveaway of guildGiveaways) {
+		for (const giveaway of guildGiveaways) {
 			const prize = giveaway.prize;
 			const channel = await this.interaction.guild.channels
 				.fetch(giveaway.channelId)

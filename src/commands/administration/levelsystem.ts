@@ -658,7 +658,7 @@ export default class LevelsystemCommand extends BaseCommand {
 	}
 
 	private async listRoles(data: any): Promise<void> {
-		let response: any = data.guild.settings.levels.roles;
+		const response: any = data.guild.settings.levels.roles;
 		const levelroles: any[] = [];
 
 		for (let i: number = 0; i < response.length; i++) {
@@ -802,7 +802,7 @@ export default class LevelsystemCommand extends BaseCommand {
 	}
 
 	private async listDoubleXp(data: any): Promise<void> {
-		let response: any = data.guild.settings.levels.doubleXP;
+		const response: any = data.guild.settings.levels.doubleXP;
 		const doublexpRoles: any[] = [];
 
 		for (let i: number = 0; i < response.length; i++) {
@@ -1127,7 +1127,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			await data.guild.save();
 		}
 
-		let response = data.guild.settings.levels.exclude;
+		const response = data.guild.settings.levels.exclude;
 		const excluded: any[] = [];
 
 		for (let i: number = 0; i < response.roles.length; i++) {

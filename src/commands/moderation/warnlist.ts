@@ -51,7 +51,7 @@ export default class WarnlistCommand extends BaseCommand {
 		const warnCount: number = targetData.warnings.count;
 
 		let indicator: number = 0;
-		for (let warn of warnings) {
+		for (const warn of warnings) {
 			indicator++;
 			const text: string =
 				"### " +

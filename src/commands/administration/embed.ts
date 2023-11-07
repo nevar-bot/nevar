@@ -203,9 +203,7 @@ export default class EmbedCommand extends BaseCommand {
 				name: author,
 				avatar: authorIcon ? authorIcon.proxyURL : null
 			})
-			.catch((e: any): void => {
-				console.log(e);
-			});
+			.catch((e: any): void => {});
 
 		if (webhook) {
 			webhook.send({ embeds: [embed] }).catch(() => {

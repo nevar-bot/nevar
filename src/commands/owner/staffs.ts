@@ -139,7 +139,7 @@ export default class StaffsCommand extends BaseCommand {
 			.find({ "staff.state": true })
 			.toArray();
 		let staffs: any[] = [];
-		for (let userdata of staffsdata) {
+		for (const userdata of staffsdata) {
 			const user: any = await this.client.users.fetch(userdata.id).catch(() => {});
 			const role: string = userdata.staff.role === "head-staff" ? "Head-Staff" : "Staff";
 			staffs.push(user.username + " (" + role + ")");

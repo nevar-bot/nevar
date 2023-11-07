@@ -25,7 +25,7 @@ export default {
 				client.guilds.cache.map(async (guild: Guild): Promise<void> => {
 					const guildData: any = await client.findOrCreateGuild(guild.id);
 					if (guildData.settings?.notifiers?.twitch?.enabled) {
-						for (let channel of guildData.settings.notifiers.twitch.channels) {
+						for (const channel of guildData.settings.notifiers.twitch.channels) {
 							const stream: any = await getStream(apiClient, channel.id);
 							if (stream && channel.lastStreamId !== stream.id) {
 								guildData.settings.notifiers.twitch.channels.find(

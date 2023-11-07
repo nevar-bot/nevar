@@ -215,7 +215,7 @@ export default class AutodeleteCommand extends BaseCommand {
 	}
 
 	private async showList(data: any): Promise<void> {
-		let response: any = data.guild.settings.autodelete;
+		const response: any = data.guild.settings.autodelete;
 		const autodeleteArray: any[] = [];
 
 		for (const element of response) {

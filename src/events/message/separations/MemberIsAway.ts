@@ -55,7 +55,7 @@ export default class {
 			}
 		}
 
-		for (let afkUser of afkUsers) {
+		for (const afkUser of afkUsers) {
 			const awayText: string =
 				"Begründung: " +
 				afkUser.reason +
