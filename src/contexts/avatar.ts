@@ -11,10 +11,10 @@ export default class AvatarContext extends BaseContext {
 		});
 	}
 
-	public interaction: any;
 
 	public async dispatch(interaction: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.showAvatar(interaction.targetUser);
 	}
 
@@ -45,7 +45,7 @@ export default class AvatarContext extends BaseContext {
 		});
 
 		const avatarEmbed: EmbedBuilder = this.client.createEmbed(
-			"Links: [x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
+			this.translate("misc/avatar:links") + " [x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
 			null,
 			"normal",
 			x64,
@@ -55,7 +55,7 @@ export default class AvatarContext extends BaseContext {
 			x1024,
 			x2048
 		);
-		avatarEmbed.setTitle("Avatar von " + user.username);
+		avatarEmbed.setTitle(this.translate("misc/avatar:title", { user: user.displayName }));
 		avatarEmbed.setImage(x256);
 
 		return this.interaction.followUp({ embeds: [avatarEmbed] });
