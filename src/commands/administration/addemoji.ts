@@ -19,9 +19,13 @@ export default class AddemojiCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
-						option.setRequired(true).setName("emoji").setDescription("Enter an emoji or a link to an image").setDescriptionLocalizations({
-							de: "Gib einen Emoji oder einen Link zu einem Bild ein"
-						})
+						option
+							.setRequired(true)
+							.setName("emoji")
+							.setDescription("Enter an emoji or a link to an image")
+							.setDescriptionLocalizations({
+								de: "Gib einen Emoji oder einen Link zu einem Bild ein"
+							})
 					)
 					.addStringOption((option: any) =>
 						option
@@ -41,7 +45,11 @@ export default class AddemojiCommand extends BaseCommand {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
 
-		await this.addEmoji(interaction.options.getString("emoji"), interaction.options.getString("name"), interaction.guild);
+		await this.addEmoji(
+			interaction.options.getString("emoji"),
+			interaction.options.getString("name"),
+			interaction.guild
+		);
 	}
 
 	private async addEmoji(emoji: string, name: string, guild: any): Promise<void> {
@@ -50,26 +58,41 @@ export default class AddemojiCommand extends BaseCommand {
 
 		/* No emoji or link given */
 		if (!stringIsCustomEmoji(emoji) && !stringIsUrl(emoji)) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:invalidEmojiOrLink"), "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("errors:invalidEmojiOrLink"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
 		/* Given link is not an image */
 		if (stringIsUrl(emoji) && !urlIsImage(emoji)) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:invalidLinkExtension"), "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("errors:invalidLinkExtension"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
 		/* Image link given but no name */
 		if (stringIsUrl(emoji) && urlIsImage(emoji) && !name) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:missingName"), "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("errors:missingName"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
 		if (stringIsCustomEmoji(emoji)) {
 			const parsedEmoji: any = parseEmoji(emoji);
 			emote.name = name || parsedEmoji.name;
-			emote.url = "https://cdn.discordapp.com/emojis/" + parsedEmoji.id + (parsedEmoji.animated ? ".gif" : ".png");
+			emote.url =
+				"https://cdn.discordapp.com/emojis/" +
+				parsedEmoji.id +
+				(parsedEmoji.animated ? ".gif" : ".png");
 		} else if (stringIsUrl(emoji) && urlIsImage(emoji)) {
 			emote.name = name;
 			emote.url = emoji;

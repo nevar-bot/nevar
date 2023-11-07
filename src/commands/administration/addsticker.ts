@@ -41,7 +41,9 @@ export default class AddstickerCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("emoji")
-							.setDescription("Enter a standard Discord emoji that represents the sticker")
+							.setDescription(
+								"Enter a standard Discord emoji that represents the sticker"
+							)
 							.setDescriptionLocalizations({
 								de: "Gib einen Standard-Discord-Emoji ein, welches den Sticker repräsentiert"
 							})
@@ -76,7 +78,12 @@ export default class AddstickerCommand extends BaseCommand {
 		);
 	}
 
-	private async addSticker(url: string, name: string, emoji: string, description: string): Promise<void> {
+	private async addSticker(
+		url: string,
+		name: string,
+		emoji: string,
+		description: string
+	): Promise<void> {
 		const sticker: any = {
 			file: undefined,
 			name: undefined,
@@ -87,7 +94,12 @@ export default class AddstickerCommand extends BaseCommand {
 		const { stringIsUrl, urlIsImage, stringIsEmoji } = Utils;
 
 		/* No emoji or link given */
-		if (!stringIsUrl(url) || !urlIsImage(url) || !stringIsEmoji(emoji) || !nodeEmoji.find(emoji)) {
+		if (
+			!stringIsUrl(url) ||
+			!urlIsImage(url) ||
+			!stringIsEmoji(emoji) ||
+			!nodeEmoji.find(emoji)
+		) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:invalidEmojiOrLink"),
 				"error",

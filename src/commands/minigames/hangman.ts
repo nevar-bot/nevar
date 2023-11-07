@@ -115,7 +115,10 @@ class HangmanGame extends BaseGame {
 		const description: string =
 			this.getBoardContent() +
 			"\n" +
-			this.interaction.guild.translate("minigames/hangman:hint", { e: this.client.emotes, wordLength: this.word.length }) +
+			this.interaction.guild.translate("minigames/hangman:hint", {
+				e: this.client.emotes,
+				wordLength: this.word.length
+			}) +
 			"\n" +
 			this.getWordEmojis();
 		const hangmanEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
@@ -152,13 +155,18 @@ class HangmanGame extends BaseGame {
 			const description: string =
 				this.getBoardContent() +
 				"\n" +
-				this.interaction.guild.translate("minigames/hangman:guessedLetters", { e: this.client.emotes }) +
+				this.interaction.guild.translate("minigames/hangman:guessedLetters", {
+					e: this.client.emotes
+				}) +
 				"\n" +
 				this.client.emotes.arrow +
 				" " +
 				this.guessed.join(", ") +
 				"\n\n" +
-				this.interaction.guild.translate("minigames/hangman:hint", { e: this.client.emotes, wordLength: this.word.length }) +
+				this.interaction.guild.translate("minigames/hangman:hint", {
+					e: this.client.emotes,
+					wordLength: this.word.length
+				}) +
 				"\n" +
 				this.getWordEmojis();
 
@@ -186,7 +194,9 @@ class HangmanGame extends BaseGame {
 			this.getBoardContent() +
 			"\n" +
 			(this.guessed.length
-				? this.interaction.guild.translate("minigames/hangman:guessedLetters", { e: this.client.emotes }) +
+				? this.interaction.guild.translate("minigames/hangman:guessedLetters", {
+						e: this.client.emotes
+				  }) +
 				  "\n" +
 				  this.client.emotes.arrow +
 				  " " +
@@ -217,7 +227,13 @@ class HangmanGame extends BaseGame {
 		return this.word
 			.toUpperCase()
 			.split("")
-			.map((l: string): boolean => (this.guessed.includes(l) ? this.getAlphaEmoji(l) : l === " " ? "⬜" : this.client.emotes.question))
+			.map((l: string): boolean =>
+				this.guessed.includes(l)
+					? this.getAlphaEmoji(l)
+					: l === " "
+					? "⬜"
+					: this.client.emotes.question
+			)
 			.join(" ");
 	}
 
@@ -252,8 +268,20 @@ class HangmanGame extends BaseGame {
 			"Secondary",
 			this.buttonPage ? this.client.emotes.arrows.left : this.client.emotes.arrows.right
 		);
-		const letterY: ButtonBuilder = this.client.createButton("hangman_Y", "Y", "Primary", null, this.guessed.includes("Y"));
-		const letterZ: ButtonBuilder = this.client.createButton("hangman_Z", "Z", "Primary", null, this.guessed.includes("Z"));
+		const letterY: ButtonBuilder = this.client.createButton(
+			"hangman_Y",
+			"Y",
+			"Primary",
+			null,
+			this.guessed.includes("Y")
+		);
+		const letterZ: ButtonBuilder = this.client.createButton(
+			"hangman_Z",
+			"Z",
+			"Primary",
+			null,
+			this.guessed.includes("Z")
+		);
 		row4.addComponents(pageBtn, stop);
 		if (this.buttonPage) row4.addComponents(letterY, letterZ);
 

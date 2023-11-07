@@ -50,6 +50,12 @@ export default class TopvotersCommand extends BaseCommand {
 				);
 			}
 		}
-		await this.client.utils.sendPaginatedEmbed(this.interaction, 10, voters, "Topvoter", "Es gibt noch keine Topvoter");
+		await this.client.utils.sendPaginatedEmbed(
+			this.interaction,
+			10,
+			voters,
+			"Topvoter",
+			"Es gibt noch keine Topvoter"
+		);
 	}
 }

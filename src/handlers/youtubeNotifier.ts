@@ -37,11 +37,14 @@ export default {
 						for (let channel of guildData.settings.notifiers.youtube.channels) {
 							const lastVideo: any = await getLastVideo(youtube, channel.id);
 							if (lastVideo && channel.lastVideoId !== lastVideo.id) {
-								guildData.settings.notifiers.youtube.channels.find((c: any): boolean => c.id === channel.id).lastVideoId =
-									lastVideo.id;
+								guildData.settings.notifiers.youtube.channels.find(
+									(c: any): boolean => c.id === channel.id
+								).lastVideoId = lastVideo.id;
 								guildData.markModified("settings.notifiers.youtube.channels");
 								await guildData.save();
-								const announcementChannel: any = guild.channels.cache.get(guildData.settings.notifiers.youtube.announcementChannel);
+								const announcementChannel: any = guild.channels.cache.get(
+									guildData.settings.notifiers.youtube.announcementChannel
+								);
 								if (announcementChannel) {
 									const announcementEmbed: EmbedBuilder = client.createEmbed(
 										"### {0} [{1}]({2})",
@@ -51,7 +54,12 @@ export default {
 										lastVideo.title,
 										lastVideo.url
 									);
-									announcementEmbed.setTitle(client.emotes.arrow + " " + lastVideo.username + " hat ein neues Video hochgeladen!");
+									announcementEmbed.setTitle(
+										client.emotes.arrow +
+											" " +
+											lastVideo.username +
+											" hat ein neues Video hochgeladen!"
+									);
 									announcementEmbed.setImage(lastVideo.thumbnail);
 									announcementChannel.send({
 										embeds: [announcementEmbed]

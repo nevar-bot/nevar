@@ -120,7 +120,8 @@ class SnakeGame extends BaseGame {
 		} while (this.isSnake(applePos));
 
 		const foods: any = this.options.foods;
-		if (foods.length) this.options.emojis.food = foods[Math.floor(Math.random() * foods.length)];
+		if (foods.length)
+			this.options.emojis.food = foods[Math.floor(Math.random() * foods.length)];
 		this.apple = { x: applePos.x, y: applePos.y };
 	}
 
@@ -131,21 +132,58 @@ class SnakeGame extends BaseGame {
 		this.updateFoodLoc();
 
 		const snakeEmbed: EmbedBuilder = this.client.createEmbed(
-			" " + this.interaction.guild.translate("minigames/snake:points") + " " + this.score + "\n\n" + this.getBoardContent(undefined),
+			" " +
+				this.interaction.guild.translate("minigames/snake:points") +
+				" " +
+				this.score +
+				"\n\n" +
+				this.getBoardContent(undefined),
 			"arrow",
 			"normal"
 		);
 		snakeEmbed.setTitle("Snake");
 		snakeEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
-		const up: ButtonBuilder = this.client.createButton("snake_up", null, "Primary", this.client.emotes.arrows.up);
-		const down: ButtonBuilder = this.client.createButton("snake_down", null, "Primary", this.client.emotes.arrows.down);
-		const left: ButtonBuilder = this.client.createButton("snake_left", null, "Primary", this.client.emotes.arrows.left);
-		const right: ButtonBuilder = this.client.createButton("snake_right", null, "Primary", this.client.emotes.arrows.right);
+		const up: ButtonBuilder = this.client.createButton(
+			"snake_up",
+			null,
+			"Primary",
+			this.client.emotes.arrows.up
+		);
+		const down: ButtonBuilder = this.client.createButton(
+			"snake_down",
+			null,
+			"Primary",
+			this.client.emotes.arrows.down
+		);
+		const left: ButtonBuilder = this.client.createButton(
+			"snake_left",
+			null,
+			"Primary",
+			this.client.emotes.arrows.left
+		);
+		const right: ButtonBuilder = this.client.createButton(
+			"snake_right",
+			null,
+			"Primary",
+			this.client.emotes.arrows.right
+		);
 		const stop: ButtonBuilder = this.client.createButton("snake_stop", "Stop", "Danger");
 
-		const dis1: ButtonBuilder = this.client.createButton("dis1", "\u200b", "Secondary", null, true);
-		const dis2: ButtonBuilder = this.client.createButton("dis2", "\u200b", "Secondary", null, true);
+		const dis1: ButtonBuilder = this.client.createButton(
+			"dis1",
+			"\u200b",
+			"Secondary",
+			null,
+			true
+		);
+		const dis2: ButtonBuilder = this.client.createButton(
+			"dis2",
+			"\u200b",
+			"Secondary",
+			null,
+			true
+		);
 
 		const row1: any = this.client.createMessageComponentsRow(dis1, up, dis2, stop);
 		const row2: any = this.client.createMessageComponentsRow(left, down, right);
@@ -165,7 +203,12 @@ class SnakeGame extends BaseGame {
 		}
 
 		const snakeEmbed: EmbedBuilder = this.client.createEmbed(
-			" " + this.interaction.guild.translate("minigames/snake:points") + " " + this.score + "\n\n" + this.getBoardContent(undefined),
+			" " +
+				this.interaction.guild.translate("minigames/snake:points") +
+				" " +
+				this.score +
+				"\n\n" +
+				this.getBoardContent(undefined),
 			"arrow",
 			"normal"
 		);
@@ -177,7 +220,9 @@ class SnakeGame extends BaseGame {
 
 	private endGame(msg: any): any {
 		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(
-			this.interaction.guild.translate("minigames/snake:end", { points: this.score }) + "\n\n" + this.getBoardContent(true),
+			this.interaction.guild.translate("minigames/snake:end", { points: this.score }) +
+				"\n\n" +
+				this.getBoardContent(true),
 			"arrow",
 			"normal"
 		);

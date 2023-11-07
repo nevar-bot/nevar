@@ -101,7 +101,9 @@ export default class TwitchnotifierCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Select the channel in which you want to send new videos")
+							.setDescription(
+								"Select the channel in which you want to send new videos"
+							)
 							.setDescriptionLocalizations({
 								de: "Wähle den Channel, in welchem neue Videos gesendet werden sollen"
 							})
@@ -167,7 +169,11 @@ export default class TwitchnotifierCommand extends BaseCommand {
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
 
-			if (data.guild.settings.notifiers.twitch.channels.find((addedUser: any): boolean => addedUser.id === user.id)) {
+			if (
+				data.guild.settings.notifiers.twitch.channels.find(
+					(addedUser: any): boolean => addedUser.id === user.id
+				)
+			) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("errors:alreadyAdded"),
 					"error",
@@ -219,15 +225,23 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
-		if (data.guild.settings.notifiers.twitch.channels.find((addedUser: any): boolean => addedUser.id === user.id)) {
-			data.guild.settings.notifiers.twitch.channels = data.guild.settings.notifiers.twitch.channels.filter(
-				(addedUser: any): boolean => addedUser.id !== user.id
-			);
+		if (
+			data.guild.settings.notifiers.twitch.channels.find(
+				(addedUser: any): boolean => addedUser.id === user.id
+			)
+		) {
+			data.guild.settings.notifiers.twitch.channels =
+				data.guild.settings.notifiers.twitch.channels.filter(
+					(addedUser: any): boolean => addedUser.id !== user.id
+				);
 			data.guild.markModified("settings.notifiers.twitch.channels");
 			await data.guild.save();
 
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("removed", { name: user.name, url: "https://twitch.tv/" + user.name }),
+				this.translate("removed", {
+					name: user.name,
+					url: "https://twitch.tv/" + user.name
+				}),
 				"success",
 				"success"
 			);
@@ -279,7 +293,9 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		}
 
 		const statusBool: boolean = status === "on";
-		const statusString: string = statusBool ? this.translate("basics:enabled") : this.translate("basics:disabled");
+		const statusString: string = statusBool
+			? this.translate("basics:enabled")
+			: this.translate("basics:disabled");
 		if (data.guild.settings.notifiers.twitch.enabled === statusBool) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:statusAlready", { status: statusString }),

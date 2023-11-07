@@ -11,7 +11,7 @@ export default class ReminderCommand extends BaseCommand {
 			name: "reminder",
 			description: "Manages your reminders",
 			localizedDescriptions: {
-				de: "Verwaltet deine Reminder",
+				de: "Verwaltet deine Reminder"
 			},
 			cooldown: 2 * 1000,
 			dirname: __dirname,
@@ -50,12 +50,15 @@ export default class ReminderCommand extends BaseCommand {
 										de: "liste"
 									},
 									value: "list"
-								})
+								}
+							)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("name")
-							.setDescription("What do you want me to remind you of? (when deleting: name of the memory)")
+							.setDescription(
+								"What do you want me to remind you of? (when deleting: name of the memory)"
+							)
 							.setDescriptionLocalizations({
 								de: "Woran soll ich dich erinnern? (beim löschen: Name der Erinnerung)"
 							})
@@ -78,7 +81,6 @@ export default class ReminderCommand extends BaseCommand {
 		});
 	}
 
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
@@ -86,7 +88,11 @@ export default class ReminderCommand extends BaseCommand {
 		const action = interaction.options.getString("action");
 		switch (action) {
 			case "add":
-				await this.addReminder(interaction.options.getString("name"), interaction.options.getString("duration"), data);
+				await this.addReminder(
+					interaction.options.getString("name"),
+					interaction.options.getString("duration"),
+					data
+				);
 				break;
 			case "delete":
 				await this.deleteReminder(interaction.options.getString("name"), data);
@@ -99,7 +105,11 @@ export default class ReminderCommand extends BaseCommand {
 
 	private async addReminder(name: string, dauer: string, data: any): Promise<void> {
 		if (!name || !dauer || !ms(dauer)) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:missingNameOrDuration"), "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("errors:missingNameOrDuration"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -113,20 +123,35 @@ export default class ReminderCommand extends BaseCommand {
 		data.member.reminders.push(reminder);
 		data.member.markModified("reminders");
 		await data.member.save();
-		this.client.databaseCache.reminders.set(this.interaction.member.user.id + this.interaction.guild.id, data.member);
+		this.client.databaseCache.reminders.set(
+			this.interaction.member.user.id + this.interaction.guild.id,
+			data.member
+		);
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("created", { duration: ms(ms(dauer))}), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("created", { duration: ms(ms(dauer)) }),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
 	private async deleteReminder(name: string, data: any): Promise<void> {
 		if (!name) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:missingName"), "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("errors:missingName"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 		const reminder: any = data.member.reminders.find((r: any): boolean => r.reason === name);
 		if (!reminder) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:noReminderWithThisName"), "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("errors:noReminderWithThisName"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -134,7 +159,11 @@ export default class ReminderCommand extends BaseCommand {
 		data.member.markModified("reminders");
 		await data.member.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("deleted"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("deleted"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -148,19 +177,32 @@ export default class ReminderCommand extends BaseCommand {
 				reminder.reason +
 				"\n" +
 				this.client.emotes.arrow +
-				" " + this.translate("createdAt") + " " +
+				" " +
+				this.translate("createdAt") +
+				" " +
 				this.client.utils.getDiscordTimestamp(reminder.startDate, "f") +
 				"\n" +
 				this.client.emotes.arrow +
-				" " + this.translate("endsAt") + " " +
+				" " +
+				this.translate("endsAt") +
+				" " +
 				this.client.utils.getDiscordTimestamp(reminder.endDate, "f") +
 				"\n" +
 				this.client.emotes.arrow +
-				" " + this.translate("endsIn") + " " +
+				" " +
+				this.translate("endsIn") +
+				" " +
 				this.client.utils.getDiscordTimestamp(reminder.endDate, "R");
 			reminders.push(text);
 		}
 
-		await this.client.utils.sendPaginatedEmbed(this.interaction, 5, reminders, this.translate("reminders"), this.translate("errors:noReminders"), null);
+		await this.client.utils.sendPaginatedEmbed(
+			this.interaction,
+			5,
+			reminders,
+			this.translate("reminders"),
+			this.translate("errors:noReminders"),
+			null
+		);
 	}
 }

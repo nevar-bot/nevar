@@ -56,12 +56,19 @@ export default class AutoreactCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Choose for which channel you want to perform the action")
+							.setDescription(
+								"Choose for which channel you want to perform the action"
+							)
 							.setDescriptionLocalizations({
 								de: "Wähle, für welchen Channel du die Aktion ausführen möchtest"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.GuildForum,
+								ChannelType.PublicThread
+							)
 					)
 					.addStringOption((option: any) =>
 						option
@@ -84,17 +91,29 @@ export default class AutoreactCommand extends BaseCommand {
 
 		switch (action) {
 			case "add":
-				await this.addAutoReact(data, interaction.options.getChannel("channel"), interaction.options.getString("emoji"));
+				await this.addAutoReact(
+					data,
+					interaction.options.getChannel("channel"),
+					interaction.options.getString("emoji")
+				);
 				break;
 			case "remove":
-				await this.removeAutoReact(data, interaction.options.getChannel("channel"), interaction.options.getString("emoji"));
+				await this.removeAutoReact(
+					data,
+					interaction.options.getChannel("channel"),
+					interaction.options.getString("emoji")
+				);
 				break;
 			case "list":
 				await this.showList(data);
 				break;
 			default:
 				const unexpectedErrorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("basics:errors:unexpected", { support: this.client.support }, true),
+					this.translate(
+						"basics:errors:unexpected",
+						{ support: this.client.support },
+						true
+					),
 					"error",
 					"error"
 				);
@@ -130,7 +149,10 @@ export default class AutoreactCommand extends BaseCommand {
 		const originEmote: string = emote;
 		if (stringIsCustomEmoji(emote)) emote = emote.replace(/<a?:\w+:(\d+)>/g, "$1");
 		/* Bot can't use this emoji */
-		if (stringIsCustomEmoji(originEmote) && !this.client.emojis.cache.find((e: any): boolean => e.id === emote)) {
+		if (
+			stringIsCustomEmoji(originEmote) &&
+			!this.client.emojis.cache.find((e: any): boolean => e.id === emote)
+		) {
 			const unusableEmojiEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:cantUseEmoji"),
 				"error",
@@ -140,7 +162,11 @@ export default class AutoreactCommand extends BaseCommand {
 		}
 
 		/* Emoji is already added to this channel */
-		if (data.guild.settings.autoreact.find((r: any): boolean => r.channel === channel.id && r.emoji === emote)) {
+		if (
+			data.guild.settings.autoreact.find(
+				(r: any): boolean => r.channel === channel.id && r.emoji === emote
+			)
+		) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:alreadyAddedInChannel", { channel: channel.toString() }),
 				"error",
@@ -158,7 +184,10 @@ export default class AutoreactCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/autoreact:added", { emoji: originEmote, channel: channel.toString() }),
+			this.translate("administration/autoreact:added", {
+				emoji: originEmote,
+				channel: channel.toString()
+			}),
 			"success",
 			"success"
 		);
@@ -192,7 +221,11 @@ export default class AutoreactCommand extends BaseCommand {
 		if (stringIsCustomEmoji(emote)) emote = emote.replace(/<a?:\w+:(\d+)>/g, "$1");
 
 		/* Emoji is not added to this channel */
-		if (!data.guild.settings.autoreact.find((r: any): boolean => r.channel === channel.id && r.emoji === emote)) {
+		if (
+			!data.guild.settings.autoreact.find(
+				(r: any): boolean => r.channel === channel.id && r.emoji === emote
+			)
+		) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:notAddedInChannel", { channel: channel.toString() }),
 				"error",
@@ -202,7 +235,9 @@ export default class AutoreactCommand extends BaseCommand {
 		}
 
 		/* Remove emoji from autoreact */
-		data.guild.settings.autoreact = data.guild.settings.autoreact.filter((r: any): boolean => r.channel !== channel.id || r.emoji !== emote);
+		data.guild.settings.autoreact = data.guild.settings.autoreact.filter(
+			(r: any): boolean => r.channel !== channel.id || r.emoji !== emote
+		);
 		data.guild.markModified("settings.autoreact");
 		await data.guild.save();
 
@@ -224,8 +259,11 @@ export default class AutoreactCommand extends BaseCommand {
 			const cachedChannel: any = this.interaction.guild.channels.cache.get(item.channel);
 			if (cachedChannel) {
 				const cachedEmoji: any = this.client.emojis.cache.get(item.emoji);
-				if (!sortedAutoReactArray[cachedChannel.toString()]) sortedAutoReactArray[cachedChannel.toString()] = [];
-				sortedAutoReactArray[cachedChannel.toString()].push(cachedEmoji ? cachedEmoji.toString() : item.emoji);
+				if (!sortedAutoReactArray[cachedChannel.toString()])
+					sortedAutoReactArray[cachedChannel.toString()] = [];
+				sortedAutoReactArray[cachedChannel.toString()].push(
+					cachedEmoji ? cachedEmoji.toString() : item.emoji
+				);
 			}
 		}
 

@@ -13,20 +13,24 @@ export default class ExportdataCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option.setName("daten").setDescription("Wähle, welche Daten du exportieren möchtest").setRequired(true).addChoices(
-						{
-							name: "deine Nutzerdaten",
-							value: "user"
-						},
-						{
-							name: "deine Mitgliedsdaten auf diesem Server",
-							value: "member"
-						},
-						{
-							name: "Daten dieses Servers",
-							value: "guild"
-						}
-					)
+					option
+						.setName("daten")
+						.setDescription("Wähle, welche Daten du exportieren möchtest")
+						.setRequired(true)
+						.addChoices(
+							{
+								name: "deine Nutzerdaten",
+								value: "user"
+							},
+							{
+								name: "deine Mitgliedsdaten auf diesem Server",
+								value: "member"
+							},
+							{
+								name: "Daten dieses Servers",
+								value: "guild"
+							}
+						)
 				)
 			}
 		});
@@ -46,10 +50,17 @@ export default class ExportdataCommand extends BaseCommand {
 			for (const field of fieldsToReplace) {
 				userData[field] = "-- aus Sicherheitsgründen entfernt --";
 			}
-			const attachment: AttachmentBuilder = new AttachmentBuilder(Buffer.from(JSON.stringify(userData, null, 4)), {
-				name: this.interaction.user.id + ".json"
-			});
-			const embed: EmbedBuilder = this.client.createEmbed("Hier sind deine exportierten Nutzerdaten:", "success", "success");
+			const attachment: AttachmentBuilder = new AttachmentBuilder(
+				Buffer.from(JSON.stringify(userData, null, 4)),
+				{
+					name: this.interaction.user.id + ".json"
+				}
+			);
+			const embed: EmbedBuilder = this.client.createEmbed(
+				"Hier sind deine exportierten Nutzerdaten:",
+				"success",
+				"success"
+			);
 			return this.interaction.followUp({
 				embeds: [embed],
 				files: [attachment]
@@ -62,10 +73,17 @@ export default class ExportdataCommand extends BaseCommand {
 			for (const field of fieldsToReplace) {
 				userData[field] = "-- aus Sicherheitsgründen entfernt --";
 			}
-			const attachment: AttachmentBuilder = new AttachmentBuilder(Buffer.from(JSON.stringify(userData, null, 4)), {
-				name: this.interaction.user.id + ".json"
-			});
-			const embed: EmbedBuilder = this.client.createEmbed("Hier sind deine exportierten Nutzerdaten:", "success", "success");
+			const attachment: AttachmentBuilder = new AttachmentBuilder(
+				Buffer.from(JSON.stringify(userData, null, 4)),
+				{
+					name: this.interaction.user.id + ".json"
+				}
+			);
+			const embed: EmbedBuilder = this.client.createEmbed(
+				"Hier sind deine exportierten Nutzerdaten:",
+				"success",
+				"success"
+			);
 			return this.interaction.followUp({
 				embeds: [embed],
 				files: [attachment]
@@ -87,10 +105,17 @@ export default class ExportdataCommand extends BaseCommand {
 			for (const field of fieldsToReplace) {
 				userData[field] = "-- aus Sicherheitsgründen entfernt --";
 			}
-			const attachment: AttachmentBuilder = new AttachmentBuilder(Buffer.from(JSON.stringify(userData, null, 4)), {
-				name: this.interaction.user.id + ".json"
-			});
-			const embed: EmbedBuilder = this.client.createEmbed("Hier sind deine exportierten Nutzerdaten:", "success", "success");
+			const attachment: AttachmentBuilder = new AttachmentBuilder(
+				Buffer.from(JSON.stringify(userData, null, 4)),
+				{
+					name: this.interaction.user.id + ".json"
+				}
+			);
+			const embed: EmbedBuilder = this.client.createEmbed(
+				"Hier sind deine exportierten Nutzerdaten:",
+				"success",
+				"success"
+			);
 			return this.interaction.followUp({
 				embeds: [embed],
 				files: [attachment]

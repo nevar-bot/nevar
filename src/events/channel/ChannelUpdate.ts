@@ -13,7 +13,14 @@ export default class {
 
 		const properties: Array<string> = [];
 		if (oldChannel.name !== newChannel.name)
-			properties.push(this.client.emotes.edit + " Name: ~~" + oldChannel.name + "~~ **" + newChannel.name + "**");
+			properties.push(
+				this.client.emotes.edit +
+					" Name: ~~" +
+					oldChannel.name +
+					"~~ **" +
+					newChannel.name +
+					"**"
+			);
 		if (oldChannel.topic !== newChannel.topic)
 			properties.push(
 				this.client.emotes.quotes +
@@ -45,14 +52,23 @@ export default class {
 			properties.push(
 				this.client.emotes.timeout +
 					" Slow-Modus: ~~" +
-					(oldChannel.rateLimitPerUser ? oldChannel.rateLimitPerUser + " Sekunde(n)" : "Kein Limit") +
+					(oldChannel.rateLimitPerUser
+						? oldChannel.rateLimitPerUser + " Sekunde(n)"
+						: "Kein Limit") +
 					"~~ **" +
-					(newChannel.rateLimitPerUser ? newChannel.rateLimitPerUser + " Sekunde(n)" : "Kein Limit") +
+					(newChannel.rateLimitPerUser
+						? newChannel.rateLimitPerUser + " Sekunde(n)"
+						: "Kein Limit") +
 					"**"
 			);
 		if (oldChannel.bitrate !== newChannel.bitrate)
 			properties.push(
-				this.client.emotes.latency.good + " Bitrate: ~~" + oldChannel.bitrate / 1000 + "kbps~~ **" + newChannel.bitrate / 1000 + "kbps**"
+				this.client.emotes.latency.good +
+					" Bitrate: ~~" +
+					oldChannel.bitrate / 1000 +
+					"kbps~~ **" +
+					newChannel.bitrate / 1000 +
+					"kbps**"
 			);
 		if (oldChannel.userLimit !== newChannel.userLimit)
 			properties.push(
@@ -74,21 +90,44 @@ export default class {
 			);
 		if (properties.length < 1) return;
 
-		let channelLogMessage: string = this.client.emotes.channel + " Kanal: " + newChannel.toString() + "\n" + properties.join("\n");
+		let channelLogMessage: string =
+			this.client.emotes.channel +
+			" Kanal: " +
+			newChannel.toString() +
+			"\n" +
+			properties.join("\n");
 
-		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["ChannelUpdate"], limit: 1 }).catch((e: any): void => {});
+		const auditLogs: any = await guild
+			.fetchAuditLogs({ type: AuditLogEvent["ChannelUpdate"], limit: 1 })
+			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
 			if (auditLogEntry) {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					channelLogMessage +=
-						"\n\n" + this.client.emotes.user + " Nutzer/-in: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
+						"\n\n" +
+						this.client.emotes.user +
+						" Nutzer/-in: " +
+						"**" +
+						moderator.displayName +
+						"** (@" +
+						moderator.username +
+						")";
 			}
 		}
 
-		const channelLogEmbed: EmbedBuilder = this.client.createEmbed(channelLogMessage, null, "warning");
-		channelLogEmbed.setTitle(this.client.emotes.events.channel.update + " " + this.client.channelTypes[newChannel.type] + " bearbeitet");
+		const channelLogEmbed: EmbedBuilder = this.client.createEmbed(
+			channelLogMessage,
+			null,
+			"warning"
+		);
+		channelLogEmbed.setTitle(
+			this.client.emotes.events.channel.update +
+				" " +
+				this.client.channelTypes[newChannel.type] +
+				" bearbeitet"
+		);
 		channelLogEmbed.setThumbnail(guild.iconURL());
 
 		await guild.logAction(channelLogEmbed, "channel");

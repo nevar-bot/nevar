@@ -14,7 +14,15 @@ export default class {
 		const { guild } = ban;
 
 		let banLogMessage: string =
-			this.client.emotes.user + " Nutzer/-in: " + ban.user.displayName + " (@" + ban.user.username + ")" + " (" + ban.user.id + ")";
+			this.client.emotes.user +
+			" Nutzer/-in: " +
+			ban.user.displayName +
+			" (@" +
+			ban.user.username +
+			")" +
+			" (" +
+			ban.user.id +
+			")";
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({
@@ -28,7 +36,14 @@ export default class {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					banLogMessage +=
-						"\n\n" + this.client.emotes.user + " Nutzer/-in: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
+						"\n\n" +
+						this.client.emotes.user +
+						" Nutzer/-in: " +
+						"**" +
+						moderator.displayName +
+						"** (@" +
+						moderator.username +
+						")";
 			}
 		}
 

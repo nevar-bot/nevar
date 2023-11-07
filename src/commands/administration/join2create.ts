@@ -30,7 +30,9 @@ export default class Join2CreateCommand extends BaseCommand {
 					.addIntegerOption((option) =>
 						option
 							.setName("limit")
-							.setDescription("Choose how many people can be in a channel at most (0 = unlimited)")
+							.setDescription(
+								"Choose how many people can be in a channel at most (0 = unlimited)"
+							)
 							.setDescriptionLocalizations({
 								de: "Wähle, wieviele Leute maximal in einem Channel sein dürfen (0 = unbegrenzt)"
 							})
@@ -52,7 +54,9 @@ export default class Join2CreateCommand extends BaseCommand {
 					.addStringOption((option) =>
 						option
 							.setName("name")
-							.setDescription("Set the default name for the channel (variables: {count} and {user})")
+							.setDescription(
+								"Set the default name for the channel (variables: {count} and {user})"
+							)
 							.setDescriptionLocalizations({
 								de: "Setze den Standard-Namen für die Channel (Variablen: {count} und {user})"
 							})
@@ -90,7 +94,14 @@ export default class Join2CreateCommand extends BaseCommand {
 		);
 	}
 
-	private async setJoinToCreate(channel: any, userlimit: number, bitrate: number, name: string, category: any, data: any): Promise<void> {
+	private async setJoinToCreate(
+		channel: any,
+		userlimit: number,
+		bitrate: number,
+		name: string,
+		category: any,
+		data: any
+	): Promise<void> {
 		data.guild.settings.joinToCreate = {
 			enabled: true,
 			channel: channel.id,
@@ -103,7 +114,11 @@ export default class Join2CreateCommand extends BaseCommand {
 		data.guild.markModified("settings.joinToCreate");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("set"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("set"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

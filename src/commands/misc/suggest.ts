@@ -12,8 +12,18 @@ export default class SuggestCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()
-					.addStringOption((option: any) => option.setName("idee").setDescription("Gib deine Idee ein").setRequired(true))
-					.addAttachmentOption((option: any) => option.setName("bild").setDescription("Füge ggf. ein Bild hinzu").setRequired(false))
+					.addStringOption((option: any) =>
+						option
+							.setName("idee")
+							.setDescription("Gib deine Idee ein")
+							.setRequired(true)
+					)
+					.addAttachmentOption((option: any) =>
+						option
+							.setName("bild")
+							.setDescription("Füge ggf. ein Bild hinzu")
+							.setRequired(false)
+					)
 			}
 		});
 	}
@@ -22,7 +32,11 @@ export default class SuggestCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.suggest(interaction.options.getString("idee"), interaction.options.getAttachment("bild"), data);
+		await this.suggest(
+			interaction.options.getString("idee"),
+			interaction.options.getAttachment("bild"),
+			data
+		);
 	}
 
 	private async suggest(idea: string, image: any, data: any): Promise<any> {
@@ -35,22 +49,43 @@ export default class SuggestCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [isNotEnabledEmbed] });
 		}
 
-		const channel: any = this.client.channels.cache.get(data.guild.settings.suggestions.channel);
+		const channel: any = this.client.channels.cache.get(
+			data.guild.settings.suggestions.channel
+		);
 		if (!channel) {
-			const channelNotFoundEmbed: EmbedBuilder = this.client.createEmbed("Der Ideen-Channel wurde nicht gefunden.", "error", "error");
+			const channelNotFoundEmbed: EmbedBuilder = this.client.createEmbed(
+				"Der Ideen-Channel wurde nicht gefunden.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({
 				embeds: [channelNotFoundEmbed]
 			});
 		}
 
 		if (image && !image.contentType.startsWith("image/")) {
-			const notAnImageEmbed: EmbedBuilder = this.client.createEmbed("Die angehängte Datei muss ein Bild sein.", "error", "error");
+			const notAnImageEmbed: EmbedBuilder = this.client.createEmbed(
+				"Die angehängte Datei muss ein Bild sein.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [notAnImageEmbed] });
 		}
 		const url = image ? image.proxyURL : null;
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("Deine Idee wurde eingereicht.", "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			"Deine Idee wurde eingereicht.",
+			"success",
+			"success"
+		);
 		await this.interaction.followUp({ embeds: [successEmbed] });
-		return this.client.emit("SuggestionSubmitted", this.interaction, data, this.interaction.guild, idea, url);
+		return this.client.emit(
+			"SuggestionSubmitted",
+			this.interaction,
+			data,
+			this.interaction.guild,
+			idea,
+			url
+		);
 	}
 }

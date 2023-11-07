@@ -55,7 +55,7 @@ const GuildSchema: Schema = new mongoose.Schema({
 			tickets: {
 				enabled: false,
 				channel: null,
-				supportRoles: [],
+				supportRoles: []
 			},
 			levels: {
 				enabled: false,

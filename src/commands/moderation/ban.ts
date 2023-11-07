@@ -17,10 +17,23 @@ export default class BanCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()
-					.addUserOption((option: any) => option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true))
-					.addStringOption((option: any) => option.setName("grund").setDescription("Gib einen Grund an").setRequired(false))
+					.addUserOption((option: any) =>
+						option
+							.setName("mitglied")
+							.setDescription("Wähle ein Mitglied")
+							.setRequired(true)
+					)
 					.addStringOption((option: any) =>
-						option.setName("dauer").setDescription("Gib eine Dauer an (bspw. 1h, 1d, 1h 30m, etc.)").setRequired(false)
+						option
+							.setName("grund")
+							.setDescription("Gib einen Grund an")
+							.setRequired(false)
+					)
+					.addStringOption((option: any) =>
+						option
+							.setName("dauer")
+							.setDescription("Gib eine Dauer an (bspw. 1h, 1d, 1h 30m, etc.)")
+							.setRequired(false)
 					)
 			}
 		});
@@ -30,23 +43,40 @@ export default class BanCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.ban(interaction.options.getUser("mitglied"), interaction.options.getString("grund"), interaction.options.getString("dauer"), data);
+		await this.ban(
+			interaction.options.getUser("mitglied"),
+			interaction.options.getString("grund"),
+			interaction.options.getString("dauer"),
+			data
+		);
 	}
 
 	private async ban(member: any, reason: string, duration: string, data: any): Promise<void> {
 		member = await this.interaction.guild.resolveMember(member.id);
 		if (!member) {
-			const noMemberEmbed: EmbedBuilder = this.client.createEmbed("Du musst ein Mitglied angeben.", "error", "error");
+			const noMemberEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du musst ein Mitglied angeben.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [noMemberEmbed] });
 		}
 
 		if (member.user.id === this.interaction.user.id) {
-			const selfEmbed: EmbedBuilder = this.client.createEmbed("Du kannst dich nicht selbst bannen.", "error", "error");
+			const selfEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du kannst dich nicht selbst bannen.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [selfEmbed] });
 		}
 
 		if (member.user.id === this.client.user!.id) {
-			const meEmbed: EmbedBuilder = this.client.createEmbed("Ich kann mich nicht selbst bannen.", "error", "error");
+			const meEmbed: EmbedBuilder = this.client.createEmbed(
+				"Ich kann mich nicht selbst bannen.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [meEmbed] });
 		}
 
@@ -60,12 +90,20 @@ export default class BanCommand extends BaseCommand {
 		}
 
 		if (!member.bannable) {
-			const cantBanEmbed: EmbedBuilder = this.client.createEmbed("Ich kann dieses Mitglied nicht bannen.", "error", "error");
+			const cantBanEmbed: EmbedBuilder = this.client.createEmbed(
+				"Ich kann dieses Mitglied nicht bannen.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [cantBanEmbed] });
 		}
 
 		if (duration && !ms(duration)) {
-			const invalidDurationEmbed: EmbedBuilder = this.client.createEmbed("Du hast eine ungültige Dauer angegeben.", "error", "error");
+			const invalidDurationEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du hast eine ungültige Dauer angegeben.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({
 				embeds: [invalidDurationEmbed]
 			});
@@ -77,7 +115,10 @@ export default class BanCommand extends BaseCommand {
 			duration: duration ? ms(duration) : 200 * 60 * 60 * 24 * 365 * 1000
 		};
 
-		let relativeTime: string = this.client.utils.getDiscordTimestamp(Date.now() + ban.duration, "R");
+		let relativeTime: string = this.client.utils.getDiscordTimestamp(
+			Date.now() + ban.duration,
+			"R"
+		);
 		if (ban.duration === 200 * 60 * 60 * 24 * 365 * 1000) {
 			relativeTime = "Permanent";
 		}
@@ -92,8 +133,18 @@ export default class BanCommand extends BaseCommand {
 			"warning",
 			member.user.username
 		);
-		const buttonYes: ButtonBuilder = this.client.createButton("confirm", "Ja", "Secondary", "success");
-		const buttonNo: ButtonBuilder = this.client.createButton("decline", "Nein", "Secondary", "error");
+		const buttonYes: ButtonBuilder = this.client.createButton(
+			"confirm",
+			"Ja",
+			"Secondary",
+			"success"
+		);
+		const buttonNo: ButtonBuilder = this.client.createButton(
+			"decline",
+			"Nein",
+			"Secondary",
+			"error"
+		);
 		const buttonRow: any = this.client.createMessageComponentsRow(buttonYes, buttonNo);
 
 		const confirmationAskMessage: any = await this.interaction.followUp({
@@ -130,8 +181,15 @@ export default class BanCommand extends BaseCommand {
 						this.client.emotes.arrow +
 						" Unban am: " +
 						unbanDate;
-					const privateBanEmbed: EmbedBuilder = this.client.createEmbed(privateText, null, "error", this.interaction.guild.name);
-					const privateMessage = await ban.victim.send({ embeds: [privateBanEmbed] }).catch((): void => {});
+					const privateBanEmbed: EmbedBuilder = this.client.createEmbed(
+						privateText,
+						null,
+						"error",
+						this.interaction.guild.name
+					);
+					const privateMessage = await ban.victim
+						.send({ embeds: [privateBanEmbed] })
+						.catch((): void => {});
 					try {
 						await ban.victim.ban({
 							reason:
@@ -144,7 +202,10 @@ export default class BanCommand extends BaseCommand {
 								" | Unban am: " +
 								unbanDate
 						});
-						const victimData = await this.client.findOrCreateMember(ban.victim.user.id, this.interaction.guild.id);
+						const victimData = await this.client.findOrCreateMember(
+							ban.victim.user.id,
+							this.interaction.guild.id
+						);
 
 						victimData.banned = {
 							state: true,
@@ -159,7 +220,10 @@ export default class BanCommand extends BaseCommand {
 						};
 						victimData.markModified("banned");
 						await victimData.save();
-						this.client.databaseCache.bannedUsers.set(ban.victim.user.id + this.interaction.guild.id, victimData);
+						this.client.databaseCache.bannedUsers.set(
+							ban.victim.user.id + this.interaction.guild.id,
+							victimData
+						);
 
 						const publicText: string =
 							"### " +
@@ -180,8 +244,15 @@ export default class BanCommand extends BaseCommand {
 							this.client.emotes.arrow +
 							" Unban am: " +
 							unbanDate;
-						const publicBanEmbed: EmbedBuilder = this.client.createEmbed(publicText, null, "error", ban.victim.user.username);
-						publicBanEmbed.setImage("https://media4.giphy.com/media/H99r2HtnYs492/giphy.gif");
+						const publicBanEmbed: EmbedBuilder = this.client.createEmbed(
+							publicText,
+							null,
+							"error",
+							ban.victim.user.username
+						);
+						publicBanEmbed.setImage(
+							"https://media4.giphy.com/media/H99r2HtnYs492/giphy.gif"
+						);
 						await clicked.update({
 							embeds: [publicBanEmbed],
 							components: []

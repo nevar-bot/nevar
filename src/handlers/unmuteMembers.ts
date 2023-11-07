@@ -10,7 +10,9 @@ export default {
 		});
 
 		setInterval((): void => {
-			for (const memberData of [...client.databaseCache.mutedUsers.values()].filter((m: any): boolean => m.muted.mutedUntil <= Date.now())) {
+			for (const memberData of [...client.databaseCache.mutedUsers.values()].filter(
+				(m: any): boolean => m.muted.mutedUntil <= Date.now()
+			)) {
 				const guild: Guild | undefined = client.guilds.cache.get(memberData.guildID);
 				if (!guild) continue;
 
@@ -31,25 +33,45 @@ export default {
 											client.emotes.arrow +
 											" Begründung: Mute-Dauer ist abgelaufen";
 
-										const unmuteEmbed: EmbedBuilder = client.createEmbed(unmuteMessage, null, "success");
+										const unmuteEmbed: EmbedBuilder = client.createEmbed(
+											unmuteMessage,
+											null,
+											"success"
+										);
 										unmuteEmbed.setTitle("Auto-Unmute durchgeführt");
 										unmuteEmbed.setThumbnail(member.user.displayAvatarURL());
 										await guild.logAction(unmuteEmbed, "moderation");
 									})
 									.catch(async (e: any): Promise<void> => {
-										const errorMessage: string = client.emotes.user + " Nutzer/-in: " + member.user.username;
+										const errorMessage: string =
+											client.emotes.user +
+											" Nutzer/-in: " +
+											member.user.username;
 
-										const errorEmbed: EmbedBuilder = client.createEmbed(errorMessage, null, "error");
+										const errorEmbed: EmbedBuilder = client.createEmbed(
+											errorMessage,
+											null,
+											"error"
+										);
 										errorEmbed.setTitle("Auto-Unmute fehlgeschlagen");
 										errorEmbed.setThumbnail(member.user.displayAvatarURL());
 										await guild.logAction(errorEmbed, "moderation");
 									});
 							})
 							.catch(async (e: any): Promise<void> => {
-								const user = await client.users.fetch(memberData.id).catch((): void => {});
-								const errorMessage: string = client.emotes.user + " Nutzer/-in: " + (user ? user.username : memberData.id);
+								const user = await client.users
+									.fetch(memberData.id)
+									.catch((): void => {});
+								const errorMessage: string =
+									client.emotes.user +
+									" Nutzer/-in: " +
+									(user ? user.username : memberData.id);
 
-								const errorEmbed: EmbedBuilder = client.createEmbed(errorMessage, null, "error");
+								const errorEmbed: EmbedBuilder = client.createEmbed(
+									errorMessage,
+									null,
+									"error"
+								);
 								errorEmbed.setTitle("Auto-Unmute fehlgeschlagen");
 								errorEmbed.setThumbnail(user!.displayAvatarURL());
 								await guild.logAction(errorEmbed, "moderation");

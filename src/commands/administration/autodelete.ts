@@ -57,12 +57,19 @@ export default class AutodeleteCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Choose for which channel you want to perform the action")
+							.setDescription(
+								"Choose for which channel you want to perform the action"
+							)
 							.setDescriptionLocalizations({
 								de: "Wähle, für welchen Channel du die Aktion ausführen möchtest"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.GuildForum,
+								ChannelType.PublicThread
+							)
 					)
 					.addStringOption((option: any) =>
 						option
@@ -87,7 +94,11 @@ export default class AutodeleteCommand extends BaseCommand {
 		const action: string = interaction.options.getString("action");
 		switch (action) {
 			case "add":
-				await this.addAutodelete(interaction.options.getChannel("channel"), interaction.options.getString("time"), data);
+				await this.addAutodelete(
+					interaction.options.getChannel("channel"),
+					interaction.options.getString("time"),
+					data
+				);
 				break;
 			case "remove":
 				await this.removeAutodelete(interaction.options.getChannel("channel"), data);
@@ -96,7 +107,11 @@ export default class AutodeleteCommand extends BaseCommand {
 				await this.showList(data);
 				break;
 			default:
-				const unexpectedErrorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("basics:unexpectedError"), "error", "error");
+				const unexpectedErrorEmbed: EmbedBuilder = this.client.createEmbed(
+					this.translate("basics:unexpectedError"),
+					"error",
+					"error"
+				);
 				return this.interaction.followUp({
 					embeds: [unexpectedErrorEmbed]
 				});
@@ -185,7 +200,9 @@ export default class AutodeleteCommand extends BaseCommand {
 		}
 
 		/* Remove from database */
-		data.guild.settings.autodelete = data.guild.settings.autodelete.filter((x: any): boolean => x.channel !== channel.id);
+		data.guild.settings.autodelete = data.guild.settings.autodelete.filter(
+			(x: any): boolean => x.channel !== channel.id
+		);
 		data.guild.markModified("settings.autodelete");
 		await data.guild.save();
 

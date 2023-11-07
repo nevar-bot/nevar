@@ -100,7 +100,11 @@ export default class SuggestsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.suggestions.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("enabled"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("enabled"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -117,7 +121,11 @@ export default class SuggestsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.suggestions.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("disabled"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("disabled"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 

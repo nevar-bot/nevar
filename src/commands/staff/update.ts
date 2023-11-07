@@ -25,7 +25,11 @@ export default class PullCommand extends BaseCommand {
 	}
 
 	private async update(): Promise<void> {
-		const updateEmbed: EmbedBuilder = this.client.createEmbed("Starte Aktualisierung...", "warning", "warning");
+		const updateEmbed: EmbedBuilder = this.client.createEmbed(
+			"Starte Aktualisierung...",
+			"warning",
+			"warning"
+		);
 		const repliedMessage = await this.message.reply({
 			embeds: [updateEmbed]
 		});
@@ -49,7 +53,11 @@ export default class PullCommand extends BaseCommand {
 					return repliedMessage.edit({ embeds: [errorEmbed] });
 				}
 			});
-			const successEmbed: EmbedBuilder = this.client.createEmbed("Aktualisierung erfolgreich, starte neu...", "success", "success");
+			const successEmbed: EmbedBuilder = this.client.createEmbed(
+				"Aktualisierung erfolgreich, starte neu...",
+				"success",
+				"success"
+			);
 			repliedMessage.edit({ embeds: [successEmbed] }).then((): void => {
 				process.exit(1);
 			});

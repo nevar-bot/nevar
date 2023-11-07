@@ -59,7 +59,12 @@ export default class InviteCommand extends BaseCommand {
 			false,
 			"https://cp.nevar.eu"
 		);
-		const buttonRow: any = this.client.createMessageComponentsRow(inviteButton, supportButton, websiteButton, dashboardButton); // test
+		const buttonRow: any = this.client.createMessageComponentsRow(
+			inviteButton,
+			supportButton,
+			websiteButton,
+			dashboardButton
+		); // test
 
 		// Second row
 		const xButton: ButtonBuilder = this.client.createButton(
@@ -95,7 +100,12 @@ export default class InviteCommand extends BaseCommand {
 			"https://top.gg/" + this.client.user!.id + "/vote"
 		);
 
-		const buttonRow2: any = this.client.createMessageComponentsRow(voteButton, xButton, instagramButton, githubButton);
+		const buttonRow2: any = this.client.createMessageComponentsRow(
+			voteButton,
+			xButton,
+			instagramButton,
+			githubButton
+		);
 
 		const text: string = "### " + this.client.emotes.discover + " " + this.translate("text");
 		const linksEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");

@@ -48,7 +48,8 @@ export default class GiveawaysManager {
 		/* Send deleted embed */
 		const guild: Guild | null = this.client.guilds.cache.get(giveaway.guildId) ?? null;
 		const channel: any = guild?.channels.cache.get(giveaway.channelId) ?? null;
-		const message: any = (await channel?.messages.fetch(giveaway.messageId).catch((): void => {})) ?? null;
+		const message: any =
+			(await channel?.messages.fetch(giveaway.messageId).catch((): void => {})) ?? null;
 
 		if (guild && channel && message) {
 			const endEmbed: EmbedBuilder = new EmbedBuilder()
@@ -79,7 +80,9 @@ export default class GiveawaysManager {
 			);
 			const buttonRow: any = this.client.createMessageComponentsRow(participateButton);
 
-			await message.edit({ embeds: [endEmbed], components: [buttonRow] }).catch((): null => null);
+			await message
+				.edit({ embeds: [endEmbed], components: [buttonRow] })
+				.catch((): null => null);
 		}
 		return true;
 	}
@@ -94,7 +97,9 @@ export default class GiveawaysManager {
 		if (giveaway.ended) return false;
 
 		/* Get winners */
-		const entrantIds: string[] = giveaway.entrantIds.filter((entrantId: string): boolean => !giveaway.exemptMembers.includes(entrantId));
+		const entrantIds: string[] = giveaway.entrantIds.filter(
+			(entrantId: string): boolean => !giveaway.exemptMembers.includes(entrantId)
+		);
 		const winners: string[] = [];
 
 		for (let i = 0; i < giveaway.winnerCount; i++) {
@@ -135,7 +140,9 @@ export default class GiveawaysManager {
 
 		/* Get new winners */
 		const entrantIds: string[] = giveaway.entrantIds.filter(
-			(entrantId: string): boolean => !giveaway.exemptMembers.includes(entrantId) && !giveaway.winnerIds.includes(entrantId)
+			(entrantId: string): boolean =>
+				!giveaway.exemptMembers.includes(entrantId) &&
+				!giveaway.winnerIds.includes(entrantId)
 		);
 		const newWinners: string[] = [];
 
@@ -176,10 +183,13 @@ export default class GiveawaysManager {
 		if (!channel) return false;
 
 		/* Get hoster */
-		const hoster: any = await this.client.users.fetch(giveaway.hostedBy).catch((): null => null);
+		const hoster: any = await this.client.users
+			.fetch(giveaway.hostedBy)
+			.catch((): null => null);
 
 		/* Create embed */
-		const messageText: string = "## " + this.client.emotes.tada + "GEWINNSPIEL " + this.client.emotes.tada;
+		const messageText: string =
+			"## " + this.client.emotes.tada + "GEWINNSPIEL " + this.client.emotes.tada;
 		const embed: EmbedBuilder = new EmbedBuilder()
 			.setDescription(
 				"## " +
@@ -225,14 +235,23 @@ export default class GiveawaysManager {
 			.setColor(this.client.config.embeds["DEFAULT_COLOR"]);
 
 		/* Create button */
-		const participateButton: ButtonBuilder = this.client.createButton("giveaway_participate", "\u200b", "Primary", this.client.emotes.tada);
+		const participateButton: ButtonBuilder = this.client.createButton(
+			"giveaway_participate",
+			"\u200b",
+			"Primary",
+			this.client.emotes.tada
+		);
 		const buttonRow: any = this.client.createMessageComponentsRow(participateButton);
 
 		if (giveaway.messageId) {
 			/* Update existing message */
-			const message: any = await channel.messages.fetch(giveaway.messageId).catch((): null => null);
+			const message: any = await channel.messages
+				.fetch(giveaway.messageId)
+				.catch((): null => null);
 			if (message) {
-				await message.edit({ content: messageText, embeds: [embed], components: [buttonRow] }).catch((): null => null);
+				await message
+					.edit({ content: messageText, embeds: [embed], components: [buttonRow] })
+					.catch((): null => null);
 				return {
 					messageId: giveaway.messageId
 				};
@@ -260,11 +279,15 @@ export default class GiveawaysManager {
 		if (!channel) return false;
 
 		/* Get message */
-		const message: any = await channel.messages.fetch(giveaway.messageId).catch((): null => null);
+		const message: any = await channel.messages
+			.fetch(giveaway.messageId)
+			.catch((): null => null);
 		if (!message) return false;
 
 		/* Get hoster */
-		const hoster: any = await this.client.users.fetch(giveaway.hostedBy).catch((): null => null);
+		const hoster: any = await this.client.users
+			.fetch(giveaway.hostedBy)
+			.catch((): null => null);
 
 		/* Get winners discord users */
 		const winners: string[] = [];
@@ -332,10 +355,17 @@ export default class GiveawaysManager {
 			const buttonRow: any = this.client.createMessageComponentsRow(participateButton);
 
 			/* Update message */
-			await message.edit({ embeds: [giveawayEndEmbed], components: [buttonRow] }).catch((): null => null);
+			await message
+				.edit({ embeds: [giveawayEndEmbed], components: [buttonRow] })
+				.catch((): null => null);
 
 			/* Send congratulations message */
-			const congratulationsMessage: string = "### " + this.client.emotes.tada + " Herzlichen Glückwunsch, " + winners.join(", ") + "!";
+			const congratulationsMessage: string =
+				"### " +
+				this.client.emotes.tada +
+				" Herzlichen Glückwunsch, " +
+				winners.join(", ") +
+				"!";
 			await message.reply({ content: congratulationsMessage }).catch((): void => {});
 			return true;
 		} else {
@@ -394,10 +424,13 @@ export default class GiveawaysManager {
 			const buttonRow: any = this.client.createMessageComponentsRow(participateButton);
 
 			/* Update message */
-			await message.edit({ embeds: [giveawayEndEmbed], components: [buttonRow] }).catch((): null => null);
+			await message
+				.edit({ embeds: [giveawayEndEmbed], components: [buttonRow] })
+				.catch((): null => null);
 
 			/* Send congratulations message */
-			const congratulationsMessage: string = "### " + this.client.emotes.tada + " Es gibt keine Gewinner/-innen!";
+			const congratulationsMessage: string =
+				"### " + this.client.emotes.tada + " Es gibt keine Gewinner/-innen!";
 			await message.reply({ content: congratulationsMessage }).catch((): void => {});
 			return true;
 		}

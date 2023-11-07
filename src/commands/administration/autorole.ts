@@ -186,7 +186,9 @@ export default class AutoroleCommand extends BaseCommand {
 		}
 
 		/* Remove from database */
-		data.guild.settings.welcome.autoroles = data.guild.settings.welcome.autoroles.filter((r: any): boolean => r !== role.id);
+		data.guild.settings.welcome.autoroles = data.guild.settings.welcome.autoroles.filter(
+			(r: any): boolean => r !== role.id
+		);
 		data.guild.markModified("settings.welcome.autoroles");
 		await data.guild.save();
 

@@ -13,7 +13,11 @@ async function walkDirectory(dir: any, namespaces: any[] = [], folderName = "") 
 			const isLanguage: any = file.match(/^[a-z]{2}(-[A-Z]{2})?$/);
 			if (isLanguage) languages.push(file);
 
-			const folder = await walkDirectory(path.join(dir, file), namespaces, isLanguage ? "" : file + "/");
+			const folder = await walkDirectory(
+				path.join(dir, file),
+				namespaces,
+				isLanguage ? "" : file + "/"
+			);
 
 			namespaces = folder.namespaces;
 		} else {
@@ -32,7 +36,9 @@ export async function languages() {
 		loadPath: path.resolve(__dirname, "../../locales/{{lng}}//{{ns}}.json")
 	};
 
-	const { namespaces, languages } = await walkDirectory(path.resolve(__dirname, "../../locales/"));
+	const { namespaces, languages } = await walkDirectory(
+		path.resolve(__dirname, "../../locales/")
+	);
 
 	i18next.use(i18nextBackend);
 

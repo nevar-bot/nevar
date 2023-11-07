@@ -27,14 +27,23 @@ export default class {
 			" Begründung: " +
 			(ban.reason ? ban.reason : "N/A");
 
-		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["MemberBanAdd"], limit: 1 }).catch((e: any): void => {});
+		const auditLogs: any = await guild
+			.fetchAuditLogs({ type: AuditLogEvent["MemberBanAdd"], limit: 1 })
+			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
 			if (auditLogEntry) {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					banLogMessage +=
-						"\n\n" + this.client.emotes.user + " Nutzer/-in: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
+						"\n\n" +
+						this.client.emotes.user +
+						" Nutzer/-in: " +
+						"**" +
+						moderator.displayName +
+						"** (@" +
+						moderator.username +
+						")";
 			}
 		}
 

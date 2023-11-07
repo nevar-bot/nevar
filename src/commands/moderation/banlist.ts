@@ -30,18 +30,26 @@ export default class BanlistCommand extends BaseCommand {
 		let bannedUsers: any[] = [];
 		const bans: any = await this.interaction.guild.bans.fetch().catch((): void => {});
 		for (let ban of bans) {
-			const memberData: any = await this.client.findOrCreateMember(ban[1].user.id, this.interaction.guild.id);
+			const memberData: any = await this.client.findOrCreateMember(
+				ban[1].user.id,
+				this.interaction.guild.id
+			);
 			if (memberData.banned.state) {
 				// Mit Nevar gebannt
 				const duration: string =
 					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "Permanent"
-						: this.client.utils.getDiscordTimestamp(Date.now() + memberData.banned.duration, "R");
+						: this.client.utils.getDiscordTimestamp(
+								Date.now() + memberData.banned.duration,
+								"R"
+						  );
 				const bannedUntil: string =
 					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "/"
 						: moment(memberData.banned.bannedUntil).format("DD.MM.YYYY, HH:mm");
-				const moderator: any = await this.client.users.fetch(memberData.banned.moderator.id).catch((): void => {});
+				const moderator: any = await this.client.users
+					.fetch(memberData.banned.moderator.id)
+					.catch((): void => {});
 				const text: string =
 					"### " +
 					this.client.emotes.ban +
@@ -84,6 +92,13 @@ export default class BanlistCommand extends BaseCommand {
 				bannedUsers.push(text);
 			}
 		}
-		await this.client.utils.sendPaginatedEmbed(this.interaction, 3, bannedUsers, "Gebannte Nutzer/-innen", "Es sind keine Nutzer gebannt", null);
+		await this.client.utils.sendPaginatedEmbed(
+			this.interaction,
+			3,
+			bannedUsers,
+			"Gebannte Nutzer/-innen",
+			"Es sind keine Nutzer gebannt",
+			null
+		);
 	}
 }

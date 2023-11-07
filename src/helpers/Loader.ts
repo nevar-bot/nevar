@@ -25,7 +25,15 @@ export default class Loader {
 				} else success++;
 			}
 		}
-		client.logger.log("Loaded " + (success + failed) + " commands. Success (" + success + ") Failed (" + failed + ")");
+		client.logger.log(
+			"Loaded " +
+				(success + failed) +
+				" commands. Success (" +
+				success +
+				") Failed (" +
+				failed +
+				")"
+		);
 	}
 
 	static async loadEvents(client: BaseClient): Promise<void> {
@@ -50,7 +58,15 @@ export default class Loader {
 				client.logger.error("Couldn't load event " + file + ": " + e);
 			}
 		}
-		client.logger.log("Loaded " + (success + failed) + " events. Success (" + success + ") Failed (" + failed + ")");
+		client.logger.log(
+			"Loaded " +
+				(success + failed) +
+				" events. Success (" +
+				success +
+				") Failed (" +
+				failed +
+				")"
+		);
 	}
 
 	static async loadContexts(client: BaseClient): Promise<void> {

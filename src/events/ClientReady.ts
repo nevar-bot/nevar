@@ -61,16 +61,33 @@ export default class {
 			setInterval(() => {
 				const supportGuild: Guild = client.guilds.cache.get(config.support["ID"]);
 				let serverChannel: any, voteChannel: any, userChannel: any;
-				if (config.channels["SERVER_COUNT_ID"]) serverChannel = supportGuild.channels.cache.get(config.channels["SERVER_COUNT_ID"]);
-				if (config.channels["VOTE_COUNT_ID"]) voteChannel = supportGuild.channels.cache.get(config.channels["VOTE_COUNT_ID"]);
-				if (config.channels["USER_COUNT_ID"]) userChannel = supportGuild.channels.cache.get(config.channels["USER_COUNT_ID"]);
+				if (config.channels["SERVER_COUNT_ID"])
+					serverChannel = supportGuild.channels.cache.get(
+						config.channels["SERVER_COUNT_ID"]
+					);
+				if (config.channels["VOTE_COUNT_ID"])
+					voteChannel = supportGuild.channels.cache.get(config.channels["VOTE_COUNT_ID"]);
+				if (config.channels["USER_COUNT_ID"])
+					userChannel = supportGuild.channels.cache.get(config.channels["USER_COUNT_ID"]);
 
-				if (serverChannel) serverChannel.setName(config.channels["SERVER_COUNT_NAME"].replace("{count}", client.guilds.cache.size));
+				if (serverChannel)
+					serverChannel.setName(
+						config.channels["SERVER_COUNT_NAME"].replace(
+							"{count}",
+							client.guilds.cache.size
+						)
+					);
 				if (userChannel)
 					userChannel.setName(
 						config.channels["USER_COUNT_NAME"].replace(
 							"{count}",
-							client.format(client.guilds.cache.reduce((sum: any, guild: any) => sum + (guild.available ? guild.memberCount : 0), 0))
+							client.format(
+								client.guilds.cache.reduce(
+									(sum: any, guild: any) =>
+										sum + (guild.available ? guild.memberCount : 0),
+									0
+								)
+							)
 						)
 					);
 
@@ -99,13 +116,23 @@ export default class {
 			guild.invites
 				.fetch()
 				.then((invites: Collection<string, Invite>): void => {
-					client.invites.set(guild.id, new Collection(invites.map((invite) => [invite.code, { uses: invite.uses, inviterId: invite.inviterId }])));
+					client.invites.set(
+						guild.id,
+						new Collection(
+							invites.map((invite) => [
+								invite.code,
+								{ uses: invite.uses, inviterId: invite.inviterId }
+							])
+						)
+					);
 				})
 				.catch((): void => {});
 		});
 
 		client.logger.log("Loaded " + client.guilds.cache.size + " guilds");
-		client.logger.success("Logged in as " + client.user.displayName + " (@" + client.user.username + ")");
+		client.logger.success(
+			"Logged in as " + client.user.displayName + " (@" + client.user.username + ")"
+		);
 
 		/* Register interactions, if bot is running on development mode */
 		if (process.argv.slice(2)[0] === "--dev") {

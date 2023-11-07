@@ -1,6 +1,12 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder, SlashCommandBuilder, ChannelType, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from "discord.js";
+import {
+	EmbedBuilder,
+	SlashCommandBuilder,
+	ChannelType,
+	StringSelectMenuBuilder,
+	StringSelectMenuOptionBuilder
+} from "discord.js";
 
 export default class AichatCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -53,12 +59,19 @@ export default class AichatCommand extends BaseCommand {
 								de: "Wähle den Kanal, in dem der KI-Chat aktiv sein soll"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildForum, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.GuildForum,
+								ChannelType.PublicThread
+							)
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("status")
-							.setDescription("Choose whether the AI chat should be enabled or disabled")
+							.setDescription(
+								"Choose whether the AI chat should be enabled or disabled"
+							)
 							.setDescriptionLocalizations({
 								de: "Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll"
 							})
@@ -113,10 +126,12 @@ export default class AichatCommand extends BaseCommand {
 	}
 
 	private async setMode(data: any): Promise<void> {
-		const availableModes: any[] = Object.entries(this.client.aiChatPrompts.prompts).map(([key, prompt]: any): any => ({
-			mode: key,
-			name: prompt.name
-		}));
+		const availableModes: any[] = Object.entries(this.client.aiChatPrompts.prompts).map(
+			([key, prompt]: any): any => ({
+				mode: key,
+				name: prompt.name
+			})
+		);
 
 		const selectNameMenu: StringSelectMenuBuilder = new StringSelectMenuBuilder()
 			.setCustomId(`${this.interaction.user.id}-aichat-mode`)
@@ -135,7 +150,11 @@ export default class AichatCommand extends BaseCommand {
 
 		const row: any = this.client.createMessageComponentsRow(selectNameMenu);
 
-		const embed: EmbedBuilder = this.client.createEmbed(this.translate("mode:selectBehavior"), "arrow", "normal");
+		const embed: EmbedBuilder = this.client.createEmbed(
+			this.translate("mode:selectBehavior"),
+			"arrow",
+			"normal"
+		);
 		const message: any = await this.interaction.followUp({
 			embeds: [embed],
 			components: [row]
@@ -167,8 +186,12 @@ export default class AichatCommand extends BaseCommand {
 
 			/* Reset the AI chat, set mode */
 			this.client.aiChat.set(this.interaction.guild.id, []);
-			const prompt = this.client.aiChatPrompts.default + this.client.aiChatPrompts.prompts[collectedMode.values[0]].prompt;
-			this.client.aiChat.get(this.interaction.guild.id)!.push({ role: "system", content: prompt });
+			const prompt =
+				this.client.aiChatPrompts.default +
+				this.client.aiChatPrompts.prompts[collectedMode.values[0]].prompt;
+			this.client.aiChat
+				.get(this.interaction.guild.id)!
+				.push({ role: "system", content: prompt });
 		}
 	}
 
@@ -212,7 +235,9 @@ export default class AichatCommand extends BaseCommand {
 		data.guild.markModified("settings.aiChat");
 		await data.guild.save();
 
-		const statusString: string = statuses[status] ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
+		const statusString: string = statuses[status]
+			? this.translate("basics:enabled", {}, true)
+			: this.translate("basics:disabled", {}, true);
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("status:set", { status: statusString }),
 			"success",

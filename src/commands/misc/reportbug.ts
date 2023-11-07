@@ -13,7 +13,10 @@ export default class ReportbugCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option.setName("beschreibung").setDescription("Beschreibe den Fehler").setRequired(true)
+					option
+						.setName("beschreibung")
+						.setDescription("Beschreibe den Fehler")
+						.setRequired(true)
 				)
 			}
 		});
@@ -51,7 +54,9 @@ export default class ReportbugCommand extends BaseCommand {
 			text: "Server-ID: " + this.interaction.guild.id + " | " + date
 		});
 
-		const errorLogChannel: any = await supportGuild.channels.fetch(this.client.config.support["ERROR_LOG"]);
+		const errorLogChannel: any = await supportGuild.channels.fetch(
+			this.client.config.support["ERROR_LOG"]
+		);
 		if (!errorLogChannel) return;
 
 		return errorLogChannel.send({ embeds: [supportEmbed] });

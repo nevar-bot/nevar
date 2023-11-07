@@ -11,7 +11,6 @@ export default class AvatarContext extends BaseContext {
 		});
 	}
 
-
 	public async dispatch(interaction: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
@@ -45,7 +44,8 @@ export default class AvatarContext extends BaseContext {
 		});
 
 		const avatarEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("misc/avatar:links") + " [x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
+			this.translate("misc/avatar:links") +
+				" [x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
 			null,
 			"normal",
 			x64,

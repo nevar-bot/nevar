@@ -14,7 +14,10 @@ export default class WarnlistCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true)
+					option
+						.setName("mitglied")
+						.setDescription("Wähle ein Mitglied")
+						.setRequired(true)
 				)
 			}
 		});
@@ -30,11 +33,18 @@ export default class WarnlistCommand extends BaseCommand {
 	private async listWarnings(user: any): Promise<void> {
 		const member: any = await this.interaction.guild.resolveMember(user.id);
 		if (!member) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst ein Mitglied angeben.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du musst ein Mitglied angeben.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
-		const targetData: any = await this.client.findOrCreateMember(member.user.id, this.interaction.guild.id);
+		const targetData: any = await this.client.findOrCreateMember(
+			member.user.id,
+			this.interaction.guild.id
+		);
 
 		const warnList: any[] = [];
 		const warnings: any[] = [...targetData.warnings.list];

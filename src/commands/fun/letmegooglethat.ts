@@ -43,7 +43,10 @@ export default class LetmegooglethatCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		return this.googleThat(interaction.options.getString("text"), interaction.options.getUser("user"));
+		return this.googleThat(
+			interaction.options.getString("text"),
+			interaction.options.getUser("user")
+		);
 	}
 
 	private async googleThat(text: string, user: any = null): Promise<void> {
@@ -51,7 +54,13 @@ export default class LetmegooglethatCommand extends BaseCommand {
 		const googleText: string = user
 			? this.translate("searchFor", { user: user.displayName, text, searchUrl })
 			: this.translate("search", { text, searchUrl });
-		const letMeGoogleThatEmbed: EmbedBuilder = this.client.createEmbed(googleText, "search", "normal", text, searchUrl);
+		const letMeGoogleThatEmbed: EmbedBuilder = this.client.createEmbed(
+			googleText,
+			"search",
+			"normal",
+			text,
+			searchUrl
+		);
 		return this.interaction.followUp({ embeds: [letMeGoogleThatEmbed] });
 	}
 }

@@ -46,6 +46,13 @@ export default class ServerlistCommand extends BaseCommand {
 
 		const serverTexts: any[] = servers.map((server) => server.text);
 
-		await this.client.utils.sendPaginatedEmbedMessage(this.message, 5, serverTexts, "Serverliste", "Der Bot ist auf keinem Server", null);
+		await this.client.utils.sendPaginatedEmbedMessage(
+			this.message,
+			5,
+			serverTexts,
+			"Serverliste",
+			"Der Bot ist auf keinem Server",
+			null
+		);
 	}
 }

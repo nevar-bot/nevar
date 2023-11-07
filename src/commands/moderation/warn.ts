@@ -14,9 +14,17 @@ export default class WarnCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addUserOption((option: any) =>
-						option.setName("mitglied").setDescription("Wähle ein Mitglied, welches du verwarnen möchtest").setRequired(true)
+						option
+							.setName("mitglied")
+							.setDescription("Wähle ein Mitglied, welches du verwarnen möchtest")
+							.setRequired(true)
 					)
-					.addStringOption((option: any) => option.setName("grund").setDescription("Gib ggf. einen Grund an").setRequired(false))
+					.addStringOption((option: any) =>
+						option
+							.setName("grund")
+							.setDescription("Gib ggf. einen Grund an")
+							.setRequired(false)
+					)
 			}
 		});
 	}
@@ -25,22 +33,37 @@ export default class WarnCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.warnMember(interaction.options.getUser("mitglied"), interaction.options.getString("grund"));
+		await this.warnMember(
+			interaction.options.getUser("mitglied"),
+			interaction.options.getString("grund")
+		);
 	}
 
 	private async warnMember(user: any, reason: string): Promise<void> {
 		if (!reason) reason = "Kein Grund angegeben";
 		const member = await this.interaction.guild.resolveMember(user.id);
 		if (!member) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst ein Mitglied angeben.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du musst ein Mitglied angeben.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 		if (member.user.id === this.client.user!.id) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Ich kann mich nicht selber verwarnen.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Ich kann mich nicht selber verwarnen.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 		if (member.user.id === this.client.user!.id) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du kannst dich nicht selber verwarnen.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du kannst dich nicht selber verwarnen.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 		if (member.roles.highest.position >= this.interaction.member.roles.highest.position) {
@@ -52,7 +75,10 @@ export default class WarnCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [higherRoleEmbed] });
 		}
 
-		const victimData: any = await this.client.findOrCreateMember(member.user.id, this.interaction.guild.id);
+		const victimData: any = await this.client.findOrCreateMember(
+			member.user.id,
+			this.interaction.guild.id
+		);
 
 		victimData.warnings.count++;
 		victimData.warnings.list.push({

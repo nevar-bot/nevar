@@ -28,10 +28,14 @@ export default {
 						for (let channel of guildData.settings.notifiers.twitch.channels) {
 							const stream: any = await getStream(apiClient, channel.id);
 							if (stream && channel.lastStreamId !== stream.id) {
-								guildData.settings.notifiers.twitch.channels.find((c: any): boolean => c.id === channel.id).lastStreamId = stream.id;
+								guildData.settings.notifiers.twitch.channels.find(
+									(c: any): boolean => c.id === channel.id
+								).lastStreamId = stream.id;
 								guildData.markModified("settings.notifiers.twitch.channels");
 								await guildData.save();
-								const announcementChannel: any = guild.channels.cache.get(guildData.settings.notifiers.twitch.announcementChannel);
+								const announcementChannel: any = guild.channels.cache.get(
+									guildData.settings.notifiers.twitch.announcementChannel
+								);
 								if (announcementChannel) {
 									const announcementEmbed: EmbedBuilder = client.createEmbed(
 										"### {0} [{1}]({2})",
@@ -41,7 +45,12 @@ export default {
 										stream.title,
 										"https://twitch.tv/" + stream.userName
 									);
-									announcementEmbed.setTitle(client.emotes.arrow + " " + stream.userName + " streamt gerade auf Twitch!");
+									announcementEmbed.setTitle(
+										client.emotes.arrow +
+											" " +
+											stream.userName +
+											" streamt gerade auf Twitch!"
+									);
 									announcementEmbed.setImage(stream.getThumbnailUrl(1280, 720));
 									announcementChannel.send({
 										embeds: [announcementEmbed]

@@ -54,7 +54,11 @@ export default class BughuntersCommand extends BaseCommand {
 	private async addBughunter(args: any[]): Promise<void> {
 		const member: any = await this.message.guild.resolveMember(args[0]);
 		if (!member) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst ein Mitglied angeben.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du musst ein Mitglied angeben.",
+				"error",
+				"error"
+			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -77,13 +81,21 @@ export default class BughuntersCommand extends BaseCommand {
 	private async removeBughunter(args: any[]): Promise<void> {
 		const member: any = await this.message.guild.resolveMember(args[0]);
 		if (!member) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst ein Mitglied angeben.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du musst ein Mitglied angeben.",
+				"error",
+				"error"
+			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		const userdata: any = await this.client.findOrCreateUser(member.user.id);
 		if (!userdata.bughunter.state) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Dieses Mitglied ist kein Bug-Hunter.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Dieses Mitglied ist kein Bug-Hunter.",
+				"error",
+				"error"
+			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -93,12 +105,19 @@ export default class BughuntersCommand extends BaseCommand {
 		userdata.markModified("bughunter");
 		await userdata.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde als Bughunter entfernt.", "success", "success", member.user.username);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			"{0} wurde als Bughunter entfernt.",
+			"success",
+			"success",
+			member.user.username
+		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
 
 	private async listBughunters(): Promise<void> {
-		const bughuntersdata: any = await (await mongoose.connection.db.collection("users")).find({ "bughunter.state": true }).toArray();
+		const bughuntersdata: any = await (await mongoose.connection.db.collection("users"))
+			.find({ "bughunter.state": true })
+			.toArray();
 		let bughunters: any[] = [];
 		for (let userdata of bughuntersdata) {
 			const user: any = await this.client.users.fetch(userdata.id).catch(() => {});

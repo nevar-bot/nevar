@@ -19,7 +19,9 @@ export default class WelcomeCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("status")
-							.setDescription("Determines whether the welcome message is enabled or disabled")
+							.setDescription(
+								"Determines whether the welcome message is enabled or disabled"
+							)
 							.setDescriptionLocalizations({
 								de: "Legt fest, ob die Willkommensnachricht aktiviert oder deaktiviert ist"
 							})
@@ -50,9 +52,12 @@ export default class WelcomeCommand extends BaseCommand {
 							)
 					)
 					.addSubcommand((subcommand: any) =>
-						subcommand.setName("test").setDescription("Sends a test message").setDescriptionLocalizations({
-							de: "Sendet eine Testnachricht"
-						})
+						subcommand
+							.setName("test")
+							.setDescription("Sends a test message")
+							.setDescriptionLocalizations({
+								de: "Sendet eine Testnachricht"
+							})
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
@@ -69,7 +74,10 @@ export default class WelcomeCommand extends BaseCommand {
 									.setDescriptionLocalizations({
 										de: "Wähle einen Channel"
 									})
-									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
+									.addChannelTypes(
+										ChannelType.GuildText,
+										ChannelType.GuildAnnouncement
+									)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
@@ -78,7 +86,9 @@ export default class WelcomeCommand extends BaseCommand {
 							.setNameLocalizations({
 								de: "typ"
 							})
-							.setDescription("Whether the welcome message is sent as an embed or as text")
+							.setDescription(
+								"Whether the welcome message is sent as an embed or as text"
+							)
 							.setDescriptionLocalizations({
 								de: "Ob die Willkommensnachricht als Embed oder als Text gesendet wird"
 							})
@@ -111,7 +121,9 @@ export default class WelcomeCommand extends BaseCommand {
 							.setNameLocalizations({
 								de: "nachricht"
 							})
-							.setDescription("Defines the welcome message (variables see /welcome variables)")
+							.setDescription(
+								"Defines the welcome message (variables see /welcome variables)"
+							)
 							.setDescriptionLocalizations({
 								de: "Definiert die Willkommensnachricht (Variablen siehe /welcome variables)"
 							})
@@ -134,7 +146,9 @@ export default class WelcomeCommand extends BaseCommand {
 							.setNameLocalizations({
 								de: "variablen"
 							})
-							.setDescription("Lists all variables that can be used in the welcome message")
+							.setDescription(
+								"Lists all variables that can be used in the welcome message"
+							)
 							.setDescriptionLocalizations({
 								de: "Listet alle Variablen, die in der Willkommensnachricht verwendet werden können"
 							})
@@ -235,7 +249,9 @@ export default class WelcomeCommand extends BaseCommand {
 
 	private async setStatus(status: any, data: any): Promise<void> {
 		if (data.guild.settings.welcome.enabled === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
+			const statusString: string = JSON.parse(status)
+				? this.translate("basics:enabled", {}, true)
+				: this.translate("basics:disabled", {}, true);
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("status:errors:alreadySet", { status: statusString }),
 				"error",
@@ -249,7 +265,9 @@ export default class WelcomeCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.enabled");
 		await data.guild.save();
 
-		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
+		const statusString: string = JSON.parse(status)
+			? this.translate("basics:enabled", {}, true)
+			: this.translate("basics:disabled", {}, true);
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("status:set", { status: statusString }),
 			"success",
@@ -268,7 +286,10 @@ export default class WelcomeCommand extends BaseCommand {
 			);
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
-		if (!data.guild.settings.welcome.channel || !this.client.channels.cache.get(data.guild.settings.welcome.channel)) {
+		if (
+			!data.guild.settings.welcome.channel ||
+			!this.client.channels.cache.get(data.guild.settings.welcome.channel)
+		) {
 			const noChannelEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("preview:errors:noChannel"),
 				"error",
@@ -285,7 +306,11 @@ export default class WelcomeCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [noMessageEmbed] });
 		}
 		if (!data.guild.settings.welcome.type) {
-			const noTypeEmbed: EmbedBuilder = this.client.createEmbed(this.translate("preview:errors:noType"), "error", "error");
+			const noTypeEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("preview:errors:noType"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [noTypeEmbed] });
 		}
 
@@ -318,11 +343,15 @@ export default class WelcomeCommand extends BaseCommand {
 					iconURL: this.client.user!.displayAvatarURL()
 				})
 				.setDescription(message)
-				.setColor(data.guild.settings.welcome.color || this.client.config.embeds["DEFAULT_COLOR"])
+				.setColor(
+					data.guild.settings.welcome.color || this.client.config.embeds["DEFAULT_COLOR"]
+				)
 				.setFooter({ text: this.client.config.embeds["FOOTER_TEXT"] });
 
 			if (data.guild.settings.welcome.thumbnail) {
-				previewEmbed.setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 512 }));
+				previewEmbed.setThumbnail(
+					member.user.displayAvatarURL({ dynamic: true, size: 512 })
+				);
 			}
 
 			await channel.send({ embeds: [previewEmbed] }).catch((e: any): void => {});
@@ -330,7 +359,11 @@ export default class WelcomeCommand extends BaseCommand {
 			await channel.send({ content: message }).catch((e: any): void => {});
 		}
 
-		const testExecutedEmbed: EmbedBuilder = this.client.createEmbed(this.translate("preview:sent"), "success", "success");
+		const testExecutedEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("preview:sent"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [testExecutedEmbed] });
 	}
 
@@ -406,7 +439,11 @@ export default class WelcomeCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.message");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("message:set"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("message:set"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -447,7 +484,9 @@ export default class WelcomeCommand extends BaseCommand {
 		}
 
 		if (data.guild.settings.welcome.profilePicture === JSON.parse(status)) {
-			const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
+			const statusString: string = JSON.parse(status)
+				? this.translate("basics:enabled", {}, true)
+				: this.translate("basics:disabled", {}, true);
 			const isAlreadyEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("thumbnail:errors:alreadySet", { status: statusString }),
 				"error",
@@ -460,7 +499,9 @@ export default class WelcomeCommand extends BaseCommand {
 		data.guild.markModified("settings.welcome.profilePicture");
 		await data.guild.save();
 
-		const statusString: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
+		const statusString: string = JSON.parse(status)
+			? this.translate("basics:enabled", {}, true)
+			: this.translate("basics:disabled", {}, true);
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("thumbnail:set", { status: statusString }),
 			"success",

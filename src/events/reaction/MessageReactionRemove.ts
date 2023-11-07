@@ -21,8 +21,14 @@ export default class {
 
 			let emoji: any = reaction.emoji.id ? reaction.emoji.id : reaction.emoji.name;
 
-			if (reaction.message.channel.id === channelId && reaction.message.id === messageId && emoji === emojiId) {
-				const member: any = await reaction.message.guild.members.fetch(user.id).catch(() => {});
+			if (
+				reaction.message.channel.id === channelId &&
+				reaction.message.id === messageId &&
+				emoji === emojiId
+			) {
+				const member: any = await reaction.message.guild.members
+					.fetch(user.id)
+					.catch(() => {});
 				if (!member) return;
 				member.roles.remove(roleId, "REACTION ROLE").catch((e: any): void => {
 					const errorText: string =
@@ -37,8 +43,14 @@ export default class {
 						user.username +
 						")";
 
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-					errorEmbed.setTitle(this.client.emotes.error + " Entziehen von Reaction-Rolle fehlgeschlagen");
+					const errorEmbed: EmbedBuilder = this.client.createEmbed(
+						errorText,
+						null,
+						"error"
+					);
+					errorEmbed.setTitle(
+						this.client.emotes.error + " Entziehen von Reaction-Rolle fehlgeschlagen"
+					);
 
 					reaction.guild.logAction(errorEmbed, "moderation");
 				});

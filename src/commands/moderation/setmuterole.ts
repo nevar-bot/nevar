@@ -29,7 +29,11 @@ export default class SetmuteroleCommand extends BaseCommand {
 	private async setMuteRole(role: any, data: any): Promise<void> {
 		/* Invalid options */
 		if (!role || !role.id) {
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed("Du musst eine Rolle angeben.", "error", "error");
+			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
+				"Du musst eine Rolle angeben.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
@@ -83,7 +87,12 @@ export default class SetmuteroleCommand extends BaseCommand {
 		data.guild.markModified("settings.muterole");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde als Mute-Rolle gesetzt.", "success", "success", role.toString());
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			"{0} wurde als Mute-Rolle gesetzt.",
+			"success",
+			"success",
+			role.toString()
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

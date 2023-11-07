@@ -12,7 +12,8 @@ export default class {
 	}
 
 	public async dispatch(interaction: any): Promise<any> {
-		if (!interaction || !interaction.type || !interaction.member || !interaction.guildId) return;
+		if (!interaction || !interaction.type || !interaction.member || !interaction.guildId)
+			return;
 
 		/* Basic information */
 		const { guild, member, channel }: any = interaction;
@@ -36,7 +37,9 @@ export default class {
 					"error",
 					this.client.support
 				);
-				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
+				await interaction
+					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
+					.catch((e: any): void => {});
 				return this.client.alertException(
 					"Context menu " + interaction.commandName + " not found",
 					guild.name,
@@ -54,8 +57,15 @@ export default class {
 					"error",
 					this.client.support
 				);
-				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
-				return this.client.alertException(e, guild.name, member.user, "<ContextInteraction>.deferReply()");
+				await interaction
+					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
+					.catch((e: any): void => {});
+				return this.client.alertException(
+					e,
+					guild.name,
+					member.user,
+					"<ContextInteraction>.deferReply()"
+				);
 			} finally {
 				if (!interaction.deferred) {
 					const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
@@ -64,7 +74,9 @@ export default class {
 						"error",
 						this.client.support
 					);
-					await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
+					await interaction
+						.reply({ embeds: [errorMessageEmbed], ephemeral: true })
+						.catch((e: any): void => {});
 					await this.client.alertException(
 						"ContextInteraction is not deferred",
 						guild.name,
@@ -112,7 +124,10 @@ export default class {
 			const time = userCooldown[contextMenu.help.name] || 0;
 			if (time > Date.now()) {
 				/* Staffs can bypass cooldown */
-				if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(member.user.id)) {
+				if (
+					!data.user.staff.state &&
+					!this.client.config.general["OWNER_IDS"].includes(member.user.id)
+				) {
 					const seconds: number = Math.ceil((time - Date.now()) / 1000);
 					const secondsString: string = seconds > 1 ? "Sekunden" : "Sekunde";
 					const cooldownMessageEmbed: EmbedBuilder = this.client.createEmbed(
@@ -127,12 +142,15 @@ export default class {
 					});
 				}
 			}
-			interactionCooldowns[member.user.id][contextMenu.help.name] = Date.now() + contextMenu.conf.cooldown;
+			interactionCooldowns[member.user.id][contextMenu.help.name] =
+				Date.now() + contextMenu.conf.cooldown;
 
 			/* Save command log to database */
 			const log = new this.client.logs({
 				command: contextMenu.help.name,
-				type: interaction.isUserContextMenuCommand() ? "User Context Menu" : "Message Context Menu",
+				type: interaction.isUserContextMenuCommand()
+					? "User Context Menu"
+					: "Message Context Menu",
 				arguments: [],
 				user: {
 					tag: member.user.username,
@@ -161,8 +179,15 @@ export default class {
 					"error",
 					this.client.support
 				);
-				await interaction.followUp({ embeds: [errorMessageEmbed] }).catch((e: any): void => {});
-				return this.client.alertException(e, guild.name, member.user, "<ContextInteraction>.dispatch(<Interaction>)");
+				await interaction
+					.followUp({ embeds: [errorMessageEmbed] })
+					.catch((e: any): void => {});
+				return this.client.alertException(
+					e,
+					guild.name,
+					member.user,
+					"<ContextInteraction>.dispatch(<Interaction>)"
+				);
 			}
 		}
 
@@ -188,7 +213,13 @@ export default class {
 
 			/* User wants to participate in a giveaway */
 			if (buttonIdSplitted[0] === "giveaway") {
-				this.client.emit("GiveawayParticipated", interaction, buttonIdSplitted, data, guild);
+				this.client.emit(
+					"GiveawayParticipated",
+					interaction,
+					buttonIdSplitted,
+					data,
+					guild
+				);
 			}
 		}
 
@@ -202,7 +233,9 @@ export default class {
 					"error",
 					this.client.support
 				);
-				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
+				await interaction
+					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
+					.catch((e: any): void => {});
 				return this.client.alertException(
 					"Context menu " + interaction.commandName + " not found",
 					guild.name,
@@ -220,8 +253,15 @@ export default class {
 					"error",
 					this.client.support
 				);
-				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
-				return this.client.alertException(e, guild.name, member.user, "<CommandInteraction>.deferReply()");
+				await interaction
+					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
+					.catch((e: any): void => {});
+				return this.client.alertException(
+					e,
+					guild.name,
+					member.user,
+					"<CommandInteraction>.deferReply()"
+				);
 			} finally {
 				if (!interaction.deferred) {
 					const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
@@ -230,7 +270,9 @@ export default class {
 						"error",
 						this.client.support
 					);
-					await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
+					await interaction
+						.reply({ embeds: [errorMessageEmbed], ephemeral: true })
+						.catch((e: any): void => {});
 					await this.client.alertException(
 						"CommandInteraction is not deferred",
 						guild.name,
@@ -274,7 +316,8 @@ export default class {
 
 			/* Check if bot has all required permissions */
 			const neededBotPermissions: any[] = [];
-			if (!command.conf.botPermissions.includes("EmbedLinks")) command.conf.botPermissions.push("EmbedLinks");
+			if (!command.conf.botPermissions.includes("EmbedLinks"))
+				command.conf.botPermissions.push("EmbedLinks");
 			for (const neededBotPermission of command.conf.botPermissions) {
 				const permissions: any = channel.permissionsFor(guild.members.me);
 				if (
@@ -310,11 +353,20 @@ export default class {
 			}
 
 			/* Command is disabled */
-			const disabledCommandsJson: any = JSON.parse(fs.readFileSync("./assets/disabled.json").toString());
+			const disabledCommandsJson: any = JSON.parse(
+				fs.readFileSync("./assets/disabled.json").toString()
+			);
 			if (disabledCommandsJson.includes(command.help.name)) {
 				/* Staffs can bypass disabled commands */
-				if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(member.user.id)) {
-					const disabledMessageEmbed = this.client.createEmbed("Dieser Befehl ist derzeit deaktiviert.", "error", "error");
+				if (
+					!data.user.staff.state &&
+					!this.client.config.general["OWNER_IDS"].includes(member.user.id)
+				) {
+					const disabledMessageEmbed = this.client.createEmbed(
+						"Dieser Befehl ist derzeit deaktiviert.",
+						"error",
+						"error"
+					);
 					return interaction.followUp({
 						embeds: [disabledMessageEmbed]
 					});
@@ -330,7 +382,10 @@ export default class {
 			const time = userCooldown[command.help.name] || 0;
 			if (time > Date.now()) {
 				/* Staffs can bypass cooldown */
-				if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(member.user.id)) {
+				if (
+					!data.user.staff.state &&
+					!this.client.config.general["OWNER_IDS"].includes(member.user.id)
+				) {
 					const seconds: number = Math.ceil((time - Date.now()) / 1000);
 					const secondsString: string = seconds > 1 ? "Sekunden" : "Sekunde";
 					const cooldownMessageEmbed: EmbedBuilder = this.client.createEmbed(
@@ -345,7 +400,8 @@ export default class {
 					});
 				}
 			}
-			interactionCooldowns[member.user.id][command.help.name] = Date.now() + command.conf.cooldown;
+			interactionCooldowns[member.user.id][command.help.name] =
+				Date.now() + command.conf.cooldown;
 
 			/* Save command log to database */
 			const log: any = new this.client.logs({
@@ -380,8 +436,15 @@ export default class {
 					"error",
 					this.client.support
 				);
-				await interaction.followUp({ embeds: [errorMessageEmbed] }).catch((e: any): void => {});
-				return this.client.alertException(e, guild.name, member.user, "<ContextInteraction>.dispatch(<Interaction>)");
+				await interaction
+					.followUp({ embeds: [errorMessageEmbed] })
+					.catch((e: any): void => {});
+				return this.client.alertException(
+					e,
+					guild.name,
+					member.user,
+					"<ContextInteraction>.dispatch(<Interaction>)"
+				);
 			}
 		}
 	}

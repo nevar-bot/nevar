@@ -34,26 +34,42 @@ export default class MigrateCommand extends BaseCommand {
 				this.migrateMembers();
 				break;
 			default:
-				const embed: EmbedBuilder = this.client.createEmbed(this.translate("staff/migrate:errors:wrongOption"), "error", "error");
+				const embed: EmbedBuilder = this.client.createEmbed(
+					this.translate("staff/migrate:errors:wrongOption"),
+					"error",
+					"error"
+				);
 				return this.message.reply({ embeds: [embed] });
 		}
 	}
 
 	private async migrateUsers(): Promise<void> {
 		const count: number = await DatabaseMigration.migrateUsers();
-		const embed: EmbedBuilder = this.client.createEmbed(this.translate("staff/migrate:success_users", { count }), "success", "success");
+		const embed: EmbedBuilder = this.client.createEmbed(
+			this.translate("staff/migrate:success_users", { count }),
+			"success",
+			"success"
+		);
 		return this.message.reply({ embeds: [embed] });
 	}
 
 	private async migrateGuilds(): Promise<void> {
 		const count: number = await DatabaseMigration.migrateGuilds();
-		const embed: EmbedBuilder = this.client.createEmbed(this.translate("staff/migrate:success_guilds", { count }), "success", "success");
+		const embed: EmbedBuilder = this.client.createEmbed(
+			this.translate("staff/migrate:success_guilds", { count }),
+			"success",
+			"success"
+		);
 		return this.message.reply({ embeds: [embed] });
 	}
 
 	private async migrateMembers(): Promise<void> {
 		const count: number = await DatabaseMigration.migrateMembers();
-		const embed: EmbedBuilder = this.client.createEmbed(this.translate("staff/migrate:success_members", { count }), "success", "success");
+		const embed: EmbedBuilder = this.client.createEmbed(
+			this.translate("staff/migrate:success_members", { count }),
+			"success",
+			"success"
+		);
 		return this.message.reply({ embeds: [embed] });
 	}
 }

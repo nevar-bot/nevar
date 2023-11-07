@@ -26,12 +26,18 @@ export default class MyinvitesCommand extends BaseCommand {
 	}
 
 	private async showInvites(memberData: any): Promise<void> {
-		const guildInvites: any = await this.interaction.guild.invites.fetch().catch((): void => {});
+		const guildInvites: any = await this.interaction.guild.invites
+			.fetch()
+			.catch((): void => {});
 
-		const memberInvites: any = guildInvites.filter((i: any): boolean => i.inviterId === memberData.id);
+		const memberInvites: any = guildInvites.filter(
+			(i: any): boolean => i.inviterId === memberData.id
+		);
 		for (let invite of memberInvites.values()) {
 			if (!this.client.invites.get(this.interaction.guild.id).has(invite.code))
-				this.client.invites.get(this.interaction.guild.id).set(invite.code, { uses: invite.uses, inviterId: invite.inviterId });
+				this.client.invites
+					.get(this.interaction.guild.id)
+					.set(invite.code, { uses: invite.uses, inviterId: invite.inviterId });
 			if (!memberData.invites) memberData.invites = [];
 			if (!memberData.invites.find((i: any): boolean => i.code === invite.code))
 				memberData.invites.push({
@@ -41,7 +47,9 @@ export default class MyinvitesCommand extends BaseCommand {
 				});
 			memberData.invites.find((i: any): boolean => i.code === invite.code).uses = invite.uses;
 		}
-		memberData.invites = memberData.invites.filter((i: any): boolean => guildInvites.has(i.code));
+		memberData.invites = memberData.invites.filter((i: any): boolean =>
+			guildInvites.has(i.code)
+		);
 		memberData.markModified("invites");
 		await memberData.save();
 		const invites = memberData.invites;

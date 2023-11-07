@@ -13,16 +13,32 @@ export default class {
 
 		const { guild } = role;
 
-		let roleLogMessage: string = this.client.emotes.edit + " Name: " + role.name + "\n" + this.client.emotes.id + " ID: " + role.id;
+		let roleLogMessage: string =
+			this.client.emotes.edit +
+			" Name: " +
+			role.name +
+			"\n" +
+			this.client.emotes.id +
+			" ID: " +
+			role.id;
 
-		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["RoleCreate"], limit: 1 }).catch((e: any): void => {});
+		const auditLogs: any = await guild
+			.fetchAuditLogs({ type: AuditLogEvent["RoleCreate"], limit: 1 })
+			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
 			if (auditLogEntry) {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					roleLogMessage +=
-						"\n\n" + this.client.emotes.user + " Nutzer/-in: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
+						"\n\n" +
+						this.client.emotes.user +
+						" Nutzer/-in: " +
+						"**" +
+						moderator.displayName +
+						"** (@" +
+						moderator.username +
+						")";
 			}
 		}
 

@@ -1,4 +1,12 @@
-import { Guild, ChannelType, Collection, GuildBasedChannel, Role, GuildMember, EmbedBuilder } from "discord.js";
+import {
+	Guild,
+	ChannelType,
+	Collection,
+	GuildBasedChannel,
+	Role,
+	GuildMember,
+	EmbedBuilder
+} from "discord.js";
 import BaseClient from "@structures/BaseClient";
 import i18next from "i18next";
 import guildDelete from "@events/guild/GuildDelete";
@@ -14,14 +22,17 @@ declare module "discord.js" {
 		findMatchingRoles(query: string): any;
 		resolveMember(query: string, exact?: boolean): Promise<any>;
 		fetchMemberStats(): Promise<any>;
-		logAction(embed: EmbedBuilder, type: "moderation" | "member" | "guild" | "role" | "thread" | "channel"): Promise<any>;
+		logAction(
+			embed: EmbedBuilder,
+			type: "moderation" | "member" | "guild" | "role" | "thread" | "channel"
+		): Promise<any>;
 	}
 }
 
 Guild.prototype.translate = function (key: string, args: any = null): any {
 	// @ts-ignore
 	let guildLocale: string = this.data?.locale || "de";
-	if(guildLocale.includes("-")) guildLocale = guildLocale.split("-")[0];
+	if (guildLocale.includes("-")) guildLocale = guildLocale.split("-")[0];
 	// @ts-ignore
 	const language: any = this.client.locales.get(guildLocale);
 	return language(key, args);
@@ -31,7 +42,9 @@ Guild.prototype.findMatchingChannels = function (query: string, type: ChannelTyp
 	if (!this || !query) return [];
 
 	// @ts-ignore - Property 'channels' does not exist on type 'never'
-	const channelManager: Collection<any, any> = this.channels.cache.filter((ch: GuildBasedChannel): any => type.includes(ch.type));
+	const channelManager: Collection<any, any> = this.channels.cache.filter(
+		(ch: GuildBasedChannel): any => type.includes(ch.type)
+	);
 
 	const patternMatch: RegExpExecArray | null = RegExp(CHANNEL_MENTION).exec(query);
 	if (patternMatch) {
@@ -81,7 +94,10 @@ Guild.prototype.findMatchingRoles = function (query: string): any {
 	return [];
 };
 
-Guild.prototype.resolveMember = async function (query: string, exact: boolean = false): Promise<any> {
+Guild.prototype.resolveMember = async function (
+	query: string,
+	exact: boolean = false
+): Promise<any> {
 	if (!query) return;
 	const { client } = this;
 
@@ -90,17 +106,29 @@ Guild.prototype.resolveMember = async function (query: string, exact: boolean = 
 		const id: string = patternMatch[1];
 		const fetched: any = await this.members.fetch({ user: id }).catch((e) => {
 			// @ts-ignore - Property 'alertException' does not exist on type 'Client'
-			client.alertException(e, this.name, null, '<Guild||Prototype>.resolveMember("' + query + '", ' + exact + ")");
+			client.alertException(
+				e,
+				this.name,
+				null,
+				'<Guild||Prototype>.resolveMember("' + query + '", ' + exact + ")"
+			);
 		});
 		if (fetched) return fetched;
 	}
 
 	await this.members.fetch({ query }).catch((e): void => {
 		// @ts-ignore - Property 'alertException' does not exist on type 'Client'
-		client.alertException(e, this.name, null, '<Guild||Prototype>.resolveMember("' + query + '", ' + exact + ")");
+		client.alertException(
+			e,
+			this.name,
+			null,
+			'<Guild||Prototype>.resolveMember("' + query + '", ' + exact + ")"
+		);
 	});
 
-	const matchingUsernames: Collection<string, GuildMember> = this.members.cache.filter((mem: any): boolean => mem.user.username === query);
+	const matchingUsernames: Collection<string, GuildMember> = this.members.cache.filter(
+		(mem: any): boolean => mem.user.username === query
+	);
 	if (matchingUsernames.size === 1) return matchingUsernames.first();
 
 	if (!exact) {

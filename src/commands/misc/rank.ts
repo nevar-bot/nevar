@@ -9,14 +9,14 @@ export default class RankCommand extends BaseCommand {
 			name: "rank",
 			description: "Sends your level card",
 			localizedDescriptions: {
-				de: "Sendet deine Levelcard",
+				de: "Sendet deine Levelcard"
 			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-					.addUserOption((option: any) => option
+				data: new SlashCommandBuilder().addUserOption((option: any) =>
+					option
 						.setName("member")
 						.setNameLocalizations({
 							de: "mitglied"
@@ -31,7 +31,6 @@ export default class RankCommand extends BaseCommand {
 		});
 	}
 
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
@@ -40,7 +39,9 @@ export default class RankCommand extends BaseCommand {
 
 	private async showRank(data: any): Promise<void> {
 		if (!data.guild.settings.levels.enabled) {
-			return this.interaction.followUp({ content: this.client.emotes.error + " " + this.translate("errors:isDisabled") });
+			return this.interaction.followUp({
+				content: this.client.emotes.error + " " + this.translate("errors:isDisabled")
+			});
 		}
 
 		const user: any = this.interaction.options.getUser("member") || this.interaction.user;
@@ -78,7 +79,9 @@ export default class RankCommand extends BaseCommand {
 				});
 				return this.interaction.followUp({ files: [attachment] });
 			} else {
-				return this.interaction.followUp({ content: this.client.emotes.error + " " + this.translate("errors:noXp") });
+				return this.interaction.followUp({
+					content: this.client.emotes.error + " " + this.translate("errors:noXp")
+				});
 			}
 		});
 	}

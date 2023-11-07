@@ -25,18 +25,31 @@ export default class {
 			" Typ: " +
 			this.client.channelTypes[thread.type];
 
-		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["ThreadDelete"], limit: 1 }).catch((e: any): void => {});
+		const auditLogs: any = await guild
+			.fetchAuditLogs({ type: AuditLogEvent["ThreadDelete"], limit: 1 })
+			.catch((e: any): void => {});
 		if (auditLogs) {
 			const auditLogEntry: any = auditLogs.entries.first();
 			if (auditLogEntry) {
 				const moderator: any = auditLogEntry.executor;
 				if (moderator)
 					threadLogMessage +=
-						"\n\n" + this.client.emotes.user + " Nutzer/-in: " + "**" + moderator.displayName + "** (@" + moderator.username + ")";
+						"\n\n" +
+						this.client.emotes.user +
+						" Nutzer/-in: " +
+						"**" +
+						moderator.displayName +
+						"** (@" +
+						moderator.username +
+						")";
 			}
 		}
 
-		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(threadLogMessage, null, "error");
+		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(
+			threadLogMessage,
+			null,
+			"error"
+		);
 		threadLogEmbed.setTitle(this.client.emotes.events.thread.delete + " Thread gelöscht");
 		threadLogEmbed.setThumbnail(guild.iconURL());
 

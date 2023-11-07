@@ -45,7 +45,9 @@ export default class BaseCommand {
 		}
 	) {
 		const category: string = dirname
-			? (dirname as string).split(path.sep)[parseInt(String((dirname as string).split(path.sep).length - 1), 10)]
+			? (dirname as string).split(path.sep)[
+					parseInt(String((dirname as string).split(path.sep).length - 1), 10)
+			  ]
 			: "Misc";
 		this.client = client;
 		this.conf = {
@@ -62,7 +64,8 @@ export default class BaseCommand {
 
 	protected translate(key: string, args?: any, isFullPath?: boolean): any {
 		let languageKey: string = key;
-		if (!isFullPath) languageKey = this.help.category.toLowerCase() + "/" + this.help.name + ":" + key;
+		if (!isFullPath)
+			languageKey = this.help.category.toLowerCase() + "/" + this.help.name + ":" + key;
 		if (!this.guild) return "Please provide a guild!";
 		return this.guild.translate(languageKey, args);
 	}

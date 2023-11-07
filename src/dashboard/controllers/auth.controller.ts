@@ -24,7 +24,11 @@ function encryptString(access_token: string): string {
 	const key: string = client.config.dashboard["ENCRYPTION_KEY"];
 
 	/* encrypt access token */
-	const cipher: crypto.CipherGCM = crypto.createCipheriv("aes-256-gcm", Buffer.from(key, "hex"), iv);
+	const cipher: crypto.CipherGCM = crypto.createCipheriv(
+		"aes-256-gcm",
+		Buffer.from(key, "hex"),
+		iv
+	);
 
 	let encrypted: string = cipher.update(access_token, "utf8", "hex");
 	encrypted += cipher.final("hex");
@@ -72,7 +76,9 @@ export default {
 			if (!isJsonString(encrypted_access_token)) return null;
 
 			/* decrypt access token */
-			const access_token: string | null = decryptString(JSON.parse(encrypted_access_token).value);
+			const access_token: string | null = decryptString(
+				JSON.parse(encrypted_access_token).value
+			);
 
 			return access_token;
 		} else {
@@ -82,7 +88,9 @@ export default {
 			if (!encrypted_access_token) return null;
 			if (!isJsonString(encrypted_access_token)) return null;
 
-			const access_token: string | null = decryptString(JSON.parse(encrypted_access_token).value);
+			const access_token: string | null = decryptString(
+				JSON.parse(encrypted_access_token).value
+			);
 
 			return access_token;
 		}
@@ -101,7 +109,9 @@ export default {
 		const callback_url: string = encodeURI(CALLBACK_URI);
 		const redirect_url: string =
 			BASE_API_URL +
-			`/oauth2/authorize?client_id=${client.user!.id}&redirect_uri=${callback_url}&response_type=code&scope=identify%20guilds%20guilds.join`;
+			`/oauth2/authorize?client_id=${
+				client.user!.id
+			}&redirect_uri=${callback_url}&response_type=code&scope=identify%20guilds%20guilds.join`;
 
 		/* redirect to discord oauth2 */
 		res.status(301).redirect(redirect_url);
@@ -124,7 +134,9 @@ export default {
 			if (expiry - Date.now() < oneDayInMs) {
 				// access token expires in less than one day, refresh
 				const access_token: string | null = decryptString(value);
-				const refresh_token: string | null = decryptString(JSON.parse(req.cookies?.["refresh_token"]).value);
+				const refresh_token: string | null = decryptString(
+					JSON.parse(req.cookies?.["refresh_token"]).value
+				);
 
 				if (access_token && refresh_token) {
 					const { CLIENT_SECRET } = client.config.dashboard;
@@ -141,8 +153,12 @@ export default {
 					);
 
 					/* encrypt acccess and refresh token */
-					const new_access_token: string = encryptString(refreshResponse.data.access_token);
-					const new_refresh_token: string = encryptString(refreshResponse.data.refresh_token);
+					const new_access_token: string = encryptString(
+						refreshResponse.data.access_token
+					);
+					const new_refresh_token: string = encryptString(
+						refreshResponse.data.refresh_token
+					);
 
 					/* set access and refresh cookie */
 					const access_token_cookie: string = JSON.stringify({
@@ -155,8 +171,15 @@ export default {
 						expiry: null
 					});
 
-					res.cookie("access_token", access_token_cookie, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
-					res.cookie("refresh_token", refresh_token_cookie, { secure: false, httpOnly: true });
+					res.cookie("access_token", access_token_cookie, {
+						secure: false,
+						httpOnly: true,
+						expires: new Date(Date.now() + 604800000)
+					});
+					res.cookie("refresh_token", refresh_token_cookie, {
+						secure: false,
+						httpOnly: true
+					});
 
 					refreshed_token = true;
 				}
@@ -208,7 +231,14 @@ export default {
 		/* check if user is owner or has admin or manage guild permissions */
 		const ADMIN_PERMISSION: any = 0x08;
 		const MANAGE_GUILD_PERMISSION: any = 0x20;
-		return !(!guild || !(guild.owner || guild.permissions & ADMIN_PERMISSION || guild.permissions & MANAGE_GUILD_PERMISSION));
+		return !(
+			!guild ||
+			!(
+				guild.owner ||
+				guild.permissions & ADMIN_PERMISSION ||
+				guild.permissions & MANAGE_GUILD_PERMISSION
+			)
+		);
 	},
 
 	async callback(req: Request, res: Response): Promise<void> {
@@ -226,7 +256,10 @@ export default {
 				redirect_uri: CALLBACK_URI,
 				code
 			}),
-			{ headers: { ["Content-Type"]: "application/x-www-form-urlencoded" }, validateStatus: (status: number): boolean => true }
+			{
+				headers: { ["Content-Type"]: "application/x-www-form-urlencoded" },
+				validateStatus: (status: number): boolean => true
+			}
 		);
 
 		const { access_token, refresh_token } = authResponse.data;
@@ -238,7 +271,10 @@ export default {
 			BASE_API_URL + `/guilds/${client.config.support["ID"]}/members/${user.id}`,
 			{ access_token },
 			{
-				headers: { authorization: `Bot ${client.token}`, ["Content-Type"]: "application/json" },
+				headers: {
+					authorization: `Bot ${client.token}`,
+					["Content-Type"]: "application/json"
+				},
 				validateStatus: (status: number): boolean => true
 			}
 		);
@@ -250,7 +286,9 @@ export default {
 		/* send log to support server */
 		const supportGuild: any = client.guilds.cache.get(client.config.support["ID"]);
 		if (supportGuild) {
-			const logChannel: any = supportGuild.channels.cache.get(client.config.support["BOT_LOG"]);
+			const logChannel: any = supportGuild.channels.cache.get(
+				client.config.support["BOT_LOG"]
+			);
 			if (logChannel) {
 				const embed: EmbedBuilder = client.createEmbed(
 					user.global_name + "(@" + user.username + ") hat sich im Dashboard angemeldet",
@@ -273,7 +311,11 @@ export default {
 				expiry: null
 			});
 
-			res.cookie("access_token", access_token_cookie, { secure: false, httpOnly: true, expires: new Date(Date.now() + 604800000) });
+			res.cookie("access_token", access_token_cookie, {
+				secure: false,
+				httpOnly: true,
+				expires: new Date(Date.now() + 604800000)
+			});
 			res.cookie("refresh_token", refresh_token_cookie, { secure: false, httpOnly: true });
 		} else {
 			// cookies not accepted, save access token in session
@@ -311,13 +353,23 @@ export default {
 		/* revoke access token */
 		await axios.post(
 			BASE_API_URL + "/oauth2/token/revoke",
-			new URLSearchParams({ client_id: client.user!.id, client_secret: CLIENT_SECRET, token: access_token, token_type_hint: "access_token" }),
-			{ headers: { ["Content-Type"]: "application/x-www-form-urlencoded" }, validateStatus: (status: number): boolean => true }
+			new URLSearchParams({
+				client_id: client.user!.id,
+				client_secret: CLIENT_SECRET,
+				token: access_token,
+				token_type_hint: "access_token"
+			}),
+			{
+				headers: { ["Content-Type"]: "application/x-www-form-urlencoded" },
+				validateStatus: (status: number): boolean => true
+			}
 		);
 
 		/* revoke refresh token */
 		if (encrypted_refresh_token) {
-			const refresh_token: string | null = decryptString(JSON.parse(encrypted_refresh_token).value);
+			const refresh_token: string | null = decryptString(
+				JSON.parse(encrypted_refresh_token).value
+			);
 			await axios.post(
 				BASE_API_URL + "/oauth2/token/revoke",
 				new URLSearchParams({
@@ -326,7 +378,10 @@ export default {
 					token: refresh_token as string,
 					token_type_hint: "refresh_token"
 				}),
-				{ headers: { ["Content-Type"]: "application/x-www-form-urlencoded" }, validateStatus: (status: number): boolean => true }
+				{
+					headers: { ["Content-Type"]: "application/x-www-form-urlencoded" },
+					validateStatus: (status: number): boolean => true
+				}
 			);
 		}
 

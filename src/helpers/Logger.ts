@@ -13,26 +13,43 @@ export default class Logger {
 	}
 
 	static success(content: string): void {
-		console.log("[" + Logger.getDate() + "] " + chalk.green("SUCCESS") + ": " + chalk.cyan(content));
+		console.log(
+			"[" + Logger.getDate() + "] " + chalk.green("SUCCESS") + ": " + chalk.cyan(content)
+		);
 	}
 
 	static log(content: string): void {
-		console.log("[" + Logger.getDate() + "] " + chalk.blue("INFO") + ": " + chalk.cyan(content));
+		console.log(
+			"[" + Logger.getDate() + "] " + chalk.blue("INFO") + ": " + chalk.cyan(content)
+		);
 	}
 
 	static warn(content: string): void {
-		console.log("[" + Logger.getDate() + "] " + chalk.yellow("WARN") + ": " + chalk.cyan(content));
+		console.log(
+			"[" + Logger.getDate() + "] " + chalk.yellow("WARN") + ": " + chalk.cyan(content)
+		);
 	}
 
 	static error(content: string, ex: any = null): void {
 		if (ex) {
-			console.log("[" + Logger.getDate() + "] " + chalk.red("ERROR") + ": " + chalk.cyan(content + ": " + ex?.message));
+			console.log(
+				"[" +
+					Logger.getDate() +
+					"] " +
+					chalk.red("ERROR") +
+					": " +
+					chalk.cyan(content + ": " + ex?.message)
+			);
 		} else {
-			console.log("[" + Logger.getDate() + "] " + chalk.red("ERROR") + ": " + chalk.cyan(content));
+			console.log(
+				"[" + Logger.getDate() + "] " + chalk.red("ERROR") + ": " + chalk.cyan(content)
+			);
 		}
 	}
 
 	static debug(content: string): void {
-		console.log("[" + Logger.getDate() + "] " + chalk.magenta("DEBUG") + ": " + chalk.cyan(content));
+		console.log(
+			"[" + Logger.getDate() + "] " + chalk.magenta("DEBUG") + ": " + chalk.cyan(content)
+		);
 	}
 }

@@ -20,7 +20,9 @@ export default class ReactionroleCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Choose in which channel you want to create a reaction role")
+							.setDescription(
+								"Choose in which channel you want to create a reaction role"
+							)
 							.setDescriptionLocalizations({
 								de: "Wähle, in welchem Channel du eine Reaktions-Rolle erstellen möchtest"
 							})
@@ -73,7 +75,13 @@ export default class ReactionroleCommand extends BaseCommand {
 		);
 	}
 
-	private async addReactionRole(channel: any, id: string, role: any, emote: string, data: any): Promise<void> {
+	private async addReactionRole(
+		channel: any,
+		id: string,
+		role: any,
+		emote: string,
+		data: any
+	): Promise<void> {
 		/* Role is @everyone */
 		if (role.id === this.interaction.guild.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
@@ -122,7 +130,10 @@ export default class ReactionroleCommand extends BaseCommand {
 		const originEmote: string = emote;
 		if (stringIsCustomEmoji(emote)) emote = emote.replace(/<a?:\w+:(\d+)>/g, "$1");
 		/* Emoji is not available */
-		if (stringIsCustomEmoji(originEmote) && !this.client.emojis.cache.find((e: any): boolean => e.id === emote)) {
+		if (
+			stringIsCustomEmoji(originEmote) &&
+			!this.client.emojis.cache.find((e: any): boolean => e.id === emote)
+		) {
 			const unusableEmojiEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:unusableEmoji"),
 				"error",
@@ -169,7 +180,11 @@ export default class ReactionroleCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [reactionFailedEmbed] });
 		});
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("added"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("added"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

@@ -47,7 +47,11 @@ export default class PollCommand extends BaseCommand {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
 
-		await this.startPoll(interaction.options.getString("title"), interaction.options.getString("options"), data);
+		await this.startPoll(
+			interaction.options.getString("title"),
+			interaction.options.getString("options"),
+			data
+		);
 	}
 
 	private async startPoll(title: string, options: string, data: any): Promise<void> {

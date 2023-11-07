@@ -43,7 +43,10 @@ export default class {
 		}
 
 		/* Author mentioned bot */
-		if (message.content.match(new RegExp(`^<@!?${this.client.user!.id}>( |)$`)) && !message.author.bot) {
+		if (
+			message.content.match(new RegExp(`^<@!?${this.client.user!.id}>( |)$`)) &&
+			!message.author.bot
+		) {
 			const currentHour: number = new Date().getHours();
 			const greetings: (number | string)[][] = [
 				[0, 5, "Gute Nacht"],
@@ -61,7 +64,9 @@ export default class {
 				}
 			}
 
-			const helpCommand: any = (await this.client.application!.commands.fetch()).find((command: any): boolean => command.name === "help");
+			const helpCommand: any = (await this.client.application!.commands.fetch()).find(
+				(command: any): boolean => command.name === "help"
+			);
 			const greetingText: string =
 				"**{0}**" +
 				"\n\n{1} Ich bin {2} und helfe dir bei der Verwaltung deines Servers." +
@@ -78,7 +83,14 @@ export default class {
 			);
 			helpEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
-			const inviteButton: ButtonBuilder = this.client.createButton(null, "Einladen", "Link", null, false, this.client.createInvite());
+			const inviteButton: ButtonBuilder = this.client.createButton(
+				null,
+				"Einladen",
+				"Link",
+				null,
+				false,
+				this.client.createInvite()
+			);
 			const buttonRow: any = this.client.createMessageComponentsRow(inviteButton);
 
 			return message.reply({
@@ -102,9 +114,16 @@ export default class {
 
 				/* only execute if command is a staff or owner command */
 				const clientCommand: any = this.client.commands.get(command);
-				if (clientCommand && (clientCommand.conf.staffOnly || clientCommand.conf.ownerOnly)) {
+				if (
+					clientCommand &&
+					(clientCommand.conf.staffOnly || clientCommand.conf.ownerOnly)
+				) {
 					/* check if user is staff or owner */
-					if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(message.author.id)) return;
+					if (
+						!data.user.staff.state &&
+						!this.client.config.general["OWNER_IDS"].includes(message.author.id)
+					)
+						return;
 					if (
 						clientCommand.help.category === "owner" &&
 						data.user.staff.role !== "head-staff" &&
@@ -136,7 +155,13 @@ export default class {
 
 				const result = await perspective
 					.analyze(message.content, {
-						attributes: ["TOXICITY", "INSULT", "PROFANITY", "THREAT", "SEVERE_TOXICITY"],
+						attributes: [
+							"TOXICITY",
+							"INSULT",
+							"PROFANITY",
+							"THREAT",
+							"SEVERE_TOXICITY"
+						],
 						languages: ["de"],
 						doNotStore: true
 					})
@@ -147,7 +172,9 @@ export default class {
 					const attributeValues: any[] = Object.values(attributeScores)
 						.map((attribute: any): any => attribute.summaryScore.value)
 						.sort((a, b) => b - a);
-					const averageScore: number = attributeValues.reduce((sum, value) => sum + value, 0) / attributeValues.length;
+					const averageScore: number =
+						attributeValues.reduce((sum, value) => sum + value, 0) /
+						attributeValues.length;
 
 					const threshold: any = data.guild.settings.aiModeration.threshold;
 					if (averageScore > threshold) {
@@ -158,9 +185,16 @@ export default class {
 							if (message.member.roles.cache.has(excludedRole)) excluded = true;
 						}
 						/* check excluded channels */
-						if (data.guild.settings.aiModeration.excludedChannels.includes(message.channel.id)) excluded = true;
+						if (
+							data.guild.settings.aiModeration.excludedChannels.includes(
+								message.channel.id
+							)
+						)
+							excluded = true;
 
-						const alertChannel = message.guild.channels.cache.get(data.guild.settings.aiModeration.alertChannel);
+						const alertChannel = message.guild.channels.cache.get(
+							data.guild.settings.aiModeration.alertChannel
+						);
 						if (alertChannel && !excluded) {
 							const attributeStrings: any = {
 								TOXICITY: "Unangemessenheit",
@@ -171,10 +205,24 @@ export default class {
 							};
 
 							const attributes: string[] = Object.keys(attributeScores)
-								.sort((a: string, b: string) => attributeScores[b].summaryScore.value - attributeScores[a].summaryScore.value) // Sortiere die Attribute basierend auf den Werten absteigend
+								.sort(
+									(a: string, b: string) =>
+										attributeScores[b].summaryScore.value -
+										attributeScores[a].summaryScore.value
+								) // Sortiere die Attribute basierend auf den Werten absteigend
 								.map((key: string): string => {
-									const value: string = (Math.floor(attributeScores[key].summaryScore.value * 100) / 100).toFixed(2);
-									return this.client.emotes.search + " " + attributeStrings[key] + ": **" + value + "**";
+									const value: string = (
+										Math.floor(attributeScores[key].summaryScore.value * 100) /
+										100
+									).toFixed(2);
+									return (
+										this.client.emotes.search +
+										" " +
+										attributeStrings[key] +
+										": **" +
+										value +
+										"**"
+									);
 								});
 
 							const alertMessage: string =
@@ -199,8 +247,14 @@ export default class {
 								message.content +
 								"**";
 
-							const embed: EmbedBuilder = this.client.createEmbed(alertMessage, null, "warning");
-							embed.setTitle(this.client.emotes.warning + " Potenziell beleidigende Nachricht");
+							const embed: EmbedBuilder = this.client.createEmbed(
+								alertMessage,
+								null,
+								"warning"
+							);
+							embed.setTitle(
+								this.client.emotes.warning + " Potenziell beleidigende Nachricht"
+							);
 
 							const deleteButton: ButtonBuilder = this.client.createButton(
 								"aimod_" + message.channel.id + "_" + message.id + "_delete",
@@ -216,7 +270,10 @@ export default class {
 								"warning",
 								true
 							);
-							const row: any = this.client.createMessageComponentsRow(deleteButton, warnButton);
+							const row: any = this.client.createMessageComponentsRow(
+								deleteButton,
+								warnButton
+							);
 
 							alertChannel.send({
 								embeds: [embed],
@@ -248,9 +305,12 @@ export default class {
 				return message.reply({ embeds: [blockedMessageEmbed] });
 			}
 
-			if (!this.client.aiChat.has(message.guild.id)) this.client.aiChat.set(message.guild.id, []);
+			if (!this.client.aiChat.has(message.guild.id))
+				this.client.aiChat.set(message.guild.id, []);
 
-			const prompt: string = this.client.aiChatPrompts.default + this.client.aiChatPrompts.prompts[data.guild.settings.aiChat.mode].prompt;
+			const prompt: string =
+				this.client.aiChatPrompts.default +
+				this.client.aiChatPrompts.prompts[data.guild.settings.aiChat.mode].prompt;
 			this.client.aiChat.get(message.guild.id)!.push({ role: "system", content: prompt });
 
 			await message.channel.sendTyping();
@@ -265,18 +325,27 @@ export default class {
 			});
 
 			const messages: any = this.client.aiChat.get(message.guild.id);
-			const response: OpenAI.Chat.Completions.ChatCompletion = await openai.chat.completions.create({
-				model: "gpt-3.5-turbo-16k",
-				messages: messages
-			});
+			const response: OpenAI.Chat.Completions.ChatCompletion =
+				await openai.chat.completions.create({
+					model: "gpt-3.5-turbo-16k",
+					messages: messages
+				});
 
 			if ((response as any)?.status > 400 && (response as any)?.status < 500) {
 				message.reply({
-					content: this.client.emotes.error + " Error " + (response as any)?.status + ": " + (response as any)?.error.message
+					content:
+						this.client.emotes.error +
+						" Error " +
+						(response as any)?.status +
+						": " +
+						(response as any)?.error.message
 				});
 
 				/* check if context is too long */
-				if ((response as any).status === 400 && (response as any).error.code === "context_length_exceeded") {
+				if (
+					(response as any).status === 400 &&
+					(response as any).error.code === "context_length_exceeded"
+				) {
 					/* remove old messages */
 					let messagesArray: any = this.client.aiChat.get(message.guild.id);
 					function removeOldestItems(arr: any, numItems: number): void {
@@ -307,7 +376,9 @@ export default class {
 				message.reply({ content: responseMessage });
 			} else {
 				message.reply({
-					content: this.client.emotes.error + " Das hat leider nicht funktioniert. Bitte versuche es später erneut."
+					content:
+						this.client.emotes.error +
+						" Das hat leider nicht funktioniert. Bitte versuche es später erneut."
 				});
 			}
 		}
@@ -319,7 +390,9 @@ export default class {
 				const time: any = autodelete.time;
 				if (
 					(channelId !== message.channel.id && message.channel.type !== 11) ||
-					(message.channel.type === 11 && message.channel.parentId !== channelId && message.channel.id !== channelId)
+					(message.channel.type === 11 &&
+						message.channel.parentId !== channelId &&
+						message.channel.id !== channelId)
 				)
 					continue;
 
@@ -337,8 +410,15 @@ export default class {
 									" Löschen nach: " +
 									ms(Number(time));
 
-								const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-								errorEmbed.setTitle(this.client.emotes.error + " Löschen von Nachricht durch Autodelete fehlgeschlagen");
+								const errorEmbed: EmbedBuilder = this.client.createEmbed(
+									errorText,
+									null,
+									"error"
+								);
+								errorEmbed.setTitle(
+									this.client.emotes.error +
+										" Löschen von Nachricht durch Autodelete fehlgeschlagen"
+								);
 
 								guild.logAction(errorEmbed, "guild");
 							});
@@ -355,15 +435,30 @@ export default class {
 				const emoji = autoreact.emoji;
 				if (
 					(channelId !== message.channel.id && message.channel.type !== 11) ||
-					(message.channel.type === 11 && message.channel.parentId !== channelId && message.channel.id !== channelId)
+					(message.channel.type === 11 &&
+						message.channel.parentId !== channelId &&
+						message.channel.id !== channelId)
 				)
 					continue;
 				message.react(emoji).catch((e: any): void => {
 					const errorText: string =
-						this.client.emotes.channel + " Channel: " + message.channel + "\n" + this.client.emotes.reminder + " Emoji: " + emoji;
+						this.client.emotes.channel +
+						" Channel: " +
+						message.channel +
+						"\n" +
+						this.client.emotes.reminder +
+						" Emoji: " +
+						emoji;
 
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-					errorEmbed.setTitle(this.client.emotes.error + " Reagieren auf Nachricht durch Autoreact fehlgeschlagen");
+					const errorEmbed: EmbedBuilder = this.client.createEmbed(
+						errorText,
+						null,
+						"error"
+					);
+					errorEmbed.setTitle(
+						this.client.emotes.error +
+							" Reagieren auf Nachricht durch Autoreact fehlgeschlagen"
+					);
 
 					guild.logAction(errorEmbed, "guild");
 				});
@@ -391,7 +486,10 @@ export default class {
 			}
 
 			/* double xp roles */
-			if (data.guild.settings.levels.doubleXP && data.guild.settings.levels.doubleXP.length > 0) {
+			if (
+				data.guild.settings.levels.doubleXP &&
+				data.guild.settings.levels.doubleXP.length > 0
+			) {
 				for (let doubleXP of data.guild.settings.levels.doubleXP) {
 					if (message.member.roles.cache.get(doubleXP)) {
 						xp = xp * 2;
@@ -401,13 +499,24 @@ export default class {
 
 			// check if user leveled up
 			if (!this.timeouts.has(message.author.id)) {
-				const hasLeveledUp: boolean = await this.client.levels.appendXp(message.author.id, message.guild.id, xp);
-				const levelUser: any = await this.client.levels.fetch(message.author.id, message.guild.id, true);
+				const hasLeveledUp: boolean = await this.client.levels.appendXp(
+					message.author.id,
+					message.guild.id,
+					xp
+				);
+				const levelUser: any = await this.client.levels.fetch(
+					message.author.id,
+					message.guild.id,
+					true
+				);
 
 				if (hasLeveledUp) {
 					const newLevel: number = Number(levelUser.level);
 					/* Level roles */
-					if (data.guild.settings.levels.roles && data.guild.settings.levels.roles.length > 0) {
+					if (
+						data.guild.settings.levels.roles &&
+						data.guild.settings.levels.roles.length > 0
+					) {
 						for (let levelRole of data.guild.settings.levels.roles) {
 							const roleId: any = levelRole.role;
 							const level: any = levelRole.level;
@@ -423,8 +532,15 @@ export default class {
 										roleId +
 										">";
 
-									const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-									errorEmbed.setTitle(this.client.emotes.error + " Vergeben von Levelrolle fehlgeschlagen");
+									const errorEmbed: EmbedBuilder = this.client.createEmbed(
+										errorText,
+										null,
+										"error"
+									);
+									errorEmbed.setTitle(
+										this.client.emotes.error +
+											" Vergeben von Levelrolle fehlgeschlagen"
+									);
 
 									guild.logAction(errorEmbed, "guild");
 								});
@@ -447,14 +563,24 @@ export default class {
 
 					const parsedMessage: string = parseMessage(data.guild.settings.levels.message);
 
-					const channel: any = message.guild.channels.cache.get(data.guild.settings.levels.channel) || message.channel;
+					const channel: any =
+						message.guild.channels.cache.get(data.guild.settings.levels.channel) ||
+						message.channel;
 					if (!channel) return;
 
 					channel.send({ content: parsedMessage }).catch((e: any): void => {
-						const errorText: string = this.client.emotes.channel + " Channel: " + channel;
+						const errorText: string =
+							this.client.emotes.channel + " Channel: " + channel;
 
-						const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-						errorEmbed.setTitle(this.client.emotes.error + " Senden von Level-Up-Nachricht fehlgeschlagen");
+						const errorEmbed: EmbedBuilder = this.client.createEmbed(
+							errorText,
+							null,
+							"error"
+						);
+						errorEmbed.setTitle(
+							this.client.emotes.error +
+								" Senden von Level-Up-Nachricht fehlgeschlagen"
+						);
 
 						guild.logAction(errorEmbed, "guild");
 					});

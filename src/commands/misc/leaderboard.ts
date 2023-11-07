@@ -42,7 +42,8 @@ export default class LeaderboardCommand extends BaseCommand {
 
 		const beautifiedLeaderboard: any[] = [];
 		for (let user of leaderboardData) {
-			const emote: any = user.position < 4 ? this.client.emotes[user.position] : this.client.emotes.arrow;
+			const emote: any =
+				user.position < 4 ? this.client.emotes[user.position] : this.client.emotes.arrow;
 			beautifiedLeaderboard.push(
 				"### " +
 					emote +
@@ -67,10 +68,16 @@ export default class LeaderboardCommand extends BaseCommand {
 					this.translate("xp")
 			);
 		}
-		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(beautifiedLeaderboard.join("\n\n"), null, "normal");
+		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(
+			beautifiedLeaderboard.join("\n\n"),
+			null,
+			"normal"
+		);
 		leaderboardEmbed.setThumbnail(this.interaction.guild.iconURL());
 		if (beautifiedLeaderboard.length === 0)
-			leaderboardEmbed.setDescription(this.client.emotes.error + " " + this.translate("errors:noXp"));
+			leaderboardEmbed.setDescription(
+				this.client.emotes.error + " " + this.translate("errors:noXp")
+			);
 		return this.interaction.followUp({ embeds: [leaderboardEmbed] });
 	}
 }

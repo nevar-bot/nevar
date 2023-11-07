@@ -17,7 +17,10 @@ export default {
 		const access_token: string | null = AuthController.getAccessToken(req);
 
 		/* get user and user guilds */
-		const [user, userGuilds] = await Promise.all([UserController.getUser(access_token), UserController.getGuilds(access_token)]);
+		const [user, userGuilds] = await Promise.all([
+			UserController.getUser(access_token),
+			UserController.getGuilds(access_token)
+		]);
 
 		/* differentiates between guilds where bot is in where bot isn't in */
 		const botIsIn: any[] = [];

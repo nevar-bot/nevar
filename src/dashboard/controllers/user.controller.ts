@@ -29,7 +29,12 @@ export default {
 	},
 
 	getAvatarURL(user: any): string {
-		if (!user.avatar) return "https://cdn.discordapp.com/embed/avatars/" + Math.floor(Math.random() * 6) + ".png";
-		return "https://cdn.discordapp.com/avatars/" + user.id + "/" + user.avatar + ".webp?size=256";
+		if (!user.avatar)
+			return (
+				"https://cdn.discordapp.com/embed/avatars/" + Math.floor(Math.random() * 6) + ".png"
+			);
+		return (
+			"https://cdn.discordapp.com/avatars/" + user.id + "/" + user.avatar + ".webp?size=256"
+		);
 	}
 };

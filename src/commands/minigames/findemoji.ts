@@ -7,7 +7,8 @@ export default class FindemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "findemoji",
-			description: "You have to remember the order of eight different emojis, and choose the right one",
+			description:
+				"You have to remember the order of eight different emojis, and choose the right one",
 			localizedDescriptions: {
 				de: "Du musst dir die Reihenfolge acht verschiedener Emojis merken, und den Richtigen wählen"
 			},
@@ -53,7 +54,11 @@ class FindemojiGame extends BaseGame {
 		this.emojis = this.shuffleArray(this.emojis).slice(0, 8);
 		this.emoji = this.emojis[Math.floor(Math.random() * this.emojis.length)];
 
-		const findEmojiEmbed: EmbedBuilder = this.client.createEmbed(this.interaction.guild.translate("minigames/findemoji:text"), "arrow", "normal");
+		const findEmojiEmbed: EmbedBuilder = this.client.createEmbed(
+			this.interaction.guild.translate("minigames/findemoji:text"),
+			"arrow",
+			"normal"
+		);
 		findEmojiEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		const msg: any = await this.sendMessage({
@@ -62,7 +67,9 @@ class FindemojiGame extends BaseGame {
 		});
 
 		const timeoutCallback: any = async (): Promise<void> => {
-			findEmojiEmbed.setDescription(this.interaction.guild.translate("minigames/findemoji:find", { emoji: this.emoji }));
+			findEmojiEmbed.setDescription(
+				this.interaction.guild.translate("minigames/findemoji:find", { emoji: this.emoji })
+			);
 			await msg.edit({
 				embeds: [findEmojiEmbed],
 				components: this.getComponents(false)
@@ -79,7 +86,8 @@ class FindemojiGame extends BaseGame {
 			});
 
 			emojiCollector.on("end", async (_: any, reason: any): Promise<any> => {
-				if (reason === "idle" || reason === "user") return this.endGame(msg, reason === "user");
+				if (reason === "idle" || reason === "user")
+					return this.endGame(msg, reason === "user");
 			});
 		};
 		setTimeout(timeoutCallback, 5000);
@@ -91,12 +99,20 @@ class FindemojiGame extends BaseGame {
 
 		let finalMessage: string;
 		if (resultMessage === "win") {
-			finalMessage = this.interaction.guild.translate("minigames/findemoji:win", { emoji: this.emoji });
+			finalMessage = this.interaction.guild.translate("minigames/findemoji:win", {
+				emoji: this.emoji
+			});
 		} else {
-			finalMessage = this.interaction.guild.translate("minigames/findemoji:lose", { emoji: this.emoji });
+			finalMessage = this.interaction.guild.translate("minigames/findemoji:lose", {
+				emoji: this.emoji
+			});
 		}
 
-		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(finalMessage, "arrow", "normal");
+		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(
+			finalMessage,
+			"arrow",
+			"normal"
+		);
 		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({
@@ -115,7 +131,11 @@ class FindemojiGame extends BaseGame {
 				const btn: ButtonBuilder = this.client.createButton(
 					"findEmoji_" + (x * 4 + y),
 					"\u200b",
-					buttonEmoji === this.selected ? (this.selected === this.emoji ? "Success" : "Danger") : "Primary",
+					buttonEmoji === this.selected
+						? this.selected === this.emoji
+							? "Success"
+							: "Danger"
+						: "Primary",
 					showEmoji ? buttonEmoji : null
 				);
 				row.addComponents(btn);

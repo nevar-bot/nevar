@@ -55,7 +55,9 @@ export default class AimodCommand extends BaseCommand {
 							.setNameLocalizations({
 								de: "exkludieren"
 							})
-							.setDescription("Excludes a channel or role from AI-powered chat moderation")
+							.setDescription(
+								"Excludes a channel or role from AI-powered chat moderation"
+							)
 							.setDescriptionLocalizations({
 								de: "Exkludiert einen Channel oder eine Rolle von der AI-gestützten Chatmoderation"
 							})
@@ -125,7 +127,9 @@ export default class AimodCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("threshold")
-							.setDescription("Choose from which value to warn (0 = not inappropriate, 1 = very inappropriate)")
+							.setDescription(
+								"Choose from which value to warn (0 = not inappropriate, 1 = very inappropriate)"
+							)
 							.setDescriptionLocalizations({
 								de: "Wähle, ab welchem Wert gewarnt werden soll (0 = nicht unangemessen, 1 = sehr unangemessen)"
 							})
@@ -144,7 +148,9 @@ export default class AimodCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("channel")
-							.setDescription("Choose the channel where you want the AI-powered chat moderation to warn you")
+							.setDescription(
+								"Choose the channel where you want the AI-powered chat moderation to warn you"
+							)
 							.setDescriptionLocalizations({
 								de: "Wähle den Kanal, in dem die AI-gestützte Chatmoderation warnen soll"
 							})
@@ -165,13 +171,15 @@ export default class AimodCommand extends BaseCommand {
 							)
 					)
 					.addSubcommand((subcommand: any) =>
-						subcommand.setName("explain")
+						subcommand
+							.setName("explain")
 							.setNameLocalizations({
 								de: "erklärung"
 							})
-							.setDescription("Explains AI-powered chat moderation").setDescriptionLocalizations({
-							de: "Erklärt die AI-gestützte Chatmoderation"
-						})
+							.setDescription("Explains AI-powered chat moderation")
+							.setDescriptionLocalizations({
+								de: "Erklärt die AI-gestützte Chatmoderation"
+							})
 					)
 			}
 		});
@@ -223,7 +231,10 @@ export default class AimodCommand extends BaseCommand {
 		data.guild.markModified("settings.aiModeration.status");
 		await data.guild.save();
 
-		const localeStatus: string = status === "on" ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
+		const localeStatus: string =
+			status === "on"
+				? this.translate("basics:enabled", {}, true)
+				: this.translate("basics:disabled", {}, true);
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("status:set", { status: localeStatus }),
 			"success",
@@ -245,7 +256,9 @@ export default class AimodCommand extends BaseCommand {
 			if (channel) {
 				if (data.guild.settings.aiModeration.excludedChannels.includes(channel.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						this.translate("exclude:errors:isAlreadyDisabledInChannel", { channel: channel.toString() }),
+						this.translate("exclude:errors:isAlreadyDisabledInChannel", {
+							channel: channel.toString()
+						}),
 						"error",
 						"error"
 					);
@@ -265,7 +278,9 @@ export default class AimodCommand extends BaseCommand {
 			if (role) {
 				if (data.guild.settings.aiModeration.excludedRoles.includes(role.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						this.translate("errors:isAlreadyDisabledForRole", { role: role.toString() }),
+						this.translate("errors:isAlreadyDisabledForRole", {
+							role: role.toString()
+						}),
 						"error",
 						"error"
 					);
@@ -297,15 +312,18 @@ export default class AimodCommand extends BaseCommand {
 			if (channel) {
 				if (!data.guild.settings.aiModeration.excludedChannels.includes(channel.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						this.translate("exclude:errors:isNotDisabledInChannel", { channel: channel.toString() }),
+						this.translate("exclude:errors:isNotDisabledInChannel", {
+							channel: channel.toString()
+						}),
 						"error",
 						"error"
 					);
 					return this.interaction.followUp({ embeds: [embed] });
 				}
-				data.guild.settings.aiModeration.excludedChannels = data.guild.settings.aiModeration.excludedChannels.filter(
-					(id: string): boolean => id !== channel.id
-				);
+				data.guild.settings.aiModeration.excludedChannels =
+					data.guild.settings.aiModeration.excludedChannels.filter(
+						(id: string): boolean => id !== channel.id
+					);
 				data.guild.markModified("settings.aiModeration.excludedChannels");
 				await data.guild.save();
 
@@ -319,15 +337,18 @@ export default class AimodCommand extends BaseCommand {
 			if (role) {
 				if (!data.guild.settings.aiModeration.excludedRoles.includes(role.id)) {
 					const embed: EmbedBuilder = this.client.createEmbed(
-						this.translate("exclude:errors:isNotDisabledForRole", { role: role.toString() }),
+						this.translate("exclude:errors:isNotDisabledForRole", {
+							role: role.toString()
+						}),
 						"error",
 						"error"
 					);
 					return this.interaction.followUp({ embeds: [embed] });
 				}
-				data.guild.settings.aiModeration.excludedRoles = data.guild.settings.aiModeration.excludedRoles.filter(
-					(id: string): boolean => id !== role.id
-				);
+				data.guild.settings.aiModeration.excludedRoles =
+					data.guild.settings.aiModeration.excludedRoles.filter(
+						(id: string): boolean => id !== role.id
+					);
 				data.guild.markModified("settings.aiModeration.excludedRoles");
 				await data.guild.save();
 
@@ -345,12 +366,16 @@ export default class AimodCommand extends BaseCommand {
 
 			for (const channelID of data.guild.settings.aiModeration.excludedChannels) {
 				const channel: any = await this.interaction.guild.channels.cache.get(channelID);
-				if (channel) excludedChannelsAndRoles.push(this.client.emotes.channel + " " + channel.toString());
+				if (channel)
+					excludedChannelsAndRoles.push(
+						this.client.emotes.channel + " " + channel.toString()
+					);
 			}
 
 			for (const roleID of data.guild.settings.aiModeration.excludedRoles) {
 				const role: any = await this.interaction.guild.roles.cache.get(roleID);
-				if (role) excludedChannelsAndRoles.push(this.client.emotes.ping + " " + role.toString());
+				if (role)
+					excludedChannelsAndRoles.push(this.client.emotes.ping + " " + role.toString());
 			}
 
 			await this.client.utils.sendPaginatedEmbed(
@@ -398,7 +423,9 @@ export default class AimodCommand extends BaseCommand {
 		}).join("\n");
 
 		const embed: EmbedBuilder = this.client.createEmbed(explainText, null, "normal");
-		embed.setTitle(this.client.emotes.flags.CertifiedModerator + " " + this.translate("explain:title"));
+		embed.setTitle(
+			this.client.emotes.flags.CertifiedModerator + " " + this.translate("explain:title")
+		);
 		return this.interaction.followUp({ embeds: [embed] });
 	}
 }

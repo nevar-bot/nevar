@@ -18,7 +18,12 @@ export default {
 		const app: Express = express();
 
 		// Middleware
-		app.use(compression(), express.json(), express.urlencoded({ extended: true }), cookieParser());
+		app.use(
+			compression(),
+			express.json(),
+			express.urlencoded({ extended: true }),
+			cookieParser()
+		);
 
 		// Session
 		app.use(

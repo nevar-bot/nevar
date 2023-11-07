@@ -20,7 +20,10 @@ export async function get(req: Request, res: Response) {
 		});
 	}
 
-	const staffsData: any = await mongoose.connection.db.collection("users").find({ "staff.state": true }).toArray();
+	const staffsData: any = await mongoose.connection.db
+		.collection("users")
+		.find({ "staff.state": true })
+		.toArray();
 
 	for (const staffData of staffsData) {
 		const user: any = await client.users.fetch(staffData.id).catch(() => {});

@@ -32,14 +32,29 @@ export default class ServerinfoCommand extends BaseCommand {
 		const channelCount: number = this.interaction.guild.channels.cache.size;
 		await this.interaction.guild.channels.fetch().catch((): void => {});
 		const textCount: number = this.interaction.guild.channels.cache.filter(
-			(c: any): boolean => c.type === ChannelType.GuildText || c.type === ChannelType.GuildAnnouncement
+			(c: any): boolean =>
+				c.type === ChannelType.GuildText || c.type === ChannelType.GuildAnnouncement
 		).size;
-		const voiceCount: number = this.interaction.guild.channels.cache.filter((c: any): boolean => c.type === ChannelType.GuildVoice).size;
-		const forumCount: number = this.interaction.guild.channels.cache.filter((c: any): boolean => c.type === ChannelType.GuildForum).size;
-		const categoryCount: number = this.interaction.guild.channels.cache.filter((c: any): boolean => c.type === ChannelType.GuildCategory).size;
-		const threadCount: number = this.interaction.guild.channels.cache.filter((c: any): boolean => c.type === ChannelType.GuildPublicThread).size;
-		const createdAt: string = this.client.utils.getDiscordTimestamp(this.interaction.guild.createdTimestamp, "f");
-		const createdAgo: string = this.client.utils.getDiscordTimestamp(this.interaction.guild.createdTimestamp, "R");
+		const voiceCount: number = this.interaction.guild.channels.cache.filter(
+			(c: any): boolean => c.type === ChannelType.GuildVoice
+		).size;
+		const forumCount: number = this.interaction.guild.channels.cache.filter(
+			(c: any): boolean => c.type === ChannelType.GuildForum
+		).size;
+		const categoryCount: number = this.interaction.guild.channels.cache.filter(
+			(c: any): boolean => c.type === ChannelType.GuildCategory
+		).size;
+		const threadCount: number = this.interaction.guild.channels.cache.filter(
+			(c: any): boolean => c.type === ChannelType.GuildPublicThread
+		).size;
+		const createdAt: string = this.client.utils.getDiscordTimestamp(
+			this.interaction.guild.createdTimestamp,
+			"f"
+		);
+		const createdAgo: string = this.client.utils.getDiscordTimestamp(
+			this.interaction.guild.createdTimestamp,
+			"R"
+		);
 		const text: string =
 			" Name: **" +
 			name +
@@ -89,9 +104,16 @@ export default class ServerinfoCommand extends BaseCommand {
 			createdAgo +
 			"**";
 
-		const serverInfoEmbed: EmbedBuilder = this.client.createEmbed("{0}", "discord", "normal", text);
+		const serverInfoEmbed: EmbedBuilder = this.client.createEmbed(
+			"{0}",
+			"discord",
+			"normal",
+			text
+		);
 
-		serverInfoEmbed.setTitle(this.client.emotes.shine + " Informationen zu " + this.interaction.guild.name);
+		serverInfoEmbed.setTitle(
+			this.client.emotes.shine + " Informationen zu " + this.interaction.guild.name
+		);
 		serverInfoEmbed.setThumbnail(this.interaction.guild.iconURL({ dynamic: true }));
 		return this.interaction.followUp({ embeds: [serverInfoEmbed] });
 	}

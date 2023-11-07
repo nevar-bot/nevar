@@ -11,7 +11,9 @@ async function processGiveaways(client: BaseClient): Promise<void> {
 		const channel: any = guild.channels.cache.get(giveaway.channelId);
 		if (!channel) continue;
 
-		const message: any = await channel.messages.fetch(giveaway.messageId).catch((): any => null);
+		const message: any = await channel.messages
+			.fetch(giveaway.messageId)
+			.catch((): any => null);
 		if (!message) {
 			await client.giveawayManager.deleteGiveaway(giveaway.messageId);
 			continue;

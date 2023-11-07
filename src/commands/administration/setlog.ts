@@ -24,7 +24,11 @@ export default class SetlogCommand extends BaseCommand {
 								de: "Setzt den Channel, in welchem Moderations-Logs gesendet werden"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.PublicThread
+							)
 					)
 					.addChannelOption((option) =>
 						option
@@ -37,17 +41,27 @@ export default class SetlogCommand extends BaseCommand {
 								de: "Setzt den Channel, in welchem Logs zu Mitgliedern gesendet werden"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.PublicThread
+							)
 					)
 					.addChannelOption((option) =>
 						option
 							.setName("server")
-							.setDescription("Sets the channel in which general server logs are sent")
+							.setDescription(
+								"Sets the channel in which general server logs are sent"
+							)
 							.setDescriptionLocalizations({
 								de: "Setzt den Channel, in welchem allgemeine Logs zum Server gesendet werden"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.PublicThread
+							)
 					)
 					.addChannelOption((option) =>
 						option
@@ -60,7 +74,11 @@ export default class SetlogCommand extends BaseCommand {
 								de: "Setzt den Channel, in welchem Logs zu Rollen gesendet werden"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.PublicThread
+							)
 					)
 					.addChannelOption((option) =>
 						option
@@ -70,7 +88,11 @@ export default class SetlogCommand extends BaseCommand {
 								de: "Setzt den Channel, in welchem Logs zu Threads gesendet werden"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.PublicThread
+							)
 					)
 					.addChannelOption((option) =>
 						option
@@ -80,7 +102,11 @@ export default class SetlogCommand extends BaseCommand {
 								de: "Setzt den Channel, in welchem Logs zu Channels gesendet werden"
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.PublicThread)
+							.addChannelTypes(
+								ChannelType.GuildText,
+								ChannelType.GuildAnnouncement,
+								ChannelType.PublicThread
+							)
 					)
 			}
 		});
@@ -127,7 +153,11 @@ export default class SetlogCommand extends BaseCommand {
 		data.guild.markModified("settings.logs");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("set"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("set"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

@@ -132,10 +132,16 @@ export default class EmbedCommand extends BaseCommand {
 		const image: any = this.interaction.options.getAttachment("image");
 		const footerText: string = this.interaction.options.getString("footertext");
 		const footerIcon: any = this.interaction.options.getAttachment("footericon");
-		const color: any = this.interaction.options.getString("color") || this.client.config.embeds["DEFAULT_COLOR"];
+		const color: any =
+			this.interaction.options.getString("color") ||
+			this.client.config.embeds["DEFAULT_COLOR"];
 
 		if (color && !this.client.utils.stringIsHexColor(color)) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:colorHasToBeHex"), "error", "error");
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("errors:colorHasToBeHex"),
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
@@ -204,14 +210,22 @@ export default class EmbedCommand extends BaseCommand {
 		if (webhook) {
 			webhook.send({ embeds: [embed] }).catch(() => {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("basics:errors:unexpected", { support: this.client.support }, true),
+					this.translate(
+						"basics:errors:unexpected",
+						{ support: this.client.support },
+						true
+					),
 					"error",
 					"error"
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			});
 			webhook.delete().catch((e: any): void => {});
-			const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("sent"), "success", "success");
+			const successEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("sent"),
+				"success",
+				"success"
+			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(

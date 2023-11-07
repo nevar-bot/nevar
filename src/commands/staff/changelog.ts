@@ -1,7 +1,14 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import moment from "moment";
-import { EmbedBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonBuilder } from "discord.js";
+import {
+	EmbedBuilder,
+	ActionRowBuilder,
+	ModalBuilder,
+	TextInputBuilder,
+	TextInputStyle,
+	ButtonBuilder
+} from "discord.js";
 
 export default class ChangelogCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -25,8 +32,17 @@ export default class ChangelogCommand extends BaseCommand {
 	}
 
 	private async sendChangelog(): Promise<void> {
-		const createButton: ButtonBuilder = this.client.createButton("create", "Changelog erstellen", "Secondary", "text");
-		const createEmbed: EmbedBuilder = this.client.createEmbed("Wenn du einen Changelog erstellen möchtest, drücke den Button", "arrow", "normal");
+		const createButton: ButtonBuilder = this.client.createButton(
+			"create",
+			"Changelog erstellen",
+			"Secondary",
+			"text"
+		);
+		const createEmbed: EmbedBuilder = this.client.createEmbed(
+			"Wenn du einen Changelog erstellen möchtest, drücke den Button",
+			"arrow",
+			"normal"
+		);
 		const buttonRow: any = this.client.createMessageComponentsRow(createButton);
 
 		const embedMessage: any = await this.message.reply({
@@ -39,7 +55,9 @@ export default class ChangelogCommand extends BaseCommand {
 		});
 		buttonCollector.on("collect", async (interaction: any): Promise<void> => {
 			// Create changelog modal
-			const modal: ModalBuilder = new ModalBuilder().setCustomId("changelog").setTitle("Changelog erstellen");
+			const modal: ModalBuilder = new ModalBuilder()
+				.setCustomId("changelog")
+				.setTitle("Changelog erstellen");
 
 			const newInput: TextInputBuilder = new TextInputBuilder()
 				.setCustomId("new")
@@ -69,7 +87,12 @@ export default class ChangelogCommand extends BaseCommand {
 			const fixedActionRow: any = new ActionRowBuilder().addComponents(fixedInput);
 			const improvedActionRow: any = new ActionRowBuilder().addComponents(improvedInput);
 			const removedActionRow: any = new ActionRowBuilder().addComponents(removedInput);
-			await modal.addComponents(newActionRow, fixedActionRow, improvedActionRow, removedActionRow);
+			await modal.addComponents(
+				newActionRow,
+				fixedActionRow,
+				improvedActionRow,
+				removedActionRow
+			);
 
 			await interaction.showModal(modal);
 			interaction
@@ -127,13 +150,22 @@ export default class ChangelogCommand extends BaseCommand {
 						removedFeatures.join("\n" + this.client.emotes.arrow + " ") +
 						"\n\n\n\n";
 
-					const changelogEmbed: EmbedBuilder = this.client.createEmbed("{0}", null, "normal", text);
+					const changelogEmbed: EmbedBuilder = this.client.createEmbed(
+						"{0}",
+						null,
+						"normal",
+						text
+					);
 					changelogEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 					changelogEmbed.setTitle("Changelog vom " + date);
 					this.message.channel.send({ embeds: [changelogEmbed] });
 
 					// Delete messages and close modal
-					const sentEmbed: EmbedBuilder = await this.client.createEmbed("Der Changelog wurde erstellt und gesendet", "success", "success");
+					const sentEmbed: EmbedBuilder = await this.client.createEmbed(
+						"Der Changelog wurde erstellt und gesendet",
+						"success",
+						"success"
+					);
 					await int.update({
 						embeds: [sentEmbed],
 						components: []

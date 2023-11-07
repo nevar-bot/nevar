@@ -13,7 +13,10 @@ export default class WeatherCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option) =>
-					option.setName("stadt").setDescription("Gib einen Ort oder Stadt an").setRequired(true)
+					option
+						.setName("stadt")
+						.setDescription("Gib einen Ort oder Stadt an")
+						.setRequired(true)
 				)
 			}
 		});
@@ -27,7 +30,10 @@ export default class WeatherCommand extends BaseCommand {
 	}
 
 	private async showWeather(city: string): Promise<void> {
-		if (!this.client.config.apikeys["WEATHER"] || this.client.config.apikeys["WEATHER"] === "") {
+		if (
+			!this.client.config.apikeys["WEATHER"] ||
+			this.client.config.apikeys["WEATHER"] === ""
+		) {
 			const noApiKeyEmbed: EmbedBuilder = this.client.createEmbed(
 				"Da in der Bot-Config der nötige Openweathermap-API-Key nicht hinterlegt wurde, kann der Weather-Befehl nicht genutzt werden.",
 				"error",
@@ -36,7 +42,11 @@ export default class WeatherCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [noApiKeyEmbed] });
 		}
 		if (!city) {
-			const noCityEmbed: EmbedBuilder = this.client.createEmbed("Bitte gib einen Ort oder eine Stadt an.", "error", "error");
+			const noCityEmbed: EmbedBuilder = this.client.createEmbed(
+				"Bitte gib einen Ort oder eine Stadt an.",
+				"error",
+				"error"
+			);
 			return this.interaction.followUp({ embeds: [noCityEmbed] });
 		}
 
@@ -65,7 +75,9 @@ export default class WeatherCommand extends BaseCommand {
 					ms: weatherInformation.wind.speed,
 					kmh: Math.round(weatherInformation.wind.speed * 3.6)
 				},
-				sunrise: new Date(weatherInformation.sys.sunrise * 1000).toLocaleTimeString("de-DE"),
+				sunrise: new Date(weatherInformation.sys.sunrise * 1000).toLocaleTimeString(
+					"de-DE"
+				),
 				sunset: new Date(weatherInformation.sys.sunset * 1000).toLocaleTimeString("de-DE")
 			};
 

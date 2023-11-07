@@ -130,7 +130,11 @@ export default class Levels {
 		return user;
 	}
 
-	static async fetch(userId: string, guildId: string, fetchPosition: boolean = false): Promise<any> {
+	static async fetch(
+		userId: string,
+		guildId: string,
+		fetchPosition: boolean = false
+	): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
 			guildID: guildId
@@ -198,7 +202,11 @@ export default class Levels {
 			.exec();
 	}
 
-	static async computeLeaderboard(client: any, leaderboard: any[], fetchUsers = false): Promise<any> {
+	static async computeLeaderboard(
+		client: any,
+		leaderboard: any[],
+		fetchUsers = false
+	): Promise<any> {
 		if (leaderboard.length < 1) return [];
 
 		const computedArray = [];
@@ -214,7 +222,11 @@ export default class Levels {
 					userID: key.userID,
 					xp: key.xp,
 					level: key.level,
-					position: leaderboard.findIndex((i: any): boolean => i.guildID === key.guildID && i.userID === key.userID) + 1,
+					position:
+						leaderboard.findIndex(
+							(i: any): boolean =>
+								i.guildID === key.guildID && i.userID === key.userID
+						) + 1,
 					username: user.username,
 					displayName: user.displayName
 				});
@@ -226,9 +238,17 @@ export default class Levels {
 					userID: key.userID,
 					xp: key.xp,
 					level: key.level,
-					position: leaderboard.findIndex((i: any): boolean => i.guildID === key.guildID && i.userID === key.userID) + 1,
-					username: client.users.cache.get(key.userID) ? client.users.cache.get(key.userID).username : "Unbekannt",
-					displayName: client.users.cache.get(key.userID) ? client.users.cache.get(key.userID).displayName : "Unbekannt"
+					position:
+						leaderboard.findIndex(
+							(i: any): boolean =>
+								i.guildID === key.guildID && i.userID === key.userID
+						) + 1,
+					username: client.users.cache.get(key.userID)
+						? client.users.cache.get(key.userID).username
+						: "Unbekannt",
+					displayName: client.users.cache.get(key.userID)
+						? client.users.cache.get(key.userID).displayName
+						: "Unbekannt"
 				});
 			});
 		}

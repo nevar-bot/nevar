@@ -13,7 +13,10 @@ export default class UserinfoCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(false)
+					option
+						.setName("mitglied")
+						.setDescription("Wähle ein Mitglied")
+						.setRequired(false)
 				)
 			}
 		});
@@ -37,11 +40,20 @@ export default class UserinfoCommand extends BaseCommand {
 
 		const name: string = member.user.username;
 		const displayName: string = member.user.displayName;
-		const createdAt: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "f");
-		const createdDiff: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "R");
+		const createdAt: string = this.client.utils.getDiscordTimestamp(
+			member.user.createdTimestamp,
+			"f"
+		);
+		const createdDiff: string = this.client.utils.getDiscordTimestamp(
+			member.user.createdTimestamp,
+			"R"
+		);
 		const memberDisplayName: string = member.displayName;
 		const joinedAt: string = this.client.utils.getDiscordTimestamp(member.joinedTimestamp, "f");
-		const joinedDiff: string = this.client.utils.getDiscordTimestamp(member.joinedTimestamp, "R");
+		const joinedDiff: string = this.client.utils.getDiscordTimestamp(
+			member.joinedTimestamp,
+			"R"
+		);
 		const bot: string = member.user.bot ? "Ja" : "Nein";
 		const userFlags: any[] = (await member.user.fetchFlags()).toArray();
 
@@ -66,11 +78,22 @@ export default class UserinfoCommand extends BaseCommand {
 		// Custom Badges
 		// Nevar staff
 		if (data.staff.state || this.client.config.general["OWNER_IDS"].includes(member.user.id))
-			badges.push(this.client.emotes.flags.Staff + " " + this.client.user!.username + "-Staff");
+			badges.push(
+				this.client.emotes.flags.Staff + " " + this.client.user!.username + "-Staff"
+			);
 		// Nevar partner
-		if (data.partner.state) badges.push(this.client.emotes.flags.Partner + " " + this.client.user!.username + "-Partner");
+		if (data.partner.state)
+			badges.push(
+				this.client.emotes.flags.Partner + " " + this.client.user!.username + "-Partner"
+			);
 		// Nevar Bughunter
-		if (data.bughunter.state) badges.push(this.client.emotes.flags.BugHunterLevel1 + " " + this.client.user!.username + "-Bughunter");
+		if (data.bughunter.state)
+			badges.push(
+				this.client.emotes.flags.BugHunterLevel1 +
+					" " +
+					this.client.user!.username +
+					"-Bughunter"
+			);
 
 		// Discord badges
 		for (let flag of userFlags) {
@@ -118,7 +141,9 @@ export default class UserinfoCommand extends BaseCommand {
 			"**";
 
 		const searchServerEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
-		searchServerEmbed.setTitle(this.client.emotes.information + " Informationen zu " + member.user.username);
+		searchServerEmbed.setTitle(
+			this.client.emotes.information + " Informationen zu " + member.user.username
+		);
 		searchServerEmbed.setThumbnail(member.user.displayAvatarURL());
 
 		return this.interaction.followUp({ embeds: [searchServerEmbed] });

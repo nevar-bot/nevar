@@ -45,7 +45,10 @@ export default class MutelistCommand extends BaseCommand {
 					"\n" +
 					this.client.emotes.arrow +
 					"Dauer: " +
-					this.client.utils.getDiscordTimestamp(Date.now() + victimData.muted.duration, "R") +
+					this.client.utils.getDiscordTimestamp(
+						Date.now() + victimData.muted.duration,
+						"R"
+					) +
 					"\n" +
 					this.client.emotes.arrow +
 					"Gemutet am: " +

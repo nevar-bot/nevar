@@ -138,9 +138,13 @@ export default class BaseClient extends DiscordClient {
 
 	async findOrCreateUser(userID: string, isLean: boolean = false): Promise<any> {
 		if (this.databaseCache.users.get(userID)) {
-			return isLean ? this.databaseCache.users.get(userID).toJSON() : this.databaseCache.users.get(userID);
+			return isLean
+				? this.databaseCache.users.get(userID).toJSON()
+				: this.databaseCache.users.get(userID);
 		} else {
-			let userData: any = isLean ? await this.usersData.findOne({ id: userID }).lean() : await this.usersData.findOne({ id: userID });
+			let userData: any = isLean
+				? await this.usersData.findOne({ id: userID }).lean()
+				: await this.usersData.findOne({ id: userID });
 			if (userData) {
 				if (!isLean) this.databaseCache.users.set(userID, userData);
 				return userData;
@@ -167,7 +171,11 @@ export default class BaseClient extends DiscordClient {
 		}
 	}
 
-	async findOrCreateMember(memberID: string, guildID: string, isLean: boolean = false): Promise<any> {
+	async findOrCreateMember(
+		memberID: string,
+		guildID: string,
+		isLean: boolean = false
+	): Promise<any> {
 		if (this.databaseCache.members.get(`${memberID}${guildID}`)) {
 			return isLean
 				? this.databaseCache.members.get(`${memberID}${guildID}`).toJSON()
@@ -214,7 +222,12 @@ export default class BaseClient extends DiscordClient {
 				.deleteOne()
 				.exec()
 				.catch((e: Error) => {
-					this.alertException(e, null, null, '<Client>.deleteMember("' + memberID + '", ' + guildID + '")');
+					this.alertException(
+						e,
+						null,
+						null,
+						'<Client>.deleteMember("' + memberID + '", ' + guildID + '")'
+					);
 				});
 			this.databaseCache.members.delete(`${memberID}${guildID}`);
 		}
@@ -222,7 +235,9 @@ export default class BaseClient extends DiscordClient {
 
 	async findOrCreateGuild(guildID: string, isLean: boolean = false): Promise<any> {
 		if (this.databaseCache.guilds.get(guildID)) {
-			return isLean ? this.databaseCache.guilds.get(guildID).toJSON() : this.databaseCache.guilds.get(guildID);
+			return isLean
+				? this.databaseCache.guilds.get(guildID).toJSON()
+				: this.databaseCache.guilds.get(guildID);
 		} else {
 			let guildData: any = isLean
 				? await this.guildsData.findOne({ id: guildID }).populate("members").lean()
@@ -309,7 +324,10 @@ export default class BaseClient extends DiscordClient {
 				iconURL: this.user!.displayAvatarURL(),
 				url: this.config.general["WEBSITE"]
 			})
-			.setDescription((emote ? this.emotes[emote] + " " : " ") + (formattedMessage ? formattedMessage : " "))
+			.setDescription(
+				(emote ? this.emotes[emote] + " " : " ") +
+					(formattedMessage ? formattedMessage : " ")
+			)
 			.setColor(color)
 			.setFooter({ text: this.config.embeds["FOOTER_TEXT"] });
 	}
@@ -364,16 +382,29 @@ export default class BaseClient extends DiscordClient {
 		});
 	}
 
-	alertException(exception: any, guild: string | null = null, user: User | null = null, action: string | null = null): any {
+	alertException(
+		exception: any,
+		guild: string | null = null,
+		user: User | null = null,
+		action: string | null = null
+	): any {
 		const supportGuild: Guild | undefined = this.guilds.cache.get(this.config.support["ID"]);
-		const errorLogChannel: any = supportGuild?.channels.cache.get(this.config.support["ERROR_LOG"]);
+		const errorLogChannel: any = supportGuild?.channels.cache.get(
+			this.config.support["ERROR_LOG"]
+		);
 		if (!supportGuild || !errorLogChannel) return;
 
-		const exceptionEmbed: EmbedBuilder = this.createEmbed("Ein Fehler ist aufgetreten", "error", "error");
+		const exceptionEmbed: EmbedBuilder = this.createEmbed(
+			"Ein Fehler ist aufgetreten",
+			"error",
+			"error"
+		);
 		let description: string | undefined = exceptionEmbed.data.description;
 
 		if (guild) description += "\n" + this.emotes.arrow + " Server: " + guild;
-		if (user) description += "\n" + this.emotes.arrow + " Nutzer/-in: " + user.username + " (" + user.id + ")";
+		if (user)
+			description +=
+				"\n" + this.emotes.arrow + " Nutzer/-in: " + user.username + " (" + user.id + ")";
 		if (action) description += "\n" + this.emotes.arrow + " Aktion: " + action;
 		description += "\n```js\n" + exception.stack + "```";
 
@@ -400,15 +431,22 @@ export default class BaseClient extends DiscordClient {
 		const patternMatch: RegExpExecArray | null = RegExp(USER_MENTION).exec(query);
 		if (patternMatch) {
 			const id: string = patternMatch[1];
-			const fetchedUser: any = await this.users.fetch(id, { cache: true }).catch((): void => {});
+			const fetchedUser: any = await this.users
+				.fetch(id, { cache: true })
+				.catch((): void => {});
 			if (fetchedUser) return fetchedUser;
 		}
 
-		const matchingUsernames: any = this.users.cache.filter((user: any): boolean => user.username === query);
+		const matchingUsernames: any = this.users.cache.filter(
+			(user: any): boolean => user.username === query
+		);
 		if (matchingUsernames.size === 1) return matchingUsernames.first();
 
 		if (!exact) {
-			return this.users.cache.find((x: any): any => x.username === query || x.username.toLowerCase().includes(query.toLowerCase()));
+			return this.users.cache.find(
+				(x: any): any =>
+					x.username === query || x.username.toLowerCase().includes(query.toLowerCase())
+			);
 		}
 	}
 }

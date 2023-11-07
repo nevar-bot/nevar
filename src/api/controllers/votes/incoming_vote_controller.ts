@@ -66,10 +66,14 @@ export async function post(req: Request, res: Response) {
 		);
 		const buttonRow: any = client.createMessageComponentsRow(voteNowButton);
 
-		const channel: any = client.channels.cache.get(client.config.channels["VOTE_ANNOUNCEMENT_ID"]);
-		await channel.send({ embeds: [voteEmbed], components: [buttonRow] }).catch((e: any): void => {
-			console.log("Couldn't send vote announcement: " + e);
-		});
+		const channel: any = client.channels.cache.get(
+			client.config.channels["VOTE_ANNOUNCEMENT_ID"]
+		);
+		await channel
+			.send({ embeds: [voteEmbed], components: [buttonRow] })
+			.catch((e: any): void => {
+				console.log("Couldn't send vote announcement: " + e);
+			});
 
 		const voteObj: any = JSON.parse(fs.readFileSync("./assets/votes.json").toString());
 

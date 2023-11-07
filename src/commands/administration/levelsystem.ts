@@ -19,7 +19,9 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("status")
-							.setDescription("Determines whether the level system is enabled or disabled")
+							.setDescription(
+								"Determines whether the level system is enabled or disabled"
+							)
 							.setDescriptionLocalizations({
 								de: "Legt fest, ob das Levelsystem aktiviert oder deaktiviert ist"
 							})
@@ -52,19 +54,26 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("channel")
-							.setDescription("Determines in which channel level-up messages are sent")
+							.setDescription(
+								"Determines in which channel level-up messages are sent"
+							)
 							.setDescriptionLocalizations({
 								de: "Bestimmt in welchem Channel Level-Up Nachrichten gesendet werden"
 							})
 							.addChannelOption((option: any) =>
 								option
 									.setName("channel")
-									.setDescription("Select a channel (if you want the current channel, leave empty)")
+									.setDescription(
+										"Select a channel (if you want the current channel, leave empty)"
+									)
 									.setDescriptionLocalizations({
 										de: "Wähle einen Channel (wenn jeweils aktueller Channel gewünscht, leer lassen)"
 									})
 									.setRequired(false)
-									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
+									.addChannelTypes(
+										ChannelType.GuildText,
+										ChannelType.GuildAnnouncement
+									)
 							)
 					)
 					.addSubcommand((subcommand: any) =>
@@ -96,7 +105,9 @@ export default class LevelsystemCommand extends BaseCommand {
 							.setNameLocalizations({
 								de: "rollen"
 							})
-							.setDescription("Defines roles that are assigned when a certain level is reached")
+							.setDescription(
+								"Defines roles that are assigned when a certain level is reached"
+							)
 							.setDescriptionLocalizations({
 								de: "Legt Rollen fest, die bei Erreichen eines bestimmten Levels vergeben werden"
 							})
@@ -220,7 +231,9 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("xp")
-							.setDescription("Define the minimum and maximum number of XP that can be assigned per message")
+							.setDescription(
+								"Define the minimum and maximum number of XP that can be assigned per message"
+							)
 							.setDescriptionLocalizations({
 								de: "Definiere die minimale und maximale Anzahl an XP, die pro Nachricht vergeben werden können"
 							})
@@ -253,15 +266,20 @@ export default class LevelsystemCommand extends BaseCommand {
 							.setNameLocalizations({
 								de: "variablen"
 							})
-							.setDescription("Lists all variables that can be used in the level-up message")
+							.setDescription(
+								"Lists all variables that can be used in the level-up message"
+							)
 							.setDescriptionLocalizations({
 								de: "Listet alle Variablen, die in der Level-Up Nachricht verwendet werden können"
 							})
 					)
 					.addSubcommand((subcommand: any) =>
-						subcommand.setName("test").setDescription("Tests the level up message").setDescriptionLocalizations({
-							de: "Testet die Level-Up Nachricht"
-						})
+						subcommand
+							.setName("test")
+							.setDescription("Tests the level up message")
+							.setDescriptionLocalizations({
+								de: "Testet die Level-Up Nachricht"
+							})
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
@@ -316,7 +334,10 @@ export default class LevelsystemCommand extends BaseCommand {
 										de: "Wähle einen Channel"
 									})
 									.setRequired(false)
-									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
+									.addChannelTypes(
+										ChannelType.GuildText,
+										ChannelType.GuildAnnouncement
+									)
 							)
 							.addRoleOption((option: any) =>
 								option
@@ -355,7 +376,11 @@ export default class LevelsystemCommand extends BaseCommand {
 				const levelroleAction = interaction.options.getString("action");
 				switch (levelroleAction) {
 					case "add":
-						await this.addRole(interaction.options.getRole("role"), interaction.options.getInteger("level"), data);
+						await this.addRole(
+							interaction.options.getRole("role"),
+							interaction.options.getInteger("level"),
+							data
+						);
 						break;
 					case "remove":
 						await this.removeRole(interaction.options.getRole("role"), data);
@@ -380,7 +405,11 @@ export default class LevelsystemCommand extends BaseCommand {
 				}
 				break;
 			case "xp":
-				await this.setXp(interaction.options.getInteger("min"), interaction.options.getInteger("max"), data);
+				await this.setXp(
+					interaction.options.getInteger("min"),
+					interaction.options.getInteger("max"),
+					data
+				);
 				break;
 			case "variables":
 				await this.listVariables();
@@ -392,10 +421,18 @@ export default class LevelsystemCommand extends BaseCommand {
 				const excludeAction = interaction.options.getString("action");
 				switch (excludeAction) {
 					case "add":
-						await this.addExclude(interaction.options.getChannel("channel"), interaction.options.getRole("role"), data);
+						await this.addExclude(
+							interaction.options.getChannel("channel"),
+							interaction.options.getRole("role"),
+							data
+						);
 						break;
 					case "remove":
-						await this.removeExclude(interaction.options.getChannel("channel"), interaction.options.getRole("role"), data);
+						await this.removeExclude(
+							interaction.options.getChannel("channel"),
+							interaction.options.getRole("role"),
+							data
+						);
 						break;
 					case "list":
 						await this.listExcluded(data);
@@ -407,7 +444,9 @@ export default class LevelsystemCommand extends BaseCommand {
 	private async setStatus(status: any, data: any): Promise<void> {
 		/* Status is already set */
 		if (data.guild.settings.levels.enabled === JSON.parse(status)) {
-			const text: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
+			const text: string = JSON.parse(status)
+				? this.translate("basics:enabled", {}, true)
+				: this.translate("basics:disabled", {}, true);
 			const infoEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("status:errors:alreadySet", { status: text }),
 				"error",
@@ -420,7 +459,9 @@ export default class LevelsystemCommand extends BaseCommand {
 		data.guild.settings.levels.enabled = JSON.parse(status);
 		data.guild.markModified("settings.levels.enabled");
 		await data.guild.save();
-		const text: string = JSON.parse(status) ? this.translate("basics:enabled", {}, true) : this.translate("basics:disabled", {}, true);
+		const text: string = JSON.parse(status)
+			? this.translate("basics:enabled", {}, true)
+			: this.translate("basics:disabled", {}, true);
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("status:set", { status: text }),
 			"success",
@@ -482,7 +523,11 @@ export default class LevelsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.levels.message");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("message:set"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(
+			this.translate("message:set"),
+			"success",
+			"success"
+		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -598,7 +643,9 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 
 		/* Save to database */
-		data.guild.settings.levels.roles = data.guild.settings.levels.roles.filter((r: any): boolean => r.role !== role.id);
+		data.guild.settings.levels.roles = data.guild.settings.levels.roles.filter(
+			(r: any): boolean => r.role !== role.id
+		);
 		data.guild.markModified("settings.levels.roles");
 		await data.guild.save();
 
@@ -740,7 +787,9 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 
 		/* Save to database */
-		data.guild.settings.levels.doubleXP = data.guild.settings.levels.doubleXP.filter((r: any): boolean => r !== role.id);
+		data.guild.settings.levels.doubleXP = data.guild.settings.levels.doubleXP.filter(
+			(r: any): boolean => r !== role.id
+		);
 		data.guild.markModified("settings.levels.doubleXP");
 		await data.guild.save();
 
@@ -855,7 +904,9 @@ export default class LevelsystemCommand extends BaseCommand {
 				.replaceAll(/{server:membercount}/g, self.interaction.guild.memberCount);
 		}
 
-		const channel: any = this.client.channels.cache.get(data.guild.settings.levels.channel) || this.interaction.channel;
+		const channel: any =
+			this.client.channels.cache.get(data.guild.settings.levels.channel) ||
+			this.interaction.channel;
 		const message: string = parseMessage(data.guild.settings.levels.message);
 
 		try {
@@ -898,7 +949,10 @@ export default class LevelsystemCommand extends BaseCommand {
 
 		const toExclude = channel || role;
 		/* No channel or role set */
-		if (!toExclude || (toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")) {
+		if (
+			!toExclude ||
+			(toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")
+		) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannelOrRole", {}, true),
 				"error",
@@ -996,7 +1050,10 @@ export default class LevelsystemCommand extends BaseCommand {
 
 		const toExclude = channel || role;
 		/* No channel or role set */
-		if (!toExclude || (toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")) {
+		if (
+			!toExclude ||
+			(toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")
+		) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannelOrRole", {}, true),
 				"error",
@@ -1018,7 +1075,10 @@ export default class LevelsystemCommand extends BaseCommand {
 			}
 
 			/* Save to database */
-			data.guild.settings.levels.exclude.channels = data.guild.settings.levels.exclude.channels.filter((c: any): boolean => c !== toExclude.id);
+			data.guild.settings.levels.exclude.channels =
+				data.guild.settings.levels.exclude.channels.filter(
+					(c: any): boolean => c !== toExclude.id
+				);
 			data.guild.markModified("settings.levels.exclude.channels");
 			await data.guild.save();
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
@@ -1041,7 +1101,10 @@ export default class LevelsystemCommand extends BaseCommand {
 			}
 
 			/* Save to database */
-			data.guild.settings.levels.exclude.roles = data.guild.settings.levels.exclude.roles.filter((r: any): boolean => r !== toExclude.id);
+			data.guild.settings.levels.exclude.roles =
+				data.guild.settings.levels.exclude.roles.filter(
+					(r: any): boolean => r !== toExclude.id
+				);
 			data.guild.markModified("settings.levels.exclude.roles");
 			await data.guild.save();
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
@@ -1074,7 +1137,8 @@ export default class LevelsystemCommand extends BaseCommand {
 
 		for (let i: number = 0; i < response.channels.length; i++) {
 			const cachedChannel = this.interaction.guild.channels.cache.get(response.channels[i]);
-			if (cachedChannel) excluded.push(this.client.emotes.channel + " " + cachedChannel.toString());
+			if (cachedChannel)
+				excluded.push(this.client.emotes.channel + " " + cachedChannel.toString());
 		}
 
 		await this.client.utils.sendPaginatedEmbed(
