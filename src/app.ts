@@ -9,10 +9,9 @@ import Loader from "@helpers/Loader";
 
 Validator.configValidator();
 
-/* Initialize client */
 const client: BaseClient = new BaseClient();
 
-process.on("unhandledRejection", (e: any): any => {
+process.on("unhandledRejection", (e: Error): void => {
 	console.error(e);
 	return client.alertException(e);
 });

@@ -7,31 +7,40 @@ export default class RankCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "rank",
-			description: "Sendet deine Levelcard",
+			description: "Sends your level card",
+			localizedDescriptions: {
+				de: "Sendet deine Levelcard",
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option.setName("mitglied").setDescription("Wähle ein Mitglied, dessen Levelcard du sehen möchtest").setRequired(false)
+				data: new SlashCommandBuilder()
+					.addUserOption((option: any) => option
+						.setName("member")
+						.setDescription("Select a member whose level card you would like to see")
+						.setDescriptionLocalizations({
+							de: "Wähle ein Mitglied, dessen Levelcard du sehen möchtest"
+						})
+						.setRequired(false)
 				)
 			}
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.showRank(data);
 	}
 
 	private async showRank(data: any): Promise<void> {
 		if (!data.guild.settings.levels.enabled) {
-			return this.interaction.followUp({ content: this.client.emotes.error + " Das Levelsystem ist auf diesem Server deaktiviert." });
+			return this.interaction.followUp({ content: this.client.emotes.error + " " + this.translate("errors:isDisabled") });
 		}
 
-		const user: any = this.interaction.options.getUser("mitglied") || this.interaction.user;
+		const user: any = this.interaction.options.getUser("member") || this.interaction.user;
 
 		const userData: any = {
 			user: user,
@@ -47,9 +56,9 @@ export default class RankCommand extends BaseCommand {
 			.renderEmojis(true)
 
 			// Rank and level
-			.setLevel(userData.level.level || 0, "LEVEL")
+			.setLevel(userData.level.level || 0, this.translate("level"))
 			.setLevelColor("#5773c9")
-			.setRank(userData.level.position || 100, "RANG")
+			.setRank(userData.level.position || 100, this.translate("rank"))
 
 			// Progress bar
 			.setProgressBar("#5773c9", "COLOR", true)
@@ -66,7 +75,7 @@ export default class RankCommand extends BaseCommand {
 				});
 				return this.interaction.followUp({ files: [attachment] });
 			} else {
-				return this.interaction.followUp({ content: this.client.emotes.error + " Der Nutzer hat noch keine XP gesammelt." });
+				return this.interaction.followUp({ content: this.client.emotes.error + " " + this.translate("errors:noXp") });
 			}
 		});
 	}
