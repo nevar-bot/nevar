@@ -10,9 +10,8 @@ export default class BaseCommand {
 	public interaction: any;
 	public message: any;
 
-	constructor(
-		client: BaseClient,
-		{
+	constructor(client: BaseClient, options: any) {
+		const {
 			name = null,
 			description = null,
 			localizedDescriptions = {},
@@ -25,47 +24,21 @@ export default class BaseCommand {
 			cooldown = 0,
 			slashCommand = {
 				addCommand: true,
-				data: []
-			}
-		}: {
-			name?: string | null;
-			description?: string | null;
-			localizedDescriptions?: any | null;
-			dirname?: string | null;
-			botPermissions?: string[];
-			memberPermissions?: string[];
-			nsfw?: boolean;
-			ownerOnly?: boolean;
-			staffOnly?: boolean;
-			cooldown?: number;
-			slashCommand?: {
-				addCommand: boolean;
-				data: any;
-			};
-		}
-	) {
-		const category: string = dirname
-			? (dirname as string).split(path.sep)[
-					parseInt(String((dirname as string).split(path.sep).length - 1), 10)
-			  ]
-			: "Misc";
+				data: [],
+			},
+		} = options;
+
+		const category: string = (dirname as string).split(path.sep)[parseInt(String((dirname as string).split(path.sep).length - 1), 10)]
+
 		this.client = client;
-		this.conf = {
-			memberPermissions,
-			botPermissions,
-			nsfw,
-			ownerOnly,
-			staffOnly,
-			cooldown
-		};
+		this.conf = { memberPermissions, botPermissions, nsfw, ownerOnly, staffOnly, cooldown };
 		this.help = { name, category, description, localizedDescriptions };
 		this.slashCommand = slashCommand;
 	}
 
 	protected translate(key: string, args?: any, isFullPath?: boolean): any {
 		let languageKey: string = key;
-		if (!isFullPath)
-			languageKey = this.help.category.toLowerCase() + "/" + this.help.name + ":" + key;
+		if (!isFullPath) languageKey = `${this.help.category.toLowerCase()}/${this.help.name}:${key}`;
 		if (!this.guild) return "Please provide a guild!";
 		return this.guild.translate(languageKey, args);
 	}
