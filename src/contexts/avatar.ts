@@ -17,7 +17,7 @@ export default class AvatarContext extends BaseContext {
 		await this.showAvatar(interaction.targetUser);
 	}
 
-	private async showAvatar(user: any): Promise<void> {
+	private async showAvatar(user: any): Promise<any> {
 		const x64: string = user.displayAvatarURL({
 			extension: "png",
 			size: 64

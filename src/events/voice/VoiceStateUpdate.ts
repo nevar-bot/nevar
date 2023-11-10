@@ -42,9 +42,7 @@ export default class {
 							? guildData.settings.joinToCreate.category
 							: newMember.channel.parentId,
 						bitrate: parseInt(guildData.settings.joinToCreate.bitrate) * 1000,
-						position: guildData.settings.joinToCreate.category
-							? 0
-							: newMember.channel.position,
+						position: newMember.channel.position,
 						userLimit: guildData.settings.joinToCreate.userLimit
 					})
 					.catch((e: any): any => {

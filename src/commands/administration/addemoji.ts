@@ -52,7 +52,7 @@ export default class AddemojiCommand extends BaseCommand {
 		);
 	}
 
-	private async addEmoji(emoji: string, name: string, guild: any): Promise<void> {
+	private async addEmoji(emoji: string, name: string, guild: any): Promise<any> {
 		const emote: any = { name: undefined, url: undefined };
 		const { stringIsCustomEmoji, stringIsUrl, urlIsImage } = Utils;
 

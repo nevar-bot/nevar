@@ -1,13 +1,14 @@
 import BaseClient from "@structures/BaseClient";
+import { CommandInteraction, Guild } from "discord.js";
 
 export default class BaseContext {
-	public client: BaseClient;
+	protected client: BaseClient;
 	public conf: object;
 	public help: object;
-	public interaction: any;
-	public guild: any;
+	protected interaction!: CommandInteraction;
+	protected guild!: Guild;
 
-	constructor(client: BaseClient, options: any) {
+	public constructor(client: BaseClient, options: any) {
 		const {
 			name = null,
 			type = null,
