@@ -134,6 +134,9 @@ export default {
 			if (expiry - Date.now() < oneDayInMs) {
 				// access token expires in less than one day, refresh
 				const access_token: string | null = decryptString(value);
+				const encrypted_refresh_token: string | null = req.cookies?.["refresh_token"];
+				if (!encrypted_refresh_token) return false;
+				if (!isJsonString(encrypted_refresh_token)) return false;
 				const refresh_token: string | null = decryptString(
 					JSON.parse(req.cookies?.["refresh_token"]).value
 				);
