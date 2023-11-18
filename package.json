@@ -5,8 +5,10 @@
   "homepage": "https://nevar.eu",
   "main": "build/app.js",
   "license": "AGPL-3.0",
-  "repository": "github:nevar-bot/nevar",
-  "readme": "./README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nevar-bot/nevar.git"
+  },
   "author": "1887jonas <admin@nevar.eu> (https://github.com/1887jonas)",
   "engines": {
     "node": ">=20.0.0"
@@ -89,20 +91,5 @@
     "open-source",
     "bot",
     "multipurpose"
-  ],
-  "_moduleAliases": {
-    "@root": ".",
-    "@assets": "./assets/",
-    "@src": "./build/",
-    "@commands": "./build/commands/",
-    "@contexts": "./build/contexts/",
-    "@database": "./build/database/",
-    "@events": "./build/events/",
-    "@handlers": "./build/handlers/",
-    "@helpers": "./build/helpers/",
-    "@structures": "./build/structures/",
-    "@schemas": "./build/database/schemas",
-    "@api": "./build/api/",
-    "@dashboard": "./build/dashboard/"
-  }
+  ]
 }
