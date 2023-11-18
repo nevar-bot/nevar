@@ -1,9 +1,25 @@
 {
   "jsc": {
+  "baseUrl": "./",
     "parser": {
       "syntax": "typescript",
       "decorators": true,
       "dynamicImport": true
+    },
+    "paths": {
+        "@root/*": ["./*"],
+        "@assets/*": ["./assets/*"],
+        "@src/*": ["./src/*"],
+        "@commands/*": ["./src/commands/*"],
+        "@contexts/*": ["./src/contexts/*"],
+        "@database/*": ["./src/database/*"],
+        "@events/*": ["./src/events/*"],
+        "@handlers/*": ["./src/handlers/*"],
+        "@helpers/*": ["./src/helpers/*"],
+        "@structures/*": ["./src/structures/*"],
+        "@schemas/*": ["./src/database/schemas/*"],
+        "@api/*": ["./src/api/*"],
+        "@dashboard/*": ["./src/dashboard/*"]
     },
     "transform": {
       "legacyDecorator": true,
