@@ -19,11 +19,11 @@ export default {
 				const nestedFiles: string[] = fs.readdirSync("./build/api/routes/" + file);
 				for (const nestedFile of nestedFiles) {
 					if (nestedFile.endsWith(".js")) {
-						new (await import("@api/routes/" + file + "/" + nestedFile)).default(app);
+						new (await import("./routes/" + file + "/" + nestedFile)).default(app);
 					}
 				}
 			} else {
-				new (await import("@api/routes/" + file)).default(app);
+				new (await import("./routes/" + file)).default(app);
 			}
 		}
 

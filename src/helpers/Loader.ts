@@ -80,7 +80,7 @@ export default class Loader {
 		for (const context of directory) {
 			if (path.extname(context) !== ".js") continue;
 			try {
-				const props = new (await import("@contexts/" + context)).default(client);
+				const props = new (await import("../contexts/" + context)).default(client);
 				if (props.init) {
 					props.init(client);
 				}
