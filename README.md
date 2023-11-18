@@ -55,6 +55,11 @@ docker run -d -p 8085:8085 -p 8075:8075
 --restart unless-stopped nevar-bot:latest
 ```
 
+If you want to use the prebuilt docker image, pull it from the Github Container Registry:
+```bash
+docker pull ghcr.io/nevar-bot/nevar:main
+```
+
 ## Feedback
 If you have any feedback, please reach out to us at [hello@nevar.eu](mailto:hello@nevar.eu)
 
