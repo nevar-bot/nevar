@@ -1,0 +1,18 @@
+# Node
+node_modules/
+package-lock.json
+
+# TypeScript
+*.tsbuildinfo
+build/
+
+# IDE's
+.idea/
+.workspace/
+
+# Bot
+config.toml
+config-sample.toml
+assets/disabled.json
+assets/news.json
+assets/votes.json
