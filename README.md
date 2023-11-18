@@ -40,6 +40,21 @@ Start the bot
   npm run start:dev // Run in development mode
 ```
 
+## Docker
+Clone the repository and build the docker image
+```bash
+git clone https://github.com/nevar-bot/nevar
+cd nevar
+docker build -t nevar-bot:latest .
+```
+
+Start the container. Make sure you have an config.toml in your project directory, to map it to the container's config.
+```bash
+docker run -d -p 8085:8085 -p 8075:8075 
+-v ${PWD}/config.toml:/app/config.toml 
+--restart unless-stopped nevar-bot:latest
+```
+
 ## Feedback
 If you have any feedback, please reach out to us at [hello@nevar.eu](mailto:hello@nevar.eu)
 
