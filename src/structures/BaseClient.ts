@@ -1,42 +1,38 @@
-import {
-	ActionRowBuilder,
-	AnyComponentBuilder,
-	ButtonBuilder,
-	ButtonStyle,
-	Client as DiscordClient,
-	Collection,
-	EmbedBuilder,
-	GatewayIntentBits,
-	Guild,
-	OAuth2Scopes,
-	Partials,
-	PermissionsBitField,
-	User
-} from "discord.js";
-
+/* Import modules */
 import * as path from "path";
 import * as toml from "toml";
 import * as fs from "fs";
 import * as util from "util";
 
-import Logger from "@helpers/Logger";
+/* Import discord.js classes */
+import {
+	ActionRowBuilder, AnyComponentBuilder, ButtonBuilder, ButtonStyle,
+	Client, Collection, EmbedBuilder, GatewayIntentBits,
+	Guild, OAuth2Scopes, Partials, PermissionsBitField, User
+} from "discord.js";
 
-// @ts-ignore - File 'emojis.json' is not under 'rootDir' 'src/'
+/* Import emojis */
+// @ts-ignore
 import * as emotes from "@assets/emojis.json";
+
+/* Import helpers */
 import { permissions } from "@helpers/Permissions";
 import { ChannelTypes } from "@helpers/ChannelTypes";
 import { AiChatPrompts } from "@helpers/AiChatPrompts";
+
+import Logger from "@helpers/Logger";
 import Utils from "@helpers/Utils";
 import Levels from "@helpers/Levels";
 import GiveawaysManager from "@helpers/Giveaways";
 
+/* Import database schemas */
 import logSchema from "@schemas/Log";
 import guildSchema from "@schemas/Guild";
 import userSchema from "@schemas/User";
 import memberSchema from "@schemas/Member";
 import giveawaySchema from "@schemas/Giveaway";
 
-export default class BaseClient extends DiscordClient {
+export default class BaseClient extends Client {
 	public wait: (ms: number) => Promise<void>;
 	public config: any;
 	public emotes: any;
@@ -48,7 +44,7 @@ export default class BaseClient extends DiscordClient {
 	public commands: Collection<string, any>;
 	public contextMenus: Collection<string, any>;
 	public giveawayManager: any;
-	public logger: any;
+	public logger: Logger;
 	public utils: any;
 	public levels: any;
 	public logs: any;
@@ -131,7 +127,7 @@ export default class BaseClient extends DiscordClient {
 		this.aiChat = new Collection();
 	}
 
-	getLocaleString(key: string, locale: string, args: any[] = []): Promise<any> {
+	getLocaleString(key: string, locale: string, args?: object): Promise<string|null> {
 		const language: any = this.locales.get(locale);
 		return language(key, args);
 	}
@@ -159,7 +155,7 @@ export default class BaseClient extends DiscordClient {
 
 	async findUser(userID: string): Promise<any> {
 		const cachedUser: any = this.databaseCache.users.get(userID);
-		return cachedUser ? cachedUser : await this.usersData.findOne({ id: userID });
+		return cachedUser || await this.usersData.findOne({ id: userID });
 	}
 
 	async deleteUser(userID: string): Promise<any> {

@@ -10,7 +10,7 @@ async function walkDirectory(dir: any, namespaces: any[] = [], folderName = "") 
 	for (const file of files) {
 		const stat = await fs.statSync(path.join(dir, file));
 		if (stat.isDirectory()) {
-			const isLanguage: any = file.match(/^[a-z]{2}(-[A-Z]{2})?$/);
+			const isLanguage: any = RegExp(/^[a-z]{2}(-[A-Z]{2})?$/).exec(file);
 			if (isLanguage) languages.push(file);
 
 			const folder = await walkDirectory(

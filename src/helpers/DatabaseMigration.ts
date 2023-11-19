@@ -2,14 +2,13 @@ import Guild from "@schemas/Guild";
 import User from "@schemas/User";
 import Member from "@schemas/Member";
 import _ from "lodash";
-
 import mongoose from "mongoose";
-import BaseClient from "@structures/BaseClient";
 
 export default {
 	async isEqual(data: any, updatedData: any): Promise<boolean> {
 		return _.isEqual(data, updatedData);
 	},
+
 	async migrateGuilds(): Promise<number> {
 		let count: number = 0;
 		const guilds: any[] = await Guild.find();

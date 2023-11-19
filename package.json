@@ -19,7 +19,7 @@
   },
   "bugs": {
     "url": "https://github.com/nevar-bot/nevar/issues",
-    "email": "other@nevar.eu"
+    "email": "hello@nevar.eu"
   },
   "scripts": {
     "build": "rimraf build/ && swc src --out-dir build --copy-files",
@@ -33,17 +33,6 @@
   "devDependencies": {
     "@swc/cli": "^0.1.62",
     "@swc/core": "^1.3.74",
-    "@types/chalk": "^2.2.0",
-    "@types/compression": "^1.7.3",
-    "@types/cookie-parser": "^1.4.3",
-    "@types/cors": "^2.8.13",
-    "@types/express": "^4.17.17",
-    "@types/express-session": "^1.17.7",
-    "@types/i18n": "^0.13.6",
-    "@types/i18next-node-fs-backend": "^2.1.2",
-    "@types/moment": "^2.13.0",
-    "@types/node": "^14.11.2",
-    "@types/node-schedule": "^2.1.0",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "eslint": "^8.46.0",

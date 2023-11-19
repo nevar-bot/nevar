@@ -37,7 +37,7 @@ export default class BaseCommand {
 		this.slashCommand = slashCommand;
 	}
 
-	protected translate(key: string, args?: any, isFullPath?: boolean): string {
+	protected translate(key: string, args?: object, isFullPath?: boolean): string {
 		let languageKey: string = key;
 		if (!isFullPath) languageKey = `${this.help.category.toLowerCase()}/${this.help.name}:${key}`;
 		if (!this.guild) return "Missing guild";
