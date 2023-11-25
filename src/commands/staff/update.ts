@@ -46,7 +46,7 @@ export default class PullCommand extends BaseCommand {
 			exec("npm run build", (err: any, stdout: string, stderr: string): void => {
 				if (err) {
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(
-						`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``,
+						`Beim Ausführen vom "npm run build" Befehl ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``,
 						"error",
 						"error"
 					);
