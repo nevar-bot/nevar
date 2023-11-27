@@ -75,7 +75,7 @@ export default class StatsCommand extends BaseCommand {
 		const executedCommands: number = (
 			await (await mongoose.connection.db.collection("logs").find({})).toArray()
 		).length;
-		const packageJson: any = require("@root/package.json");
+		const packageJson: any = require("../../../package.json");
 		const botVersion: any = packageJson.version;
 		const nodeVer: string = process.version.replace("v", "");
 		const djsV: string = require("discord.js").version;

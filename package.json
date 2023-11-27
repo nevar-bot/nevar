@@ -22,13 +22,13 @@
     "email": "hello@nevar.eu"
   },
   "scripts": {
-    "build": "rimraf build/ && swc src --out-dir build --copy-files",
-    "check": "tsc --skipLibCheck --noEmit",
-    "start:dev": "node build/app.js --dev",
-    "start": "node build/app.js",
-    "lint": "eslint . --ext .ts",
     "config": "node assets/install.js",
-    "format": "prettier --config .prettierrc src/**/*.ts --write"
+    "lint": "eslint . --ext .ts",
+    "check": "tsc --skipLibCheck --noEmit",
+    "format": "prettier --config .prettierrc src/**/*.ts --write",
+    "build": "rimraf build/ && swc src --out-dir build --copy-files",
+    "start": "node build/app.js",
+    "start:dev": "node build/app.js --dev"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",
