@@ -1,6 +1,6 @@
 import * as path from "path";
 import BaseClient from "@structures/BaseClient";
-import { CommandInteraction, Guild, MessageInteraction } from "discord.js";
+import { CommandInteraction, Guild, Message } from "discord.js";
 
 export default class BaseCommand {
 	protected client: BaseClient;
@@ -9,7 +9,7 @@ export default class BaseCommand {
 	public slashCommand: any;
 	protected guild!: Guild;
 	protected interaction!: CommandInteraction;
-	protected message!: MessageInteraction;
+	protected message!: Message;
 
 	public constructor(client: BaseClient, options: any) {
 		const {
