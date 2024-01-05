@@ -10,6 +10,7 @@ export async function get(req: Request, res: Response) {
 		commands.push({
 			name: command.help.name,
 			description: command.help.description,
+			localizedDescriptions: command.help.localizedDescriptions,
 			category: command.help.category,
 			cooldown: command.conf.cooldown / 1000,
 			member_permissions: command.conf.memberPermissions,
