@@ -25,7 +25,7 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "target": "es2021",
+    "target": "esnext",
     "keepClassNames": true,
     "loose": true
   },

@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import i18nextBackend from "i18next-node-fs-backend";
+import i18nextBackend from "i18next-fs-backend";
 import * as path from "path";
 import fs from "fs";
 

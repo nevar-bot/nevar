@@ -1,7 +1,8 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
-import * as canvacord from "canvacord";
+import { RankCardBuilder, Font } from "canvacord";
+import fs from "fs";
 
 export default class RankCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -37,7 +38,7 @@ export default class RankCommand extends BaseCommand {
 		await this.showRank(data);
 	}
 
-	private async showRank(data: any): Promise<void> {
+	private async showRank(data: any): Promise<any> {
 		if (!data.guild.settings.levels.enabled) {
 			return this.interaction.followUp({
 				content: this.client.emotes.error + " " + this.translate("errors:isDisabled")
@@ -48,41 +49,39 @@ export default class RankCommand extends BaseCommand {
 
 		const userData: any = {
 			user: user,
-			level: await this.client.levels.fetch(user.id, this.interaction.guild.id, true)
+			level: await this.client.levels.fetch(user.id, this.interaction.guild!.id, true)
 		};
 
-		const rank: any = new canvacord.Rank()
-			// Avatar, status, username and displayname
-			.setUsername(userData.user.displayName)
-			.setDiscriminator(userData.user.username)
-			.setAvatar(userData.user.displayAvatarURL({ format: "png", size: 512 }))
-			.setStatus("online", false, false)
-			.renderEmojis(true)
+		const importedFont: Buffer = fs.readFileSync("./assets/Aguarita.ttf");
+		new Font(importedFont, "Aguarita");
 
-			// Rank and level
-			.setLevel(userData.level.level || 0, this.translate("level"))
-			.setLevelColor("#5773c9")
-			.setRank(userData.level.position || 100, this.translate("rank"))
-
-			// Progress bar
-			.setProgressBar("#5773c9", "COLOR", true)
-			.setProgressBarTrack("#ffffff")
-
-			// XP
+		const rankCard: RankCardBuilder = new RankCardBuilder()
+			.setDisplayName(userData.user.displayName)
+			.setUsername("@" + userData.user.username)
 			.setCurrentXP(userData.level.cleanXp || 0)
-			.setRequiredXP(userData.level.cleanNextLevelXp || 0);
+			.setRequiredXP(userData.level.cleanNextLevelXp || 0)
+			.setBackground("https://nevar.eu/img/banner_background_1920x1078.webp")
+			.setAvatar(userData.user.displayAvatarURL())
+			.setTextStyles({ rank: "Platz", xp: "XP", level: "Level" })
+			.setStyles({
+				progressbar: { thumb: { style: { backgroundColor: "#5773c9" } }, track: { style: { backgroundColor: "#ffffff" } } },
+				username: { name: { style: { fontSize: "35px" } }, handle: { style: { fontSize: "23px" } } },
+				statistics: { container: { style: { fontSize: "20px" } } }
+			})
+			.setRank(userData.level.position || 100)
+			.setFonts({
+				username: { name: "Aguarita", handle: "Aguarita" },
+				progress: { rank: { text: "Aguarita", value: "Aguarita" }, level: { text: "Aguarita", value: "Aguarita" }, xp: { text: "Aguarita", value: "Aguarita" } },
+			})
+			.setLevel(userData.level.level || 0);
 
-		rank.build().then((data: any): void => {
-			if (userData.level) {
-				const attachment: AttachmentBuilder = new AttachmentBuilder(data, {
-					name: "level-" + userData.user.id + ".png"
-				});
-				return this.interaction.followUp({ files: [attachment] });
-			} else {
-				return this.interaction.followUp({
-					content: this.client.emotes.error + " " + this.translate("errors:noXp")
-				});
-			}
-		});
+		const rankCardBuffer: string|Buffer = await rankCard.build({ format: "webp" });
+
+		if (userData.level) {
+			const attachment: AttachmentBuilder = new AttachmentBuilder(rankCardBuffer, { name: "level-" + userData.user.id + ".webp" });
+			return this.interaction.followUp({ files: [attachment] });
+		} else {
+			return this.interaction.followUp({ content: this.client.emotes.error + " " + this.translate("errors:noXp") });
+		}
 	}
 }

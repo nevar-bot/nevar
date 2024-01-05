@@ -1,6 +1,6 @@
 import { AutoPoster } from "topgg-autoposter";
 
-export = {
+export default {
 	init(client: any): void {
 		if (
 			client.config.apikeys["TOP_GG"] &&
