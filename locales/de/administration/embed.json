@@ -1,10 +1,10 @@
 {
   "errors": {
-    "colorHasToBeHex": "Du musst eine Farbe im HEX-Format eingeben.",
-    "authorIconHasToBeImage": "Das Autor-Icon muss ein Bild sein.",
-    "thumbnailHasToBeImage": "Das Thumbnail muss ein Bild sein.",
-    "imageHasToBeImage": "Das Embed-Bild muss ein Bild sein.",
-    "footerIconHasToBeImage": "Das Footer-Icon muss ein Bild sein."
+    "colorHasToBeHex": "Bitte gib eine Farbe im Hex-Format an.",
+    "authorIconHasToBeImage": "Bitte wähle ein Bild als Autor-Icon.",
+    "thumbnailHasToBeImage": "Bitte wähle ein Bild als Thumbnail.",
+    "imageHasToBeImage": "Bitte wähle ein Bild als Embed-Bild.",
+    "footerIconHasToBeImage": "Bitte wähle ein Bild als Footer-Icon."
   },
-  "sent": "Das Embed wurde erstellt und gesendet."
+  "sent": "Ich habe das Embed erstellt und gesendet."
 }

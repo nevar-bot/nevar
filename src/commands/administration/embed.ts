@@ -123,7 +123,7 @@ export default class EmbedCommand extends BaseCommand {
 		await this.createEmbed();
 	}
 
-	private async createEmbed() {
+	private async createEmbed(): Promise<any> {
 		const author: string = this.interaction.options.getString("author");
 		const authorIcon: any = this.interaction.options.getAttachment("icon");
 		const title: string = this.interaction.options.getString("title");
@@ -196,7 +196,7 @@ export default class EmbedCommand extends BaseCommand {
 			})
 			.setColor(color);
 
-		const webhook = await this.interaction.channel
+		const webhook = await this.interaction.channel!
 			.createWebhook({
 				name: author,
 				avatar: authorIcon ? authorIcon.proxyURL : null,
@@ -204,17 +204,21 @@ export default class EmbedCommand extends BaseCommand {
 			.catch((e: any): void => {});
 
 		if (webhook) {
-			webhook.send({ embeds: [embed] }).catch(() => {
-				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("basics:errors:unexpected", { support: this.client.support }, true),
-					"error",
-					"error",
-				);
-				return this.interaction.followUp({ embeds: [errorEmbed] });
-			});
-			webhook.delete().catch((e: any): void => {});
-			const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("sent"), "success", "success");
-			return this.interaction.followUp({ embeds: [successEmbed] });
+			webhook.send({ embeds: [embed] })
+				.catch((): any => {
+					const errorEmbed: EmbedBuilder = this.client.createEmbed(
+						this.translate("basics:errors:unexpected", { support: this.client.support }, true),
+						"error",
+						"error",
+
+					);
+					return this.interaction.followUp({ embeds: [errorEmbed] });
+				})
+				.then((): any => {
+					webhook.delete().catch((e: any): void => {});
+					const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("sent"), "success", "success");
+					return this.interaction.followUp({ embeds: [successEmbed] });
+				});
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:unexpected", { support: this.client.support }, true),

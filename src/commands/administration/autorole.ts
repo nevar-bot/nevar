@@ -164,7 +164,7 @@ export default class AutoroleCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async removeAutorole(role: any, data: any): Promise<void> {
+	private async removeAutorole(role: any, data: any): Promise<any> {
 		/* Invalid options */
 		if (!role || !role.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
