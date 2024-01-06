@@ -56,6 +56,9 @@ export default class AutoreactCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
+							.setNameLocalizations({
+								de:	"kanal"
+							})
 							.setDescription("Choose for which channel you want to perform the action")
 							.setDescriptionLocalizations({
 								de: "Wähle, für welchen Channel du die Aktion ausführen möchtest",
@@ -81,7 +84,7 @@ export default class AutoreactCommand extends BaseCommand {
 		});
 	}
 
-	public async dispatch(interaction: any, data: any): Promise<void> {
+	public async dispatch(interaction: any, data: any): Promise<any> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
 
@@ -117,7 +120,7 @@ export default class AutoreactCommand extends BaseCommand {
 		}
 	}
 
-	private async addAutoReact(data: any, channel: any, emote: string): Promise<void> {
+	private async addAutoReact(data: any, channel: any, emote: string): Promise<any> {
 		/* Missing arguments */
 		if (!channel || !channel.id || !emote) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
@@ -171,7 +174,7 @@ export default class AutoreactCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("administration/autoreact:added", {
+			this.translate("added", {
 				emoji: originEmote,
 				channel: channel.toString(),
 			}),
@@ -181,7 +184,7 @@ export default class AutoreactCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async removeAutoReact(data: any, channel: any, emote: string): Promise<void> {
+	private async removeAutoReact(data: any, channel: any, emote: string): Promise<any> {
 		/* Missing arguments */
 		if (!channel || !channel.id || !emote) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
@@ -239,7 +242,7 @@ export default class AutoreactCommand extends BaseCommand {
 
 		for (const item of response) {
 			if (typeof item !== "object") continue;
-			const cachedChannel: any = this.interaction.guild.channels.cache.get(item.channel);
+			const cachedChannel: any = this.interaction.guild!.channels.cache.get(item.channel);
 			if (cachedChannel) {
 				const cachedEmoji: any = this.client.emojis.cache.get(item.emoji);
 				if (!sortedAutoReactArray[cachedChannel.toString()])
@@ -250,17 +253,16 @@ export default class AutoreactCommand extends BaseCommand {
 
 		for (const item in sortedAutoReactArray) {
 			finalSortedAutoReactArray.push(
-				" " +
-					this.translate("list:channel") +
-					": " +
-					item +
-					"\n" +
-					this.client.emotes.arrow +
-					" " +
-					this.translate("list:emojis") +
-					": " +
-					sortedAutoReactArray[item].join(", ") +
-					"\n",
+				this.client.emotes.channel + " **" +
+				this.translate("list:channel") +
+				":** " +
+				item +
+				"\n" +
+				this.client.emotes.wave + " **" +
+				this.translate("list:emojis") +
+				":** " +
+				sortedAutoReactArray[item].join(" ") +
+				"\n",
 			);
 		}
 
@@ -270,7 +272,6 @@ export default class AutoreactCommand extends BaseCommand {
 			finalSortedAutoReactArray,
 			"Autoreact",
 			this.translate("list:empty"),
-			"channel",
 		);
 	}
 }
