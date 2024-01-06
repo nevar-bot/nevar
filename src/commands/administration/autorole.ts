@@ -68,7 +68,7 @@ export default class AutoroleCommand extends BaseCommand {
 		});
 	}
 
-	public async dispatch(interaction: any, data: any): Promise<void> {
+	public async dispatch(interaction: any, data: any): Promise<any> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
 
@@ -95,7 +95,7 @@ export default class AutoroleCommand extends BaseCommand {
 		}
 	}
 
-	private async addAutorole(role: any, data: any): Promise<void> {
+	private async addAutorole(role: any, data: any): Promise<any> {
 		/* Invalid options */
 		if (!role || !role.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
@@ -107,7 +107,7 @@ export default class AutoroleCommand extends BaseCommand {
 		}
 
 		/* Role is @everyone */
-		if (role.id === this.interaction.guild.roles.everyone.id) {
+		if (role.id === this.interaction.guild!.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:cantUseEveryone"),
 				"error",
@@ -127,11 +127,11 @@ export default class AutoroleCommand extends BaseCommand {
 		}
 
 		/* Role is higher than the bot's highest role */
-		if (this.interaction.guild.members.me.roles.highest.position <= role.position) {
+		if (this.interaction.guild!.members.me!.roles.highest.position <= role.position) {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:roleIsTooHigh", {
 					role: role.toString(),
-					botRole: this.interaction.guild.members.me.roles.highest.toString(),
+					botRole: this.interaction.guild!.members.me!.roles.highest.toString(),
 				}),
 				"error",
 				"error",
@@ -204,9 +204,9 @@ export default class AutoroleCommand extends BaseCommand {
 		const response: any = data.guild.settings.welcome.autoroles;
 		const autorolesArray: any[] = [];
 
-		for (let i: number = 0; i < response.length; i++) {
-			const cachedRole: any = this.interaction.guild.roles.cache.get(response[i]);
-			if (cachedRole) autorolesArray.push(cachedRole.toString());
+		for (const element of response) {
+			const cachedRole: any = this.interaction.guild!.roles.cache.get(element);
+			if (cachedRole) autorolesArray.push(this.client.emotes.ping + " " + cachedRole.toString());
 		}
 
 		await this.client.utils.sendPaginatedEmbed(
@@ -214,8 +214,7 @@ export default class AutoroleCommand extends BaseCommand {
 			5,
 			autorolesArray,
 			this.translate("list:title"),
-			this.translate("list:empty"),
-			"ping",
+			this.translate("list:empty")
 		);
 	}
 }
