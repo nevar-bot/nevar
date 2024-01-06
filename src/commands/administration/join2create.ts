@@ -97,7 +97,7 @@ export default class Join2CreateCommand extends BaseCommand {
 		name: string,
 		category: any,
 		data: any,
-	): Promise<void> {
+	): Promise<any> {
 		data.guild.settings.joinToCreate = {
 			enabled: true,
 			channel: channel.id,
