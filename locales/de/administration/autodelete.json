@@ -1,16 +1,16 @@
 {
   "errors": {
-    "missingChannelOrTime": "Du musst einen Channel und eine Zeit wählen.",
-    "alreadySetInChannel": "In {{channel}} ist bereits ein Autodelete eingerichtet.",
-    "notSetInChannel": "In {{channel}} ist kein Autodelete eingerichtet.",
-    "timeLessThanOneSecond": "Die Zeit muss mindestens 1 Sekunde betragen.",
-    "timeMoreThan1Week": "Die Zeit darf höchstens 7 Tage betragen."
+    "missingChannelOrTime": "Bitte gib einen Kanal und eine Dauer an.",
+    "alreadySetInChannel": "In {{channel}} wurde bereits ein Autodelete eingerichtet.",
+    "notSetInChannel": "In {{channel}} wurde noch kein Autodelete eingerichtet.",
+    "timeLessThanOneSecond": "Bitte  gib eine Dauer von mindestens einer Sekunde an.",
+    "timeMoreThanOneWeek": "Bitte gib eine Dauer von maximal einer Woche an."
   },
-  "set": "In {{channel}} werden neue Nachrichten absofort automatisch nach {{time}} gelöscht.",
-  "removed": "In {{channel}} werden neue Nachrichten nicht mehr automatisch gelöscht.",
+  "set": "In {{channel}} werden neue Nachrichten ab jetzt nach {{time}} gelöscht.",
+  "removed": "In {{channel}} werden neue Nachrichten ab jetzt nicht mehr gelöscht.",
   "list": {
-    "channel": "Channel",
-    "time": "Zeit",
-    "empty": "Es ist kein Autodelete eingestellt."
+    "channel": "Kanal",
+    "time": "Dauer",
+    "empty": "Es wurde noch kein Autodelete eingerichtet."
   }
 }

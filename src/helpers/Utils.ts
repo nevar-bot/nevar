@@ -86,20 +86,17 @@ export default class Utils {
 		data: Array<any>,
 		title: string,
 		empty: string,
-		emote: string,
 	): Promise<any> {
 		const { client } = interaction;
 
 		const backId: string = interaction.member!.user.id + "_back";
 		const forwardId: string = interaction.member!.user.id + "_forward";
-		// @ts-ignore - Property 'createButton' does not exist on type 'Client'
 		const backButton: ButtonBuilder = client.createButton(
 			backId,
 			interaction.guild.translate("basics:back"),
 			"Secondary",
 			client.emotes.arrows.left,
 		);
-		// @ts-ignore - Property 'createButton' does not exist on type 'Client'
 		const forwardButton: ButtonBuilder = client.createButton(
 			forwardId,
 			interaction.guild.translate("basics:further"),
@@ -110,7 +107,7 @@ export default class Utils {
 		async function generatePaginateEmbed(start: number): Promise<any> {
 			const current: any[] = data.slice(start, start + entriesPerPage);
 			// @ts-ignore - Property 'emotes' does not exist on type 'Client'
-			let text: string = current.map((item) => "\n" + (emote ? client.emotes[emote] + " " : "") + item).join("");
+			let text: string = current.map((item) => "\n" + item).join("");
 
 			const pages: any = {
 				total: Math.ceil(data.length / entriesPerPage),
@@ -118,12 +115,12 @@ export default class Utils {
 			};
 			if (pages.total === 0) pages.total = 1;
 			// @ts-ignore - Property 'emotes' does not exist on type 'Client'
-			if (data.length === 0) text = (emote ? client.emotes[emote] + " " : "") + empty;
+			if (data.length === 0) text = client.emotes.error + " " + empty;
 
 			// @ts-ignore - Property 'createEmbed' does not exist on type 'Client'
 			const paginatedEmbed: EmbedBuilder = client.createEmbed(text, null, "normal");
-			paginatedEmbed.setTitle(title + " ● " + interaction.guild.translate("utils:pagination", { pages }));
-			paginatedEmbed.setThumbnail(interaction.guild!.iconURL({ size: 4096 }));
+			paginatedEmbed.setTitle(title + " • " + interaction.guild.translate("utils:pagination", { pages }));
+			//paginatedEmbed.setThumbnail(interaction.guild!.iconURL({ size: 4096 }));
 			return paginatedEmbed;
 		}
 
@@ -195,8 +192,8 @@ export default class Utils {
 			if (data.length === 0) text = (emote ? client.emotes[emote] + " " : "") + empty;
 
 			const paginatedEmbed: EmbedBuilder = client.createEmbed(text, null, "normal");
-			paginatedEmbed.setTitle(title + " ● " + message.guild.translate("utils:pagination", { pages }));
-			paginatedEmbed.setThumbnail(message.guild.iconURL({ dynamic: true, size: 4096 }));
+			paginatedEmbed.setTitle(title + " • " + message.guild.translate("utils:pagination", { pages }));
+			//paginatedEmbed.setThumbnail(message.guild.iconURL({ dynamic: true, size: 4096 }));
 			return paginatedEmbed;
 		}
 

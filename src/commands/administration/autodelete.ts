@@ -57,6 +57,9 @@ export default class AutodeleteCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
+							.setNameLocalizations({
+								de: "kanal"
+							})
 							.setDescription("Choose for which channel you want to perform the action")
 							.setDescriptionLocalizations({
 								de: "Wähle, für welchen Channel du die Aktion ausführen möchtest",
@@ -73,7 +76,7 @@ export default class AutodeleteCommand extends BaseCommand {
 						option
 							.setName("time")
 							.setNameLocalizations({
-								de: "zeit",
+								de: "dauer",
 							})
 							.setRequired(false)
 							.setDescription("Enter after what time new messages should be deleted")
@@ -85,7 +88,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		});
 	}
 
-	public async dispatch(interaction: any, data: any): Promise<void> {
+	public async dispatch(interaction: any, data: any): Promise<any> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
 
@@ -116,7 +119,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		}
 	}
 
-	private async addAutodelete(channel: any, time: string, data: any): Promise<void> {
+	private async addAutodelete(channel: any, time: string, data: any): Promise<any> {
 		/* Invalid options */
 		if (!time || !ms(time) || !channel || !channel.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
@@ -153,7 +156,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		/* Time is too long */
 		if (timeInMs > 7 * 24 * 60 * 60 * 1000) {
 			const tooLongEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:timeMoreThan1Week"),
+				this.translate("errors:timeMoreThanOneWeek"),
 				"error",
 				"error",
 			);
@@ -176,7 +179,7 @@ export default class AutodeleteCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async removeAutodelete(channel: any, data: any): Promise<void> {
+	private async removeAutodelete(channel: any, data: any): Promise<any> {
 		/* Invalid options */
 		if (!channel || !channel.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
@@ -218,19 +221,19 @@ export default class AutodeleteCommand extends BaseCommand {
 
 		for (const element of response) {
 			if (typeof element !== "object") continue;
-			const cachedChannel: any = this.interaction.guild.channels.cache.get(element.channel);
+			const cachedChannel: any = this.interaction.guild!.channels.cache.get(element.channel);
 			if (cachedChannel)
 				autodeleteArray.push(
-					" " +
-						this.translate("list:channel") +
-						": " +
-						cachedChannel.toString() +
-						"\n" +
-						" " +
-						this.translate("list:time") +
-						": " +
-						ms(element.time) +
-						"\n",
+					this.client.emotes.channel + " **" +
+					this.translate("list:channel") +
+					":** " +
+					cachedChannel.toString() +
+					"\n" +
+					" **" +
+					this.client.emotes.delete + " " + this.translate("list:time") +
+					":** " +
+					ms(element.time) +
+					"\n",
 				);
 		}
 
@@ -239,8 +242,7 @@ export default class AutodeleteCommand extends BaseCommand {
 			5,
 			autodeleteArray,
 			"Autodelete",
-			this.translate("list:empty"),
-			"channel",
+			this.translate("list:empty")
 		);
 	}
 }
