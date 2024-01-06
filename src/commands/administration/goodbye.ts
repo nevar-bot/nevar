@@ -224,7 +224,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		}
 	}
 
-	private async setStatus(status: any, data: any): Promise<void> {
+	private async setStatus(status: any, data: any): Promise<any> {
 		if (data.guild.settings.farewell.enabled === JSON.parse(status)) {
 			const statusString: string = JSON.parse(status)
 				? this.translate("basics:enabled", {}, true)
@@ -252,7 +252,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async sendPreview(data: any): Promise<void> {
+	private async sendPreview(data: any): Promise<any> {
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
@@ -293,14 +293,16 @@ export default class GoodbyeCommand extends BaseCommand {
 		const self: any = this;
 		function parseMessage(str: string): string {
 			return str
-				.replaceAll(/{user}/g, member)
-				.replaceAll(/{user:username}/g, member.user.username)
-				.replaceAll(/{user:displayname}/g, member.user.displayName)
-				.replaceAll(/{user:id}/g, member.user.id)
-				.replaceAll(/{server:name}/g, self.interaction.guild.name)
-				.replaceAll(/{server:id}/g, self.interaction.guild.id)
-				.replaceAll(/{server:membercount}/g, self.interaction.guild.memberCount)
-				.replaceAll(/{newline}/g, "\n");
+				.replaceAll(/%user.name/g, member.user.username)
+				.replaceAll(/%user.displayName/g, member.displayName)
+				.replaceAll(/%user.id/g, member.user.id)
+				.replaceAll(/%user/g, member)
+
+				.replaceAll(/%server.name/g, self.interaction.guild.name)
+				.replaceAll(/%server.id/g, self.interaction.guild.id)
+				.replaceAll(/%server.memberCount/g, self.interaction.guild.memberCount)
+
+				.replaceAll(/%newline/g, "\n");
 		}
 
 		const channel: any = this.client.channels.cache.get(data.guild.settings.farewell.channel);
@@ -333,7 +335,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [testExecutedEmbed] });
 	}
 
-	private async setChannel(channel: any, data: any): Promise<void> {
+	private async setChannel(channel: any, data: any): Promise<any> {
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
@@ -390,7 +392,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setMessage(message: string, data: any): Promise<void> {
+	private async setMessage(message: string, data: any): Promise<any> {
 		if (!data.guild.settings.farewell.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
@@ -408,19 +410,18 @@ export default class GoodbyeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async showVariables(): Promise<void> {
-		const variables: string[] = this.translate("variables:list");
+	private async showVariables(): Promise<any> {
+		const variables: any = this.translate("variables:list", { e: this.client.emotes });
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
 			10,
 			variables,
 			this.translate("variables:title"),
 			this.translate("variables:empty"),
-			"shine",
 		);
 	}
 
-	private async setThumbnail(status: any, data: any): Promise<void> {
+	private async setThumbnail(status: any, data: any): Promise<any> {
 		if (!data.guild.settings.farewell.thumbnail) {
 			data.guild.settings.farewell.thumbnail = true;
 			data.guild.markModified("settings.farewell.thumbnail");
@@ -471,7 +472,7 @@ export default class GoodbyeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setColor(color: any, data: any): Promise<void> {
+	private async setColor(color: any, data: any): Promise<any> {
 		if (!data.guild.settings.farewell.color) {
 			data.guild.settings.farewell.color = "#5865F2";
 			data.guild.markModified("settings.farewell.color");
