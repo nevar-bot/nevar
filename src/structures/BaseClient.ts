@@ -312,11 +312,11 @@ export default class BaseClient extends Client {
 		}
 
 		return new EmbedBuilder()
-			.setAuthor({
-				name: this.user!.username,
-				iconURL: this.user!.displayAvatarURL(),
-				url: this.config.general["WEBSITE"],
-			})
+			//.setAuthor({
+			//	name: this.user!.username,
+			//	iconURL: this.user!.displayAvatarURL(),
+			//	url: this.config.general["WEBSITE"],
+			//})
 			.setDescription((emote ? this.emotes[emote] + " " : " ") + (formattedMessage ? formattedMessage : " "))
 			.setColor(color)
 			.setFooter({ text: this.config.embeds["FOOTER_TEXT"] });

@@ -1,8 +1,8 @@
 {
   "errors": {
-    "invalidEmojiOrLink": "Du musst einen Emoji oder einen Link zu einem Bild angeben.",
-    "invalidLinkExtension": "Wenn du einen Link angibst, muss dieser zu einem Bild führen.",
-    "missingName": "Wenn du einen Link angibst, musst du zusätzlich einen Namen für den neuen Emoji angeben."
+    "invalidEmojiOrLink": "Bitte gib einen Emoji oder Link zu einem Bild an.",
+    "invalidLinkExtension": "Dein angegebener Link muss zu einem Bild führen. (png, jpg, gif)",
+    "missingName": "Bitte gib einen Namen für den Emoji an."
   },
-  "created": "Der neue Emoji {{emoji}} wurde erstellt."
+  "created": "Ich habe {{emoji}} erstellt."
 }
