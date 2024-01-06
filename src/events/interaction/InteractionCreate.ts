@@ -188,11 +188,6 @@ export default class {
 				this.client.emit("SuggestionReviewed", interaction, buttonIdSplitted, data, guild);
 			}
 
-			/* Moderator wants to handle an AI detected message */
-			if (buttonIdSplitted[0] === "aimod") {
-				this.client.emit("AiMessageHandled", interaction, buttonIdSplitted, data, guild);
-			}
-
 			/* User wants to participate in a giveaway */
 			if (buttonIdSplitted[0] === "giveaway") {
 				this.client.emit("GiveawayParticipated", interaction, buttonIdSplitted, data, guild);

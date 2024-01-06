@@ -88,13 +88,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 				profilePicture: true,
 			},
 			polls: [],
-			aiModeration: {
-				enabled: false,
-				excludedChannels: [],
-				excludedRoles: [],
-				threshold: 0.6,
-				alertChannel: null,
-			},
 			notifiers: {
 				youtube: {
 					enabled: false,
