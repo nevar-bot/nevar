@@ -60,7 +60,7 @@ export default class Utils {
 	}
 
 	static urlIsImage(str: string): boolean {
-		return str.match(/^http[^]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim) != null;
+		return str.match(/^http[^]*.(jpg|jpeg|gif|png)(\?(.*))?$/gim) != null;
 	}
 
 	static stringIsCustomEmoji(str: string): boolean {

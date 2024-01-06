@@ -1,6 +1,7 @@
 import BaseCommand from "@structures/BaseCommand";
 import { EmbedBuilder, parseEmoji, SlashCommandBuilder } from "discord.js";
 import Utils from "@helpers/Utils";
+const { stringIsCustomEmoji, stringIsUrl, urlIsImage } = Utils;
 import BaseClient from "@structures/BaseClient";
 
 export default class AddemojiCommand extends BaseCommand {
@@ -54,7 +55,6 @@ export default class AddemojiCommand extends BaseCommand {
 
 	private async addEmoji(emoji: string, name: string, guild: any): Promise<any> {
 		const emote: any = { name: undefined, url: undefined };
-		const { stringIsCustomEmoji, stringIsUrl, urlIsImage } = Utils;
 
 		/* No emoji or link given */
 		if (!stringIsCustomEmoji(emoji) && !stringIsUrl(emoji)) {
