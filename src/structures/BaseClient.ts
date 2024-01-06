@@ -28,7 +28,6 @@ import * as emotes from "@assets/emojis.json";
 /* Import helpers */
 import { permissions } from "@helpers/Permissions";
 import { ChannelTypes } from "@helpers/ChannelTypes";
-import { AiChatPrompts } from "@helpers/AiChatPrompts";
 
 import Logger from "@helpers/Logger";
 import Utils from "@helpers/Utils";
@@ -49,7 +48,6 @@ export default class BaseClient extends Client {
 	public support: string;
 	public permissions: any;
 	public channelTypes: any;
-	public aiChatPrompts: any;
 	public locales: any;
 	public commands: Collection<string, any>;
 	public contextMenus: Collection<string, any>;
@@ -71,7 +69,6 @@ export default class BaseClient extends Client {
 		reminders: Collection<string, any>;
 	};
 	public invites: Collection<string, any>;
-	public aiChat: Collection<string, { role: string; content: string }[]>;
 
 	constructor() {
 		super({
@@ -108,7 +105,6 @@ export default class BaseClient extends Client {
 		this.support = this.config.support["INVITE"];
 		this.permissions = permissions;
 		this.channelTypes = ChannelTypes;
-		this.aiChatPrompts = AiChatPrompts;
 
 		this.commands = new Collection();
 		this.contextMenus = new Collection();
@@ -134,7 +130,6 @@ export default class BaseClient extends Client {
 		};
 
 		this.invites = new Collection();
-		this.aiChat = new Collection();
 	}
 
 	getLocaleString(key: string, locale: string, args?: object): Promise<string | null> {

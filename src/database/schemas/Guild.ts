@@ -95,11 +95,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 				threshold: 0.6,
 				alertChannel: null,
 			},
-			aiChat: {
-				enabled: false,
-				channel: null,
-				mode: "normal",
-			},
 			notifiers: {
 				youtube: {
 					enabled: false,
