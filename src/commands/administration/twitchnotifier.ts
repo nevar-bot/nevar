@@ -10,7 +10,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			name: "twitchnotifier",
 			description: "Manages Twitch notifications",
 			localizedDescriptions: {
-				de: "Verwaltet Twitch-Benachrichtigungen"
+				de: "Verwaltet Twitch-Benachrichtigungen",
 			},
 			cooldown: 1000,
 			memberPermissions: ["ManageGuild"],
@@ -22,95 +22,93 @@ export default class TwitchnotifierCommand extends BaseCommand {
 						option
 							.setName("action")
 							.setNameLocalizations({
-								de: "aktion"
+								de: "aktion",
 							})
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								de: "Wähle aus den folgenden Aktionen"
+								de: "Wähle aus den folgenden Aktionen",
 							})
 							.setRequired(true)
 							.addChoices(
 								{
 									name: "add",
 									name_localizations: {
-										de: "hinzufügen"
+										de: "hinzufügen",
 									},
-									value: "add"
+									value: "add",
 								},
 								{
 									name: "remove",
 									name_localizations: {
-										de: "entfernen"
+										de: "entfernen",
 									},
-									value: "remove"
+									value: "remove",
 								},
 								{
 									name: "list",
 									name_localizations: {
-										de: "liste"
+										de: "liste",
 									},
-									value: "list"
+									value: "list",
 								},
 								{
 									name: "status",
-									value: "status"
+									value: "status",
 								},
 								{
 									name: "channel",
-									value: "channel"
-								}
-							)
+									value: "channel",
+								},
+							),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("twitchchannel")
 							.setNameLocalizations({
-								de: "twitchkanal"
+								de: "twitchkanal",
 							})
 							.setDescription("Enter the username of the Twitch channel here")
 							.setDescriptionLocalizations({
-								de: "Gib hier den Nutzernamen des Twitch-Kanals an"
+								de: "Gib hier den Nutzernamen des Twitch-Kanals an",
 							})
-							.setRequired(false)
+							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("status")
 							.setDescription("Choose a status")
 							.setDescriptionLocalizations({
-								de: "Wähle einen Status"
+								de: "Wähle einen Status",
 							})
 							.setRequired(false)
 							.addChoices(
 								{
 									name: "on",
 									name_localizations: {
-										de: "an"
+										de: "an",
 									},
-									value: "on"
+									value: "on",
 								},
 								{
 									name: "off",
 									name_localizations: {
-										de: "aus"
+										de: "aus",
 									},
-									value: "off"
-								}
-							)
+									value: "off",
+								},
+							),
 					)
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription(
-								"Select the channel in which you want to send new videos"
-							)
+							.setDescription("Select the channel in which you want to send new videos")
 							.setDescriptionLocalizations({
-								de: "Wähle den Channel, in welchem neue Videos gesendet werden sollen"
+								de: "Wähle den Channel, in welchem neue Videos gesendet werden sollen",
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
-					)
-			}
+							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement),
+					),
+			},
 		});
 	}
 
@@ -124,8 +122,8 @@ export default class TwitchnotifierCommand extends BaseCommand {
 				twitch: {
 					enabled: false,
 					channels: [],
-					announcementChannel: null
-				}
+					announcementChannel: null,
+				},
 			};
 			data.guild.markModified("settings.notifiers");
 			await data.guild.save();
@@ -153,7 +151,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 	async addNotifier(channel: string, data: any): Promise<void> {
 		const authProvider: AppTokenAuthProvider = new AppTokenAuthProvider(
 			this.client.config.apikeys["TWITCH_CLIENT_ID"],
-			this.client.config.apikeys["TWITCH_CLIENT_SECRET"]
+			this.client.config.apikeys["TWITCH_CLIENT_SECRET"],
 		);
 		const apiClient: ApiClient = new ApiClient({ authProvider });
 
@@ -164,27 +162,27 @@ export default class TwitchnotifierCommand extends BaseCommand {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("errors:limitExceeded"),
 					"error",
-					"error"
+					"error",
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
 
 			if (
 				data.guild.settings.notifiers.twitch.channels.find(
-					(addedUser: any): boolean => addedUser.id === user.id
+					(addedUser: any): boolean => addedUser.id === user.id,
 				)
 			) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("errors:alreadyAdded"),
 					"error",
-					"error"
+					"error",
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
 
 			data.guild.settings.notifiers.twitch.channels.push({
 				id: user.id,
-				lastStreamId: null
+				lastStreamId: null,
 			});
 			data.guild.markModified("settings.notifiers.twitch.channels");
 			await data.guild.save();
@@ -192,7 +190,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("added", { name: user.name, url: "https://twitch.tv/" + user.name }),
 				"success",
-				"success"
+				"success",
 			);
 			successEmbed.setThumbnail(user.profilePictureUrl);
 			return this.interaction.followUp({ embeds: [successEmbed] });
@@ -201,7 +199,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 				this.translate("errors:cantFindChannel"),
 				"error",
 				"error",
-				channel
+				channel,
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -210,7 +208,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 	async removeNotifier(channel: string, data: any): Promise<void> {
 		const authProvider: AppTokenAuthProvider = new AppTokenAuthProvider(
 			this.client.config.apikeys["TWITCH_CLIENT_ID"],
-			this.client.config.apikeys["TWITCH_CLIENT_SECRET"]
+			this.client.config.apikeys["TWITCH_CLIENT_SECRET"],
 		);
 		const apiClient: ApiClient = new ApiClient({ authProvider });
 
@@ -220,30 +218,25 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingChannelName"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
-		if (
-			data.guild.settings.notifiers.twitch.channels.find(
-				(addedUser: any): boolean => addedUser.id === user.id
-			)
-		) {
-			data.guild.settings.notifiers.twitch.channels =
-				data.guild.settings.notifiers.twitch.channels.filter(
-					(addedUser: any): boolean => addedUser.id !== user.id
-				);
+		if (data.guild.settings.notifiers.twitch.channels.find((addedUser: any): boolean => addedUser.id === user.id)) {
+			data.guild.settings.notifiers.twitch.channels = data.guild.settings.notifiers.twitch.channels.filter(
+				(addedUser: any): boolean => addedUser.id !== user.id,
+			);
 			data.guild.markModified("settings.notifiers.twitch.channels");
 			await data.guild.save();
 
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("removed", {
 					name: user.name,
-					url: "https://twitch.tv/" + user.name
+					url: "https://twitch.tv/" + user.name,
 				}),
 				"success",
-				"success"
+				"success",
 			);
 			successEmbed.setThumbnail(user.profilePictureUrl);
 			return this.interaction.followUp({ embeds: [successEmbed] });
@@ -251,7 +244,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:notAdded"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -260,7 +253,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 	async listNotifiers(data: any): Promise<void> {
 		const authProvider: AppTokenAuthProvider = new AppTokenAuthProvider(
 			this.client.config.apikeys["TWITCH_CLIENT_ID"],
-			this.client.config.apikeys["TWITCH_CLIENT_SECRET"]
+			this.client.config.apikeys["TWITCH_CLIENT_SECRET"],
 		);
 		const apiClient: ApiClient = new ApiClient({ authProvider });
 
@@ -277,7 +270,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			channels,
 			this.translate("list:title"),
 			this.translate("list:empty"),
-			"link"
+			"link",
 		);
 	}
 
@@ -287,20 +280,18 @@ export default class TwitchnotifierCommand extends BaseCommand {
 				this.translate("errors:missingStatus"),
 				"error",
 				"error",
-				status
+				status,
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
 		const statusBool: boolean = status === "on";
-		const statusString: string = statusBool
-			? this.translate("basics:enabled")
-			: this.translate("basics:disabled");
+		const statusString: string = statusBool ? this.translate("basics:enabled") : this.translate("basics:disabled");
 		if (data.guild.settings.notifiers.twitch.enabled === statusBool) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:statusAlready", { status: statusString }),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -312,7 +303,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("statusSet", { status: statusString }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -322,7 +313,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingChannel"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -331,7 +322,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:channelAlready", { channel: channel.toString() }),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -343,7 +334,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("channelSet", { channel: channel.toString() }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}

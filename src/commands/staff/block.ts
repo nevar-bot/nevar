@@ -12,8 +12,8 @@ export default class BlockCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -38,7 +38,7 @@ export default class BlockCommand extends BaseCommand {
 				const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 					"Du musst zwischen add, remove und list wählen.",
 					"error",
-					"error"
+					"error",
 				);
 				await message.reply({ embeds: [invalidOptionsEmbed] });
 				break;
@@ -64,7 +64,7 @@ export default class BlockCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst die ID eines Servers oder Nutzers/-in angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -74,7 +74,7 @@ export default class BlockCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst mich nicht blockieren.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -84,7 +84,7 @@ export default class BlockCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst dich nicht selbst blockieren.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -94,7 +94,7 @@ export default class BlockCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst den Support-Server nicht blockieren.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -104,23 +104,21 @@ export default class BlockCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst den Bot-Eigentümer nicht blockieren.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		// get target data
 		const targetData: any =
-			type === "user"
-				? await this.client.findOrCreateUser(id)
-				: await this.client.findOrCreateGuild(id);
+			type === "user" ? await this.client.findOrCreateUser(id) : await this.client.findOrCreateGuild(id);
 
 		// target is already blocked
 		if (targetData.blocked.state) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Diese/r Nutzer/-in oder Server ist bereits blockiert.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -131,17 +129,16 @@ export default class BlockCommand extends BaseCommand {
 			reason: reason,
 			date: Date.now(),
 			moderator: this.message.author.username,
-			name: type === "user" ? target.username : target.name
+			name: type === "user" ? target.username : target.name,
 		};
 		targetData.markModified("blocked");
 		await targetData.save();
 
-		const message: string =
-			type === "user" ? "Nutzer/-in " + target.username : "Server " + target.name;
+		const message: string = type === "user" ? "Nutzer/-in " + target.username : "Server " + target.name;
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			"Der " + message + " wurde blockiert.",
 			"success",
-			"success"
+			"success",
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -154,26 +151,22 @@ export default class BlockCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst die ID eines Servers oder Nutzers/-in angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		// get target user/guild data
-		const type: string = (await this.client.users.fetch(id).catch((): void => {}))
-			? "user"
-			: "guild";
+		const type: string = (await this.client.users.fetch(id).catch((): void => {})) ? "user" : "guild";
 		const targetData: any =
-			type === "user"
-				? await this.client.findOrCreateUser(id)
-				: await this.client.findOrCreateGuild(id);
+			type === "user" ? await this.client.findOrCreateUser(id) : await this.client.findOrCreateGuild(id);
 
 		// no target found
 		if (!targetData) {
 			const noTargetEmbed: EmbedBuilder = this.client.createEmbed(
 				"Es wurde kein/e Nutzer/-in oder Server mit dieser ID gefunden.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [noTargetEmbed] });
 		}
@@ -183,7 +176,7 @@ export default class BlockCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Diese/r Nutzer/-in oder Server ist nicht blockiert.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -195,17 +188,12 @@ export default class BlockCommand extends BaseCommand {
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null
+			name: null,
 		};
 		targetData.markModified("blocked");
 		await targetData.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0} wurde entblockt.",
-			"success",
-			"success",
-			name
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed("{0} wurde entblockt.", "success", "success", name);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
 
@@ -214,7 +202,7 @@ export default class BlockCommand extends BaseCommand {
 
 		// blocked users
 		const blockedUsers = await this.client.usersData.find({
-			"blocked.state": true
+			"blocked.state": true,
 		});
 		for (const userData of blockedUsers) {
 			const user: any = await this.client.users.fetch(userData.id).catch(() => {});
@@ -243,7 +231,7 @@ export default class BlockCommand extends BaseCommand {
 
 		// blocked guilds
 		const blockedGuilds = await this.client.guildsData.find({
-			"blocked.state": true
+			"blocked.state": true,
 		});
 		for (const guildData of blockedGuilds) {
 			const guild: any = await this.client.guilds.fetch(guildData.id).catch(() => {});
@@ -276,7 +264,7 @@ export default class BlockCommand extends BaseCommand {
 			blocked,
 			"Blockierte Nutzer/-innen und Server",
 			"Es sind keine Nutzer/-innen oder Server blockiert",
-			"ban"
+			"ban",
 		);
 	}
 }

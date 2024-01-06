@@ -8,7 +8,7 @@ export default class DeletedataCommand extends BaseCommand {
 			name: "deletedata",
 			description: "Deletes your data from our database",
 			localizedDescriptions: {
-				de: "Löscht deine Daten aus unserer Datenbank"
+				de: "Löscht deine Daten aus unserer Datenbank",
 			},
 			cooldown: 5000,
 			dirname: __dirname,
@@ -19,50 +19,50 @@ export default class DeletedataCommand extends BaseCommand {
 						option
 							.setName("data")
 							.setNameLocalizations({
-								de: "daten"
+								de: "daten",
 							})
 							.setDescription("Choose which data we should delete")
 							.setDescriptionLocalizations({
-								de: "Wähle, welche Daten wir löschen sollen"
+								de: "Wähle, welche Daten wir löschen sollen",
 							})
 							.setRequired(true)
 							.addChoices(
 								{
 									name: "your user data on all servers",
 									name_localizations: {
-										de: "deine Nutzerdaten auf allen Servern"
+										de: "deine Nutzerdaten auf allen Servern",
 									},
-									value: "user"
+									value: "user",
 								},
 								{
 									name: "your membership data on this server",
 									name_localizations: {
-										de: "deine Mitgliedsdaten auf diesem Server"
+										de: "deine Mitgliedsdaten auf diesem Server",
 									},
-									value: "member"
+									value: "member",
 								},
 								{
 									name: "data of this server",
 									name_localizations: {
-										de: "Daten dieses Servers"
+										de: "Daten dieses Servers",
 									},
-									value: "guild"
-								}
-							)
+									value: "guild",
+								},
+							),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("reason")
 							.setNameLocalizations({
-								de: "grund"
+								de: "grund",
 							})
 							.setDescription("Please let us know your reason so that we can improve")
 							.setDescriptionLocalizations({
-								de: "Teile uns gerne deinen Grund mit, damit wir uns verbessern können"
+								de: "Teile uns gerne deinen Grund mit, damit wir uns verbessern können",
 							})
-							.setRequired(false)
-					)
-			}
+							.setRequired(false),
+					),
+			},
 		});
 	}
 
@@ -73,19 +73,16 @@ export default class DeletedataCommand extends BaseCommand {
 			interaction.member,
 			interaction.options.getString("data"),
 			interaction.options.getString("reason"),
-			data
+			data,
 		);
 	}
 
 	private async deleteData(member: any, type: any, reason: any, data: any): Promise<any> {
-		if (
-			type === "guild" &&
-			(await this.interaction.guild.fetchOwner()).user.id !== this.interaction.user.id
-		) {
+		if (type === "guild" && (await this.interaction.guild.fetchOwner()).user.id !== this.interaction.user.id) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:ownerOnly"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -93,48 +90,46 @@ export default class DeletedataCommand extends BaseCommand {
 		const typeAffects: any = {
 			user: this.translate("affected:user"),
 			member: this.translate("affected:member"),
-			guild: this.translate("affected:guild")
+			guild: this.translate("affected:guild"),
 		};
 
 		const types: any = {
 			user: this.translate("typeDescriptions:user"),
 			member: this.translate("typeDescriptions:member"),
-			guild: this.translate("typeDescriptions:guild")
+			guild: this.translate("typeDescriptions:guild"),
 		};
 
 		const confirmationEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("confirmation", {
 				type: types[type],
 				affected:
-					this.client.emotes.arrow +
-					" " +
-					typeAffects[type].join("\n" + this.client.emotes.arrow + " ")
+					this.client.emotes.arrow + " " + typeAffects[type].join("\n" + this.client.emotes.arrow + " "),
 			}),
 			"warning",
-			"warning"
+			"warning",
 		);
 		const buttonYes: ButtonBuilder = this.client.createButton(
 			"yes",
 			this.translate("basics:yes", {}, true),
 			"Success",
-			"success"
+			"success",
 		);
 		const buttonNo: ButtonBuilder = this.client.createButton(
 			"no",
 			this.translate("basics:no", {}, true),
 			"Danger",
-			"error"
+			"error",
 		);
 		const buttonRow: any = this.client.createMessageComponentsRow(buttonYes, buttonNo);
 		const confirmationMessage: any = await this.interaction.followUp({
 			embeds: [confirmationEmbed],
 			fetchReply: true,
-			components: [buttonRow]
+			components: [buttonRow],
 		});
 
 		const filter: any = (button: any): boolean => button.user.id === this.interaction.user.id;
 		const collector: any = confirmationMessage.createMessageComponentCollector({
-			filter
+			filter,
 		});
 
 		collector.on("collect", async (button: any): Promise<any> => {
@@ -142,7 +137,7 @@ export default class DeletedataCommand extends BaseCommand {
 				const cancelEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("noConfirmation"),
 					"error",
-					"error"
+					"error",
 				);
 				await button.update({ embeds: [cancelEmbed], components: [] });
 				return collector.stop();
@@ -153,9 +148,7 @@ export default class DeletedataCommand extends BaseCommand {
 				await this.client.deleteUser(this.interaction.user.id);
 				// block user again, if he was blocked before
 				if (blockedOld.state) {
-					const newUserdata = await this.client.findOrCreateUser(
-						this.interaction.user.id
-					);
+					const newUserdata = await this.client.findOrCreateUser(this.interaction.user.id);
 					newUserdata.blocked = blockedOld;
 					newUserdata.markModified("blocked");
 					await newUserdata.save();
@@ -163,7 +156,7 @@ export default class DeletedataCommand extends BaseCommand {
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("deleted:user"),
 					"success",
-					"success"
+					"success",
 				);
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
@@ -172,7 +165,7 @@ export default class DeletedataCommand extends BaseCommand {
 						" hat seine Nutzerdaten gelöscht" +
 						(reason ? " mit dem Grund: " + reason : "") +
 						".",
-					"warning"
+					"warning",
 				);
 			}
 			if (type === "member") {
@@ -185,7 +178,7 @@ export default class DeletedataCommand extends BaseCommand {
 				if (bannedOld.state || mutedOld.state || warningsOld.length > 0) {
 					const newMemberdata: any = await this.client.findOrCreateMember(
 						this.interaction.user.id,
-						this.interaction.guild.id
+						this.interaction.guild.id,
 					);
 					newMemberdata.banned = bannedOld;
 					newMemberdata.muted = mutedOld;
@@ -199,7 +192,7 @@ export default class DeletedataCommand extends BaseCommand {
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("deleted:member"),
 					"success",
-					"success"
+					"success",
 				);
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
@@ -209,7 +202,7 @@ export default class DeletedataCommand extends BaseCommand {
 						this.interaction.guild.name +
 						" gelöscht" +
 						(reason ? " mit dem Grund: " + reason : ""),
-					"warning"
+					"warning",
 				);
 			}
 			if (type === "guild") {
@@ -219,9 +212,7 @@ export default class DeletedataCommand extends BaseCommand {
 
 				// block guild again, if it was blocked before
 				if (blockedOld.state) {
-					const newGuilddata: any = await this.client.findOrCreateGuild(
-						this.interaction.guild.id
-					);
+					const newGuilddata: any = await this.client.findOrCreateGuild(this.interaction.guild.id);
 					newGuilddata.blocked = blockedOld;
 					newGuilddata.markModified("blocked");
 					await newGuilddata.save();
@@ -230,7 +221,7 @@ export default class DeletedataCommand extends BaseCommand {
 				const successEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("deleted:guild"),
 					"success",
-					"success"
+					"success",
 				);
 				await button.update({ embeds: [successEmbed], components: [] });
 				await collector.stop();
@@ -240,7 +231,7 @@ export default class DeletedataCommand extends BaseCommand {
 						this.interaction.guild.name +
 						" gelöscht" +
 						(reason ? " mit dem Grund: " + reason : ""),
-					"warning"
+					"warning",
 				);
 			}
 		});

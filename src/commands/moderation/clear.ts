@@ -6,8 +6,7 @@ export default class ClearCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "clear",
-			description:
-				"Löscht eine bestimmte Anzahl an Nachrichten, ggf. von einem/r bestimmten Nutzer/-in",
+			description: "Löscht eine bestimmte Anzahl an Nachrichten, ggf. von einem/r bestimmten Nutzer/-in",
 			memberPermissions: ["ManageMessages"],
 			botPermissions: ["ManageMessages"],
 			cooldown: 1000,
@@ -21,17 +20,15 @@ export default class ClearCommand extends BaseCommand {
 							.setDescription("Gib an, wieviele Nachrichten du löschen möchtest")
 							.setMinValue(1)
 							.setMaxValue(99)
-							.setRequired(true)
+							.setRequired(true),
 					)
 					.addUserOption((option: any) =>
 						option
 							.setName("nutzer")
-							.setDescription(
-								"Wähle, von welchem/r Nutzer/-in du Nachrichten löschen möchtest"
-							)
-							.setRequired(false)
-					)
-			}
+							.setDescription("Wähle, von welchem/r Nutzer/-in du Nachrichten löschen möchtest")
+							.setRequired(false),
+					),
+			},
 		});
 	}
 
@@ -39,19 +36,16 @@ export default class ClearCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.clearMessages(
-			interaction.options.getInteger("anzahl"),
-			interaction.options.getUser("nutzer")
-		);
+		await this.clearMessages(interaction.options.getInteger("anzahl"), interaction.options.getUser("nutzer"));
 	}
 
 	private async clearMessages(amount: number, user: any): Promise<void> {
 		let messages: any[] = Array.from(
 			(
 				await this.interaction.channel.messages.fetch({
-					limit: amount + 1
+					limit: amount + 1,
 				})
-			).values()
+			).values(),
 		);
 
 		if (user) {
@@ -69,10 +63,10 @@ export default class ClearCommand extends BaseCommand {
 			"success",
 			"success",
 			messages.length,
-			string
+			string,
 		);
 		const embedSent = await this.interaction.followUp({
-			embeds: [deletedEmbed]
+			embeds: [deletedEmbed],
 		});
 
 		const text: string =

@@ -15,8 +15,8 @@ function updatePresence(client: any): void {
 				client.format(
 					client.guilds.cache
 						.map((g: Guild): number => g.memberCount)
-						.reduce((partial_sum: any, a: any) => partial_sum + a, 0)
-				)
+						.reduce((partial_sum: any, a: any) => partial_sum + a, 0),
+				),
 			);
 
 		client.user.setPresence({
@@ -25,9 +25,9 @@ function updatePresence(client: any): void {
 				{
 					name: message,
 					type: ActivityType[presence["TYPE"]],
-					url: presence["URL"] ? presence["URL"] : null
-				}
-			]
+					url: presence["URL"] ? presence["URL"] : null,
+				},
+			],
 		});
 		presenceIndicator++;
 	}

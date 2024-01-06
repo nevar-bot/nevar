@@ -21,14 +21,8 @@ export default class {
 
 			const emoji: any = reaction.emoji.id ? reaction.emoji.id : reaction.emoji.name;
 
-			if (
-				reaction.message.channel.id === channelId &&
-				reaction.message.id === messageId &&
-				emoji === emojiId
-			) {
-				const member = await reaction.message.guild.members
-					.fetch(user.id)
-					.catch((): void => {});
+			if (reaction.message.channel.id === channelId && reaction.message.id === messageId && emoji === emojiId) {
+				const member = await reaction.message.guild.members.fetch(user.id).catch((): void => {});
 				member.roles.add(roleId, "REACTION ROLE").catch((e: any): void => {
 					const errorText: string =
 						this.client.emotes.ping +
@@ -42,14 +36,8 @@ export default class {
 						user.username +
 						")";
 
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(
-						errorText,
-						null,
-						"error"
-					);
-					errorEmbed.setTitle(
-						this.client.emotes.error + " Vergeben von Reaction-Rolle fehlgeschlagen"
-					);
+					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
+					errorEmbed.setTitle(this.client.emotes.error + " Vergeben von Reaction-Rolle fehlgeschlagen");
 
 					reaction.guild.logAction(errorEmbed, "moderation");
 				});

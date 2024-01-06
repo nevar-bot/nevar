@@ -15,19 +15,14 @@ export default class {
 			const mentionData = await this.client.findOrCreateUser(message.mentions.repliedUser.id);
 
 			if (mentionData.afk?.state) {
-				const afkSince: string = this.client.utils.getDiscordTimestamp(
-					mentionData.afk.since,
-					"R"
-				);
-				afkUsers = afkUsers.filter(
-					(u): boolean => u.id !== message.mentions.repliedUser.id
-				);
+				const afkSince: string = this.client.utils.getDiscordTimestamp(mentionData.afk.since, "R");
+				afkUsers = afkUsers.filter((u): boolean => u.id !== message.mentions.repliedUser.id);
 
 				afkUsers.push({
 					name: message.mentions.repliedUser.username,
 					id: message.mentions.repliedUser.id,
 					reason: mentionData.afk.reason || "Kein Grund angegeben",
-					since: afkSince
+					since: afkSince,
 				});
 			}
 		}
@@ -39,17 +34,14 @@ export default class {
 				const mentionData = await this.client.findOrCreateUser(user[1].id);
 
 				if (mentionData.afk?.state) {
-					const afkSince: string = this.client.utils.getDiscordTimestamp(
-						mentionData.afk.since,
-						"R"
-					);
+					const afkSince: string = this.client.utils.getDiscordTimestamp(mentionData.afk.since, "R");
 					afkUsers = afkUsers.filter((u: any): boolean => u.id !== user[1].id);
 					afkUsers.push({
 						name: user[1].username,
 						displayName: user[1].displayName,
 						id: user[1].id,
 						reason: mentionData.afk.reason,
-						since: afkSince
+						since: afkSince,
 					});
 				}
 			}
@@ -64,12 +56,7 @@ export default class {
 				" Abwesend seit: " +
 				afkUser.since;
 
-			const isAwayEmbed: EmbedBuilder = this.client.createEmbed(
-				"{0}",
-				"reminder",
-				"normal",
-				awayText
-			);
+			const isAwayEmbed: EmbedBuilder = this.client.createEmbed("{0}", "reminder", "normal", awayText);
 			isAwayEmbed.setTitle(
 				this.client.emotes.status.idle +
 					" " +
@@ -77,7 +64,7 @@ export default class {
 					" (@" +
 					afkUser.name +
 					")" +
-					" ist aktuell abwesend!"
+					" ist aktuell abwesend!",
 			);
 			await message.reply({ embeds: [isAwayEmbed] }).catch((): void => {});
 		}

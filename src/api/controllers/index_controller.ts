@@ -6,7 +6,7 @@ export async function get(req: Request, res: Response) {
 	const json: any = {
 		status_code: 200,
 		status_message: null,
-		routes: []
+		routes: [],
 	};
 
 	app._router.stack.forEach(function (r: any) {

@@ -8,7 +8,7 @@ export default class SetlogCommand extends BaseCommand {
 			name: "setlog",
 			description: "Sets the different log channels",
 			localizedDescriptions: {
-				de: "Setzt die verschiedenen Log-Channel"
+				de: "Setzt die verschiedenen Log-Channel",
 			},
 			cooldown: 1000,
 			memberPermissions: ["ManageGuild"],
@@ -21,94 +21,92 @@ export default class SetlogCommand extends BaseCommand {
 							.setName("moderation")
 							.setDescription("Sets the channel in which moderation logs are sent")
 							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Moderations-Logs gesendet werden"
+								de: "Setzt den Channel, in welchem Moderations-Logs gesendet werden",
 							})
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
 								ChannelType.GuildAnnouncement,
-								ChannelType.PublicThread
-							)
+								ChannelType.PublicThread,
+							),
 					)
 					.addChannelOption((option) =>
 						option
 							.setName("members")
 							.setNameLocalizations({
-								de: "mitglieder"
+								de: "mitglieder",
 							})
 							.setDescription("Sets the channel in which member logs are sent")
 							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Logs zu Mitgliedern gesendet werden"
+								de: "Setzt den Channel, in welchem Logs zu Mitgliedern gesendet werden",
 							})
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
 								ChannelType.GuildAnnouncement,
-								ChannelType.PublicThread
-							)
+								ChannelType.PublicThread,
+							),
 					)
 					.addChannelOption((option) =>
 						option
 							.setName("server")
-							.setDescription(
-								"Sets the channel in which general server logs are sent"
-							)
+							.setDescription("Sets the channel in which general server logs are sent")
 							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem allgemeine Logs zum Server gesendet werden"
+								de: "Setzt den Channel, in welchem allgemeine Logs zum Server gesendet werden",
 							})
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
 								ChannelType.GuildAnnouncement,
-								ChannelType.PublicThread
-							)
+								ChannelType.PublicThread,
+							),
 					)
 					.addChannelOption((option) =>
 						option
 							.setName("roles")
 							.setNameLocalizations({
-								de: "rollen"
+								de: "rollen",
 							})
 							.setDescription("Sets the channel in which role logs are sent")
 							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Logs zu Rollen gesendet werden"
+								de: "Setzt den Channel, in welchem Logs zu Rollen gesendet werden",
 							})
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
 								ChannelType.GuildAnnouncement,
-								ChannelType.PublicThread
-							)
+								ChannelType.PublicThread,
+							),
 					)
 					.addChannelOption((option) =>
 						option
 							.setName("threads")
 							.setDescription("Sets the channel in which thread logs are sent")
 							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Logs zu Threads gesendet werden"
+								de: "Setzt den Channel, in welchem Logs zu Threads gesendet werden",
 							})
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
 								ChannelType.GuildAnnouncement,
-								ChannelType.PublicThread
-							)
+								ChannelType.PublicThread,
+							),
 					)
 					.addChannelOption((option) =>
 						option
 							.setName("channel")
 							.setDescription("Sets the channel in which channel logs are sent")
 							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Logs zu Channels gesendet werden"
+								de: "Setzt den Channel, in welchem Logs zu Channels gesendet werden",
 							})
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
 								ChannelType.GuildAnnouncement,
-								ChannelType.PublicThread
-							)
-					)
-			}
+								ChannelType.PublicThread,
+							),
+					),
+			},
 		});
 	}
 
@@ -125,8 +123,8 @@ export default class SetlogCommand extends BaseCommand {
 					guild: null,
 					role: null,
 					thread: null,
-					channel: null
-				}
+					channel: null,
+				},
 			};
 			data.guild.markModified("settings.logs");
 			await data.guild.save();
@@ -153,11 +151,7 @@ export default class SetlogCommand extends BaseCommand {
 		data.guild.markModified("settings.logs");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("set"),
-			"success",
-			"success"
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("set"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

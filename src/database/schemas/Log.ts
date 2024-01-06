@@ -11,25 +11,25 @@ const Schema = new mongoose.Schema({
 		default: {
 			tag: "Unknown#0000",
 			id: null,
-			createdAt: { type: Number, default: Date.now() }
-		}
+			createdAt: { type: Number, default: Date.now() },
+		},
 	},
 	guild: {
 		type: Object,
 		default: {
 			name: "Unknown",
 			id: null,
-			createdAt: { type: Number, default: Date.now() }
-		}
+			createdAt: { type: Number, default: Date.now() },
+		},
 	},
 	channel: {
 		type: Object,
 		default: {
 			name: "Unknown",
 			id: null,
-			createdAt: { type: Number, default: Date.now() }
-		}
-	}
+			createdAt: { type: Number, default: Date.now() },
+		},
+	},
 });
 
 const Log: Model<any> = mongoose.model("Log", Schema);

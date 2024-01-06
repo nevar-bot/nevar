@@ -8,14 +8,14 @@ export default class LeaderboardCommand extends BaseCommand {
 			name: "leaderboard",
 			description: "Sends the level leaderboard",
 			localizedDescriptions: {
-				de: "Sendet das Level-Leaderboard"
+				de: "Sendet das Level-Leaderboard",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -28,7 +28,7 @@ export default class LeaderboardCommand extends BaseCommand {
 	private async sendLeaderboard(data: any): Promise<any> {
 		if (!data.guild.settings.levels.enabled) {
 			return this.interaction.followUp({
-				content: this.client.emotes.error + " " + this.translate("errors:isDisabled")
+				content: this.client.emotes.error + " " + this.translate("errors:isDisabled"),
 			});
 		}
 
@@ -36,14 +36,13 @@ export default class LeaderboardCommand extends BaseCommand {
 			...(await this.client.levels.computeLeaderboard(
 				this.client,
 				await this.client.levels.fetchLeaderboard(this.interaction.guild.id, 10),
-				true
-			))
+				true,
+			)),
 		];
 
 		const beautifiedLeaderboard: any[] = [];
 		for (const user of leaderboardData) {
-			const emote: any =
-				user.position < 4 ? this.client.emotes[user.position] : this.client.emotes.arrow;
+			const emote: any = user.position < 4 ? this.client.emotes[user.position] : this.client.emotes.arrow;
 			beautifiedLeaderboard.push(
 				"### " +
 					emote +
@@ -65,19 +64,17 @@ export default class LeaderboardCommand extends BaseCommand {
 					" / " +
 					this.client.format(this.client.levels.xpFor(user.level + 1)) +
 					" " +
-					this.translate("xp")
+					this.translate("xp"),
 			);
 		}
 		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(
 			beautifiedLeaderboard.join("\n\n"),
 			null,
-			"normal"
+			"normal",
 		);
 		leaderboardEmbed.setThumbnail(this.interaction.guild.iconURL());
 		if (beautifiedLeaderboard.length === 0)
-			leaderboardEmbed.setDescription(
-				this.client.emotes.error + " " + this.translate("errors:noXp")
-			);
+			leaderboardEmbed.setDescription(this.client.emotes.error + " " + this.translate("errors:noXp"));
 		return this.interaction.followUp({ embeds: [leaderboardEmbed] });
 	}
 }

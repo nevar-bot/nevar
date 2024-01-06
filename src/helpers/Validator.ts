@@ -33,9 +33,7 @@ export default class Validator {
 		Logger.log("TOML: Validating config file...");
 		if (!fs.existsSync("./config.toml")) {
 			if (fs.existsSync("./config-sample.toml")) {
-				Logger.error(
-					"TOML: config.toml does not exist. Make sure to rename config-sample.toml to config.toml"
-				);
+				Logger.error("TOML: config.toml does not exist. Make sure to rename config-sample.toml to config.toml");
 			} else {
 				Logger.error("TOML: config.toml does not exist. Make sure to run 'npm run config'");
 			}
@@ -58,7 +56,7 @@ export default class Validator {
 			["embeds", "SUCCESS_COLOR"],
 			["embeds", "WARNING_COLOR"],
 			["embeds", "ERROR_COLOR"],
-			["embeds", "TRANSPARENT_COLOR"]
+			["embeds", "TRANSPARENT_COLOR"],
 		]);
 
 		// Validate Type
@@ -66,9 +64,9 @@ export default class Validator {
 			config,
 			[
 				["api", "ENABLED"],
-				["dashboard", "ENABLED"]
+				["dashboard", "ENABLED"],
 			],
-			"boolean"
+			"boolean",
 		);
 
 		// Additional validation for API and Dashboard ports
@@ -83,7 +81,7 @@ export default class Validator {
 				["dashboard", "CALLBACK_URI"],
 				["dashboard", "CLIENT_SECRET"],
 				["dashboard", "SESSION_SECRET"],
-				["dashboard", "ENCRYPTION_KEY"]
+				["dashboard", "ENCRYPTION_KEY"],
 			]);
 		}
 
@@ -99,7 +97,7 @@ export default class Validator {
 			["apikeys", "OPENAI"],
 			["apikeys", "GOOGLE"],
 			["apikeys", "TWITCH_CLIENT_ID"],
-			["apikeys", "TWITCH_CLIENT_SECRET"]
+			["apikeys", "TWITCH_CLIENT_SECRET"],
 		]);
 
 		Logger.success("TOML: Validated config file");

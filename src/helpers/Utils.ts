@@ -11,10 +11,7 @@ declare module "moment" {
 }
 
 export default class Utils {
-	static recursiveReadDirSync(
-		directory: string,
-		allowedExtensions: Array<string> = [".js"]
-	): any {
+	static recursiveReadDirSync(directory: string, allowedExtensions: Array<string> = [".js"]): any {
 		const filePaths: Array<any> = [];
 
 		const readCommands = (dir: string): void => {
@@ -57,7 +54,7 @@ export default class Utils {
 				"(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
 				"(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
 				"(\\#[-a-z\\d_]*)?$",
-			"i"
+			"i",
 		); // fragment locator
 		return !!pattern.test(str);
 	}
@@ -89,7 +86,7 @@ export default class Utils {
 		data: Array<any>,
 		title: string,
 		empty: string,
-		emote: string
+		emote: string,
 	): Promise<any> {
 		const { client } = interaction;
 
@@ -100,26 +97,24 @@ export default class Utils {
 			backId,
 			interaction.guild.translate("basics:back"),
 			"Secondary",
-			client.emotes.arrows.left
+			client.emotes.arrows.left,
 		);
 		// @ts-ignore - Property 'createButton' does not exist on type 'Client'
 		const forwardButton: ButtonBuilder = client.createButton(
 			forwardId,
 			interaction.guild.translate("basics:further"),
 			"Secondary",
-			client.emotes.arrows.right
+			client.emotes.arrows.right,
 		);
 
 		async function generatePaginateEmbed(start: number): Promise<any> {
 			const current: any[] = data.slice(start, start + entriesPerPage);
 			// @ts-ignore - Property 'emotes' does not exist on type 'Client'
-			let text: string = current
-				.map((item) => "\n" + (emote ? client.emotes[emote] + " " : "") + item)
-				.join("");
+			let text: string = current.map((item) => "\n" + (emote ? client.emotes[emote] + " " : "") + item).join("");
 
 			const pages: any = {
 				total: Math.ceil(data.length / entriesPerPage),
-				current: Math.round(start / entriesPerPage) + 1
+				current: Math.round(start / entriesPerPage) + 1,
 			};
 			if (pages.total === 0) pages.total = 1;
 			// @ts-ignore - Property 'emotes' does not exist on type 'Client'
@@ -127,9 +122,7 @@ export default class Utils {
 
 			// @ts-ignore - Property 'createEmbed' does not exist on type 'Client'
 			const paginatedEmbed: EmbedBuilder = client.createEmbed(text, null, "normal");
-			paginatedEmbed.setTitle(
-				title + " ● " + interaction.guild.translate("utils:pagination", { pages })
-			);
+			paginatedEmbed.setTitle(title + " ● " + interaction.guild.translate("utils:pagination", { pages }));
 			paginatedEmbed.setThumbnail(interaction.guild!.iconURL({ size: 4096 }));
 			return paginatedEmbed;
 		}
@@ -138,30 +131,26 @@ export default class Utils {
 
 		const embedMessage: any = await interaction.followUp({
 			embeds: [await generatePaginateEmbed(0)],
-			components: fitOnePage ? [] : [client.createMessageComponentsRow(forwardButton)]
+			components: fitOnePage ? [] : [client.createMessageComponentsRow(forwardButton)],
 		});
 
 		const pageCollector = embedMessage.createMessageComponentCollector({
-			filter: (i: any) => i.user.id === interaction.member.user.id
+			filter: (i: any) => i.user.id === interaction.member.user.id,
 		});
 		let currentPageIndex = 0;
 		pageCollector
 			.on("collect", async (i: any) => {
-				i.customId === backId
-					? (currentPageIndex -= entriesPerPage)
-					: (currentPageIndex += entriesPerPage);
+				i.customId === backId ? (currentPageIndex -= entriesPerPage) : (currentPageIndex += entriesPerPage);
 				await i.update({
 					embeds: [await generatePaginateEmbed(currentPageIndex)],
 					components: [
 						new ActionRowBuilder({
 							components: [
 								...(currentPageIndex ? [backButton] : []),
-								...(currentPageIndex + entriesPerPage < data.length
-									? [forwardButton]
-									: [])
-							]
-						})
-					]
+								...(currentPageIndex + entriesPerPage < data.length ? [forwardButton] : []),
+							],
+						}),
+					],
 				});
 			})
 			.on("end", async () => {
@@ -175,7 +164,7 @@ export default class Utils {
 		data: Array<any>,
 		title: string,
 		empty: string,
-		emote: string
+		emote: string,
 	): Promise<void> {
 		const { client } = message;
 
@@ -185,32 +174,28 @@ export default class Utils {
 			backId,
 			message.guild.translate("basics:back"),
 			"Secondary",
-			client.emotes.arrows.left
+			client.emotes.arrows.left,
 		);
 		const forwardButton: ButtonBuilder = client.createButton(
 			forwardId,
 			message.guild.translate("basics:further"),
 			"Secondary",
-			client.emotes.arrows.right
+			client.emotes.arrows.right,
 		);
 
 		async function generatePaginateEmbed(start: number): Promise<any> {
 			const current: any[] = data.slice(start, start + entriesPerPage);
-			let text: string = current
-				.map((item) => "\n" + (emote ? client.emotes[emote] + " " : "") + item)
-				.join("");
+			let text: string = current.map((item) => "\n" + (emote ? client.emotes[emote] + " " : "") + item).join("");
 
 			const pages: any = {
 				total: Math.ceil(data.length / entriesPerPage),
-				current: Math.round(start / entriesPerPage) + 1
+				current: Math.round(start / entriesPerPage) + 1,
 			};
 			if (pages.total === 0) pages.total = 1;
 			if (data.length === 0) text = (emote ? client.emotes[emote] + " " : "") + empty;
 
 			const paginatedEmbed: EmbedBuilder = client.createEmbed(text, null, "normal");
-			paginatedEmbed.setTitle(
-				title + " ● " + message.guild.translate("utils:pagination", { pages })
-			);
+			paginatedEmbed.setTitle(title + " ● " + message.guild.translate("utils:pagination", { pages }));
 			paginatedEmbed.setThumbnail(message.guild.iconURL({ dynamic: true, size: 4096 }));
 			return paginatedEmbed;
 		}
@@ -219,30 +204,26 @@ export default class Utils {
 
 		const embedMessage: any = await message.reply({
 			embeds: [await generatePaginateEmbed(0)],
-			components: fitOnePage ? [] : [client.createMessageComponentsRow(forwardButton)]
+			components: fitOnePage ? [] : [client.createMessageComponentsRow(forwardButton)],
 		});
 
 		const pageCollector: any = embedMessage.createMessageComponentCollector({
-			filter: (i: any) => i.user.id === message.member.user.id
+			filter: (i: any) => i.user.id === message.member.user.id,
 		});
 		let currentPageIndex: number = 0;
 		pageCollector
 			.on("collect", async (i: any) => {
-				i.customId === backId
-					? (currentPageIndex -= entriesPerPage)
-					: (currentPageIndex += entriesPerPage);
+				i.customId === backId ? (currentPageIndex -= entriesPerPage) : (currentPageIndex += entriesPerPage);
 				await i.update({
 					embeds: [await generatePaginateEmbed(currentPageIndex)],
 					components: [
 						new ActionRowBuilder({
 							components: [
 								...(currentPageIndex ? [backButton] : []),
-								...(currentPageIndex + entriesPerPage < data.length
-									? [forwardButton]
-									: [])
-							]
-						})
-					]
+								...(currentPageIndex + entriesPerPage < data.length ? [forwardButton] : []),
+							],
+						}),
+					],
 				});
 			})
 			.on("end", async () => {
@@ -255,9 +236,7 @@ export default class Utils {
 	}
 
 	static getFlagFromCountryCode(countryCode: string): string {
-		return String.fromCodePoint(
-			...[...countryCode.toUpperCase()].map((x) => 0x1f1a5 + x.charCodeAt(0))
-		);
+		return String.fromCodePoint(...[...countryCode.toUpperCase()].map((x) => 0x1f1a5 + x.charCodeAt(0)));
 	}
 
 	/**
@@ -275,10 +254,7 @@ export default class Utils {
 	 *   - "r": Relatives Zeitformat (z.B. "vor 5 Minuten")
 	 * @returns {string} Generierter Discord-Timestamp
 	 */
-	static getDiscordTimestamp(
-		time: string,
-		type: "t" | "T" | "d" | "D" | "f" | "F" | "R" | undefined
-	): string {
+	static getDiscordTimestamp(time: string, type: "t" | "T" | "d" | "D" | "f" | "F" | "R" | undefined): string {
 		if (!type) {
 			return "<t:" + moment(time).unix() + ">";
 		} else {
@@ -291,50 +267,34 @@ export default class Utils {
 		const relativeTime: any[] = [];
 		if (momentDuration.years >= 1) {
 			if (relativeTime.length < 3)
-				relativeTime.push(
-					momentDuration.years + " " + (momentDuration.years > 1 ? "Jahre" : "Jahr")
-				);
+				relativeTime.push(momentDuration.years + " " + (momentDuration.years > 1 ? "Jahre" : "Jahr"));
 		}
 		if (momentDuration.months >= 1) {
 			if (relativeTime.length < 3)
-				relativeTime.push(
-					momentDuration.months + " " + (momentDuration.months > 1 ? "Monate" : "Monat")
-				);
+				relativeTime.push(momentDuration.months + " " + (momentDuration.months > 1 ? "Monate" : "Monat"));
 		}
 		if (momentDuration.days >= 1) {
 			if (relativeTime.length < 3)
-				relativeTime.push(
-					momentDuration.days + " " + (momentDuration.days > 1 ? "Tage" : "Tag")
-				);
+				relativeTime.push(momentDuration.days + " " + (momentDuration.days > 1 ? "Tage" : "Tag"));
 		}
 		if (momentDuration.hours >= 1) {
 			if (relativeTime.length < 3)
-				relativeTime.push(
-					momentDuration.hours + " " + (momentDuration.hours > 1 ? "Stunden" : "Stunde")
-				);
+				relativeTime.push(momentDuration.hours + " " + (momentDuration.hours > 1 ? "Stunden" : "Stunde"));
 		}
 		if (momentDuration.minutes >= 1) {
 			if (relativeTime.length < 3)
-				relativeTime.push(
-					momentDuration.minutes +
-						" " +
-						(momentDuration.minutes > 1 ? "Minuten" : "Minute")
-				);
+				relativeTime.push(momentDuration.minutes + " " + (momentDuration.minutes > 1 ? "Minuten" : "Minute"));
 		}
 		if (momentDuration.seconds >= 1) {
 			if (relativeTime.length < 3)
-				relativeTime.push(
-					momentDuration.seconds +
-						" " +
-						(momentDuration.seconds > 1 ? "Sekunden" : "Sekunde")
-				);
+				relativeTime.push(momentDuration.seconds + " " + (momentDuration.seconds > 1 ? "Sekunden" : "Sekunde"));
 		}
 		if (momentDuration.milliseconds >= 1) {
 			if (relativeTime.length === 0)
 				relativeTime.push(
 					momentDuration.milliseconds +
 						" " +
-						(momentDuration.milliseconds > 1 ? "Millisekunden" : "Millisekunde")
+						(momentDuration.milliseconds > 1 ? "Millisekunden" : "Millisekunde"),
 				);
 		}
 

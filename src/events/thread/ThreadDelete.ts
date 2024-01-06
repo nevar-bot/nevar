@@ -45,11 +45,7 @@ export default class {
 			}
 		}
 
-		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(
-			threadLogMessage,
-			null,
-			"error"
-		);
+		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(threadLogMessage, null, "error");
 		threadLogEmbed.setTitle(this.client.emotes.events.thread.delete + " Thread gelöscht");
 		threadLogEmbed.setThumbnail(guild.iconURL());
 

@@ -14,12 +14,7 @@ export default class {
 
 		const { guild } = newSticker;
 		let stickerLogMessage: string =
-			this.client.emotes.edit +
-			" Name: ~~" +
-			oldSticker.name +
-			"~~ **" +
-			newSticker.name +
-			"**";
+			this.client.emotes.edit + " Name: ~~" + oldSticker.name + "~~ **" + newSticker.name + "**";
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent["StickerUpdate"], limit: 1 })
@@ -41,11 +36,7 @@ export default class {
 			}
 		}
 
-		const stickerLogEmbed: EmbedBuilder = this.client.createEmbed(
-			stickerLogMessage,
-			null,
-			"warning"
-		);
+		const stickerLogEmbed: EmbedBuilder = this.client.createEmbed(stickerLogMessage, null, "warning");
 		stickerLogEmbed.setTitle(this.client.emotes.events.sticker.update + " Sticker bearbeitet");
 		stickerLogEmbed.setThumbnail(newSticker.url);
 

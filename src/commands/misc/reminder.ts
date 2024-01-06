@@ -11,7 +11,7 @@ export default class ReminderCommand extends BaseCommand {
 			name: "reminder",
 			description: "Manages your reminders",
 			localizedDescriptions: {
-				de: "Verwaltet deine Reminder"
+				de: "Verwaltet deine Reminder",
 			},
 			cooldown: 2 * 1000,
 			dirname: __dirname,
@@ -22,62 +22,60 @@ export default class ReminderCommand extends BaseCommand {
 						option
 							.setName("action")
 							.setNameLocalizations({
-								de: "aktion"
+								de: "aktion",
 							})
 							.setDescription("Choose an action")
 							.setDescriptionLocalizations({
-								de: "Wähle eine Aktion"
+								de: "Wähle eine Aktion",
 							})
 							.setRequired(true)
 							.addChoices(
 								{
 									name: "add",
 									name_localizations: {
-										de: "erstellen"
+										de: "erstellen",
 									},
-									value: "add"
+									value: "add",
 								},
 								{
 									name: "delete",
 									name_localizations: {
-										de: "löschen"
+										de: "löschen",
 									},
-									value: "delete"
+									value: "delete",
 								},
 								{
 									name: "list",
 									name_localizations: {
-										de: "liste"
+										de: "liste",
 									},
-									value: "list"
-								}
-							)
+									value: "list",
+								},
+							),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("name")
-							.setDescription(
-								"What do you want me to remind you of? (when deleting: name of the memory)"
-							)
+							.setDescription("What do you want me to remind you of? (when deleting: name of the memory)")
 							.setDescriptionLocalizations({
-								de: "Woran soll ich dich erinnern? (beim löschen: Name der Erinnerung)"
+								de: "Woran soll ich dich erinnern? (beim löschen: Name der Erinnerung)",
 							})
 							.setRequired(false)
-							.setMaxLength(500)
+							.setMaxLength(500),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("duration")
 							.setNameLocalizations({
-								de: "dauer"
+								de: "dauer",
 							})
 							.setDescription("When should I remind you? (e.g. 1h, 1w, 1w, 1h 30m)")
 							.setDescriptionLocalizations({
-								de: "Wann soll ich dich erinnern? (z.B. 1h, 1w, 1w, 1h 30m)"
+								de: "Wann soll ich dich erinnern? (z.B. 1h, 1w, 1w, 1h 30m)",
 							})
-							.setRequired(false)
-					)
-			}
+							.setRequired(false),
+					),
+			},
 		});
 	}
 
@@ -91,7 +89,7 @@ export default class ReminderCommand extends BaseCommand {
 				await this.addReminder(
 					interaction.options.getString("name"),
 					interaction.options.getString("duration"),
-					data
+					data,
 				);
 				break;
 			case "delete":
@@ -108,7 +106,7 @@ export default class ReminderCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingNameOrDuration"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -117,7 +115,7 @@ export default class ReminderCommand extends BaseCommand {
 			startDate: Date.now(),
 			endDate: Date.now() + ms(dauer),
 			reason: name,
-			channel: this.interaction.channel.id
+			channel: this.interaction.channel.id,
 		};
 
 		data.member.reminders.push(reminder);
@@ -125,13 +123,13 @@ export default class ReminderCommand extends BaseCommand {
 		await data.member.save();
 		this.client.databaseCache.reminders.set(
 			this.interaction.member.user.id + this.interaction.guild.id,
-			data.member
+			data.member,
 		);
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("created", { duration: ms(ms(dauer)) }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -141,7 +139,7 @@ export default class ReminderCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingName"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -150,7 +148,7 @@ export default class ReminderCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:noReminderWithThisName"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -159,11 +157,7 @@ export default class ReminderCommand extends BaseCommand {
 		data.member.markModified("reminders");
 		await data.member.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("deleted"),
-			"success",
-			"success"
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("deleted"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -202,7 +196,7 @@ export default class ReminderCommand extends BaseCommand {
 			reminders,
 			this.translate("reminders"),
 			this.translate("errors:noReminders"),
-			null
+			null,
 		);
 	}
 }

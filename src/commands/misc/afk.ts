@@ -8,7 +8,7 @@ export default class AfkCommand extends BaseCommand {
 			name: "afk",
 			description: "Marks you as absent",
 			localizedDescriptions: {
-				de: "Markiert dich als abwesend"
+				de: "Markiert dich als abwesend",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -18,15 +18,15 @@ export default class AfkCommand extends BaseCommand {
 					option
 						.setName("reason")
 						.setNameLocalizations({
-							de: "grund"
+							de: "grund",
 						})
 						.setDescription("Why are you absent?")
 						.setDescriptionLocalizations({
-							de: "Warum bist du abwesend?"
+							de: "Warum bist du abwesend?",
 						})
-						.setRequired(false)
-				)
-			}
+						.setRequired(false),
+				),
+			},
 		});
 	}
 
@@ -45,13 +45,13 @@ export default class AfkCommand extends BaseCommand {
 			const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("welcomeBack", { time: relativeTime, reason }),
 				"reminder",
-				"normal"
+				"normal",
 			);
 
 			data.user.afk = {
 				state: false,
 				reason: null,
-				since: null
+				since: null,
 			};
 			data.user.markModified("afk");
 			await data.user.save();
@@ -62,7 +62,7 @@ export default class AfkCommand extends BaseCommand {
 		data.user.afk = {
 			state: true,
 			reason: reason,
-			since: Date.now()
+			since: Date.now(),
 		};
 		data.user.markModified("afk");
 		await data.user.save();
@@ -70,7 +70,7 @@ export default class AfkCommand extends BaseCommand {
 		const afkEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("afk", { reason: reason || this.translate("noReason") }),
 			"reminder",
-			"normal"
+			"normal",
 		);
 		return this.interaction.followUp({ embeds: [afkEmbed] });
 	}

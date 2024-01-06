@@ -9,14 +9,14 @@ export default class MigrateCommand extends BaseCommand {
 			name: "migrate",
 			description: "Migrates datasets to the current database schema",
 			localizedDescriptions: {
-				de: "Migriert Datensätze angepasst an das aktuelle Datenbankschema"
+				de: "Migriert Datensätze angepasst an das aktuelle Datenbankschema",
 			},
 			dirname: __dirname,
 			staffOnly: true,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -37,7 +37,7 @@ export default class MigrateCommand extends BaseCommand {
 				const embed: EmbedBuilder = this.client.createEmbed(
 					this.translate("staff/migrate:errors:wrongOption"),
 					"error",
-					"error"
+					"error",
 				);
 				return this.message.reply({ embeds: [embed] });
 		}
@@ -48,7 +48,7 @@ export default class MigrateCommand extends BaseCommand {
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("staff/migrate:success_users", { count }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.message.reply({ embeds: [embed] });
 	}
@@ -58,7 +58,7 @@ export default class MigrateCommand extends BaseCommand {
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("staff/migrate:success_guilds", { count }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.message.reply({ embeds: [embed] });
 	}
@@ -68,7 +68,7 @@ export default class MigrateCommand extends BaseCommand {
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("staff/migrate:success_members", { count }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.message.reply({ embeds: [embed] });
 	}

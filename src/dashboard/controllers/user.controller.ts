@@ -9,7 +9,7 @@ export default {
 		/* get user data */
 		const user: AxiosResponse = await axios.get(BASE_API_URL + "/users/@me", {
 			headers: { authorization: `Bearer ${access_token}` },
-			validateStatus: (status: number): boolean => true
+			validateStatus: (status: number): boolean => true,
 		});
 
 		return user.data;
@@ -22,19 +22,14 @@ export default {
 		/* get user guilds */
 		const userGuilds: AxiosResponse = await axios.get(BASE_API_URL + "/users/@me/guilds", {
 			headers: { authorization: `Bearer ${access_token}` },
-			validateStatus: (status: number): boolean => true
+			validateStatus: (status: number): boolean => true,
 		});
 
 		return userGuilds.data;
 	},
 
 	getAvatarURL(user: any): string {
-		if (!user.avatar)
-			return (
-				"https://cdn.discordapp.com/embed/avatars/" + Math.floor(Math.random() * 6) + ".png"
-			);
-		return (
-			"https://cdn.discordapp.com/avatars/" + user.id + "/" + user.avatar + ".webp?size=256"
-		);
-	}
+		if (!user.avatar) return "https://cdn.discordapp.com/embed/avatars/" + Math.floor(Math.random() * 6) + ".png";
+		return "https://cdn.discordapp.com/avatars/" + user.id + "/" + user.avatar + ".webp?size=256";
+	},
 };

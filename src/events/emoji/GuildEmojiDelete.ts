@@ -13,13 +13,7 @@ export default class {
 		const { guild } = emoji;
 
 		let emojiLogMessage: string =
-			this.client.emotes.edit +
-			" Name: " +
-			emoji.name +
-			"\n" +
-			this.client.emotes.id +
-			" ID: " +
-			emoji.id;
+			this.client.emotes.edit + " Name: " + emoji.name + "\n" + this.client.emotes.id + " ID: " + emoji.id;
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent["EmojiDelete"], limit: 1 })

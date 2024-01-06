@@ -12,8 +12,8 @@ export default class SetnewsCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -26,14 +26,14 @@ export default class SetnewsCommand extends BaseCommand {
 	private async setmessage(message: string): Promise<void> {
 		const json: any = {
 			timestamp: Date.now(),
-			text: message
+			text: message,
 		};
 
 		if (!fs.existsSync("./assets/news.json")) {
 			const invalidFileEmbed: EmbedBuilder = this.client.createEmbed(
 				'Die Datei "assets/news.json" wurde nicht gefunden.',
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidFileEmbed] });
 		}
@@ -42,7 +42,7 @@ export default class SetnewsCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			"Die Ankündigung wurde erfolgreich geändert.",
 			"success",
-			"success"
+			"success",
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}

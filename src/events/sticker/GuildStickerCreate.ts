@@ -14,13 +14,7 @@ export default class {
 		const { guild } = sticker;
 
 		let stickerLogMessage: string =
-			this.client.emotes.edit +
-			" Name: " +
-			sticker.name +
-			"\n" +
-			this.client.emotes.id +
-			" ID: " +
-			sticker.id;
+			this.client.emotes.edit + " Name: " + sticker.name + "\n" + this.client.emotes.id + " ID: " + sticker.id;
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent["StickerCreate"], limit: 1 })
@@ -42,11 +36,7 @@ export default class {
 			}
 		}
 
-		const stickerLogEmbed: EmbedBuilder = this.client.createEmbed(
-			stickerLogMessage,
-			null,
-			"success"
-		);
+		const stickerLogEmbed: EmbedBuilder = this.client.createEmbed(stickerLogMessage, null, "success");
 		stickerLogEmbed.setTitle(this.client.emotes.events.sticker.create + " Sticker erstellt");
 		stickerLogEmbed.setThumbnail(sticker.url);
 

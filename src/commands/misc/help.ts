@@ -6,7 +6,7 @@ import {
 	ComponentType,
 	StringSelectMenuBuilder,
 	EmbedBuilder,
-	ButtonBuilder
+	ButtonBuilder,
 } from "discord.js";
 import moment from "moment";
 import fs from "fs";
@@ -19,8 +19,7 @@ export default class HelpCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "help",
-			description:
-				"Sendet eine Übersicht aller Befehle, oder Hilfe zu einem bestimmten Befehl",
+			description: "Sendet eine Übersicht aller Befehle, oder Hilfe zu einem bestimmten Befehl",
 			cooldown: 1000,
 			dirname: __dirname,
 			botPermissions: ["ReadMessageHistory"],
@@ -30,9 +29,9 @@ export default class HelpCommand extends BaseCommand {
 					option
 						.setName("befehl")
 						.setDescription("Gib einen Befehl an, zu dem du Hilfe benötigst")
-						.setRequired(false)
-				)
-			}
+						.setRequired(false),
+				),
+			},
 		});
 	}
 
@@ -59,7 +58,7 @@ export default class HelpCommand extends BaseCommand {
 			misc: "Sonstiges",
 			moderation: "Moderation",
 			owner: "Owner",
-			staff: "Staff"
+			staff: "Staff",
 		};
 
 		// Create a category list
@@ -106,8 +105,7 @@ export default class HelpCommand extends BaseCommand {
 		// Create the news section of the embed
 		const newsJson = JSON.parse(fs.readFileSync("./assets/news.json").toString());
 		const newsDate: string = moment(newsJson.timestamp).format("DD.MM.YYYY");
-		const news: string =
-			"### " + this.client.emotes.new + " Nachricht vom " + newsDate + ":\n" + newsJson.text;
+		const news: string = "### " + this.client.emotes.new + " Nachricht vom " + newsDate + ":\n" + newsJson.text;
 
 		// Create the embed
 		const helpEmbed: EmbedBuilder = this.client.createEmbed(
@@ -116,7 +114,7 @@ export default class HelpCommand extends BaseCommand {
 			"normal",
 			links,
 			description,
-			news
+			news,
 		);
 		// Create the category select menu
 		const categoryStringSelectMenu: StringSelectMenuBuilder = new StringSelectMenuBuilder()
@@ -140,26 +138,24 @@ export default class HelpCommand extends BaseCommand {
 			categoryStringSelectMenu.addOptions({
 				label: category,
 				emoji: this.client.emotes.slashcommand,
-				value: category
+				value: category,
 			});
 		}
 
 		// Create the action row
-		const categoryActionRow: any = new ActionRowBuilder().addComponents(
-			categoryStringSelectMenu
-		);
+		const categoryActionRow: any = new ActionRowBuilder().addComponents(categoryStringSelectMenu);
 
 		// Send the embed with the select menu
 		const helpEmbedSent: any = await this.interaction.followUp({
 			embeds: [helpEmbed],
 			components: [categoryActionRow],
-			fetchReply: true
+			fetchReply: true,
 		});
 
 		// Create collector for the select menu
 		const categoryCollector: any = await helpEmbedSent.createMessageComponentCollector({
 			filter: (i: any): boolean => i.user.id === this.interaction.user.id,
-			componentType: ComponentType.StringSelect
+			componentType: ComponentType.StringSelect,
 		});
 
 		categoryCollector.on("collect", async (categoryInteraction: any): Promise<void> => {
@@ -167,31 +163,23 @@ export default class HelpCommand extends BaseCommand {
 			const category: any = getKeyByValue(categories, categoryInteraction.values[0]);
 
 			// Get all commands of the selected category
-			let commands: any = this.client.commands.filter(
-				(command) => command.help.category === category
-			);
+			let commands: any = this.client.commands.filter((command) => command.help.category === category);
 			let commandsArray: any[] = [...commands.values()];
 
 			// Get all disabled commands
-			const disabledCommands = JSON.parse(
-				fs.readFileSync("./assets/disabled.json").toString()
-			);
+			const disabledCommands = JSON.parse(fs.readFileSync("./assets/disabled.json").toString());
 
 			// Get all application commands
 			const commandIds: any[] = [];
-			const fetchedCommands: any = (await this.client
-				.application!.commands.fetch()
-				.catch(() => {}))!.filter((c: any): boolean => c.type === 1);
+			const fetchedCommands: any = (await this.client.application!.commands.fetch().catch(() => {}))!.filter(
+				(c: any): boolean => c.type === 1,
+			);
 			if (fetchedCommands)
-				fetchedCommands.forEach((command: any) =>
-					commandIds.push({ name: command.name, id: command.id })
-				);
+				fetchedCommands.forEach((command: any) => commandIds.push({ name: command.name, id: command.id }));
 
 			let formattedCommands: any[] = [];
 			for (const command of commandsArray) {
-				const commandId: any = commandIds.find(
-					(s: any): boolean => s.name === command.help.name
-				)?.id;
+				const commandId: any = commandIds.find((s: any): boolean => s.name === command.help.name)?.id;
 				const availableAsSlashCommand: boolean = !!commandId;
 				const isDisabled: any = disabledCommands.includes(command.help.name);
 				const commandMentionString: any = availableAsSlashCommand
@@ -220,40 +208,33 @@ export default class HelpCommand extends BaseCommand {
 				backId,
 				"Zurück",
 				"Secondary",
-				this.client.emotes.arrows.left
+				this.client.emotes.arrows.left,
 			);
 			const forwardButton: ButtonBuilder = this.client.createButton(
 				forwardId,
 				"Weiter",
 				"Secondary",
-				this.client.emotes.arrows.right
+				this.client.emotes.arrows.right,
 			);
-			const homeButton: ButtonBuilder = this.client.createButton(
-				homeId,
-				"Zur Startseite",
-				"Primary",
-				"discover"
-			);
+			const homeButton: ButtonBuilder = this.client.createButton(homeId, "Zur Startseite", "Primary", "discover");
 
 			const generateEmbed = async (start: any): Promise<EmbedBuilder> => {
 				const current: any[] = formattedCommands.slice(start, start + 5);
 
 				const pages: any = {
 					total: Math.ceil(commandsArray.length / 5),
-					current: Math.round(start / 5) + 1
+					current: Math.round(start / 5) + 1,
 				};
 				if (pages.total === 0) pages.total = 1;
 
 				const text: string = current.map((item) => "\n" + item).join("");
 				const paginatedEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
-				paginatedEmbed.setTitle(
-					categories[category] + " ● Seite " + pages.current + " von " + pages.total
-				);
+				paginatedEmbed.setTitle(categories[category] + " ● Seite " + pages.current + " von " + pages.total);
 				paginatedEmbed.setThumbnail(
 					this.interaction.guild.iconURL({
 						dynamic: true,
-						size: 4096
-					})
+						size: 4096,
+					}),
 				);
 				return paginatedEmbed;
 			};
@@ -265,52 +246,42 @@ export default class HelpCommand extends BaseCommand {
 					? [new ActionRowBuilder({ components: [homeButton] })]
 					: [
 							new ActionRowBuilder({
-								components: [forwardButton, homeButton]
-							})
-					  ]
+								components: [forwardButton, homeButton],
+							}),
+						],
 			});
 			const paginationCollector = helpEmbedSent.createMessageComponentCollector({
 				filter: (i: any): boolean => i.user.id === this.interaction.user.id,
-				componentType: ComponentType.Button
+				componentType: ComponentType.Button,
 			});
 			if (canFitOnePage) paginationCollector.stop();
 
 			if (!canFitOnePage) {
 				currentIndex = 0;
 
-				paginationCollector.on(
-					"collect",
-					async (paginationInteraction: any): Promise<void> => {
-						if (
-							paginationInteraction.customId === backId ||
-							paginationInteraction.customId === forwardId
-						) {
-							paginationInteraction.customId === backId
-								? (currentIndex -= 5)
-								: (currentIndex += 5);
+				paginationCollector.on("collect", async (paginationInteraction: any): Promise<void> => {
+					if (paginationInteraction.customId === backId || paginationInteraction.customId === forwardId) {
+						paginationInteraction.customId === backId ? (currentIndex -= 5) : (currentIndex += 5);
 
-							await paginationInteraction.deferUpdate().catch(() => {});
-							await helpEmbedSent.edit({
-								embeds: [await generateEmbed(currentIndex)],
-								components: [
-									new ActionRowBuilder({
-										components: [
-											...(currentIndex ? [backButton] : []),
-											...(currentIndex + 5 < formattedCommands.length
-												? [forwardButton]
-												: []),
-											homeButton
-										]
-									})
-								]
-							});
-						}
+						await paginationInteraction.deferUpdate().catch(() => {});
+						await helpEmbedSent.edit({
+							embeds: [await generateEmbed(currentIndex)],
+							components: [
+								new ActionRowBuilder({
+									components: [
+										...(currentIndex ? [backButton] : []),
+										...(currentIndex + 5 < formattedCommands.length ? [forwardButton] : []),
+										homeButton,
+									],
+								}),
+							],
+						});
 					}
-				);
+				});
 			}
 
 			const homeCollector = helpEmbedSent.createMessageComponentCollector({
-				filter: (i: any): boolean => i.customId === this.interaction.user.id + "_home"
+				filter: (i: any): boolean => i.customId === this.interaction.user.id + "_home",
 			});
 
 			homeCollector.on("collect", async (homeInteraction: any): Promise<void> => {
@@ -322,7 +293,7 @@ export default class HelpCommand extends BaseCommand {
 				await homeInteraction.deferUpdate().catch((): void => {});
 				await helpEmbedSent.edit({
 					embeds: [helpEmbed],
-					components: [categoryActionRow]
+					components: [categoryActionRow],
 				});
 				currentIndex = 0;
 			});
@@ -337,11 +308,9 @@ export default class HelpCommand extends BaseCommand {
 			misc: "Sonstiges",
 			moderation: "Moderation",
 			owner: "Owner",
-			staff: "Staff"
+			staff: "Staff",
 		};
-		const clientCommand: any = this.client.commands.find(
-			(c): boolean => c.help.name === command
-		);
+		const clientCommand: any = this.client.commands.find((c): boolean => c.help.name === command);
 		if (clientCommand) {
 			let helpString: string =
 				"### " +
@@ -363,10 +332,7 @@ export default class HelpCommand extends BaseCommand {
 					this.client.emotes.user +
 					" **Benötigte Rechte (Nutzer/-in):** \n" +
 					clientCommand.conf.memberPermissions
-						.map(
-							(p: any): string =>
-								this.client.emotes.arrow + " " + this.client.permissions[p]
-						)
+						.map((p: any): string => this.client.emotes.arrow + " " + this.client.permissions[p])
 						.join("\n") +
 					"\n\n";
 			}
@@ -376,28 +342,19 @@ export default class HelpCommand extends BaseCommand {
 					this.client.emotes.bot +
 					" **Benötigte Rechte (Bot):** \n" +
 					clientCommand.conf.botPermissions
-						.map(
-							(p: any): string =>
-								this.client.emotes.arrow + " " + this.client.permissions[p]
-						)
+						.map((p: any): string => this.client.emotes.arrow + " " + this.client.permissions[p])
 						.join("\n") +
 					"\n\n";
 			}
 
 			if (clientCommand.conf.ownerOnly) {
 				helpString +=
-					this.client.emotes.crown +
-					" **Nur für " +
-					this.client.user!.username +
-					"-Entwickler:** Ja\n\n";
+					this.client.emotes.crown + " **Nur für " + this.client.user!.username + "-Entwickler:** Ja\n\n";
 			}
 
 			if (clientCommand.conf.staffOnly) {
 				helpString +=
-					this.client.emotes.users +
-					" **Nur für " +
-					this.client.user!.username +
-					"-Staffs:** Ja\n\n";
+					this.client.emotes.users + " **Nur für " + this.client.user!.username + "-Staffs:** Ja\n\n";
 			}
 
 			const helpEmbed: EmbedBuilder = this.client.createEmbed(helpString, null, "normal");
@@ -408,7 +365,7 @@ export default class HelpCommand extends BaseCommand {
 					clientCommand.help.name.slice(1) +
 					" Befehl (" +
 					categories[clientCommand.help.category] +
-					")"
+					")",
 			);
 			helpEmbed.setThumbnail(this.interaction.guild.iconURL({ dynamic: true, size: 4096 }));
 
@@ -416,7 +373,7 @@ export default class HelpCommand extends BaseCommand {
 		} else {
 			const userData = await this.client.findOrCreateUser(this.interaction.user.id);
 			await this.showHelp({
-				user: userData
+				user: userData,
 			});
 		}
 	}

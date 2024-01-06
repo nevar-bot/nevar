@@ -36,11 +36,7 @@ export default class {
 			}
 		}
 
-		const emojiLogEmbed: EmbedBuilder = this.client.createEmbed(
-			emojiLogMessage,
-			null,
-			"warning"
-		);
+		const emojiLogEmbed: EmbedBuilder = this.client.createEmbed(emojiLogMessage, null, "warning");
 		emojiLogEmbed.setTitle(this.client.emotes.events.emoji.update + " Emoji bearbeitet");
 		emojiLogEmbed.setThumbnail(newEmoji.url);
 

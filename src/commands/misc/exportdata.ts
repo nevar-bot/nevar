@@ -20,19 +20,19 @@ export default class ExportdataCommand extends BaseCommand {
 						.addChoices(
 							{
 								name: "deine Nutzerdaten",
-								value: "user"
+								value: "user",
 							},
 							{
 								name: "deine Mitgliedsdaten auf diesem Server",
-								value: "member"
+								value: "member",
 							},
 							{
 								name: "Daten dieses Servers",
-								value: "guild"
-							}
-						)
-				)
-			}
+								value: "guild",
+							},
+						),
+				),
+			},
 		});
 	}
 
@@ -53,17 +53,17 @@ export default class ExportdataCommand extends BaseCommand {
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
 				{
-					name: this.interaction.user.id + ".json"
-				}
+					name: this.interaction.user.id + ".json",
+				},
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
 				"Hier sind deine exportierten Nutzerdaten:",
 				"success",
-				"success"
+				"success",
 			);
 			return this.interaction.followUp({
 				embeds: [embed],
-				files: [attachment]
+				files: [attachment],
 			});
 		}
 
@@ -76,17 +76,17 @@ export default class ExportdataCommand extends BaseCommand {
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
 				{
-					name: this.interaction.user.id + ".json"
-				}
+					name: this.interaction.user.id + ".json",
+				},
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
 				"Hier sind deine exportierten Nutzerdaten:",
 				"success",
-				"success"
+				"success",
 			);
 			return this.interaction.followUp({
 				embeds: [embed],
-				files: [attachment]
+				files: [attachment],
 			});
 		}
 
@@ -95,7 +95,7 @@ export default class ExportdataCommand extends BaseCommand {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					"Nur der Eigentümer dieses Servers kann die Serverdaten exportieren.",
 					"error",
-					"error"
+					"error",
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
@@ -108,17 +108,17 @@ export default class ExportdataCommand extends BaseCommand {
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
 				{
-					name: this.interaction.user.id + ".json"
-				}
+					name: this.interaction.user.id + ".json",
+				},
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
 				"Hier sind deine exportierten Nutzerdaten:",
 				"success",
-				"success"
+				"success",
 			);
 			return this.interaction.followUp({
 				embeds: [embed],
-				files: [attachment]
+				files: [attachment],
 			});
 		}
 	}

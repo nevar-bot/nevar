@@ -9,14 +9,14 @@ export default class SnakeCommand extends BaseCommand {
 			name: "snake",
 			description: "Eat as many apples as possible to grow longer",
 			localizedDescriptions: {
-				de: "Friss möglichst viele Äpfel, um länger zu werden"
+				de: "Friss möglichst viele Äpfel, um länger zu werden",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -29,7 +29,7 @@ export default class SnakeCommand extends BaseCommand {
 	private async startGame(): Promise<void> {
 		const game: SnakeGame = new SnakeGame({
 			interaction: this.interaction,
-			client: this.client
+			client: this.client,
 		});
 		await game.startGame();
 	}
@@ -48,7 +48,7 @@ class SnakeGame extends BaseGame {
 			head: "🐍",
 			body: "🟩",
 			tail: "🟢",
-			skull: "💀"
+			skull: "💀",
 		};
 
 		options.emojis = {
@@ -57,7 +57,7 @@ class SnakeGame extends BaseGame {
 			up: options.client.emotes.arrows.up,
 			down: options.client.emotes.arrows.down,
 			left: options.client.emotes.arrows.left,
-			right: options.client.emotes.arrows.right
+			right: options.client.emotes.arrows.right,
 		};
 
 		options.foods = [];
@@ -115,13 +115,12 @@ class SnakeGame extends BaseGame {
 		do {
 			applePos = {
 				x: parseInt(String(Math.random() * 15)),
-				y: parseInt(String(Math.random() * 10))
+				y: parseInt(String(Math.random() * 10)),
 			};
 		} while (this.isSnake(applePos));
 
 		const foods: any = this.options.foods;
-		if (foods.length)
-			this.options.emojis.food = foods[Math.floor(Math.random() * foods.length)];
+		if (foods.length) this.options.emojis.food = foods[Math.floor(Math.random() * foods.length)];
 		this.apple = { x: applePos.x, y: applePos.y };
 	}
 
@@ -139,58 +138,41 @@ class SnakeGame extends BaseGame {
 				"\n\n" +
 				this.getBoardContent(undefined),
 			"arrow",
-			"normal"
+			"normal",
 		);
 		snakeEmbed.setTitle("Snake");
 		snakeEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
-		const up: ButtonBuilder = this.client.createButton(
-			"snake_up",
-			null,
-			"Primary",
-			this.client.emotes.arrows.up
-		);
+		const up: ButtonBuilder = this.client.createButton("snake_up", null, "Primary", this.client.emotes.arrows.up);
 		const down: ButtonBuilder = this.client.createButton(
 			"snake_down",
 			null,
 			"Primary",
-			this.client.emotes.arrows.down
+			this.client.emotes.arrows.down,
 		);
 		const left: ButtonBuilder = this.client.createButton(
 			"snake_left",
 			null,
 			"Primary",
-			this.client.emotes.arrows.left
+			this.client.emotes.arrows.left,
 		);
 		const right: ButtonBuilder = this.client.createButton(
 			"snake_right",
 			null,
 			"Primary",
-			this.client.emotes.arrows.right
+			this.client.emotes.arrows.right,
 		);
 		const stop: ButtonBuilder = this.client.createButton("snake_stop", "Stop", "Danger");
 
-		const dis1: ButtonBuilder = this.client.createButton(
-			"dis1",
-			"\u200b",
-			"Secondary",
-			null,
-			true
-		);
-		const dis2: ButtonBuilder = this.client.createButton(
-			"dis2",
-			"\u200b",
-			"Secondary",
-			null,
-			true
-		);
+		const dis1: ButtonBuilder = this.client.createButton("dis1", "\u200b", "Secondary", null, true);
+		const dis2: ButtonBuilder = this.client.createButton("dis2", "\u200b", "Secondary", null, true);
 
 		const row1: any = this.client.createMessageComponentsRow(dis1, up, dis2, stop);
 		const row2: any = this.client.createMessageComponentsRow(left, down, right);
 
 		const msg: any = await this.sendMessage({
 			embeds: [snakeEmbed],
-			components: [row1, row2]
+			components: [row1, row2],
 		});
 		return this.handleButtons(msg);
 	}
@@ -210,7 +192,7 @@ class SnakeGame extends BaseGame {
 				"\n\n" +
 				this.getBoardContent(undefined),
 			"arrow",
-			"normal"
+			"normal",
 		);
 		snakeEmbed.setTitle("Snake");
 		snakeEmbed.setThumbnail(this.client.user!.displayAvatarURL());
@@ -224,20 +206,20 @@ class SnakeGame extends BaseGame {
 				"\n\n" +
 				this.getBoardContent(true),
 			"arrow",
-			"normal"
+			"normal",
 		);
 		gameOverEmbed.setTitle("Snake");
 		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({
 			embeds: [gameOverEmbed],
-			components: this.disableButtons(msg.components)
+			components: this.disableButtons(msg.components),
 		});
 	}
 
 	private handleButtons(msg: any): void {
 		const snakeCollector: any = msg.createMessageComponentCollector({
-			filter: (btn: any): boolean => btn.user.id === this.interaction.user.id
+			filter: (btn: any): boolean => btn.user.id === this.interaction.user.id,
 		});
 
 		snakeCollector.on("collect", async (btn: any): Promise<any> => {

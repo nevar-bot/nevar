@@ -62,18 +62,14 @@ export async function post(req: Request, res: Response) {
 			"Link",
 			"rocket",
 			false,
-			"https://top.gg/bot/" + client.user!.id + "/vote"
+			"https://top.gg/bot/" + client.user!.id + "/vote",
 		);
 		const buttonRow: any = client.createMessageComponentsRow(voteNowButton);
 
-		const channel: any = client.channels.cache.get(
-			client.config.channels["VOTE_ANNOUNCEMENT_ID"]
-		);
-		await channel
-			.send({ embeds: [voteEmbed], components: [buttonRow] })
-			.catch((e: any): void => {
-				client.alertException(e, null, user.id, "Vote Announcement senden");
-			});
+		const channel: any = client.channels.cache.get(client.config.channels["VOTE_ANNOUNCEMENT_ID"]);
+		await channel.send({ embeds: [voteEmbed], components: [buttonRow] }).catch((e: any): void => {
+			client.alertException(e, null, user.id, "Vote Announcement senden");
+		});
 
 		const voteObj: any = JSON.parse(fs.readFileSync("./assets/votes.json").toString());
 

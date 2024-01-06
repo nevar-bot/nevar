@@ -38,7 +38,7 @@ export async function get(req: Request, res: Response) {
 			guildID: entry.guildID,
 			avatar:
 				client.users.cache.get(entry.userID)?.displayAvatarURL({ size: 2048 }) ||
-				"https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png"
+				"https://brandlogos.net/wp-content/uploads/2021/11/discord-logo.png",
 		});
 	}
 
@@ -49,8 +49,8 @@ export async function get(req: Request, res: Response) {
 			guild_id: guildId,
 			guild_name: guild.name,
 			guild_icon: guild.iconURL({ size: 2048 }),
-			leaderboard: jsonLeaderboard
-		}
+			leaderboard: jsonLeaderboard,
+		},
 	};
 
 	res.setHeader("Content-Type", "application/json");

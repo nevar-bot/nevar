@@ -15,16 +15,14 @@ export default class {
 
 		/* Update invite cache */
 		if (this.client.invites.get(guild.id)) {
-			this.client.invites
-				.get(guild.id)
-				.set(invite.code, { uses: invite.uses, inviterId: invite.inviterId });
+			this.client.invites.get(guild.id).set(invite.code, { uses: invite.uses, inviterId: invite.inviterId });
 		} else {
 			this.client.invites.set(
 				guild.id,
 				new Collection().set(invite.code, {
 					uses: invite.uses,
-					inviterId: invite.inviterId
-				})
+					inviterId: invite.inviterId,
+				}),
 			);
 		}
 
@@ -36,7 +34,7 @@ export default class {
 			code: invite.code,
 			uses: invite.uses,
 			fake: 0,
-			left: 0
+			left: 0,
 		});
 		memberData.markModified("invites");
 		await memberData.save();
@@ -52,9 +50,9 @@ export default class {
 			"\n" +
 			(invite.expiresTimestamp
 				? this.client.emotes.reminder +
-				  " Ablaufdatum: **" +
-				  moment(invite.expiresTimestamp).format("DD.MM.YYYY HH:mm") +
-				  "**"
+					" Ablaufdatum: **" +
+					moment(invite.expiresTimestamp).format("DD.MM.YYYY HH:mm") +
+					"**"
 				: "");
 
 		const auditLogs: any = await guild
@@ -77,11 +75,7 @@ export default class {
 			}
 		}
 
-		const inviteCreateEmbed: EmbedBuilder = this.client.createEmbed(
-			inviteCreateText,
-			null,
-			"success"
-		);
+		const inviteCreateEmbed: EmbedBuilder = this.client.createEmbed(inviteCreateText, null, "success");
 		inviteCreateEmbed.setTitle(this.client.emotes.invite + " Einladung erstellt");
 		inviteCreateEmbed.setThumbnail(guild.iconURL());
 

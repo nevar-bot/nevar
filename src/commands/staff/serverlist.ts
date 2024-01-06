@@ -10,8 +10,8 @@ export default class ServerlistCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -52,7 +52,7 @@ export default class ServerlistCommand extends BaseCommand {
 			serverTexts,
 			"Serverliste",
 			"Der Bot ist auf keinem Server",
-			null
+			null,
 		);
 	}
 }

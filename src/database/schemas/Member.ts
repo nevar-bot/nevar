@@ -8,8 +8,8 @@ const Schema = new mongoose.Schema({
 		type: Object,
 		default: {
 			count: 0,
-			list: []
-		}
+			list: [],
+		},
 	},
 	banned: {
 		type: Object,
@@ -18,12 +18,12 @@ const Schema = new mongoose.Schema({
 			reason: null,
 			moderator: {
 				name: null,
-				id: null
+				id: null,
 			},
 			duration: null,
 			bannedAt: null,
-			bannedUntil: null
-		}
+			bannedUntil: null,
+		},
 	},
 	muted: {
 		type: Object,
@@ -32,23 +32,23 @@ const Schema = new mongoose.Schema({
 			reason: null,
 			moderator: {
 				name: null,
-				id: null
+				id: null,
 			},
 			duration: null,
 			mutedAt: null,
-			mutedUntil: null
-		}
+			mutedUntil: null,
+		},
 	},
 	suggestions: {
 		type: Array,
-		default: []
+		default: [],
 	},
 	reminders: [],
 	invites: [],
 	inviteUsed: {
 		type: String,
-		default: null
-	}
+		default: null,
+	},
 });
 
 const Member: Model<any> = mongoose.model("Member", Schema);

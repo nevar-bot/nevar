@@ -13,13 +13,7 @@ export default class {
 		const { guild } = sticker;
 
 		let stickerLogMessage: string =
-			this.client.emotes.edit +
-			" Name: " +
-			sticker.name +
-			"\n" +
-			this.client.emotes.id +
-			" ID: " +
-			sticker.id;
+			this.client.emotes.edit + " Name: " + sticker.name + "\n" + this.client.emotes.id + " ID: " + sticker.id;
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent["StickerDelete"], limit: 1 })
@@ -41,11 +35,7 @@ export default class {
 			}
 		}
 
-		const stickerLogEmbed: EmbedBuilder = this.client.createEmbed(
-			stickerLogMessage,
-			null,
-			"error"
-		);
+		const stickerLogEmbed: EmbedBuilder = this.client.createEmbed(stickerLogMessage, null, "error");
 		stickerLogEmbed.setTitle(this.client.emotes.events.sticker.delete + " Sticker gelöscht");
 		stickerLogEmbed.setThumbnail(sticker.url);
 

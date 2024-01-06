@@ -54,23 +54,21 @@ export default {
 		for (const member of members) {
 			const rawMemberData: any = await Member.findOne({
 				id: member.id,
-				guildID: member.guildID
+				guildID: member.guildID,
 			}).lean();
 			const currentMemberData: any = member;
 			const updatedMemberData: any = updateData(currentMemberData, Member.schema.obj);
 
 			if (!(await this.isEqual(rawMemberData, updatedMemberData))) {
 				count++;
-				await Member.findOneAndDelete({ id: member.id, guildID: member.guildID }).catch(
-					(): void => {}
-				);
+				await Member.findOneAndDelete({ id: member.id, guildID: member.guildID }).catch((): void => {});
 				const newMemberData = new Member(updatedMemberData);
 				await newMemberData.save().catch((): void => {});
 			}
 		}
 
 		return count;
-	}
+	},
 };
 
 function addMissingProperties(data: any, schema: any) {
@@ -108,10 +106,7 @@ function removeObsoleteProperties(data: any, schema: any) {
 
 		if (!(key in schema)) {
 			delete data[key];
-		} else if (
-			(schemaValue?.type === Object || schemaValue instanceof mongoose.Schema) &&
-			dataValue !== null
-		) {
+		} else if ((schemaValue?.type === Object || schemaValue instanceof mongoose.Schema) && dataValue !== null) {
 			if (schemaValue.type === Object) {
 				removeObsoleteProperties(dataValue, schemaValue.default || {});
 			} else if (schemaValue instanceof mongoose.Schema) {

@@ -9,7 +9,7 @@ export default class AddemojiCommand extends BaseCommand {
 			name: "addemoji",
 			description: "Creates a new emoji based on a given emoji or a link to an image",
 			localizedDescriptions: {
-				de: "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild"
+				de: "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild",
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -24,8 +24,8 @@ export default class AddemojiCommand extends BaseCommand {
 							.setName("emoji")
 							.setDescription("Enter an emoji or a link to an image")
 							.setDescriptionLocalizations({
-								de: "Gib einen Emoji oder einen Link zu einem Bild ein"
-							})
+								de: "Gib einen Emoji oder einen Link zu einem Bild ein",
+							}),
 					)
 					.addStringOption((option: any) =>
 						option
@@ -33,11 +33,11 @@ export default class AddemojiCommand extends BaseCommand {
 							.setName("name")
 							.setDescription("Enter what you want the new emoji to be called")
 							.setDescriptionLocalizations({
-								de: "Gib ein, wie der neue Emoji heißen soll"
+								de: "Gib ein, wie der neue Emoji heißen soll",
 							})
-							.setMaxLength(32)
-					)
-			}
+							.setMaxLength(32),
+					),
+			},
 		});
 	}
 
@@ -48,7 +48,7 @@ export default class AddemojiCommand extends BaseCommand {
 		await this.addEmoji(
 			interaction.options.getString("emoji"),
 			interaction.options.getString("name"),
-			interaction.guild
+			interaction.guild,
 		);
 	}
 
@@ -61,7 +61,7 @@ export default class AddemojiCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:invalidEmojiOrLink"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -71,7 +71,7 @@ export default class AddemojiCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:invalidLinkExtension"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -81,7 +81,7 @@ export default class AddemojiCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingName"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -90,9 +90,7 @@ export default class AddemojiCommand extends BaseCommand {
 			const parsedEmoji: any = parseEmoji(emoji);
 			emote.name = name || parsedEmoji.name;
 			emote.url =
-				"https://cdn.discordapp.com/emojis/" +
-				parsedEmoji.id +
-				(parsedEmoji.animated ? ".gif" : ".png");
+				"https://cdn.discordapp.com/emojis/" + parsedEmoji.id + (parsedEmoji.animated ? ".gif" : ".png");
 		} else if (stringIsUrl(emoji) && urlIsImage(emoji)) {
 			emote.name = name;
 			emote.url = emoji;
@@ -103,15 +101,15 @@ export default class AddemojiCommand extends BaseCommand {
 			const createdEmote = await guild.emojis.create({
 				attachment: emote.url,
 				name: emote.name,
-				reason: "/addemoji Command"
+				reason: "/addemoji Command",
 			});
 			/* Created emoji */
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("created", {
-					emoji: createdEmote.toString()
+					emoji: createdEmote.toString(),
 				}),
 				"success",
-				"success"
+				"success",
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} catch (exception) {
@@ -119,7 +117,7 @@ export default class AddemojiCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}

@@ -11,8 +11,8 @@ export default class LeaveserverCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -28,7 +28,7 @@ export default class LeaveserverCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst eine Server-ID angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -39,7 +39,7 @@ export default class LeaveserverCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Der Server konnte nicht gefunden werden.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -48,7 +48,7 @@ export default class LeaveserverCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Ich kann den Support-Server nicht verlassen.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -59,7 +59,7 @@ export default class LeaveserverCommand extends BaseCommand {
 			"Ich habe {0} verlassen.",
 			"success",
 			"success",
-			guild.name
+			guild.name,
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}

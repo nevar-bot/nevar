@@ -18,20 +18,15 @@ export default {
 		const app: Express = express();
 
 		// Middleware
-		app.use(
-			compression(),
-			express.json(),
-			express.urlencoded({ extended: true }),
-			cookieParser()
-		);
+		app.use(compression(), express.json(), express.urlencoded({ extended: true }), cookieParser());
 
 		// Session
 		app.use(
 			session({
 				secret: SESSION_SECRET,
 				resave: false,
-				saveUninitialized: true
-			})
+				saveUninitialized: true,
+			}),
 		);
 
 		// Set view engine and static files
@@ -51,5 +46,5 @@ export default {
 		app.listen(PORT, (): void => {
 			client.logger.log(`Dashboard is running on port ${PORT}`);
 		});
-	}
+	},
 };

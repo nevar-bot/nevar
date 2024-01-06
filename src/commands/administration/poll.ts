@@ -8,7 +8,7 @@ export default class PollCommand extends BaseCommand {
 			name: "poll",
 			description: "Starts a new poll",
 			localizedDescriptions: {
-				de: "Startet eine neue Umfrage"
+				de: "Startet eine neue Umfrage",
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
@@ -20,38 +20,34 @@ export default class PollCommand extends BaseCommand {
 						option
 							.setName("title")
 							.setNameLocalizations({
-								de: "titel"
+								de: "titel",
 							})
 							.setDescription("Give the poll a meaningful title")
 							.setDescriptionLocalizations({
-								de: "Gib der Umfrage einen aussagekräftigen Titel"
+								de: "Gib der Umfrage einen aussagekräftigen Titel",
 							})
-							.setRequired(true)
+							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("options")
 							.setNameLocalizations({
-								de: "optionen"
+								de: "optionen",
 							})
 							.setDescription("Enter the answer choices, separated by a comma")
 							.setDescriptionLocalizations({
-								de: "Gib die Antwortmöglichkeiten ein, getrennt durch ein Komma"
+								de: "Gib die Antwortmöglichkeiten ein, getrennt durch ein Komma",
 							})
-							.setRequired(true)
-					)
-			}
+							.setRequired(true),
+					),
+			},
 		});
 	}
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
 
-		await this.startPoll(
-			interaction.options.getString("title"),
-			interaction.options.getString("options"),
-			data
-		);
+		await this.startPoll(interaction.options.getString("title"), interaction.options.getString("options"), data);
 	}
 
 	private async startPoll(title: string, options: string, data: any): Promise<void> {
@@ -94,7 +90,7 @@ export default class PollCommand extends BaseCommand {
 			channelId: pollMessage.channelId,
 			messageId: pollMessage.id,
 			options: optionsArray,
-			circles: circles
+			circles: circles,
 		};
 
 		if (!data.guild.settings.polls) data.guild.settings.polls = [];

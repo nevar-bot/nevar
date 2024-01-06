@@ -12,8 +12,8 @@ export default class CommandstatsCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -29,7 +29,7 @@ export default class CommandstatsCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst einen Befehl angeben.",
 				"error",
-				"normal"
+				"normal",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -39,15 +39,13 @@ export default class CommandstatsCommand extends BaseCommand {
 			const invalidCommandEmbed: EmbedBuilder = this.client.createEmbed(
 				"Der Befehl existiert nicht.",
 				"error",
-				"normal"
+				"normal",
 			);
 			return this.message.reply({ embeds: [invalidCommandEmbed] });
 		}
 
 		const executedCommands: any = (
-			await (
-				await mongoose.connection.db.collection("logs").find({ command: command.help.name })
-			).toArray()
+			await (await mongoose.connection.db.collection("logs").find({ command: command.help.name })).toArray()
 		).length;
 
 		const statsEmbed: EmbedBuilder = this.client.createEmbed(
@@ -55,7 +53,7 @@ export default class CommandstatsCommand extends BaseCommand {
 			"arrow",
 			"normal",
 			command.help.name,
-			executedCommands
+			executedCommands,
 		);
 		return this.message.reply({ embeds: [statsEmbed] });
 	}

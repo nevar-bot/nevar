@@ -14,19 +14,16 @@ export default class RemoveWarnCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addUserOption((option: any) =>
-						option
-							.setName("mitglied")
-							.setDescription("Wähle ein Mitglied")
-							.setRequired(true)
+						option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true),
 					)
 					.addIntegerOption((option: any) =>
 						option
 							.setName("nummer")
 							.setDescription("Gib die Nummer der Verwarnung an")
 							.setRequired(true)
-							.setMinValue(1)
-					)
-			}
+							.setMinValue(1),
+					),
+			},
 		});
 	}
 
@@ -34,10 +31,7 @@ export default class RemoveWarnCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.removeWarn(
-			interaction.options.getUser("mitglied"),
-			interaction.options.getInteger("nummer")
-		);
+		await this.removeWarn(interaction.options.getUser("mitglied"), interaction.options.getInteger("nummer"));
 	}
 
 	private async removeWarn(user: any, num: number): Promise<void> {
@@ -46,7 +40,7 @@ export default class RemoveWarnCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst ein Mitglied angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -55,27 +49,24 @@ export default class RemoveWarnCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst nicht eine Verwarnung von dir entfernen.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
-		const targetData: any = await this.client.findOrCreateMember(
-			member.user.id,
-			this.interaction.guild.id
-		);
+		const targetData: any = await this.client.findOrCreateMember(member.user.id, this.interaction.guild.id);
 
 		if (!targetData.warnings.list[num - 1]) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst eine gültige Nummer angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
 		targetData.warnings.list = targetData.warnings.list.filter(
-			(warn: any): boolean => warn !== targetData.warnings.list[num - 1]
+			(warn: any): boolean => warn !== targetData.warnings.list[num - 1],
 		);
 		targetData.markModified("warnings");
 		await targetData.save();
@@ -102,7 +93,7 @@ export default class RemoveWarnCommand extends BaseCommand {
 			"success",
 			"success",
 			num,
-			member.user.username
+			member.user.username,
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}

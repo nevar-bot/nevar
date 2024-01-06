@@ -12,8 +12,8 @@ export default class StaffsCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -25,7 +25,7 @@ export default class StaffsCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst zwischen folgenden Aktionen wählen: add, remove, list",
 				"error",
-				"error"
+				"error",
 			);
 			return message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -45,7 +45,7 @@ export default class StaffsCommand extends BaseCommand {
 				const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 					"Du musst zwischen folgenden Aktionen wählen: add, remove, list",
 					"error",
-					"error"
+					"error",
 				);
 				return message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -57,7 +57,7 @@ export default class StaffsCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst ein Mitglied angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -65,7 +65,7 @@ export default class StaffsCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst einen Staff-Typ angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -73,7 +73,7 @@ export default class StaffsCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				'Du musst entweder "staff" oder "head-staff" als Staff-Typ angeben.',
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -81,7 +81,7 @@ export default class StaffsCommand extends BaseCommand {
 		const userdata: any = await this.client.findOrCreateUser(member.user.id);
 		userdata.staff = {
 			state: true,
-			role: args[1].toLowerCase()
+			role: args[1].toLowerCase(),
 		};
 		userdata.markModified("staff");
 		await userdata.save();
@@ -92,7 +92,7 @@ export default class StaffsCommand extends BaseCommand {
 			"success",
 			"success",
 			member.user.username,
-			string
+			string,
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -103,7 +103,7 @@ export default class StaffsCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst ein Mitglied angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -113,14 +113,14 @@ export default class StaffsCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Dieses Mitglied ist kein Staff.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		userdata.staff = {
 			state: false,
-			role: null
+			role: null,
 		};
 		userdata.markModified("staff");
 		await userdata.save();
@@ -129,7 +129,7 @@ export default class StaffsCommand extends BaseCommand {
 			"{0} wurde als Staff entfernt.",
 			"success",
 			"success",
-			member.user.username
+			member.user.username,
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -151,7 +151,7 @@ export default class StaffsCommand extends BaseCommand {
 			"arrow",
 			"normal",
 			this.client.emotes.shine2,
-			staffs.join("\n" + this.client.emotes.shine2 + " ")
+			staffs.join("\n" + this.client.emotes.shine2 + " "),
 		);
 
 		return this.message.reply({ embeds: [embed] });

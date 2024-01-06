@@ -13,38 +13,23 @@ export default class {
 
 		const properties: Array<string> = [];
 		if (oldThread.name !== newThread.name)
-			properties.push(
-				this.client.emotes.edit +
-					" Name: ~~" +
-					oldThread.name +
-					"~~ **" +
-					newThread.name +
-					"**"
-			);
+			properties.push(this.client.emotes.edit + " Name: ~~" + oldThread.name + "~~ **" + newThread.name + "**");
 		if (oldThread.archived !== newThread.archived)
 			properties.push(
-				this.client.emotes.quotes +
-					" " +
-					(newThread.archived ? "Thread archiviert" : "Thread unarchiviert")
+				this.client.emotes.quotes + " " + (newThread.archived ? "Thread archiviert" : "Thread unarchiviert"),
 			);
 		if (oldThread.locked !== newThread.locked)
 			properties.push(
-				this.client.emotes.quotes +
-					" " +
-					(newThread.locked ? "Thread gesperrt" : "Thread entsperrt")
+				this.client.emotes.quotes + " " + (newThread.locked ? "Thread gesperrt" : "Thread entsperrt"),
 			);
 		if (oldThread.rateLimitPerUser !== newThread.rateLimitPerUser)
 			properties.push(
 				this.client.emotes.timeout +
 					" Slow-Modus: ~~" +
-					(oldThread.rateLimitPerUser
-						? oldThread.rateLimitPerUser + " Sekunde(n)"
-						: "Kein Limit") +
+					(oldThread.rateLimitPerUser ? oldThread.rateLimitPerUser + " Sekunde(n)" : "Kein Limit") +
 					"~~ **" +
-					(newThread.rateLimitPerUser
-						? newThread.rateLimitPerUser + " Sekunde(n)"
-						: "Kein Limit") +
-					"**"
+					(newThread.rateLimitPerUser ? newThread.rateLimitPerUser + " Sekunde(n)" : "Kein Limit") +
+					"**",
 			);
 		if (oldThread.type !== newThread.type)
 			properties.push(
@@ -53,17 +38,13 @@ export default class {
 					this.client.channelTypes[oldThread.type] +
 					"~~ **" +
 					this.client.channelTypes[newThread.type] +
-					"**"
+					"**",
 			);
 
 		if (properties.length < 1) return;
 
 		let threadLogMessage: string =
-			this.client.emotes.channel +
-			" Thread: " +
-			newThread.toString() +
-			"\n" +
-			properties.join("\n");
+			this.client.emotes.channel + " Thread: " + newThread.toString() + "\n" + properties.join("\n");
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent["ThreadUpdate"], limit: 1 })
@@ -85,16 +66,9 @@ export default class {
 			}
 		}
 
-		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(
-			threadLogMessage,
-			null,
-			"warning"
-		);
+		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(threadLogMessage, null, "warning");
 		threadLogEmbed.setTitle(
-			this.client.emotes.events.thread.update +
-				" " +
-				this.client.channelTypes[newThread.type] +
-				" bearbeitet"
+			this.client.emotes.events.thread.update + " " + this.client.channelTypes[newThread.type] + " bearbeitet",
 		);
 		threadLogEmbed.setThumbnail(guild.iconURL());
 

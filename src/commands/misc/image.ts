@@ -9,7 +9,7 @@ export default class ImageCommand extends BaseCommand {
 			name: "image",
 			description: "Generates an image from the given text",
 			localizedDescriptions: {
-				de: "Generiert ein Bild aus dem gegebenen Text"
+				de: "Generiert ein Bild aus dem gegebenen Text",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -20,11 +20,11 @@ export default class ImageCommand extends BaseCommand {
 						.setName("text")
 						.setDescription("The text to generate the image from")
 						.setDescriptionLocalizations({
-							de: "Der Text, aus dem das Bild generiert werden soll"
+							de: "Der Text, aus dem das Bild generiert werden soll",
 						})
-						.setRequired(true)
-				)
-			}
+						.setRequired(true),
+				),
+			},
 		});
 	}
 
@@ -36,15 +36,15 @@ export default class ImageCommand extends BaseCommand {
 
 	private async generateImage(text: string): Promise<void> {
 		const answerMessage: any = await this.interaction.followUp({
-			content: this.client.emotes.loading + " " + this.translate("generating")
+			content: this.client.emotes.loading + " " + this.translate("generating"),
 		});
 
 		const openai: OpenAI = new OpenAI({
-			apiKey: this.client.config.apikeys["OPENAI"]
+			apiKey: this.client.config.apikeys["OPENAI"],
 		});
 
 		const response: OpenAI.ImagesResponse = await openai.images.generate({
-			prompt: text
+			prompt: text,
 		});
 
 		answerMessage.edit({ content: response.data[0].url });

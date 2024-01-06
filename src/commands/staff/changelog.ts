@@ -7,7 +7,7 @@ import {
 	ModalBuilder,
 	TextInputBuilder,
 	TextInputStyle,
-	ButtonBuilder
+	ButtonBuilder,
 } from "discord.js";
 
 export default class ChangelogCommand extends BaseCommand {
@@ -19,8 +19,8 @@ export default class ChangelogCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -36,28 +36,26 @@ export default class ChangelogCommand extends BaseCommand {
 			"create",
 			"Changelog erstellen",
 			"Secondary",
-			"text"
+			"text",
 		);
 		const createEmbed: EmbedBuilder = this.client.createEmbed(
 			"Wenn du einen Changelog erstellen möchtest, drücke den Button",
 			"arrow",
-			"normal"
+			"normal",
 		);
 		const buttonRow: any = this.client.createMessageComponentsRow(createButton);
 
 		const embedMessage: any = await this.message.reply({
 			embeds: [createEmbed],
-			components: [buttonRow]
+			components: [buttonRow],
 		});
 
 		const buttonCollector: any = embedMessage.createMessageComponentCollector({
-			filter: (i: any): boolean => i.user.id === this.message.author.id
+			filter: (i: any): boolean => i.user.id === this.message.author.id,
 		});
 		buttonCollector.on("collect", async (interaction: any): Promise<void> => {
 			// Create changelog modal
-			const modal: ModalBuilder = new ModalBuilder()
-				.setCustomId("changelog")
-				.setTitle("Changelog erstellen");
+			const modal: ModalBuilder = new ModalBuilder().setCustomId("changelog").setTitle("Changelog erstellen");
 
 			const newInput: TextInputBuilder = new TextInputBuilder()
 				.setCustomId("new")
@@ -87,18 +85,13 @@ export default class ChangelogCommand extends BaseCommand {
 			const fixedActionRow: any = new ActionRowBuilder().addComponents(fixedInput);
 			const improvedActionRow: any = new ActionRowBuilder().addComponents(improvedInput);
 			const removedActionRow: any = new ActionRowBuilder().addComponents(removedInput);
-			await modal.addComponents(
-				newActionRow,
-				fixedActionRow,
-				improvedActionRow,
-				removedActionRow
-			);
+			await modal.addComponents(newActionRow, fixedActionRow, improvedActionRow, removedActionRow);
 
 			await interaction.showModal(modal);
 			interaction
 				.awaitModalSubmit({
 					filter: (int: any): boolean => int.user.id === this.message.author.id,
-					time: 10 * 60 * 1000
+					time: 10 * 60 * 1000,
 				})
 				.then(async (int: any): Promise<void> => {
 					let newFeatures: any = int.fields.getTextInputValue("new");
@@ -150,12 +143,7 @@ export default class ChangelogCommand extends BaseCommand {
 						removedFeatures.join("\n" + this.client.emotes.arrow + " ") +
 						"\n\n\n\n";
 
-					const changelogEmbed: EmbedBuilder = this.client.createEmbed(
-						"{0}",
-						null,
-						"normal",
-						text
-					);
+					const changelogEmbed: EmbedBuilder = this.client.createEmbed("{0}", null, "normal", text);
 					changelogEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 					changelogEmbed.setTitle("Changelog vom " + date);
 					this.message.channel.send({ embeds: [changelogEmbed] });
@@ -164,11 +152,11 @@ export default class ChangelogCommand extends BaseCommand {
 					const sentEmbed: EmbedBuilder = await this.client.createEmbed(
 						"Der Changelog wurde erstellt und gesendet",
 						"success",
-						"success"
+						"success",
 					);
 					await int.update({
 						embeds: [sentEmbed],
-						components: []
+						components: [],
 					});
 					await this.message.delete().catch((): void => {});
 				});

@@ -13,9 +13,7 @@ export default {
 			for (const memberData of [...client.databaseCache.reminders.values()]) {
 				for (const reminder of memberData.reminders) {
 					if (reminder.endDate <= Date.now()) {
-						const guild: Guild | undefined = client.guilds.cache.get(
-							memberData.guildID
-						);
+						const guild: Guild | undefined = client.guilds.cache.get(memberData.guildID);
 						if (!guild) continue;
 
 						const channel: any = guild.channels.cache.get(reminder.channel);
@@ -24,13 +22,10 @@ export default {
 						guild.members
 							.fetch(memberData.id)
 							.then((member: GuildMember): void => {
-								const reminderAgo: string = client.utils.getDiscordTimestamp(
-									reminder.startDate,
-									"R"
-								);
+								const reminderAgo: string = client.utils.getDiscordTimestamp(reminder.startDate, "R");
 								const reminderStarted: string = client.utils.getDiscordTimestamp(
 									reminder.startDate,
-									"f"
+									"f",
 								);
 								const text: string =
 									"### " +
@@ -50,11 +45,11 @@ export default {
 
 								channel.send({
 									content: member.toString(),
-									embeds: [remindEmbed]
+									embeds: [remindEmbed],
 								});
 
 								memberData.reminders = memberData.reminders.filter(
-									(r: any) => r.startDate !== reminder.startDate
+									(r: any) => r.startDate !== reminder.startDate,
 								);
 								memberData.markModified("reminders");
 								memberData.save();
@@ -64,5 +59,5 @@ export default {
 				}
 			}
 		}, 1000);
-	}
+	},
 };

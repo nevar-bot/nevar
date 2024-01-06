@@ -8,7 +8,7 @@ export default class EightballCommand extends BaseCommand {
 			name: "8ball",
 			description: "Ask a question and get magical answers",
 			localizedDescriptions: {
-				de: "Stelle eine Frage und erhalte magische Antworten"
+				de: "Stelle eine Frage und erhalte magische Antworten",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -19,14 +19,14 @@ export default class EightballCommand extends BaseCommand {
 						.setRequired(true)
 						.setName("question")
 						.setNameLocalizations({
-							de: "frage"
+							de: "frage",
 						})
 						.setDescription("Enter your question")
 						.setDescriptionLocalizations({
-							de: "Gib deine Frage ein"
-						})
-				)
-			}
+							de: "Gib deine Frage ein",
+						}),
+				),
+			},
 		});
 	}
 
@@ -38,14 +38,8 @@ export default class EightballCommand extends BaseCommand {
 
 	private async getAnswer(): Promise<void> {
 		const eightBallAnswers: string[] = this.translate("answers");
-		const randomAnswer: string =
-			eightBallAnswers[Math.floor(Math.random() * eightBallAnswers.length)];
-		const eightBallEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0}",
-			"question",
-			"normal",
-			randomAnswer
-		);
+		const randomAnswer: string = eightBallAnswers[Math.floor(Math.random() * eightBallAnswers.length)];
+		const eightBallEmbed: EmbedBuilder = this.client.createEmbed("{0}", "question", "normal", randomAnswer);
 		return this.interaction.followUp({ embeds: [eightBallEmbed] });
 	}
 }

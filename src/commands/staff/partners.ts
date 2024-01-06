@@ -12,8 +12,8 @@ export default class PartnersCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -25,7 +25,7 @@ export default class PartnersCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst zwischen folgenden Aktionen wählen: add, remove, list",
 				"error",
-				"error"
+				"error",
 			);
 			return message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -45,7 +45,7 @@ export default class PartnersCommand extends BaseCommand {
 				const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 					"Du musst zwischen folgenden Aktionen wählen: add, remove, list",
 					"error",
-					"error"
+					"error",
 				);
 				return message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -57,14 +57,14 @@ export default class PartnersCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst ein Mitglied angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		const userdata: any = await this.client.findOrCreateUser(member.user.id);
 		userdata.partner = {
-			state: true
+			state: true,
 		};
 		userdata.markModified("partner");
 		await userdata.save();
@@ -73,7 +73,7 @@ export default class PartnersCommand extends BaseCommand {
 			"{0} wurde als Partner hinzugefügt.",
 			"success",
 			"success",
-			member.user.username
+			member.user.username,
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -84,7 +84,7 @@ export default class PartnersCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst ein Mitglied angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -94,13 +94,13 @@ export default class PartnersCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Dieses Mitglied ist kein Partner.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		userdata.partner = {
-			state: false
+			state: false,
 		};
 		userdata.markModified("partner");
 		await userdata.save();
@@ -109,7 +109,7 @@ export default class PartnersCommand extends BaseCommand {
 			"{0} wurde als Partner entfernt.",
 			"success",
 			"success",
-			member.user.username
+			member.user.username,
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -130,7 +130,7 @@ export default class PartnersCommand extends BaseCommand {
 			"arrow",
 			"normal",
 			this.client.emotes.shine2,
-			partners.join("\n" + this.client.emotes.shine2 + " ")
+			partners.join("\n" + this.client.emotes.shine2 + " "),
 		);
 
 		return this.message.reply({ embeds: [embed] });

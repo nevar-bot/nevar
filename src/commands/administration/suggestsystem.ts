@@ -8,7 +8,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 			name: "suggestsystem",
 			description: "Manages the server's idea system",
 			localizedDescriptions: {
-				de: "Verwaltet das Ideen-System des Servers"
+				de: "Verwaltet das Ideen-System des Servers",
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
@@ -20,49 +20,49 @@ export default class SuggestsystemCommand extends BaseCommand {
 						option
 							.setName("action")
 							.setNameLocalizations({
-								de: "aktion"
+								de: "aktion",
 							})
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								de: "Wähle aus den folgenden Aktionen"
+								de: "Wähle aus den folgenden Aktionen",
 							})
 							.setRequired(true)
 							.addChoices(
 								{
 									name: "enable",
 									name_localizations: {
-										de: "aktivieren"
+										de: "aktivieren",
 									},
-									value: "enable"
+									value: "enable",
 								},
 								{
 									name: "disable",
 									name_localizations: {
-										de: "deaktivieren"
+										de: "deaktivieren",
 									},
-									value: "disable"
+									value: "disable",
 								},
 								{
 									name: "channel",
-									value: "channel"
+									value: "channel",
 								},
 								{
 									name: "reviewchannel",
-									value: "reviewchannel"
-								}
-							)
+									value: "reviewchannel",
+								},
+							),
 					)
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
 							.setDescription("Choose a channel")
 							.setDescriptionLocalizations({
-								de: "Wähle einen Channel"
+								de: "Wähle einen Channel",
 							})
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
-							.setRequired(false)
-					)
-			}
+							.setRequired(false),
+					),
+			},
 		});
 	}
 
@@ -92,7 +92,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 			const isAlreadyEnabled: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:alreadyEnabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [isAlreadyEnabled] });
 		}
@@ -100,11 +100,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.suggestions.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("enabled"),
-			"success",
-			"success"
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("enabled"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -113,7 +109,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 			const isAlreadyDisabled: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:alreadyDisabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [isAlreadyDisabled] });
 		}
@@ -121,11 +117,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.suggestions.enabled");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("disabled"),
-			"success",
-			"success"
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("disabled"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -134,7 +126,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannel", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -145,7 +137,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("channelSet", { channel: channel.toString() }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -155,7 +147,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannel", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -166,7 +158,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("reviewChannelSet", { channel: channel.toString() }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}

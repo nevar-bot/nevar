@@ -17,25 +17,21 @@ export default class {
 		if (channel.topic) properties.push(this.client.emotes.quotes + " Thema: " + channel.topic);
 		if (channel.nsfw)
 			properties.push(
-				this.client.emotes.underage +
-					" Altersbegrenzung: " +
-					(channel.nsfw ? "aktiviert" : "deaktiviert")
+				this.client.emotes.underage + " Altersbegrenzung: " + (channel.nsfw ? "aktiviert" : "deaktiviert"),
 			);
 		if (channel.bitrate)
-			properties.push(
-				this.client.emotes.latency.good + " Bitrate: " + channel.bitrate / 1000 + "kbps"
-			);
+			properties.push(this.client.emotes.latency.good + " Bitrate: " + channel.bitrate / 1000 + "kbps");
 		if (channel.userLimit)
 			properties.push(
 				this.client.emotes.users +
 					" Userlimit: " +
-					(channel.userLimit === 0 ? "unbegrenzt" : channel.userLimit)
+					(channel.userLimit === 0 ? "unbegrenzt" : channel.userLimit),
 			);
 		if (channel.videoQualityMode)
 			properties.push(
 				this.client.emotes.monitor +
 					" Videoqualität: " +
-					(channel.videoQualityMode === 1 ? "automatisch" : "720p")
+					(channel.videoQualityMode === 1 ? "automatisch" : "720p"),
 			);
 		if (properties.length < 1) return;
 
@@ -61,16 +57,9 @@ export default class {
 			}
 		}
 
-		const channelLogEmbed: EmbedBuilder = this.client.createEmbed(
-			channelLogMessage,
-			null,
-			"success"
-		);
+		const channelLogEmbed: EmbedBuilder = this.client.createEmbed(channelLogMessage, null, "success");
 		channelLogEmbed.setTitle(
-			this.client.emotes.events.channel.create +
-				" " +
-				this.client.channelTypes[channel.type] +
-				" erstellt"
+			this.client.emotes.events.channel.create + " " + this.client.channelTypes[channel.type] + " erstellt",
 		);
 		channelLogEmbed.setThumbnail(guild.iconURL());
 

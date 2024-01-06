@@ -17,9 +17,9 @@ export default class TimestampCommand extends BaseCommand {
 						option
 							.setName("datum")
 							.setDescription(
-								"Gib hier das Datum im deutschen Format an (Datum & Zeit, nur Datum oder nur Zeit)"
+								"Gib hier das Datum im deutschen Format an (Datum & Zeit, nur Datum oder nur Zeit)",
 							)
-							.setRequired(true)
+							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
@@ -29,35 +29,35 @@ export default class TimestampCommand extends BaseCommand {
 							.addChoices(
 								{
 									name: "Kurze Zeit (bspw. 17:30)",
-									value: "t"
+									value: "t",
 								},
 								{
 									name: "Lange Zeit (bspw. 17:30:12)",
-									value: "T"
+									value: "T",
 								},
 								{
 									name: "Kurzes Datum (bspw. 01.01.2023)",
-									value: "d"
+									value: "d",
 								},
 								{
 									name: "Langes Datum (bspw. 01. Januar 2023)",
-									value: "D"
+									value: "D",
 								},
 								{
 									name: "Kurzes Datum und kurze Zeit (bspw. 01.01.2023 17:30)",
-									value: "f"
+									value: "f",
 								},
 								{
 									name: "Langes Datum und lange Zeit (bspw. 01. Januar 2023 17:30)",
-									value: "F"
+									value: "F",
 								},
 								{
 									name: "Relative Zeit (bspw. vor 5 Minuten)",
-									value: "R"
-								}
-							)
-					)
-			}
+									value: "R",
+								},
+							),
+					),
+			},
 		});
 	}
 
@@ -65,10 +65,7 @@ export default class TimestampCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.createTimestamp(
-			interaction.options.getString("datum"),
-			interaction.options.getString("format")
-		);
+		await this.createTimestamp(interaction.options.getString("datum"), interaction.options.getString("format"));
 	}
 
 	private async createTimestamp(date: string, type: string): Promise<void> {
@@ -77,7 +74,7 @@ export default class TimestampCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du hast kein gültiges Datum angegeben! Dieses muss aus einem Datum und einer Uhrzeit, nur einem Datum oder nur einer Uhrzeit bestehen.",
 				"error",
-				"normal"
+				"normal",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -90,7 +87,7 @@ export default class TimestampCommand extends BaseCommand {
 			this.client.emotes.calendar,
 			timestamp,
 			this.client.emotes.text,
-			rawTimestamp
+			rawTimestamp,
 		);
 
 		const custom_id: string = "timestamp_copy" + Date.now();
@@ -98,17 +95,17 @@ export default class TimestampCommand extends BaseCommand {
 			custom_id,
 			"Zeitstempel kopieren",
 			"Secondary",
-			"text"
+			"text",
 		);
 		const row: any = this.client.createMessageComponentsRow(copyButton);
 		await this.interaction.followUp({
 			embeds: [timestampEmbed],
-			components: [row]
+			components: [row],
 		});
 
 		const filter: any = (i: any): boolean => i.customId === custom_id;
 		const collector: any = this.interaction.channel.createMessageComponentCollector({
-			filter
+			filter,
 		});
 		collector.on("collect", async (i: any): Promise<void> => {
 			await i.deferUpdate();

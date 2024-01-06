@@ -6,7 +6,7 @@ const Schema = new mongoose.Schema({
 	guildID: { type: String },
 	xp: { type: Number, default: 0 },
 	level: { type: Number, default: 0 },
-	lastUpdated: { type: Number, default: new Date() }
+	lastUpdated: { type: Number, default: new Date() },
 });
 
 const Levels: Model<any> = mongoose.model("Levels", Schema);

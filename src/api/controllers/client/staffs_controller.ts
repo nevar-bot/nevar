@@ -16,14 +16,11 @@ export async function get(req: Request, res: Response) {
 			displayName: user.displayName,
 			avatar: user.displayAvatarURL(),
 			id: user.id,
-			role: "Head-Staff"
+			role: "Head-Staff",
 		});
 	}
 
-	const staffsData: any = await mongoose.connection.db
-		.collection("users")
-		.find({ "staff.state": true })
-		.toArray();
+	const staffsData: any = await mongoose.connection.db.collection("users").find({ "staff.state": true }).toArray();
 
 	for (const staffData of staffsData) {
 		const user: any = await client.users.fetch(staffData.id).catch(() => {});
@@ -34,7 +31,7 @@ export async function get(req: Request, res: Response) {
 			displayName: user.displayName,
 			avatar: user.displayAvatarURL(),
 			id: user.id,
-			role: staffData.staff.role === "head-staff" ? "Head-Staff" : "Staff"
+			role: staffData.staff.role === "head-staff" ? "Head-Staff" : "Staff",
 		};
 
 		if (staffData.staff.role === "head-staff") headStaffs.push(staffToPush);
@@ -48,8 +45,8 @@ export async function get(req: Request, res: Response) {
 		status_message: null,
 		res: {
 			staff_count: staffs.length,
-			staffs
-		}
+			staffs,
+		},
 	};
 	res.setHeader("Content-Type", "application/json");
 	return res.end(JSON.stringify(json, null, 4));

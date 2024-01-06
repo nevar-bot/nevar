@@ -12,8 +12,8 @@ export default class UpdateinteractionsCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -31,14 +31,14 @@ export default class UpdateinteractionsCommand extends BaseCommand {
 				"{0} Slash-Commands und Kontext-Menüs wurden aktualisiert.",
 				"slashcommand",
 				"success",
-				res.interactionsRegistered
+				res.interactionsRegistered,
 			);
 			return this.message.reply({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				"Beim Aktualisieren der Slash-Commands und Kontext-Menüs ist ein Fehler aufgetreten.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [errorEmbed] });
 		}

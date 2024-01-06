@@ -43,5 +43,5 @@ export const permissions = {
 	ViewAuditLog: "Audit-Log einsehen",
 	ViewChannel: "Channel anzeigen",
 	ViewCreatorMonetizationAnalytics: "Creator-Monetarisierungsanalyse anzeigen",
-	ViewGuildInsights: "Server-Einblicke anzeigen"
+	ViewGuildInsights: "Server-Einblicke anzeigen",
 };

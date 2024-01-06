@@ -12,8 +12,8 @@ export default class PullCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -25,13 +25,9 @@ export default class PullCommand extends BaseCommand {
 	}
 
 	private async update(): Promise<void> {
-		const updateEmbed: EmbedBuilder = this.client.createEmbed(
-			"Starte Aktualisierung...",
-			"warning",
-			"warning"
-		);
+		const updateEmbed: EmbedBuilder = this.client.createEmbed("Starte Aktualisierung...", "warning", "warning");
 		const repliedMessage = await this.message.reply({
-			embeds: [updateEmbed]
+			embeds: [updateEmbed],
 		});
 
 		exec("git pull", (err: any, stdout: string, stderr: string): void => {
@@ -39,7 +35,7 @@ export default class PullCommand extends BaseCommand {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``,
 					"error",
-					"error"
+					"error",
 				);
 				return repliedMessage.edit({ embeds: [errorEmbed] });
 			}
@@ -48,7 +44,7 @@ export default class PullCommand extends BaseCommand {
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(
 						`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``,
 						"error",
-						"error"
+						"error",
 					);
 					return repliedMessage.edit({ embeds: [errorEmbed] });
 				}
@@ -56,7 +52,7 @@ export default class PullCommand extends BaseCommand {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				"Aktualisierung erfolgreich, starte neu...",
 				"success",
-				"success"
+				"success",
 			);
 			repliedMessage.edit({ embeds: [successEmbed] }).then((): void => {
 				process.exit(1);

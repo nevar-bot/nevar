@@ -13,18 +13,12 @@ export default class SuggestCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
-						option
-							.setName("idee")
-							.setDescription("Gib deine Idee ein")
-							.setRequired(true)
+						option.setName("idee").setDescription("Gib deine Idee ein").setRequired(true),
 					)
 					.addAttachmentOption((option: any) =>
-						option
-							.setName("bild")
-							.setDescription("Füge ggf. ein Bild hinzu")
-							.setRequired(false)
-					)
-			}
+						option.setName("bild").setDescription("Füge ggf. ein Bild hinzu").setRequired(false),
+					),
+			},
 		});
 	}
 
@@ -32,11 +26,7 @@ export default class SuggestCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.suggest(
-			interaction.options.getString("idee"),
-			interaction.options.getAttachment("bild"),
-			data
-		);
+		await this.suggest(interaction.options.getString("idee"), interaction.options.getAttachment("bild"), data);
 	}
 
 	private async suggest(idea: string, image: any, data: any): Promise<any> {
@@ -44,22 +34,20 @@ export default class SuggestCommand extends BaseCommand {
 			const isNotEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				"Da das Ideen-System nicht aktiviert ist, können keine Ideen eingereicht werden.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [isNotEnabledEmbed] });
 		}
 
-		const channel: any = this.client.channels.cache.get(
-			data.guild.settings.suggestions.channel
-		);
+		const channel: any = this.client.channels.cache.get(data.guild.settings.suggestions.channel);
 		if (!channel) {
 			const channelNotFoundEmbed: EmbedBuilder = this.client.createEmbed(
 				"Der Ideen-Channel wurde nicht gefunden.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({
-				embeds: [channelNotFoundEmbed]
+				embeds: [channelNotFoundEmbed],
 			});
 		}
 
@@ -67,7 +55,7 @@ export default class SuggestCommand extends BaseCommand {
 			const notAnImageEmbed: EmbedBuilder = this.client.createEmbed(
 				"Die angehängte Datei muss ein Bild sein.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [notAnImageEmbed] });
 		}
@@ -76,16 +64,9 @@ export default class SuggestCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			"Deine Idee wurde eingereicht.",
 			"success",
-			"success"
+			"success",
 		);
 		await this.interaction.followUp({ embeds: [successEmbed] });
-		return this.client.emit(
-			"SuggestionSubmitted",
-			this.interaction,
-			data,
-			this.interaction.guild,
-			idea,
-			url
-		);
+		return this.client.emit("SuggestionSubmitted", this.interaction, data, this.interaction.guild, idea, url);
 	}
 }

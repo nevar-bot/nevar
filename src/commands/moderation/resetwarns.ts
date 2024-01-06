@@ -13,12 +13,9 @@ export default class ResetwarnsCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option
-						.setName("mitglied")
-						.setDescription("Wähle ein Mitglied")
-						.setRequired(true)
-				)
-			}
+					option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true),
+				),
+			},
 		});
 	}
 
@@ -30,14 +27,11 @@ export default class ResetwarnsCommand extends BaseCommand {
 	}
 
 	private async resetWarns(user: any): Promise<void> {
-		const memberData: any = await this.client.findOrCreateMember(
-			user.id,
-			this.interaction.guild.id
-		);
+		const memberData: any = await this.client.findOrCreateMember(user.id, this.interaction.guild.id);
 
 		memberData.warnings = {
 			count: 0,
-			list: []
+			list: [],
 		};
 		memberData.markModified("warnings");
 		await memberData.save();
@@ -59,7 +53,7 @@ export default class ResetwarnsCommand extends BaseCommand {
 			"Die Verwarnungen von {0} wurden zurückgesetzt.",
 			"success",
 			"success",
-			user.username
+			user.username,
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}

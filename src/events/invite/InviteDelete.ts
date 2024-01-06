@@ -53,11 +53,7 @@ export default class {
 			}
 		}
 
-		const inviteDeleteEmbed: EmbedBuilder = this.client.createEmbed(
-			inviteDeleteText,
-			null,
-			"error"
-		);
+		const inviteDeleteEmbed: EmbedBuilder = this.client.createEmbed(inviteDeleteText, null, "error");
 		inviteDeleteEmbed.setTitle(this.client.emotes.invite + " Einladung gelöscht");
 		inviteDeleteEmbed.setThumbnail(guild.iconURL());
 

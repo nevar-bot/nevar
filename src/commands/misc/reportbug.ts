@@ -13,12 +13,9 @@ export default class ReportbugCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option
-						.setName("beschreibung")
-						.setDescription("Beschreibe den Fehler")
-						.setRequired(true)
-				)
-			}
+					option.setName("beschreibung").setDescription("Beschreibe den Fehler").setRequired(true),
+				),
+			},
 		});
 	}
 
@@ -37,7 +34,7 @@ export default class ReportbugCommand extends BaseCommand {
 			"{0} Danke für deine Meldung! Wir werden uns so schnell wie möglich darum kümmern.",
 			null,
 			"success",
-			this.client.emotes.flags.BugHunterLevel1
+			this.client.emotes.flags.BugHunterLevel1,
 		);
 		successEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 		await this.interaction.followUp({ embeds: [successEmbed] });
@@ -48,15 +45,13 @@ export default class ReportbugCommand extends BaseCommand {
 			"warning",
 			this.interaction.user.username,
 			this.interaction.user.id,
-			bug
+			bug,
 		);
 		supportEmbed.setFooter({
-			text: "Server-ID: " + this.interaction.guild.id + " | " + date
+			text: "Server-ID: " + this.interaction.guild.id + " | " + date,
 		});
 
-		const errorLogChannel: any = await supportGuild.channels.fetch(
-			this.client.config.support["ERROR_LOG"]
-		);
+		const errorLogChannel: any = await supportGuild.channels.fetch(this.client.config.support["ERROR_LOG"]);
 		if (!errorLogChannel) return;
 
 		return errorLogChannel.send({ embeds: [supportEmbed] });

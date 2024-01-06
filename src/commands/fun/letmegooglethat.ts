@@ -8,7 +8,7 @@ export default class LetmegooglethatCommand extends BaseCommand {
 			name: "letmegooglethat",
 			description: "Performs a Google search for users who are not able to do so.",
 			localizedDescriptions: {
-				de: "Führt eine Google-Suche durch für Nutzer/-innen welche dazu nicht in der Lage sind"
+				de: "Führt eine Google-Suche durch für Nutzer/-innen welche dazu nicht in der Lage sind",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -20,33 +20,30 @@ export default class LetmegooglethatCommand extends BaseCommand {
 							.setName("text")
 							.setDescription("Enter your search query")
 							.setDescriptionLocalizations({
-								de: "Gib deine Suchanfrage ein"
+								de: "Gib deine Suchanfrage ein",
 							})
-							.setRequired(true)
+							.setRequired(true),
 					)
 					.addUserOption((option: any) =>
 						option
 							.setName("user")
 							.setNameLocalizations({
-								de: "nutzer"
+								de: "nutzer",
 							})
 							.setDescription("Choose for whom you want to perform the search query")
 							.setDescriptionLocalizations({
-								de: "Wähle für wen du die Suchanfrage durchführen möchtest"
+								de: "Wähle für wen du die Suchanfrage durchführen möchtest",
 							})
-							.setRequired(false)
-					)
-			}
+							.setRequired(false),
+					),
+			},
 		});
 	}
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		return this.googleThat(
-			interaction.options.getString("text"),
-			interaction.options.getUser("user")
-		);
+		return this.googleThat(interaction.options.getString("text"), interaction.options.getUser("user"));
 	}
 
 	private async googleThat(text: string, user: any = null): Promise<void> {
@@ -59,7 +56,7 @@ export default class LetmegooglethatCommand extends BaseCommand {
 			"search",
 			"normal",
 			text,
-			searchUrl
+			searchUrl,
 		);
 		return this.interaction.followUp({ embeds: [letMeGoogleThatEmbed] });
 	}

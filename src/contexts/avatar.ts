@@ -7,7 +7,7 @@ export default class AvatarContext extends BaseContext {
 		super(client, {
 			name: "avatar",
 			type: ApplicationCommandType.User,
-			cooldown: 3 * 1000
+			cooldown: 3 * 1000,
 		});
 	}
 
@@ -20,27 +20,27 @@ export default class AvatarContext extends BaseContext {
 	private async showAvatar(user: any): Promise<any> {
 		const x64: string = user.displayAvatarURL({
 			extension: "png",
-			size: 64
+			size: 64,
 		});
 		const x128: string = user.displayAvatarURL({
 			extension: "png",
-			size: 128
+			size: 128,
 		});
 		const x256: string = user.displayAvatarURL({
 			extension: "png",
-			size: 256
+			size: 256,
 		});
 		const x512: string = user.displayAvatarURL({
 			extension: "png",
-			size: 512
+			size: 512,
 		});
 		const x1024: string = user.displayAvatarURL({
 			extension: "png",
-			size: 1024
+			size: 1024,
 		});
 		const x2048: string = user.displayAvatarURL({
 			extension: "png",
-			size: 2048
+			size: 2048,
 		});
 
 		const avatarEmbed: EmbedBuilder = this.client.createEmbed(
@@ -53,7 +53,7 @@ export default class AvatarContext extends BaseContext {
 			x256,
 			x512,
 			x1024,
-			x2048
+			x2048,
 		);
 		avatarEmbed.setTitle(this.translate("misc/avatar:title", { user: user.displayName }));
 		avatarEmbed.setImage(x256);

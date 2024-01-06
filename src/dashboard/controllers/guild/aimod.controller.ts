@@ -30,11 +30,7 @@ export default {
 
 		/* user is not authorized to view this guild */
 		const guilds: any = await UserController.getGuilds(access_token);
-		if (
-			!(await AuthController.isAuthorizedInGuild(
-				guilds.find((guild: any): boolean => guild.id === guildId)
-			))
-		) {
+		if (!(await AuthController.isAuthorizedInGuild(guilds.find((guild: any): boolean => guild.id === guildId)))) {
 			return ErrorController.render401(res, user);
 		}
 
@@ -53,7 +49,7 @@ export default {
 			avatarUrl: UserController.getAvatarURL(user),
 
 			/* extra data */
-			saved: dataSaved
+			saved: dataSaved,
 		});
 	},
 
@@ -77,11 +73,7 @@ export default {
 
 		/* user is not authorized to view this guild */
 		const guilds: any = await UserController.getGuilds(access_token);
-		if (
-			!(await AuthController.isAuthorizedInGuild(
-				guilds.find((guild: any): boolean => guild.id === guildId)
-			))
-		) {
+		if (!(await AuthController.isAuthorizedInGuild(guilds.find((guild: any): boolean => guild.id === guildId)))) {
 			return ErrorController.render401(res, user);
 		}
 
@@ -114,7 +106,7 @@ export default {
 			excludedChannels: excludedChannels,
 			excludedRoles: excludedRoles,
 			threshold: parseFloat(req.body.threshold),
-			alertChannel: req.body.alertChannel
+			alertChannel: req.body.alertChannel,
 		};
 
 		/* save guild data */
@@ -128,5 +120,5 @@ export default {
 
 		/* redirect */
 		res.status(200).redirect("/dashboard/" + req.params.guildId + "/aimod");
-	}
+	},
 };

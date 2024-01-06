@@ -8,7 +8,7 @@ export default class AvatarCommand extends BaseCommand {
 			name: "avatar",
 			description: "Sends the avatar of a user",
 			localizedDescriptions: {
-				de: "Sendet den Avatar eines/r Nutzers/-in"
+				de: "Sendet den Avatar eines/r Nutzers/-in",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -18,15 +18,15 @@ export default class AvatarCommand extends BaseCommand {
 					option
 						.setName("member")
 						.setNameLocalizations({
-							de: "mitglied"
+							de: "mitglied",
 						})
 						.setDescription("Choose a member")
 						.setDescriptionLocalizations({
-							de: "Wähle ein Mitglied"
+							de: "Wähle ein Mitglied",
 						})
-						.setRequired(false)
-				)
-			}
+						.setRequired(false),
+				),
+			},
 		});
 	}
 
@@ -56,7 +56,7 @@ export default class AvatarCommand extends BaseCommand {
 			x256,
 			x512,
 			x1024,
-			x2048
+			x2048,
 		);
 		avatarEmbed.setTitle(this.translate("title", { user: user.displayName }));
 		avatarEmbed.setImage(x256);

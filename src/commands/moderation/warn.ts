@@ -17,15 +17,12 @@ export default class WarnCommand extends BaseCommand {
 						option
 							.setName("mitglied")
 							.setDescription("Wähle ein Mitglied, welches du verwarnen möchtest")
-							.setRequired(true)
+							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
-						option
-							.setName("grund")
-							.setDescription("Gib ggf. einen Grund an")
-							.setRequired(false)
-					)
-			}
+						option.setName("grund").setDescription("Gib ggf. einen Grund an").setRequired(false),
+					),
+			},
 		});
 	}
 
@@ -33,10 +30,7 @@ export default class WarnCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.warnMember(
-			interaction.options.getUser("mitglied"),
-			interaction.options.getString("grund")
-		);
+		await this.warnMember(interaction.options.getUser("mitglied"), interaction.options.getString("grund"));
 	}
 
 	private async warnMember(user: any, reason: string): Promise<void> {
@@ -46,7 +40,7 @@ export default class WarnCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst ein Mitglied angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -54,7 +48,7 @@ export default class WarnCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Ich kann mich nicht selber verwarnen.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -62,7 +56,7 @@ export default class WarnCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst dich nicht selber verwarnen.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -70,21 +64,18 @@ export default class WarnCommand extends BaseCommand {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst keine Mitglieder verwarnen, die eine höhere Rolle haben als du.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [higherRoleEmbed] });
 		}
 
-		const victimData: any = await this.client.findOrCreateMember(
-			member.user.id,
-			this.interaction.guild.id
-		);
+		const victimData: any = await this.client.findOrCreateMember(member.user.id, this.interaction.guild.id);
 
 		victimData.warnings.count++;
 		victimData.warnings.list.push({
 			date: Date.now(),
 			moderator: this.interaction.member.user.username,
-			reason: reason
+			reason: reason,
 		});
 		victimData.markModified("warnings");
 		await victimData.save();

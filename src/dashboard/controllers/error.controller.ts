@@ -13,7 +13,7 @@ export default {
 			guild: null,
 			guildData: null,
 			user: user,
-			avatarUrl: UserController.getAvatarURL(user)
+			avatarUrl: UserController.getAvatarURL(user),
 		});
 	},
 
@@ -26,7 +26,7 @@ export default {
 			guild: null,
 			guildData: null,
 			user: user,
-			avatarUrl: UserController.getAvatarURL(user)
+			avatarUrl: UserController.getAvatarURL(user),
 		});
-	}
+	},
 };

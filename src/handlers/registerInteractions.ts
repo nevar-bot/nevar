@@ -3,7 +3,7 @@ import {
 	REST,
 	Routes,
 	ContextMenuCommandBuilder,
-	SlashCommandSubcommandBuilder
+	SlashCommandSubcommandBuilder,
 } from "discord.js";
 
 async function registerInteractions(client: any): Promise<any> {
@@ -15,8 +15,7 @@ async function registerInteractions(client: any): Promise<any> {
 	/* Slash commands */
 	for (const command of client.commands) {
 		const commandData: any = command[1];
-		if (!commandData || !commandData.slashCommand || !commandData.slashCommand.addCommand)
-			continue;
+		if (!commandData || !commandData.slashCommand || !commandData.slashCommand.addCommand) continue;
 		const slashData = commandData.slashCommand.data;
 		if (!slashData) continue;
 
@@ -65,7 +64,7 @@ async function registerInteractions(client: any): Promise<any> {
 	const response: any = {
 		success: false,
 		interactionsRegistered: 0,
-		callback: null
+		callback: null,
 	};
 
 	await rest
@@ -78,12 +77,7 @@ async function registerInteractions(client: any): Promise<any> {
 		.catch(async (e: any) => {
 			response.callback = e;
 			client.logger.error("Error while registering interactions", e);
-			client.alertException(
-				e,
-				null,
-				null,
-				"await <REST>.put(<Routes>.applicationCommands())"
-			);
+			client.alertException(e, null, null, "await <REST>.put(<Routes>.applicationCommands())");
 		});
 
 	return response;

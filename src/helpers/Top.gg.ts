@@ -10,5 +10,5 @@ export default {
 		) {
 			AutoPoster(client.config.apikeys["TOP_GG"], client);
 		}
-	}
+	},
 };

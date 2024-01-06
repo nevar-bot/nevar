@@ -62,9 +62,7 @@ export default class {
 				const supportGuild: Guild = client.guilds.cache.get(config.support["ID"]);
 				let serverChannel: any, voteChannel: any, userChannel: any;
 				if (config.channels["SERVER_COUNT_ID"])
-					serverChannel = supportGuild.channels.cache.get(
-						config.channels["SERVER_COUNT_ID"]
-					);
+					serverChannel = supportGuild.channels.cache.get(config.channels["SERVER_COUNT_ID"]);
 				if (config.channels["VOTE_COUNT_ID"])
 					voteChannel = supportGuild.channels.cache.get(config.channels["VOTE_COUNT_ID"]);
 				if (config.channels["USER_COUNT_ID"])
@@ -72,10 +70,7 @@ export default class {
 
 				if (serverChannel)
 					serverChannel.setName(
-						config.channels["SERVER_COUNT_NAME"].replace(
-							"{count}",
-							client.guilds.cache.size
-						)
+						config.channels["SERVER_COUNT_NAME"].replace("{count}", client.guilds.cache.size),
 					);
 				if (userChannel)
 					userChannel.setName(
@@ -83,19 +78,18 @@ export default class {
 							"{count}",
 							client.format(
 								client.guilds.cache.reduce(
-									(sum: any, guild: any) =>
-										sum + (guild.available ? guild.memberCount : 0),
-									0
-								)
-							)
-						)
+									(sum: any, guild: any) => sum + (guild.available ? guild.memberCount : 0),
+									0,
+								),
+							),
+						),
 					);
 
 				const votes: any = JSON.parse(fs.readFileSync("./assets/votes.json").toString());
 
 				const date: Date = new Date();
 				let month: string = date.toLocaleString("de-DE", {
-					month: "long"
+					month: "long",
 				});
 				month = month.charAt(0).toUpperCase() + month.slice(1);
 
@@ -105,7 +99,7 @@ export default class {
 					voteChannel.setName(
 						config.channels["VOTE_COUNT_NAME"]
 							.replace("{count}", client.format(votes[voteMonth.toLowerCase()] || 0))
-							.replace("{month}", month)
+							.replace("{month}", month),
 					);
 				}
 			}, 120 * 1000);
@@ -119,20 +113,15 @@ export default class {
 					client.invites.set(
 						guild.id,
 						new Collection(
-							invites.map((invite) => [
-								invite.code,
-								{ uses: invite.uses, inviterId: invite.inviterId }
-							])
-						)
+							invites.map((invite) => [invite.code, { uses: invite.uses, inviterId: invite.inviterId }]),
+						),
 					);
 				})
 				.catch((): void => {});
 		});
 
 		client.logger.log("Loaded " + client.guilds.cache.size + " guilds");
-		client.logger.success(
-			"Logged in as " + client.user.displayName + " (@" + client.user.username + ")"
-		);
+		client.logger.success("Logged in as " + client.user.displayName + " (@" + client.user.username + ")");
 
 		/* Register interactions, if bot is running on development mode */
 		if (process.argv.slice(2)[0] === "--dev") {

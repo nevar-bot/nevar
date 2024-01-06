@@ -20,5 +20,5 @@ export default {
 		const user: any = await UserController.getUser(access_token);
 
 		return ErrorController.render404(res, user);
-	}
+	},
 };

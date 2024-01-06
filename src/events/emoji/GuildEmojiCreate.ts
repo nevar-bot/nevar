@@ -14,13 +14,7 @@ export default class {
 		const { guild } = emoji;
 
 		let emojiLogMessage: string =
-			this.client.emotes.edit +
-			" Name: " +
-			emoji.name +
-			"\n" +
-			this.client.emotes.id +
-			" ID: " +
-			emoji.id;
+			this.client.emotes.edit + " Name: " + emoji.name + "\n" + this.client.emotes.id + " ID: " + emoji.id;
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent["EmojiCreate"], limit: 1 })
@@ -42,11 +36,7 @@ export default class {
 			}
 		}
 
-		const emojiLogEmbed: EmbedBuilder = this.client.createEmbed(
-			emojiLogMessage,
-			null,
-			"success"
-		);
+		const emojiLogEmbed: EmbedBuilder = this.client.createEmbed(emojiLogMessage, null, "success");
 		emojiLogEmbed.setTitle(this.client.emotes.events.emoji.create + " Emoji erstellt");
 		emojiLogEmbed.setThumbnail(emoji.url);
 

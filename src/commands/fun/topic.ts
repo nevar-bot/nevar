@@ -9,14 +9,14 @@ export default class TopicCommand extends BaseCommand {
 			name: "topic",
 			description: "Sends a random topic for conversation",
 			localizedDescriptions: {
-				de: "Sendet ein zufälliges Thema für eine Unterhaltung"
+				de: "Sendet ein zufälliges Thema für eine Unterhaltung",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -31,7 +31,7 @@ export default class TopicCommand extends BaseCommand {
 		const topics: any[] = Object.values(json);
 
 		return this.interaction.followUp({
-			content: topics[Math.floor(Math.random() * topics.length)]
+			content: topics[Math.floor(Math.random() * topics.length)],
 		});
 	}
 }

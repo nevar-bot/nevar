@@ -11,8 +11,8 @@ export default class ServericonCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -26,27 +26,27 @@ export default class ServericonCommand extends BaseCommand {
 	private async showServerIcon(): Promise<void> {
 		const x64: any = this.interaction.guild.iconURL({
 			extension: "png",
-			size: 64
+			size: 64,
 		});
 		const x128: any = this.interaction.guild.iconURL({
 			extension: "png",
-			size: 128
+			size: 128,
 		});
 		const x256: any = this.interaction.guild.iconURL({
 			extension: "png",
-			size: 256
+			size: 256,
 		});
 		const x512: any = this.interaction.guild.iconURL({
 			extension: "png",
-			size: 512
+			size: 512,
 		});
 		const x1024: any = this.interaction.guild.iconURL({
 			extension: "png",
-			size: 1024
+			size: 1024,
 		});
 		const x2048: any = this.interaction.guild.iconURL({
 			extension: "png",
-			size: 2048
+			size: 2048,
 		});
 
 		const avatarEmbed: EmbedBuilder = this.client.createEmbed(
@@ -58,7 +58,7 @@ export default class ServericonCommand extends BaseCommand {
 			x256,
 			x512,
 			x1024,
-			x2048
+			x2048,
 		);
 		avatarEmbed.setTitle("Icon von " + this.interaction.guild.name);
 		avatarEmbed.setImage(x256);

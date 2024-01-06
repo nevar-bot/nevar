@@ -15,12 +15,12 @@ const Schema = new mongoose.Schema(
 		hostedBy: String,
 		winnerIds: { type: [String], default: undefined },
 		exemptMembers: { type: [String], default: undefined },
-		conditions: { type: [String], default: undefined }
+		conditions: { type: [String], default: undefined },
 	},
 	{
 		id: false,
-		autoIndex: false
-	}
+		autoIndex: false,
+	},
 );
 
 const Giveaway: Model<any> = mongoose.model("Giveaway", Schema);

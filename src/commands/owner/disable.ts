@@ -12,8 +12,8 @@ export default class DisableCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -29,22 +29,20 @@ export default class DisableCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst einen Befehl angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
 
 		const command: any = this.client.commands.get(cmd);
 		if (command) {
-			const disabledCommands = JSON.parse(
-				fs.readFileSync("./assets/disabled.json").toString()
-			);
+			const disabledCommands = JSON.parse(fs.readFileSync("./assets/disabled.json").toString());
 
 			if (disabledCommands.includes(command.help.name)) {
 				const alreadyDisabledEmbed: EmbedBuilder = this.client.createEmbed(
 					"Der Befehl ist bereits deaktiviert.",
 					"error",
-					"error"
+					"error",
 				);
 				return this.message.reply({ embeds: [alreadyDisabledEmbed] });
 			}
@@ -54,7 +52,7 @@ export default class DisableCommand extends BaseCommand {
 			const disabledEmbed: EmbedBuilder = this.client.createEmbed(
 				"Der Befehl wurde deaktiviert.",
 				"success",
-				"success"
+				"success",
 			);
 			return this.message.reply({ embeds: [disabledEmbed] });
 		} else if (cmd.toLowerCase() === "list") {
@@ -65,14 +63,14 @@ export default class DisableCommand extends BaseCommand {
 				"success",
 				"normal",
 				this.client.emotes.arrow,
-				disabledCommands.join("\n" + this.client.emotes.arrow + " ")
+				disabledCommands.join("\n" + this.client.emotes.arrow + " "),
 			);
 			return this.message.reply({ embeds: [disabledListEmbed] });
 		} else {
 			const invalidCommandEmbed: EmbedBuilder = this.client.createEmbed(
 				"Der Befehl existiert nicht.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidCommandEmbed] });
 		}

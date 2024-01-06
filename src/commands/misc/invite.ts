@@ -8,14 +8,14 @@ export default class InviteCommand extends BaseCommand {
 			name: "invite",
 			description: "Lists all links that might interest you",
 			localizedDescriptions: {
-				de: "Listet alle Links auf, die dich interessieren könnten"
+				de: "Listet alle Links auf, die dich interessieren könnten",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -33,7 +33,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.growth_up,
 			false,
-			this.client.createInvite()
+			this.client.createInvite(),
 		);
 		const supportButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -41,7 +41,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.discord,
 			false,
-			this.client.config.support["INVITE"]
+			this.client.config.support["INVITE"],
 		);
 		const websiteButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -49,7 +49,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.text,
 			false,
-			this.client.config.general["WEBSITE"]
+			this.client.config.general["WEBSITE"],
 		);
 		const dashboardButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -57,13 +57,13 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.settings,
 			false,
-			"https://cp.nevar.eu"
+			"https://cp.nevar.eu",
 		);
 		const buttonRow: any = this.client.createMessageComponentsRow(
 			inviteButton,
 			supportButton,
 			websiteButton,
-			dashboardButton
+			dashboardButton,
 		); // test
 
 		// Second row
@@ -73,7 +73,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.socials.x,
 			false,
-			"https://x.com/nevar_eu"
+			"https://x.com/nevar_eu",
 		);
 		const instagramButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -81,7 +81,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.socials.instagram,
 			false,
-			"https://www.instagram.com/nevar_eu/"
+			"https://www.instagram.com/nevar_eu/",
 		);
 		const githubButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -89,7 +89,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.socials.github,
 			false,
-			"https://github.com/nevar-bot"
+			"https://github.com/nevar-bot",
 		);
 		const voteButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -97,14 +97,14 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.topgg,
 			false,
-			"https://top.gg/" + this.client.user!.id + "/vote"
+			"https://top.gg/" + this.client.user!.id + "/vote",
 		);
 
 		const buttonRow2: any = this.client.createMessageComponentsRow(
 			voteButton,
 			xButton,
 			instagramButton,
-			githubButton
+			githubButton,
 		);
 
 		const text: string = "### " + this.client.emotes.discover + " " + this.translate("text");
@@ -113,7 +113,7 @@ export default class InviteCommand extends BaseCommand {
 
 		return this.interaction.followUp({
 			embeds: [linksEmbed],
-			components: [buttonRow, buttonRow2]
+			components: [buttonRow, buttonRow2],
 		});
 	}
 }

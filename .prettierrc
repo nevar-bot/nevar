@@ -1,10 +1,12 @@
 {
-  "semi": true,
-  "trailingComma": "none",
-  "singleQuote": false,
-  "printWidth": 100,
-  "useTabs": true,
+  "printWidth": 120,
   "tabWidth": 4,
+  "useTabs": true,
+  "semi": true,
+  "singleQuote": false,
+  "quoteProps": "consistent",
+  "trailingComma": "all",
   "bracketSpacing": true,
+  "arrowParens": "always",
   "insertPragma": false
 }

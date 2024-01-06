@@ -8,7 +8,7 @@ export default class EmbedCommand extends BaseCommand {
 			name: "embed",
 			description: "Allows you to send a customized embed",
 			localizedDescriptions: {
-				de: "Ermöglicht das Senden eines angepassten Embeds"
+				de: "Ermöglicht das Senden eines angepassten Embeds",
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["ManageWebhooks"],
@@ -21,99 +21,99 @@ export default class EmbedCommand extends BaseCommand {
 						option
 							.setName("author")
 							.setNameLocalizations({
-								de: "autor"
+								de: "autor",
 							})
 							.setDescription("Enter the name of the author")
 							.setDescriptionLocalizations({
-								de: "Gib den Namen des Autors ein"
+								de: "Gib den Namen des Autors ein",
 							})
-							.setRequired(true)
+							.setRequired(true),
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("icon")
 							.setDescription("Choose the avatar of the author")
 							.setDescriptionLocalizations({
-								de: "Wähle den Avatar des Autors"
+								de: "Wähle den Avatar des Autors",
 							})
-							.setRequired(false)
+							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("title")
 							.setNameLocalizations({
-								de: "titel"
+								de: "titel",
 							})
 							.setDescription("Enter the title of the embed")
 							.setDescriptionLocalizations({
-								de: "Gib den Titel des Embeds ein"
+								de: "Gib den Titel des Embeds ein",
 							})
-							.setRequired(false)
+							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("description")
 							.setNameLocalizations({
-								de: "beschreibung"
+								de: "beschreibung",
 							})
 							.setDescription("Enter the description of the embed")
 							.setDescriptionLocalizations({
-								de: "Gib die Beschreibung des Embeds ein"
+								de: "Gib die Beschreibung des Embeds ein",
 							})
-							.setRequired(false)
+							.setRequired(false),
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("thumbnail")
 							.setDescription("Choose the thumbnail of the embed")
 							.setDescriptionLocalizations({
-								de: "Wähle das Thumbnail des Embeds"
+								de: "Wähle das Thumbnail des Embeds",
 							})
-							.setRequired(false)
+							.setRequired(false),
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("image")
 							.setNameLocalizations({
-								de: "bild"
+								de: "bild",
 							})
 							.setDescription("Choose the image of the embed")
 							.setDescriptionLocalizations({
-								de: "Wähle das Bild des Embeds"
+								de: "Wähle das Bild des Embeds",
 							})
-							.setRequired(false)
+							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("footertext")
 							.setDescription("Enter the text of the footer")
 							.setDescriptionLocalizations({
-								de: "Gib den Text des Footers ein"
+								de: "Gib den Text des Footers ein",
 							})
-							.setRequired(false)
+							.setRequired(false),
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("footericon")
 							.setDescription("Choose the icon of the footer")
 							.setDescriptionLocalizations({
-								de: "Wähle das Icon des Footers"
+								de: "Wähle das Icon des Footers",
 							})
-							.setRequired(false)
+							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("color")
 							.setNameLocalizations({
-								de: "farbe"
+								de: "farbe",
 							})
 							.setDescription("Enter the color of the embed in HEX format")
 							.setDescriptionLocalizations({
-								de: "Gib die Farbe des Embeds im HEX-Format ein"
+								de: "Gib die Farbe des Embeds im HEX-Format ein",
 							})
-							.setRequired(false)
-					)
-			}
+							.setRequired(false),
+					),
+			},
 		});
 	}
 
@@ -132,15 +132,13 @@ export default class EmbedCommand extends BaseCommand {
 		const image: any = this.interaction.options.getAttachment("image");
 		const footerText: string = this.interaction.options.getString("footertext");
 		const footerIcon: any = this.interaction.options.getAttachment("footericon");
-		const color: any =
-			this.interaction.options.getString("color") ||
-			this.client.config.embeds["DEFAULT_COLOR"];
+		const color: any = this.interaction.options.getString("color") || this.client.config.embeds["DEFAULT_COLOR"];
 
 		if (color && !this.client.utils.stringIsHexColor(color)) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:colorHasToBeHex"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -149,7 +147,7 @@ export default class EmbedCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:authorIconHasToBeImage"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -158,7 +156,7 @@ export default class EmbedCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:thumbnailHasToBeImage"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -167,7 +165,7 @@ export default class EmbedCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:imageHasToBeImage"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -176,7 +174,7 @@ export default class EmbedCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:footerIconHasToBeImage"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -186,7 +184,7 @@ export default class EmbedCommand extends BaseCommand {
 			.setAuthor({
 				name: author,
 				iconURL: authorIcon ? authorIcon.proxyURL : null,
-				url: this.client.config.general["WEBSITE"]
+				url: this.client.config.general["WEBSITE"],
 			})
 			.setTitle(title)
 			.setDescription(description)
@@ -194,42 +192,34 @@ export default class EmbedCommand extends BaseCommand {
 			.setImage(image ? image.proxyURL : null)
 			.setFooter({
 				text: footerText,
-				iconURL: footerIcon ? footerIcon.proxyURL : null
+				iconURL: footerIcon ? footerIcon.proxyURL : null,
 			})
 			.setColor(color);
 
 		const webhook = await this.interaction.channel
 			.createWebhook({
 				name: author,
-				avatar: authorIcon ? authorIcon.proxyURL : null
+				avatar: authorIcon ? authorIcon.proxyURL : null,
 			})
 			.catch((e: any): void => {});
 
 		if (webhook) {
 			webhook.send({ embeds: [embed] }).catch(() => {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate(
-						"basics:errors:unexpected",
-						{ support: this.client.support },
-						true
-					),
+					this.translate("basics:errors:unexpected", { support: this.client.support }, true),
 					"error",
-					"error"
+					"error",
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			});
 			webhook.delete().catch((e: any): void => {});
-			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("sent"),
-				"success",
-				"success"
-			);
+			const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("sent"), "success", "success");
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}

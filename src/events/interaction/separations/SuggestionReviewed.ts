@@ -1,11 +1,5 @@
 import BaseClient from "@structures/BaseClient";
-import {
-	ActionRowBuilder,
-	AnyComponentBuilder,
-	ModalBuilder,
-	TextInputBuilder,
-	TextInputStyle
-} from "discord.js";
+import { ActionRowBuilder, AnyComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 
 export default class {
 	private client: BaseClient;
@@ -21,9 +15,7 @@ export default class {
 		const type: string = customId[4];
 
 		/* Get channel */
-		const suggestionChannel: any = await guild.channels
-			.fetch(channelId)
-			.catch((e: any): void => {});
+		const suggestionChannel: any = await guild.channels.fetch(channelId).catch((e: any): void => {});
 		if (!suggestionChannel) return;
 
 		const { user } = interaction;
@@ -46,23 +38,20 @@ export default class {
 		/* Show modal */
 		await interaction.showModal(reasonModal);
 
-		const suggestionEmbed: any = await suggestionChannel.messages
-			.fetch(messageId)
-			.catch((e: any): void => {});
+		const suggestionEmbed: any = await suggestionChannel.messages.fetch(messageId).catch((e: any): void => {});
 		if (!suggestionEmbed) return interaction.deferUpdate();
 		const suggestionEmbedDescription: string = suggestionEmbed.embeds[0].description;
 		const suggestionEmbedTitle: string = suggestionEmbed.embeds[0].title;
 
 		const modalSubmitCollector: any = await interaction.awaitModalSubmit({
 			filter: (i: any) => i.user.id === user.id,
-			time: 3 * 60 * 1000
+			time: 3 * 60 * 1000,
 		});
 		if (modalSubmitCollector) {
 			const givenReason: string =
 				modalSubmitCollector.fields.getTextInputValue("reason") || "Kein Grund angegeben";
 
-			if (suggestionEmbed.author.id !== this.client.user!.id)
-				return modalSubmitCollector.deferUpdate();
+			if (suggestionEmbed.author.id !== this.client.user!.id) return modalSubmitCollector.deferUpdate();
 
 			const embedData: any = suggestionEmbed.embeds[0].data;
 

@@ -13,12 +13,9 @@ export default class UnmuteCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option
-						.setName("mitglied")
-						.setDescription("Wähle ein Mitglied")
-						.setRequired(true)
-				)
-			}
+					option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true),
+				),
+			},
 		});
 	}
 
@@ -36,41 +33,35 @@ export default class UnmuteCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst ein Mitglied angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
-		const memberData: any = await this.client.findOrCreateMember(
-			user.id,
-			this.interaction.guild.id
-		);
+		const memberData: any = await this.client.findOrCreateMember(user.id, this.interaction.guild.id);
 		if (!memberData.muted.state) {
 			const isNotMutedEmbed: EmbedBuilder = this.client.createEmbed(
 				"{0} ist nicht gemutet.",
 				"error",
 				"error",
-				user.username
+				user.username,
 			);
 			return this.interaction.followUp({ embeds: [isNotMutedEmbed] });
 		}
 
 		member.roles
-			.remove(
-				data.guild.settings.muterole,
-				"Vorzeitiger Unmute durch " + this.interaction.user.username
-			)
+			.remove(data.guild.settings.muterole, "Vorzeitiger Unmute durch " + this.interaction.user.username)
 			.catch((): void => {});
 		memberData.muted = {
 			state: false,
 			reason: null,
 			moderator: {
 				name: null,
-				id: null
+				id: null,
 			},
 			duration: null,
 			mutedAt: null,
-			mutedUntil: null
+			mutedUntil: null,
 		};
 		memberData.markModified("muted");
 		await memberData.save();
@@ -93,7 +84,7 @@ export default class UnmuteCommand extends BaseCommand {
 			"{0} wurde entmutet.",
 			"success",
 			"success",
-			user.username
+			user.username,
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}

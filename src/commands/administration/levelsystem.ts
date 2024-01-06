@@ -8,7 +8,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			name: "levelsystem",
 			description: "Manages the server's level system",
 			localizedDescriptions: {
-				de: "Verwaltet das Levelsystem des Servers"
+				de: "Verwaltet das Levelsystem des Servers",
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
@@ -19,11 +19,9 @@ export default class LevelsystemCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("status")
-							.setDescription(
-								"Determines whether the level system is enabled or disabled"
-							)
+							.setDescription("Determines whether the level system is enabled or disabled")
 							.setDescriptionLocalizations({
-								de: "Legt fest, ob das Levelsystem aktiviert oder deaktiviert ist"
+								de: "Legt fest, ob das Levelsystem aktiviert oder deaktiviert ist",
 							})
 							.addStringOption((option: any) =>
 								option
@@ -31,328 +29,314 @@ export default class LevelsystemCommand extends BaseCommand {
 									.setRequired(true)
 									.setDescription("Choose a status")
 									.setDescriptionLocalizations({
-										de: "Wähle einen Status"
+										de: "Wähle einen Status",
 									})
 									.addChoices(
 										{
 											name: "on",
 											name_localizations: {
-												de: "an"
+												de: "an",
 											},
-											value: "true"
+											value: "true",
 										},
 										{
 											name: "off",
 											name_localizations: {
-												de: "aus"
+												de: "aus",
 											},
-											value: "false"
-										}
-									)
-							)
+											value: "false",
+										},
+									),
+							),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("channel")
-							.setDescription(
-								"Determines in which channel level-up messages are sent"
-							)
+							.setDescription("Determines in which channel level-up messages are sent")
 							.setDescriptionLocalizations({
-								de: "Bestimmt in welchem Channel Level-Up Nachrichten gesendet werden"
+								de: "Bestimmt in welchem Channel Level-Up Nachrichten gesendet werden",
 							})
 							.addChannelOption((option: any) =>
 								option
 									.setName("channel")
-									.setDescription(
-										"Select a channel (if you want the current channel, leave empty)"
-									)
+									.setDescription("Select a channel (if you want the current channel, leave empty)")
 									.setDescriptionLocalizations({
-										de: "Wähle einen Channel (wenn jeweils aktueller Channel gewünscht, leer lassen)"
+										de: "Wähle einen Channel (wenn jeweils aktueller Channel gewünscht, leer lassen)",
 									})
 									.setRequired(false)
-									.addChannelTypes(
-										ChannelType.GuildText,
-										ChannelType.GuildAnnouncement
-									)
-							)
+									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement),
+							),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("message")
 							.setNameLocalizations({
-								de: "nachricht"
+								de: "nachricht",
 							})
 							.setDescription("Sets the level up message")
 							.setDescriptionLocalizations({
-								de: "Setzt die Level-Up Nachricht"
+								de: "Setzt die Level-Up Nachricht",
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("message")
 									.setNameLocalizations({
-										de: "nachricht"
+										de: "nachricht",
 									})
 									.setDescription("Set the message")
 									.setDescriptionLocalizations({
-										de: "Lege die Nachricht fest"
+										de: "Lege die Nachricht fest",
 									})
-									.setRequired(true)
-							)
+									.setRequired(true),
+							),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("roles")
 							.setNameLocalizations({
-								de: "rollen"
+								de: "rollen",
 							})
-							.setDescription(
-								"Defines roles that are assigned when a certain level is reached"
-							)
+							.setDescription("Defines roles that are assigned when a certain level is reached")
 							.setDescriptionLocalizations({
-								de: "Legt Rollen fest, die bei Erreichen eines bestimmten Levels vergeben werden"
+								de: "Legt Rollen fest, die bei Erreichen eines bestimmten Levels vergeben werden",
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
 									.setNameLocalizations({
-										de: "aktion"
+										de: "aktion",
 									})
 									.setDescription("Choose an action")
 									.setDescriptionLocalizations({
-										de: "Wähle eine Aktion"
+										de: "Wähle eine Aktion",
 									})
 									.setRequired(true)
 									.addChoices(
 										{
 											name: "add",
 											name_localizations: {
-												de: "hinzufügen"
+												de: "hinzufügen",
 											},
-											value: "add"
+											value: "add",
 										},
 										{
 											name: "remove",
 											name_localizations: {
-												de: "entfernen"
+												de: "entfernen",
 											},
-											value: "remove"
+											value: "remove",
 										},
 										{
 											name: "list",
 											name_localizations: {
-												de: "liste"
+												de: "liste",
 											},
-											value: "list"
-										}
-									)
+											value: "list",
+										},
+									),
 							)
 							.addRoleOption((option: any) =>
 								option
 									.setName("role")
 									.setNameLocalizations({
-										de: "rolle"
+										de: "rolle",
 									})
 									.setDescription("Choose a role")
 									.setDescriptionLocalizations({
-										de: "Wähle eine Rolle"
+										de: "Wähle eine Rolle",
 									})
-									.setRequired(false)
+									.setRequired(false),
 							)
 							.addIntegerOption((option: any) =>
 								option
 									.setName("level")
 									.setDescription("At what level the role is assigned")
 									.setDescriptionLocalizations({
-										de: "Bei welchem Level die Rolle vergeben wird"
+										de: "Bei welchem Level die Rolle vergeben wird",
 									})
 									.setRequired(false)
 									.setMinValue(1)
-									.setMaxValue(1000)
-							)
+									.setMaxValue(1000),
+							),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("doublexp")
 							.setNameLocalizations({
-								de: "doppelxp"
+								de: "doppelxp",
 							})
 							.setDescription("Determines which roles get double XP")
 							.setDescriptionLocalizations({
-								de: "Bestimmt, welche Rollen doppeltes XP bekommen"
+								de: "Bestimmt, welche Rollen doppeltes XP bekommen",
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
 									.setNameLocalizations({
-										de: "aktion"
+										de: "aktion",
 									})
 									.setDescription("Choose an action")
 									.setDescriptionLocalizations({
-										de: "Wähle eine Aktion"
+										de: "Wähle eine Aktion",
 									})
 									.setRequired(true)
 									.addChoices(
 										{
 											name: "add",
 											name_localizations: {
-												de: "hinzufügen"
+												de: "hinzufügen",
 											},
-											value: "add"
+											value: "add",
 										},
 										{
 											name: "remove",
 											name_localizations: {
-												de: "entfernen"
+												de: "entfernen",
 											},
-											value: "remove"
+											value: "remove",
 										},
 										{
 											name: "list",
 											name_localizations: {
-												de: "liste"
+												de: "liste",
 											},
-											value: "list"
-										}
-									)
+											value: "list",
+										},
+									),
 							)
 							.addRoleOption((option: any) =>
 								option
 									.setName("role")
 									.setNameLocalizations({
-										de: "rolle"
+										de: "rolle",
 									})
 									.setDescription("Choose a role")
 									.setDescriptionLocalizations({
-										de: "Wähle eine Rolle"
+										de: "Wähle eine Rolle",
 									})
-									.setRequired(false)
-							)
+									.setRequired(false),
+							),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("xp")
 							.setDescription(
-								"Define the minimum and maximum number of XP that can be assigned per message"
+								"Define the minimum and maximum number of XP that can be assigned per message",
 							)
 							.setDescriptionLocalizations({
-								de: "Definiere die minimale und maximale Anzahl an XP, die pro Nachricht vergeben werden können"
+								de: "Definiere die minimale und maximale Anzahl an XP, die pro Nachricht vergeben werden können",
 							})
 							.addIntegerOption((option: any) =>
 								option
 									.setName("min")
 									.setDescription("Choose the minimum number of XP")
 									.setDescriptionLocalizations({
-										de: "Wähle die minimale Anzahl an XP"
+										de: "Wähle die minimale Anzahl an XP",
 									})
 									.setRequired(true)
 									.setMinValue(1)
-									.setMaxValue(500)
+									.setMaxValue(500),
 							)
 							.addIntegerOption((option: any) =>
 								option
 									.setName("max")
 									.setDescription("Choose the maximum number of XP")
 									.setDescriptionLocalizations({
-										de: "Wähle die maximale Anzahl an XP"
+										de: "Wähle die maximale Anzahl an XP",
 									})
 									.setRequired(true)
 									.setMinValue(1)
-									.setMaxValue(500)
-							)
+									.setMaxValue(500),
+							),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("variables")
 							.setNameLocalizations({
-								de: "variablen"
+								de: "variablen",
 							})
-							.setDescription(
-								"Lists all variables that can be used in the level-up message"
-							)
+							.setDescription("Lists all variables that can be used in the level-up message")
 							.setDescriptionLocalizations({
-								de: "Listet alle Variablen, die in der Level-Up Nachricht verwendet werden können"
-							})
+								de: "Listet alle Variablen, die in der Level-Up Nachricht verwendet werden können",
+							}),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("test")
 							.setDescription("Tests the level up message")
 							.setDescriptionLocalizations({
-								de: "Testet die Level-Up Nachricht"
-							})
+								de: "Testet die Level-Up Nachricht",
+							}),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("exclude")
 							.setNameLocalizations({
-								de: "exkludieren"
+								de: "exkludieren",
 							})
 							.setDescription("Adds a channel or role to the blacklist")
 							.setDescriptionLocalizations({
-								de: "Fügt einen Channel oder eine Rolle zur Blacklist hinzu"
+								de: "Fügt einen Channel oder eine Rolle zur Blacklist hinzu",
 							})
 							.addStringOption((option: any) =>
 								option
 									.setName("action")
 									.setNameLocalizations({
-										de: "aktion"
+										de: "aktion",
 									})
 									.setDescription("Choose an action")
 									.setDescriptionLocalizations({
-										de: "Wähle eine Aktion"
+										de: "Wähle eine Aktion",
 									})
 									.setRequired(true)
 									.addChoices(
 										{
 											name: "add",
 											name_localizations: {
-												de: "hinzufügen"
+												de: "hinzufügen",
 											},
-											value: "add"
+											value: "add",
 										},
 										{
 											name: "remove",
 											name_localizations: {
-												de: "entfernen"
+												de: "entfernen",
 											},
-											value: "remove"
+											value: "remove",
 										},
 										{
 											name: "list",
 											name_localizations: {
-												de: "liste"
+												de: "liste",
 											},
-											value: "list"
-										}
-									)
+											value: "list",
+										},
+									),
 							)
 							.addChannelOption((option: any) =>
 								option
 									.setName("channel")
 									.setDescription("Choose a channel")
 									.setDescriptionLocalizations({
-										de: "Wähle einen Channel"
+										de: "Wähle einen Channel",
 									})
 									.setRequired(false)
-									.addChannelTypes(
-										ChannelType.GuildText,
-										ChannelType.GuildAnnouncement
-									)
+									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement),
 							)
 							.addRoleOption((option: any) =>
 								option
 									.setName("role")
 									.setNameLocalizations({
-										de: "rolle"
+										de: "rolle",
 									})
 									.setDescription("Choose a role")
 									.setDescriptionLocalizations({
-										de: "Wähle eine Rolle"
+										de: "Wähle eine Rolle",
 									})
-									.setRequired(false)
-							)
-					)
-			}
+									.setRequired(false),
+							),
+					),
+			},
 		});
 	}
 
@@ -379,7 +363,7 @@ export default class LevelsystemCommand extends BaseCommand {
 						await this.addRole(
 							interaction.options.getRole("role"),
 							interaction.options.getInteger("level"),
-							data
+							data,
 						);
 						break;
 					case "remove":
@@ -405,11 +389,7 @@ export default class LevelsystemCommand extends BaseCommand {
 				}
 				break;
 			case "xp":
-				await this.setXp(
-					interaction.options.getInteger("min"),
-					interaction.options.getInteger("max"),
-					data
-				);
+				await this.setXp(interaction.options.getInteger("min"), interaction.options.getInteger("max"), data);
 				break;
 			case "variables":
 				await this.listVariables();
@@ -424,14 +404,14 @@ export default class LevelsystemCommand extends BaseCommand {
 						await this.addExclude(
 							interaction.options.getChannel("channel"),
 							interaction.options.getRole("role"),
-							data
+							data,
 						);
 						break;
 					case "remove":
 						await this.removeExclude(
 							interaction.options.getChannel("channel"),
 							interaction.options.getRole("role"),
-							data
+							data,
 						);
 						break;
 					case "list":
@@ -450,7 +430,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const infoEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("status:errors:alreadySet", { status: text }),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [infoEmbed] });
 		}
@@ -465,7 +445,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("status:set", { status: text }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -476,7 +456,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -492,7 +472,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("channel:set", { channel: text }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -503,7 +483,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -513,7 +493,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("message:errors:tooLong", { length: message.length }),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -523,11 +503,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		data.guild.markModified("settings.levels.message");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("message:set"),
-			"success",
-			"success"
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("message:set"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
@@ -537,7 +513,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -547,7 +523,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("roles:errors:missingLevelOrRole"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -557,7 +533,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("roles:errors:roleAlreadyAdded"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [alreadyAddedEmbed] });
 		}
@@ -567,7 +543,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("roles:errors:cantUseEveryone"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [everyoneEmbed] });
 		}
@@ -577,7 +553,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("roles:errors:cantUseManaged"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [roleIsManagedEmbed] });
 		}
@@ -587,10 +563,10 @@ export default class LevelsystemCommand extends BaseCommand {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("roles:errors:cantUseHigherRole", {
 					role: role.toString(),
-					botrole: this.interaction.guild.members.me.roles.highest.toString()
+					botrole: this.interaction.guild.members.me.roles.highest.toString(),
 				}),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [roleIsTooHighEmbed] });
 		}
@@ -598,7 +574,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Save to database */
 		data.guild.settings.levels.roles.push({
 			role: role.id,
-			level: level
+			level: level,
 		});
 		data.guild.markModified("settings.levels.roles");
 		await data.guild.save();
@@ -606,7 +582,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("roles:added", { role: role.toString() }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -617,7 +593,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -627,7 +603,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingRole", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -637,14 +613,14 @@ export default class LevelsystemCommand extends BaseCommand {
 			const isNoLevelroleEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("roles:errors:isNotAdded", { role: role.toString() }),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [isNoLevelroleEmbed] });
 		}
 
 		/* Save to database */
 		data.guild.settings.levels.roles = data.guild.settings.levels.roles.filter(
-			(r: any): boolean => r.role !== role.id
+			(r: any): boolean => r.role !== role.id,
 		);
 		data.guild.markModified("settings.levels.roles");
 		await data.guild.save();
@@ -652,7 +628,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("roles:removed", { role: role.toString() }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -662,7 +638,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		const levelroles: any[] = [];
 
 		for (let i: number = 0; i < response.length; i++) {
-			const cachedRole = this.interaction.guild.roles.cache.get(response[i].role);
+			const cachedRole = this.interaction.guild!.roles.cache.get(response[i].role);
 			if (cachedRole)
 				levelroles.push(
 					" " +
@@ -674,7 +650,7 @@ export default class LevelsystemCommand extends BaseCommand {
 						" " +
 						this.translate("roles:list:level") +
 						": " +
-						response[i].level
+						response[i].level,
 				);
 		}
 
@@ -684,7 +660,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			levelroles,
 			this.translate("roles:list:title"),
 			this.translate("roles:list:empty"),
-			"ping"
+			"ping",
 		);
 	}
 
@@ -694,7 +670,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -704,7 +680,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingRole", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -714,7 +690,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("doublexp:errors:alreadyAdded"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [alreadyAddedEmbed] });
 		}
@@ -724,7 +700,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("doublexp:errors:cantUseEveryone"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [everyoneEmbed] });
 		}
@@ -734,7 +710,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("doublexp:errors:cantUseManaged"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [roleIsManagedEmbed] });
 		}
@@ -747,7 +723,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("doublexp:added", { role: role.toString() }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -758,7 +734,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -768,7 +744,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingRole", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -779,16 +755,16 @@ export default class LevelsystemCommand extends BaseCommand {
 				this.translate("doublexp:errors:notAdded", { role: role.toString() }),
 				"error",
 				"error",
-				role
+				role,
 			);
 			return this.interaction.followUp({
-				embeds: [isNoDoubleXPRoleEmbed]
+				embeds: [isNoDoubleXPRoleEmbed],
 			});
 		}
 
 		/* Save to database */
 		data.guild.settings.levels.doubleXP = data.guild.settings.levels.doubleXP.filter(
-			(r: any): boolean => r !== role.id
+			(r: any): boolean => r !== role.id,
 		);
 		data.guild.markModified("settings.levels.doubleXP");
 		await data.guild.save();
@@ -796,7 +772,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("doublexp:removed", { role: role.toString() }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -816,7 +792,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			doublexpRoles,
 			this.translate("doublexp:list:title"),
 			this.translate("doublexp:list:empty"),
-			"ping"
+			"ping",
 		);
 	}
 
@@ -826,7 +802,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -836,7 +812,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("xp:errors:minCantBeHigherThanMax"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -844,7 +820,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Save to database */
 		data.guild.settings.levels.xp = {
 			min: min,
-			max: max
+			max: max,
 		};
 		data.guild.markModified("settings.levels.xp");
 		await data.guild.save();
@@ -852,7 +828,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.translate("xp:set", { min: min, max: max }),
 			"success",
-			"success"
+			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
@@ -865,7 +841,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			variables,
 			this.translate("variables:title"),
 			this.translate("variables:empty"),
-			"shine"
+			"shine",
 		);
 	}
 
@@ -875,7 +851,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [notEnabledEmbed] });
 		}
@@ -885,7 +861,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const noMessageEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("preview:errors:noMessageSet"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [noMessageEmbed] });
 		}
@@ -905,8 +881,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 
 		const channel: any =
-			this.client.channels.cache.get(data.guild.settings.levels.channel) ||
-			this.interaction.channel;
+			this.client.channels.cache.get(data.guild.settings.levels.channel) || this.interaction.channel;
 		const message: string = parseMessage(data.guild.settings.levels.message);
 
 		try {
@@ -914,14 +889,14 @@ export default class LevelsystemCommand extends BaseCommand {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("preview:sent"),
 				"success",
-				"success"
+				"success",
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} catch (e) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("preview:errors:cantSend"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -931,7 +906,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		if (!data.guild.settings.levels.exclude) {
 			data.guild.settings.levels.exclude = {
 				channels: [],
-				roles: []
+				roles: [],
 			};
 			data.guild.markModified("settings.levels.exclude");
 			await data.guild.save();
@@ -942,21 +917,18 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
 		const toExclude = channel || role;
 		/* No channel or role set */
-		if (
-			!toExclude ||
-			(toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")
-		) {
+		if (!toExclude || (toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannelOrRole", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -967,7 +939,7 @@ export default class LevelsystemCommand extends BaseCommand {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("exclude:errors:alreadyAdded", { item: toExclude.toString() }),
 					"error",
-					"error"
+					"error",
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
@@ -979,7 +951,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("exclude:added", { item: toExclude.toString() }),
 				"success",
-				"success"
+				"success",
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else if (toExclude.constructor.name === "Role") {
@@ -988,7 +960,7 @@ export default class LevelsystemCommand extends BaseCommand {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("exclude:errors:alreadyAdded", { item: toExclude.toString() }),
 					"error",
-					"error"
+					"error",
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
@@ -998,7 +970,7 @@ export default class LevelsystemCommand extends BaseCommand {
 				const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("exclude:errors:cantUseEveryone"),
 					"error",
-					"error"
+					"error",
 				);
 				return this.interaction.followUp({ embeds: [everyoneEmbed] });
 			}
@@ -1008,10 +980,10 @@ export default class LevelsystemCommand extends BaseCommand {
 				const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("exclude:errors:cantUseManaged"),
 					"error",
-					"error"
+					"error",
 				);
 				return this.interaction.followUp({
-					embeds: [roleIsManagedEmbed]
+					embeds: [roleIsManagedEmbed],
 				});
 			}
 
@@ -1022,7 +994,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("exclude:added", { item: toExclude.toString() }),
 				"success",
-				"success"
+				"success",
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		}
@@ -1032,7 +1004,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		if (!data.guild.settings.levels.exclude) {
 			data.guild.settings.levels.exclude = {
 				channels: [],
-				roles: []
+				roles: [],
 			};
 			data.guild.markModified("settings.levels.exclude");
 			await data.guild.save();
@@ -1043,21 +1015,18 @@ export default class LevelsystemCommand extends BaseCommand {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
 		const toExclude = channel || role;
 		/* No channel or role set */
-		if (
-			!toExclude ||
-			(toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")
-		) {
+		if (!toExclude || (toExclude.constructor.name !== "TextChannel" && toExclude.constructor.name !== "Role")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannelOrRole", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
@@ -1069,23 +1038,22 @@ export default class LevelsystemCommand extends BaseCommand {
 					this.translate("exclude:errors:notAdded", { item: toExclude.toString() }),
 					"error",
 					"error",
-					toExclude
+					toExclude,
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
 
 			/* Save to database */
-			data.guild.settings.levels.exclude.channels =
-				data.guild.settings.levels.exclude.channels.filter(
-					(c: any): boolean => c !== toExclude.id
-				);
+			data.guild.settings.levels.exclude.channels = data.guild.settings.levels.exclude.channels.filter(
+				(c: any): boolean => c !== toExclude.id,
+			);
 			data.guild.markModified("settings.levels.exclude.channels");
 			await data.guild.save();
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("exclude:removed", { item: toExclude.toString() }),
 				"success",
 				"success",
-				toExclude
+				toExclude,
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else if (toExclude.constructor.name === "Role") {
@@ -1095,23 +1063,22 @@ export default class LevelsystemCommand extends BaseCommand {
 					this.translate("exclude:errors:notAdded", { item: toExclude.toString() }),
 					"error",
 					"error",
-					toExclude
+					toExclude,
 				);
 				return this.interaction.followUp({ embeds: [errorEmbed] });
 			}
 
 			/* Save to database */
-			data.guild.settings.levels.exclude.roles =
-				data.guild.settings.levels.exclude.roles.filter(
-					(r: any): boolean => r !== toExclude.id
-				);
+			data.guild.settings.levels.exclude.roles = data.guild.settings.levels.exclude.roles.filter(
+				(r: any): boolean => r !== toExclude.id,
+			);
 			data.guild.markModified("settings.levels.exclude.roles");
 			await data.guild.save();
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("exclude:removed", { item: toExclude.toString() }),
 				"success",
 				"success",
-				toExclude
+				toExclude,
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		}
@@ -1121,7 +1088,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		if (!data.guild.settings.levels.exclude) {
 			data.guild.settings.levels.exclude = {
 				channels: [],
-				roles: []
+				roles: [],
 			};
 			data.guild.markModified("settings.levels.exclude");
 			await data.guild.save();
@@ -1137,8 +1104,7 @@ export default class LevelsystemCommand extends BaseCommand {
 
 		for (let i: number = 0; i < response.channels.length; i++) {
 			const cachedChannel = this.interaction.guild.channels.cache.get(response.channels[i]);
-			if (cachedChannel)
-				excluded.push(this.client.emotes.channel + " " + cachedChannel.toString());
+			if (cachedChannel) excluded.push(this.client.emotes.channel + " " + cachedChannel.toString());
 		}
 
 		await this.client.utils.sendPaginatedEmbed(
@@ -1147,7 +1113,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			excluded,
 			this.translate("exclude:list:title"),
 			this.translate("exclude:list:empty"),
-			null
+			null,
 		);
 	}
 }

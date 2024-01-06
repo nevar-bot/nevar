@@ -7,8 +7,8 @@ const GuildSchema: Schema = new mongoose.Schema({
 	members: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "Member"
-		}
+			ref: "Member",
+		},
 	],
 	blocked: {
 		type: Object,
@@ -17,8 +17,8 @@ const GuildSchema: Schema = new mongoose.Schema({
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null
-		}
+			name: null,
+		},
 	},
 	locale: { type: String, default: "de" },
 	settings: {
@@ -32,8 +32,8 @@ const GuildSchema: Schema = new mongoose.Schema({
 					guild: null,
 					role: null,
 					thread: null,
-					channel: null
-				}
+					channel: null,
+				},
 			},
 			joinToCreate: {
 				enabled: false,
@@ -42,20 +42,20 @@ const GuildSchema: Schema = new mongoose.Schema({
 				userLimit: null,
 				bitrate: null,
 				defaultName: null,
-				channels: []
+				channels: [],
 			},
 			suggestions: {
 				enabled: false,
 				channel: null,
-				review_channel: null
+				review_channel: null,
 			},
 			invites: {
-				enabled: false
+				enabled: false,
 			},
 			tickets: {
 				enabled: false,
 				channel: null,
-				supportRoles: []
+				supportRoles: [],
 			},
 			levels: {
 				enabled: false,
@@ -65,12 +65,12 @@ const GuildSchema: Schema = new mongoose.Schema({
 				doubleXP: [],
 				exclude: {
 					channels: [],
-					roles: []
+					roles: [],
 				},
 				xp: {
 					min: 1,
-					max: 30
-				}
+					max: 30,
+				},
 			},
 			welcome: {
 				enabled: false,
@@ -78,14 +78,14 @@ const GuildSchema: Schema = new mongoose.Schema({
 				type: null,
 				message: null,
 				profilePicture: true,
-				autoroles: []
+				autoroles: [],
 			},
 			farewell: {
 				enabled: false,
 				channel: null,
 				type: null,
 				message: null,
-				profilePicture: true
+				profilePicture: true,
 			},
 			polls: [],
 			aiModeration: {
@@ -93,31 +93,31 @@ const GuildSchema: Schema = new mongoose.Schema({
 				excludedChannels: [],
 				excludedRoles: [],
 				threshold: 0.6,
-				alertChannel: null
+				alertChannel: null,
 			},
 			aiChat: {
 				enabled: false,
 				channel: null,
-				mode: "normal"
+				mode: "normal",
 			},
 			notifiers: {
 				youtube: {
 					enabled: false,
 					channels: [],
-					announcementChannel: null
+					announcementChannel: null,
 				},
 				twitch: {
 					enabled: false,
 					channels: [],
-					announcementChannel: null
-				}
+					announcementChannel: null,
+				},
 			},
 			muterole: null,
 			autodelete: [],
 			autoreact: [],
-			reactionroles: []
-		}
-	}
+			reactionroles: [],
+		},
+	},
 });
 
 const Guild: Model<any> = model("Guild", GuildSchema);

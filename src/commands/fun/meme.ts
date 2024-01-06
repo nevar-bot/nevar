@@ -9,14 +9,14 @@ export default class MemeCommand extends BaseCommand {
 			name: "meme",
 			description: "Sends randomly selected memes",
 			localizedDescriptions: {
-				de: "Sendet zufällig gewählte Memes"
+				de: "Sendet zufällig gewählte Memes",
 			},
 			cooldown: 3 * 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -31,7 +31,7 @@ export default class MemeCommand extends BaseCommand {
 
 		let memes: any = (
 			await axios.get("https://www.reddit.com/r/ich_iel/top.json?sort=top&t=day&limit=1000", {
-				validateStatus: (status: number): boolean => true
+				validateStatus: (status: number): boolean => true,
 			})
 		).data.data.children;
 		memes = [...this.client.utils.shuffleArray(memes)];
@@ -41,7 +41,7 @@ export default class MemeCommand extends BaseCommand {
 			reloadId,
 			this.translate("reload"),
 			"Secondary",
-			"loading"
+			"loading",
 		);
 
 		function generateMemeEmbed(): EmbedBuilder {
@@ -50,24 +50,24 @@ export default class MemeCommand extends BaseCommand {
 			memeEmbed.setImage(meme.data.url);
 			memeEmbed.setTitle(meme.data.title);
 			memeEmbed.setFooter({
-				text: "👍 " + meme.data.ups + " | 👎 " + meme.data.downs
+				text: "👍 " + meme.data.ups + " | 👎 " + meme.data.downs,
 			});
 			return memeEmbed;
 		}
 
 		const memeMessage: any = await this.interaction.followUp({
 			embeds: [generateMemeEmbed()],
-			components: [this.client.createMessageComponentsRow(reloadButton)]
+			components: [this.client.createMessageComponentsRow(reloadButton)],
 		});
 
 		const collector: any = memeMessage.createMessageComponentCollector({
-			filter: ({ user }: any): boolean => user.id === member.user.id
+			filter: ({ user }: any): boolean => user.id === member.user.id,
 		});
 
 		collector.on("collect", async (interaction: any): Promise<void> => {
 			await interaction.update({
 				embeds: [generateMemeEmbed()],
-				components: [this.client.createMessageComponentsRow(reloadButton)]
+				components: [this.client.createMessageComponentsRow(reloadButton)],
 			});
 		});
 	}

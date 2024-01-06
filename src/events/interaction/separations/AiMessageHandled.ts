@@ -19,25 +19,23 @@ export default class {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					"Die Nachricht konnte nicht gelöscht werden.",
 					"error",
-					"error"
+					"error",
 				);
 				return interaction.reply({
 					embeds: [errorEmbed],
-					ephemeral: true
+					ephemeral: true,
 				});
 			}
-			const message: any = await channel.messages
-				.fetch(messageId)
-				.catch((e: any): void => {});
+			const message: any = await channel.messages.fetch(messageId).catch((e: any): void => {});
 			if (!message) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
 					"Die Nachricht konnte nicht gelöscht werden.",
 					"error",
-					"error"
+					"error",
 				);
 				return interaction.reply({
 					embeds: [errorEmbed],
-					ephemeral: true
+					ephemeral: true,
 				});
 			}
 			await message.delete();
@@ -45,23 +43,22 @@ export default class {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				"Die Nachricht wurde gelöscht.",
 				"success",
-				"success"
+				"success",
 			);
 			await interaction.reply({
 				embeds: [successEmbed],
-				ephemeral: true
+				ephemeral: true,
 			});
 
 			const thread = await interaction.message
 				.startThread({
-					name: "Nachricht von " + message.author.username
+					name: "Nachricht von " + message.author.username,
 				})
 				.catch((): void => {});
 
 			if (thread)
 				thread.send({
-					content:
-						"Die Nachricht wurde von " + interaction.member.toString() + " gelöscht."
+					content: "Die Nachricht wurde von " + interaction.member.toString() + " gelöscht.",
 				});
 		}
 	}

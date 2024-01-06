@@ -24,11 +24,7 @@ function encryptString(access_token: string): string {
 	const key: string = client.config.dashboard["ENCRYPTION_KEY"];
 
 	/* encrypt access token */
-	const cipher: crypto.CipherGCM = crypto.createCipheriv(
-		"aes-256-gcm",
-		Buffer.from(key, "hex"),
-		iv
-	);
+	const cipher: crypto.CipherGCM = crypto.createCipheriv("aes-256-gcm", Buffer.from(key, "hex"), iv);
 
 	let encrypted: string = cipher.update(access_token, "utf8", "hex");
 	encrypted += cipher.final("hex");
@@ -76,9 +72,7 @@ export default {
 			if (!isJsonString(encrypted_access_token)) return null;
 
 			/* decrypt access token */
-			const access_token: string | null = decryptString(
-				JSON.parse(encrypted_access_token).value
-			);
+			const access_token: string | null = decryptString(JSON.parse(encrypted_access_token).value);
 
 			return access_token;
 		} else {
@@ -88,9 +82,7 @@ export default {
 			if (!encrypted_access_token) return null;
 			if (!isJsonString(encrypted_access_token)) return null;
 
-			const access_token: string | null = decryptString(
-				JSON.parse(encrypted_access_token).value
-			);
+			const access_token: string | null = decryptString(JSON.parse(encrypted_access_token).value);
 
 			return access_token;
 		}
@@ -137,9 +129,7 @@ export default {
 				const encrypted_refresh_token: string | null = req.cookies?.["refresh_token"];
 				if (!encrypted_refresh_token) return false;
 				if (!isJsonString(encrypted_refresh_token)) return false;
-				const refresh_token: string | null = decryptString(
-					JSON.parse(req.cookies?.["refresh_token"]).value
-				);
+				const refresh_token: string | null = decryptString(JSON.parse(req.cookies?.["refresh_token"]).value);
 
 				if (access_token && refresh_token) {
 					const { CLIENT_SECRET } = client.config.dashboard;
@@ -150,38 +140,34 @@ export default {
 							client_id: client.user!.id,
 							client_secret: CLIENT_SECRET,
 							grant_type: "refresh_token",
-							refresh_token: refresh_token
+							refresh_token: refresh_token,
 						}),
-						{ headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+						{ headers: { "Content-Type": "application/x-www-form-urlencoded" } },
 					);
 
 					/* encrypt acccess and refresh token */
-					const new_access_token: string = encryptString(
-						refreshResponse.data.access_token
-					);
-					const new_refresh_token: string = encryptString(
-						refreshResponse.data.refresh_token
-					);
+					const new_access_token: string = encryptString(refreshResponse.data.access_token);
+					const new_refresh_token: string = encryptString(refreshResponse.data.refresh_token);
 
 					/* set access and refresh cookie */
 					const access_token_cookie: string = JSON.stringify({
 						value: new_access_token,
-						expiry: Date.now() + 604800000
+						expiry: Date.now() + 604800000,
 					});
 
 					const refresh_token_cookie: string = JSON.stringify({
 						value: new_refresh_token,
-						expiry: null
+						expiry: null,
 					});
 
 					res.cookie("access_token", access_token_cookie, {
 						secure: false,
 						httpOnly: true,
-						expires: new Date(Date.now() + 604800000)
+						expires: new Date(Date.now() + 604800000),
 					});
 					res.cookie("refresh_token", refresh_token_cookie, {
 						secure: false,
-						httpOnly: true
+						httpOnly: true,
 					});
 
 					refreshed_token = true;
@@ -206,7 +192,7 @@ export default {
 			// check if access token is valid
 			const userData: AxiosResponse = await axios.get("https://discord.com/api/users/@me", {
 				headers: { authorization: `Bearer ${access_token}` },
-				validateStatus: (status: number): boolean => true
+				validateStatus: (status: number): boolean => true,
 			});
 
 			return Boolean(userData.data?.id && access_token);
@@ -224,7 +210,7 @@ export default {
 			guild: null,
 			guildData: null,
 			user: null,
-			avatarUrl: null
+			avatarUrl: null,
 		});
 	},
 
@@ -236,11 +222,7 @@ export default {
 		const MANAGE_GUILD_PERMISSION: any = 0x20;
 		return !(
 			!guild ||
-			!(
-				guild.owner ||
-				guild.permissions & ADMIN_PERMISSION ||
-				guild.permissions & MANAGE_GUILD_PERMISSION
-			)
+			!(guild.owner || guild.permissions & ADMIN_PERMISSION || guild.permissions & MANAGE_GUILD_PERMISSION)
 		);
 	},
 
@@ -257,12 +239,12 @@ export default {
 				client_secret: CLIENT_SECRET,
 				grant_type: "authorization_code",
 				redirect_uri: CALLBACK_URI,
-				code
+				code,
 			}),
 			{
 				headers: { ["Content-Type"]: "application/x-www-form-urlencoded" },
-				validateStatus: (status: number): boolean => true
-			}
+				validateStatus: (status: number): boolean => true,
+			},
 		);
 
 		const { access_token, refresh_token } = authResponse.data;
@@ -276,10 +258,10 @@ export default {
 			{
 				headers: {
 					authorization: `Bot ${client.token}`,
-					["Content-Type"]: "application/json"
+					["Content-Type"]: "application/json",
 				},
-				validateStatus: (status: number): boolean => true
-			}
+				validateStatus: (status: number): boolean => true,
+			},
 		);
 
 		/* encrypt access and refresh token */
@@ -289,14 +271,12 @@ export default {
 		/* send log to support server */
 		const supportGuild: any = client.guilds.cache.get(client.config.support["ID"]);
 		if (supportGuild) {
-			const logChannel: any = supportGuild.channels.cache.get(
-				client.config.support["BOT_LOG"]
-			);
+			const logChannel: any = supportGuild.channels.cache.get(client.config.support["BOT_LOG"]);
 			if (logChannel) {
 				const embed: EmbedBuilder = client.createEmbed(
 					user.global_name + "(@" + user.username + ") hat sich im Dashboard angemeldet",
 					"arrow",
-					"normal"
+					"normal",
 				);
 				embed.setThumbnail(UserController.getAvatarURL(user));
 				logChannel.send({ embeds: [embed] });
@@ -307,17 +287,17 @@ export default {
 			/* set access and refresh token cookie */
 			const access_token_cookie: string = JSON.stringify({
 				value: encrypted_access_token,
-				expiry: Date.now() + 604800000
+				expiry: Date.now() + 604800000,
 			});
 			const refresh_token_cookie: string = JSON.stringify({
 				value: encrypted_refresh_token,
-				expiry: null
+				expiry: null,
 			});
 
 			res.cookie("access_token", access_token_cookie, {
 				secure: false,
 				httpOnly: true,
-				expires: new Date(Date.now() + 604800000)
+				expires: new Date(Date.now() + 604800000),
 			});
 			res.cookie("refresh_token", refresh_token_cookie, { secure: false, httpOnly: true });
 		} else {
@@ -325,7 +305,7 @@ export default {
 			const session: any = req.session;
 			const sessionObject: string = JSON.stringify({
 				value: encrypted_access_token,
-				expiry: Date.now() + 604800000
+				expiry: Date.now() + 604800000,
 			});
 			session.access_token = sessionObject;
 		}
@@ -360,31 +340,29 @@ export default {
 				client_id: client.user!.id,
 				client_secret: CLIENT_SECRET,
 				token: access_token,
-				token_type_hint: "access_token"
+				token_type_hint: "access_token",
 			}),
 			{
 				headers: { ["Content-Type"]: "application/x-www-form-urlencoded" },
-				validateStatus: (status: number): boolean => true
-			}
+				validateStatus: (status: number): boolean => true,
+			},
 		);
 
 		/* revoke refresh token */
 		if (encrypted_refresh_token) {
-			const refresh_token: string | null = decryptString(
-				JSON.parse(encrypted_refresh_token).value
-			);
+			const refresh_token: string | null = decryptString(JSON.parse(encrypted_refresh_token).value);
 			await axios.post(
 				BASE_API_URL + "/oauth2/token/revoke",
 				new URLSearchParams({
 					client_id: client.user!.id,
 					client_secret: CLIENT_SECRET,
 					token: refresh_token as string,
-					token_type_hint: "refresh_token"
+					token_type_hint: "refresh_token",
 				}),
 				{
 					headers: { ["Content-Type"]: "application/x-www-form-urlencoded" },
-					validateStatus: (status: number): boolean => true
-				}
+					validateStatus: (status: number): boolean => true,
+				},
 			);
 		}
 
@@ -397,5 +375,5 @@ export default {
 			delete session.access_token;
 		}
 		return res.status(301).redirect("/");
-	}
+	},
 };

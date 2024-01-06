@@ -30,5 +30,5 @@ export default {
 		app.listen(client.config.api["PORT"], (): void => {
 			client.logger.log("API is running on port " + client.config.api["PORT"]);
 		});
-	}
+	},
 };

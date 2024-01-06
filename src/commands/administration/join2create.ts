@@ -8,7 +8,7 @@ export default class Join2CreateCommand extends BaseCommand {
 			name: "join2create",
 			description: "Manages the Join-2-Create channel of the server",
 			localizedDescriptions: {
-				de: "Verwaltet den Join-2-Create Kanal des Servers"
+				de: "Verwaltet den Join-2-Create Kanal des Servers",
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["ManageChannels"],
@@ -22,61 +22,57 @@ export default class Join2CreateCommand extends BaseCommand {
 							.setName("channel")
 							.setDescription("Choose a channel")
 							.setDescriptionLocalizations({
-								de: "Wähle einen Channel"
+								de: "Wähle einen Channel",
 							})
 							.setRequired(true)
-							.addChannelTypes(ChannelType.GuildVoice)
+							.addChannelTypes(ChannelType.GuildVoice),
 					)
 					.addIntegerOption((option) =>
 						option
 							.setName("limit")
-							.setDescription(
-								"Choose how many people can be in a channel at most (0 = unlimited)"
-							)
+							.setDescription("Choose how many people can be in a channel at most (0 = unlimited)")
 							.setDescriptionLocalizations({
-								de: "Wähle, wieviele Leute maximal in einem Channel sein dürfen (0 = unbegrenzt)"
+								de: "Wähle, wieviele Leute maximal in einem Channel sein dürfen (0 = unbegrenzt)",
 							})
 							.setMinValue(0)
 							.setMaxValue(99)
-							.setRequired(true)
+							.setRequired(true),
 					)
 					.addIntegerOption((option) =>
 						option
 							.setName("bitrate")
 							.setDescription("Choose the bitrate (8 - 96kbps, default: 64kbps)")
 							.setDescriptionLocalizations({
-								de: "Wähle die Bitrate (8 - 96kbps, Standard: 64kbps)"
+								de: "Wähle die Bitrate (8 - 96kbps, Standard: 64kbps)",
 							})
 							.setRequired(true)
 							.setMinValue(8)
-							.setMaxValue(96)
+							.setMaxValue(96),
 					)
 					.addStringOption((option) =>
 						option
 							.setName("name")
-							.setDescription(
-								"Set the default name for the channel (variables: {count} and {user})"
-							)
+							.setDescription("Set the default name for the channel (variables: {count} and {user})")
 							.setDescriptionLocalizations({
-								de: "Setze den Standard-Namen für die Channel (Variablen: {count} und {user})"
+								de: "Setze den Standard-Namen für die Channel (Variablen: {count} und {user})",
 							})
 							.setRequired(true)
-							.setMaxLength(100)
+							.setMaxLength(100),
 					)
 					.addChannelOption((option) =>
 						option
 							.setName("category")
 							.setNameLocalizations({
-								de: "kategorie"
+								de: "kategorie",
 							})
 							.setDescription("Choose in which category the channels will be created")
 							.setDescriptionLocalizations({
-								de: "Wähle, in welcher Kategorie die Channel erstellt werden"
+								de: "Wähle, in welcher Kategorie die Channel erstellt werden",
 							})
 							.setRequired(false)
-							.addChannelTypes(ChannelType.GuildCategory)
-					)
-			}
+							.addChannelTypes(ChannelType.GuildCategory),
+					),
+			},
 		});
 	}
 
@@ -90,7 +86,7 @@ export default class Join2CreateCommand extends BaseCommand {
 			interaction.options.getInteger("bitrate"),
 			interaction.options.getString("name"),
 			interaction.options.getChannel("category"),
-			data
+			data,
 		);
 	}
 
@@ -100,7 +96,7 @@ export default class Join2CreateCommand extends BaseCommand {
 		bitrate: number,
 		name: string,
 		category: any,
-		data: any
+		data: any,
 	): Promise<void> {
 		data.guild.settings.joinToCreate = {
 			enabled: true,
@@ -109,16 +105,12 @@ export default class Join2CreateCommand extends BaseCommand {
 			userLimit: userlimit,
 			bitrate: bitrate,
 			defaultName: name,
-			channels: []
+			channels: [],
 		};
 		data.guild.markModified("settings.joinToCreate");
 		await data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("set"),
-			"success",
-			"success"
-		);
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("set"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

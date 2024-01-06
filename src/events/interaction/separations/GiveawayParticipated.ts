@@ -15,28 +15,16 @@ export default class {
 
 		if (giveaway.entrantIds.includes(interaction.user.id)) {
 			await interaction.reply({
-				content:
-					"### " +
-					this.client.emotes.tada +
-					" Du nimmst absofort nicht mehr an dem Gewinnspiel teil!",
-				ephemeral: true
+				content: "### " + this.client.emotes.tada + " Du nimmst absofort nicht mehr an dem Gewinnspiel teil!",
+				ephemeral: true,
 			});
-			await this.client.giveawayManager.removeEntrant(
-				interaction.message.id,
-				interaction.user.id
-			);
+			await this.client.giveawayManager.removeEntrant(interaction.message.id, interaction.user.id);
 		} else {
 			await interaction.reply({
-				content:
-					"### " +
-					this.client.emotes.tada +
-					" Du nimmst absofort an dem Gewinnspiel teil!",
-				ephemeral: true
+				content: "### " + this.client.emotes.tada + " Du nimmst absofort an dem Gewinnspiel teil!",
+				ephemeral: true,
 			});
-			await this.client.giveawayManager.addEntrant(
-				interaction.message.id,
-				interaction.user.id
-			);
+			await this.client.giveawayManager.addEntrant(interaction.message.id, interaction.user.id);
 		}
 	}
 }

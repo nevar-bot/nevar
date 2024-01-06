@@ -10,7 +10,7 @@ export default class PrideCommand extends BaseCommand {
 			name: "pride",
 			description: "Sends an avatar with Pride filter",
 			localizedDescriptions: {
-				de: "Sendet einen Avatar mit Pride-Filter"
+				de: "Sendet einen Avatar mit Pride-Filter",
 			},
 			cooldown: 3 * 1000,
 			dirname: __dirname,
@@ -20,15 +20,15 @@ export default class PrideCommand extends BaseCommand {
 					option
 						.setName("user")
 						.setNameLocalizations({
-							de: "mitglied"
+							de: "mitglied",
 						})
 						.setDescription("Choose a member")
 						.setDescriptionLocalizations({
-							de: "Wähle ein Mitglied"
+							de: "Wähle ein Mitglied",
 						})
-						.setRequired(false)
-				)
-			}
+						.setRequired(false),
+				),
+			},
 		});
 	}
 
@@ -46,12 +46,12 @@ export default class PrideCommand extends BaseCommand {
 		const avatarUrl = user.displayAvatarURL({
 			dynamic: true,
 			size: 4096,
-			extension: "png"
+			extension: "png",
 		});
 
 		const response: any = await axios.get(avatarUrl, {
 			responseType: "arraybuffer",
-			validateStatus: (status: number): boolean => true
+			validateStatus: (status: number): boolean => true,
 		});
 		const buffer: Buffer = Buffer.from(response.data, "binary");
 
@@ -65,7 +65,7 @@ export default class PrideCommand extends BaseCommand {
 			"#FFFF41", // Gelb
 			"#008018", // Grün
 			"#0000F9", // Blau
-			"#86007D" // Violett
+			"#86007D", // Violett
 		];
 
 		const step: number = width / rainbowColors.length;
@@ -89,7 +89,7 @@ export default class PrideCommand extends BaseCommand {
 
 		const editedBuffer: Buffer = await image.getBufferAsync(Jimp.MIME_PNG);
 		const attachment: AttachmentBuilder = new AttachmentBuilder(editedBuffer, {
-			name: "pride.png"
+			name: "pride.png",
 		});
 
 		const prideAvatarEmbed: EmbedBuilder = this.client.createEmbed("", "", "normal");
@@ -98,7 +98,7 @@ export default class PrideCommand extends BaseCommand {
 
 		return this.interaction.followUp({
 			embeds: [prideAvatarEmbed],
-			files: [attachment]
+			files: [attachment],
 		});
 	}
 }

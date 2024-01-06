@@ -27,7 +27,7 @@ export default class {
 		const auditLogs: any = await guild
 			.fetchAuditLogs({
 				type: AuditLogEvent["MemberBanRemove"],
-				limit: 1
+				limit: 1,
 			})
 			.catch((e: any): void => {});
 		if (auditLogs) {

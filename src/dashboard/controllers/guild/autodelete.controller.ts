@@ -30,11 +30,7 @@ export default {
 
 		/* user is not authorized to view this guild */
 		const guilds: any = await UserController.getGuilds(access_token);
-		if (
-			!(await AuthController.isAuthorizedInGuild(
-				guilds.find((guild: any): boolean => guild.id === guildId)
-			))
-		) {
+		if (!(await AuthController.isAuthorizedInGuild(guilds.find((guild: any): boolean => guild.id === guildId)))) {
 			return ErrorController.render401(res, user);
 		}
 
@@ -56,7 +52,7 @@ export default {
 
 			/* extra data */
 			saved: dataSaved,
-			saveError: saveError
+			saveError: saveError,
 		});
 	},
 
@@ -80,11 +76,7 @@ export default {
 
 		/* user is not authorized to view this guild */
 		const guilds: any = await UserController.getGuilds(access_token);
-		if (
-			!(await AuthController.isAuthorizedInGuild(
-				guilds.find((guild: any): boolean => guild.id === guildId)
-			))
-		) {
+		if (!(await AuthController.isAuthorizedInGuild(guilds.find((guild: any): boolean => guild.id === guildId)))) {
 			return ErrorController.render401(res, user);
 		}
 
@@ -100,12 +92,9 @@ export default {
 				const oldChannel: string = channel.split("_")[0];
 				const newChannel: string = channel.split("_")[1];
 
-				guildData.settings.autodelete.find(
-					(x: any): boolean => x.channel === oldChannel
-				).time = parseInt(time) * 1000;
-				guildData.settings.autodelete.find(
-					(x: any): boolean => x.channel === oldChannel
-				).channel = newChannel;
+				guildData.settings.autodelete.find((x: any): boolean => x.channel === oldChannel).time =
+					parseInt(time) * 1000;
+				guildData.settings.autodelete.find((x: any): boolean => x.channel === oldChannel).channel = newChannel;
 			}
 
 			/* save guild data */
@@ -122,5 +111,5 @@ export default {
 
 		/* redirect */
 		res.status(200).redirect("/dashboard/" + req.params.guildId + "/autodelete");
-	}
+	},
 };

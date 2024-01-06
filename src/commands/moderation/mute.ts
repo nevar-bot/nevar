@@ -18,24 +18,18 @@ export default class MuteCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addUserOption((option: any) =>
-						option
-							.setName("mitglied")
-							.setDescription("Wähle ein Mitglied")
-							.setRequired(true)
+						option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true),
 					)
 					.addStringOption((option: any) =>
-						option
-							.setName("grund")
-							.setDescription("Gib einen Grund an")
-							.setRequired(false)
+						option.setName("grund").setDescription("Gib einen Grund an").setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("dauer")
 							.setDescription("Gib eine Dauer an (bspw. 1h, 1d, 1h 30m, etc.)")
-							.setRequired(false)
-					)
-			}
+							.setRequired(false),
+					),
+			},
 		});
 	}
 
@@ -47,19 +41,16 @@ export default class MuteCommand extends BaseCommand {
 			interaction.options.getUser("mitglied"),
 			interaction.options.getString("grund"),
 			interaction.options.getString("dauer"),
-			data
+			data,
 		);
 	}
 
 	private async mute(member: any, reason: string, duration: string, data: any): Promise<void> {
-		if (
-			!data.guild.settings.muterole ||
-			!this.interaction.guild.roles.cache.get(data.guild.settings.muterole)
-		) {
+		if (!data.guild.settings.muterole || !this.interaction.guild.roles.cache.get(data.guild.settings.muterole)) {
 			const noMuteRoleEmbed: EmbedBuilder = this.client.createEmbed(
 				"Es ist keine Mute-Rolle eingestellt!",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [noMuteRoleEmbed] });
 		}
@@ -69,7 +60,7 @@ export default class MuteCommand extends BaseCommand {
 			const noMemberEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst ein Mitglied angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [noMemberEmbed] });
 		}
@@ -78,7 +69,7 @@ export default class MuteCommand extends BaseCommand {
 			const selfEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst dich nicht selbst muten.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [selfEmbed] });
 		}
@@ -87,17 +78,13 @@ export default class MuteCommand extends BaseCommand {
 			const meEmbed: EmbedBuilder = this.client.createEmbed(
 				"Ich kann mich nicht selbst muten.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [meEmbed] });
 		}
 
 		if (member.user.bot) {
-			const botEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du kannst keine Bots muten.",
-				"error",
-				"error"
-			);
+			const botEmbed: EmbedBuilder = this.client.createEmbed("Du kannst keine Bots muten.", "error", "error");
 			return this.interaction.followUp({ embeds: [botEmbed] });
 		}
 
@@ -105,7 +92,7 @@ export default class MuteCommand extends BaseCommand {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du kannst keine Mitglieder muten, die eine höhere Rolle haben als du.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [higherRoleEmbed] });
 		}
@@ -116,7 +103,7 @@ export default class MuteCommand extends BaseCommand {
 				"{0} ist bereits gemutet.",
 				"error",
 				"error",
-				member.user.username
+				member.user.username,
 			);
 			return this.interaction.followUp({ embeds: [alreadyMutedEmbed] });
 		}
@@ -125,23 +112,20 @@ export default class MuteCommand extends BaseCommand {
 			const invalidDurationEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du hast eine ungültige Dauer angegeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({
-				embeds: [invalidDurationEmbed]
+				embeds: [invalidDurationEmbed],
 			});
 		}
 
 		const mute: any = {
 			victim: member,
 			reason: reason || "Kein Grund angegeben",
-			duration: duration ? ms(duration) : 200 * 60 * 60 * 24 * 365 * 1000
+			duration: duration ? ms(duration) : 200 * 60 * 60 * 24 * 365 * 1000,
 		};
 
-		let relativeTime: string = this.client.utils.getDiscordTimestamp(
-			Date.now() + mute.duration,
-			"R"
-		);
+		let relativeTime: string = this.client.utils.getDiscordTimestamp(Date.now() + mute.duration, "R");
 		if (mute.duration === 200 * 60 * 60 * 24 * 365 * 1000) {
 			relativeTime = "Permanent";
 		}
@@ -154,33 +138,22 @@ export default class MuteCommand extends BaseCommand {
 			"Bist du dir sicher, dass du {0} muten möchtest?",
 			"arrow",
 			"warning",
-			member.user.username
+			member.user.username,
 		);
-		const buttonYes: ButtonBuilder = this.client.createButton(
-			"confirm",
-			"Ja",
-			"Secondary",
-			"success"
-		);
-		const buttonNo: ButtonBuilder = this.client.createButton(
-			"decline",
-			"Nein",
-			"Secondary",
-			"error"
-		);
+		const buttonYes: ButtonBuilder = this.client.createButton("confirm", "Ja", "Secondary", "success");
+		const buttonNo: ButtonBuilder = this.client.createButton("decline", "Nein", "Secondary", "error");
 		const buttonRow: any = this.client.createMessageComponentsRow(buttonYes, buttonNo);
 
 		const confirmationAskMessage: any = await this.interaction.followUp({
 			embeds: [areYouSureEmbed],
-			components: [buttonRow]
+			components: [buttonRow],
 		});
 
-		const confirmationButtonCollector: any =
-			confirmationAskMessage.createMessageComponentCollector({
-				filter: (i: any): boolean => i.user.id === this.interaction.user.id,
-				time: 1000 * 60 * 5,
-				max: 1
-			});
+		const confirmationButtonCollector: any = confirmationAskMessage.createMessageComponentCollector({
+			filter: (i: any): boolean => i.user.id === this.interaction.user.id,
+			time: 1000 * 60 * 5,
+			max: 1,
+		});
 		confirmationButtonCollector.on("collect", async (clicked: any): Promise<void> => {
 			const confirmation = clicked.customId;
 
@@ -196,29 +169,29 @@ export default class MuteCommand extends BaseCommand {
 								" | Moderator: " +
 								this.interaction.user.username +
 								" | Unmute am: " +
-								unmuteDate
+								unmuteDate,
 						)
 						.then(async (): Promise<void> => {
 							const victimData = await this.client.findOrCreateMember(
 								mute.victim.user.id,
-								this.interaction.guild.id
+								this.interaction.guild.id,
 							);
 							victimData.muted = {
 								state: true,
 								reason: mute.reason,
 								moderator: {
 									name: this.interaction.user.username,
-									id: this.interaction.user.id
+									id: this.interaction.user.id,
 								},
 								duration: mute.duration,
 								mutedAt: Date.now(),
-								mutedUntil: Date.now() + mute.duration
+								mutedUntil: Date.now() + mute.duration,
 							};
 							victimData.markModified("muted");
 							await victimData.save();
 							this.client.databaseCache.mutedUsers.set(
 								mute.victim.user.id + this.interaction.guild.id,
-								victimData
+								victimData,
 							);
 
 							const privateText: string =
@@ -244,11 +217,9 @@ export default class MuteCommand extends BaseCommand {
 								privateText,
 								null,
 								"error",
-								this.interaction.guild.name
+								this.interaction.guild.name,
 							);
-							await mute.victim
-								.send({ embeds: [privateMuteEmbed] })
-								.catch((): void => {});
+							await mute.victim.send({ embeds: [privateMuteEmbed] }).catch((): void => {});
 
 							const text: string =
 								this.client.emotes.user +
@@ -258,16 +229,9 @@ export default class MuteCommand extends BaseCommand {
 								this.client.emotes.text +
 								" Begründung: " +
 								mute.reason;
-							const logEmbed: EmbedBuilder = this.client.createEmbed(
-								text,
-								null,
-								"normal"
-							);
+							const logEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 							logEmbed.setTitle(
-								this.client.emotes.timeout +
-									" " +
-									mute.victim.user.username +
-									" wurde gemutet"
+								this.client.emotes.timeout + " " + mute.victim.user.username + " wurde gemutet",
 							);
 							logEmbed.setThumbnail(mute.victim.user.displayAvatarURL());
 							await this.interaction.guild.logAction(logEmbed, "moderation");
@@ -295,14 +259,12 @@ export default class MuteCommand extends BaseCommand {
 								publicText,
 								null,
 								"error",
-								mute.victim.user.username
+								mute.victim.user.username,
 							);
-							publicMuteEmbed.setImage(
-								"https://c.tenor.com/VphNodL96w8AAAAC/mute-discord-mute.gif"
-							);
+							publicMuteEmbed.setImage("https://c.tenor.com/VphNodL96w8AAAAC/mute-discord-mute.gif");
 							await clicked.update({
 								embeds: [publicMuteEmbed],
-								components: []
+								components: [],
 							});
 						})
 						.catch(async (): Promise<void> => {
@@ -310,11 +272,11 @@ export default class MuteCommand extends BaseCommand {
 								"Ich konnte {0} nicht muten.",
 								"error",
 								"error",
-								mute.victim.user.username
+								mute.victim.user.username,
 							);
 							await clicked.update({
 								embeds: [cantMuteEmbed],
-								components: []
+								components: [],
 							});
 						});
 					break;
@@ -323,11 +285,11 @@ export default class MuteCommand extends BaseCommand {
 						"{0} wurde nicht gemutet.",
 						"error",
 						"error",
-						mute.victim.user.username
+						mute.victim.user.username,
 					);
 					await clicked.update({
 						embeds: [declineEmbed],
-						components: []
+						components: [],
 					});
 					break;
 			}

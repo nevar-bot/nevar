@@ -11,13 +11,13 @@ export default class Levels {
 	static async createUser(userId: string, guildId: string): Promise<any> {
 		const isUser: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (isUser) return false;
 
 		const newUser = new LevelSchema({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 
 		await newUser.save().catch((e: any): boolean => {
@@ -29,13 +29,13 @@ export default class Levels {
 	static async deleteUser(userId: string, guildId: string): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (!user) return false;
 
 		await LevelSchema.findOneAndDelete({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		}).catch((e: any): boolean => {
 			return false;
 		});
@@ -47,14 +47,14 @@ export default class Levels {
 
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (!user) {
 			const newUser: any = new LevelSchema({
 				userID: userId,
 				guildID: guildId,
 				xp: xp,
-				level: Math.floor(0.1 * Math.sqrt(xp))
+				level: Math.floor(0.1 * Math.sqrt(xp)),
 			});
 			await newUser.save().catch((e: any): boolean => {
 				return false;
@@ -77,7 +77,7 @@ export default class Levels {
 	static async appendLevel(userId: string, guildId: string, levels: number): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (!user) return false;
 
@@ -97,7 +97,7 @@ export default class Levels {
 
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (!user) return false;
 
@@ -115,7 +115,7 @@ export default class Levels {
 	static async setLevel(userId: string, guildId: string, level: number): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (!user) return false;
 
@@ -130,20 +130,16 @@ export default class Levels {
 		return user;
 	}
 
-	static async fetch(
-		userId: string,
-		guildId: string,
-		fetchPosition: boolean = false
-	): Promise<any> {
+	static async fetch(userId: string, guildId: string, fetchPosition: boolean = false): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (!user) return false;
 
 		if (fetchPosition) {
 			const leaderboard: any[] = await LevelSchema.find({
-				guildID: guildId
+				guildID: guildId,
 			})
 				.sort([["xp", "descending"]])
 				.exec();
@@ -162,7 +158,7 @@ export default class Levels {
 
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (!user) return false;
 
@@ -180,7 +176,7 @@ export default class Levels {
 	static async substractLevel(userId: string, guildId: string, levels: number): Promise<any> {
 		const user: any = await LevelSchema.findOne({
 			userID: userId,
-			guildID: guildId
+			guildID: guildId,
 		});
 		if (!user) return false;
 
@@ -202,11 +198,7 @@ export default class Levels {
 			.exec();
 	}
 
-	static async computeLeaderboard(
-		client: any,
-		leaderboard: any[],
-		fetchUsers = false
-	): Promise<any> {
+	static async computeLeaderboard(client: any, leaderboard: any[], fetchUsers = false): Promise<any> {
 		if (leaderboard.length < 1) return [];
 
 		const computedArray = [];
@@ -215,7 +207,7 @@ export default class Levels {
 			for (const key of leaderboard) {
 				const user = (await client.users.fetch(key.userID)) || {
 					username: "Unbekannt",
-					displayName: "Unbekannt"
+					displayName: "Unbekannt",
 				};
 				computedArray.push({
 					guildID: key.guildID,
@@ -224,11 +216,10 @@ export default class Levels {
 					level: key.level,
 					position:
 						leaderboard.findIndex(
-							(i: any): boolean =>
-								i.guildID === key.guildID && i.userID === key.userID
+							(i: any): boolean => i.guildID === key.guildID && i.userID === key.userID,
 						) + 1,
 					username: user.username,
-					displayName: user.displayName
+					displayName: user.displayName,
 				});
 			}
 		} else {
@@ -240,15 +231,14 @@ export default class Levels {
 					level: key.level,
 					position:
 						leaderboard.findIndex(
-							(i: any): boolean =>
-								i.guildID === key.guildID && i.userID === key.userID
+							(i: any): boolean => i.guildID === key.guildID && i.userID === key.userID,
 						) + 1,
 					username: client.users.cache.get(key.userID)
 						? client.users.cache.get(key.userID).username
 						: "Unbekannt",
 					displayName: client.users.cache.get(key.userID)
 						? client.users.cache.get(key.userID).displayName
-						: "Unbekannt"
+						: "Unbekannt",
 				});
 			});
 		}

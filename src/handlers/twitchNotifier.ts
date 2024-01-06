@@ -16,7 +16,7 @@ export default {
 	init(client: BaseClient): void {
 		const authProvider: AppTokenAuthProvider = new AppTokenAuthProvider(
 			client.config.apikeys["TWITCH_CLIENT_ID"],
-			client.config.apikeys["TWITCH_CLIENT_SECRET"]
+			client.config.apikeys["TWITCH_CLIENT_SECRET"],
 		);
 		const apiClient: ApiClient = new ApiClient({ authProvider });
 
@@ -29,12 +29,12 @@ export default {
 							const stream: any = await getStream(apiClient, channel.id);
 							if (stream && channel.lastStreamId !== stream.id) {
 								guildData.settings.notifiers.twitch.channels.find(
-									(c: any): boolean => c.id === channel.id
+									(c: any): boolean => c.id === channel.id,
 								).lastStreamId = stream.id;
 								guildData.markModified("settings.notifiers.twitch.channels");
 								await guildData.save();
 								const announcementChannel: any = guild.channels.cache.get(
-									guildData.settings.notifiers.twitch.announcementChannel
+									guildData.settings.notifiers.twitch.announcementChannel,
 								);
 								if (announcementChannel) {
 									const announcementEmbed: EmbedBuilder = client.createEmbed(
@@ -43,26 +43,23 @@ export default {
 										"normal",
 										client.emotes.link,
 										stream.title,
-										"https://twitch.tv/" + stream.userName
+										"https://twitch.tv/" + stream.userName,
 									);
 									announcementEmbed.setTitle(
-										client.emotes.arrow +
-											" " +
-											stream.userName +
-											" streamt gerade auf Twitch!"
+										client.emotes.arrow + " " + stream.userName + " streamt gerade auf Twitch!",
 									);
 									announcementEmbed.setImage(stream.getThumbnailUrl(1280, 720));
 									announcementChannel.send({
-										embeds: [announcementEmbed]
+										embeds: [announcementEmbed],
 									});
 								}
 							}
 						}
 					}
-				})
+				}),
 			);
 		};
 
 		setInterval(checkGuilds, 60 * 1000);
-	}
+	},
 };

@@ -5,7 +5,7 @@ import {
 	SlashCommandBuilder,
 	ChannelType,
 	StringSelectMenuBuilder,
-	StringSelectMenuOptionBuilder
+	StringSelectMenuOptionBuilder,
 } from "discord.js";
 
 export default class AichatCommand extends BaseCommand {
@@ -14,7 +14,7 @@ export default class AichatCommand extends BaseCommand {
 			name: "aichat",
 			description: "Manages the AI chat of the guild",
 			localizedDescriptions: {
-				de: "Verwaltet den KI-Chat des Servers"
+				de: "Verwaltet den KI-Chat des Servers",
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 2 * 1000,
@@ -26,74 +26,72 @@ export default class AichatCommand extends BaseCommand {
 						option
 							.setName("action")
 							.setNameLocalizations({
-								de: "aktion"
+								de: "aktion",
 							})
 							.setDescription("Choose from the following actions")
 							.setDescriptionLocalizations({
-								de: "Wähle aus den folgenden Aktionen"
+								de: "Wähle aus den folgenden Aktionen",
 							})
 							.setRequired(true)
 							.addChoices(
 								{
 									name: "status",
-									value: "status"
+									value: "status",
 								},
 								{
 									name: "channel",
-									value: "channel"
+									value: "channel",
 								},
 								{
 									name: "mode",
 									name_localizations: {
-										de: "modus"
+										de: "modus",
 									},
-									value: "mode"
-								}
-							)
+									value: "mode",
+								},
+							),
 					)
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
 							.setDescription("Choose the channel where the AI chat should be active")
 							.setDescriptionLocalizations({
-								de: "Wähle den Kanal, in dem der KI-Chat aktiv sein soll"
+								de: "Wähle den Kanal, in dem der KI-Chat aktiv sein soll",
 							})
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
 								ChannelType.GuildAnnouncement,
 								ChannelType.GuildForum,
-								ChannelType.PublicThread
-							)
+								ChannelType.PublicThread,
+							),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("status")
-							.setDescription(
-								"Choose whether the AI chat should be enabled or disabled"
-							)
+							.setDescription("Choose whether the AI chat should be enabled or disabled")
 							.setDescriptionLocalizations({
-								de: "Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll"
+								de: "Wähle, ob der KI-Chat aktiviert oder deaktiviert sein soll",
 							})
 							.setRequired(false)
 							.addChoices(
 								{
 									name: "on",
 									name_localizations: {
-										de: "an"
+										de: "an",
 									},
-									value: "on"
+									value: "on",
 								},
 								{
 									name: "off",
 									name_localizations: {
-										de: "aus"
+										de: "aus",
 									},
-									value: "off"
-								}
-							)
-					)
-			}
+									value: "off",
+								},
+							),
+					),
+			},
 		});
 	}
 
@@ -105,7 +103,7 @@ export default class AichatCommand extends BaseCommand {
 			data.guild.settings.aiChat = {
 				enabled: false,
 				channel: null,
-				mode: "normal"
+				mode: "normal",
 			};
 			data.guild.markModified("settings.aiChat");
 			await data.guild.save();
@@ -129,8 +127,8 @@ export default class AichatCommand extends BaseCommand {
 		const availableModes: any[] = Object.entries(this.client.aiChatPrompts.prompts).map(
 			([key, prompt]: any): any => ({
 				mode: key,
-				name: prompt.name
-			})
+				name: prompt.name,
+			}),
 		);
 
 		const selectNameMenu: StringSelectMenuBuilder = new StringSelectMenuBuilder()
@@ -144,26 +142,22 @@ export default class AichatCommand extends BaseCommand {
 					.setDescription(this.translate("mode:behaviorDescription", { mode }))
 					.setValue(mode.mode)
 					.setEmoji(this.client.emotes.bot)
-					.setDefault(mode.mode === data.guild.settings.aiChat.mode)
+					.setDefault(mode.mode === data.guild.settings.aiChat.mode),
 			);
 		}
 
 		const row: any = this.client.createMessageComponentsRow(selectNameMenu);
 
-		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("mode:selectBehavior"),
-			"arrow",
-			"normal"
-		);
+		const embed: EmbedBuilder = this.client.createEmbed(this.translate("mode:selectBehavior"), "arrow", "normal");
 		const message: any = await this.interaction.followUp({
 			embeds: [embed],
-			components: [row]
+			components: [row],
 		});
 
 		const collectedMode: any = await message
 			.awaitMessageComponent({
 				filter: (i: any): boolean => i.user.id === this.interaction.user.id,
-				time: 120 * 1000
+				time: 120 * 1000,
 			})
 			.catch((): void => {});
 
@@ -177,21 +171,18 @@ export default class AichatCommand extends BaseCommand {
 			const confirmationEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("mode:set", { mode: chosenMode }),
 				"success",
-				"normal"
+				"normal",
 			);
 			await collectedMode.update({
 				embeds: [confirmationEmbed],
-				components: []
+				components: [],
 			});
 
 			/* Reset the AI chat, set mode */
 			this.client.aiChat.set(this.interaction.guild.id, []);
 			const prompt =
-				this.client.aiChatPrompts.default +
-				this.client.aiChatPrompts.prompts[collectedMode.values[0]].prompt;
-			this.client.aiChat
-				.get(this.interaction.guild.id)!
-				.push({ role: "system", content: prompt });
+				this.client.aiChatPrompts.default + this.client.aiChatPrompts.prompts[collectedMode.values[0]].prompt;
+			this.client.aiChat.get(this.interaction.guild.id)!.push({ role: "system", content: prompt });
 		}
 	}
 
@@ -200,7 +191,7 @@ export default class AichatCommand extends BaseCommand {
 			const missingOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannel", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [missingOptionsEmbed] });
 		}
@@ -212,7 +203,7 @@ export default class AichatCommand extends BaseCommand {
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("channel:set", { channel: channel.toString() }),
 			"success",
-			"normal"
+			"normal",
 		);
 		return this.interaction.followUp({ embeds: [embed] });
 	}
@@ -222,14 +213,14 @@ export default class AichatCommand extends BaseCommand {
 			const missingOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingStatus", {}, true),
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [missingOptionsEmbed] });
 		}
 
 		const statuses: any = {
 			on: true,
-			off: false
+			off: false,
 		};
 		data.guild.settings.aiChat.enabled = statuses[status];
 		data.guild.markModified("settings.aiChat");
@@ -241,7 +232,7 @@ export default class AichatCommand extends BaseCommand {
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("status:set", { status: statusString }),
 			"success",
-			"normal"
+			"normal",
 		);
 		return this.interaction.followUp({ embeds: [embed] });
 	}

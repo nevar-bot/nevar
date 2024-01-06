@@ -24,7 +24,7 @@ export default class {
 		const data: any = {
 			guild: await this.client.findOrCreateGuild(guild.id),
 			member: await this.client.findOrCreateMember(member.id, guild.id),
-			user: await this.client.findOrCreateUser(member.user.id)
+			user: await this.client.findOrCreateUser(member.user.id),
 		};
 		guild.data = data.guild;
 		member.data = data.member;
@@ -42,17 +42,14 @@ export default class {
 		}
 
 		/* Author mentioned bot */
-		if (
-			message.content.match(new RegExp(`^<@!?${this.client.user!.id}>( |)$`)) &&
-			!message.author.bot
-		) {
+		if (message.content.match(new RegExp(`^<@!?${this.client.user!.id}>( |)$`)) && !message.author.bot) {
 			const currentHour: number = new Date().getHours();
 			const greetings: (number | string)[][] = [
 				[0, 5, "Gute Nacht"],
 				[5, 10, "Guten Morgen"],
 				[11, 13, "Guten Mittag"],
 				[14, 17, "Guten Tag"],
-				[18, 23, "Guten Abend"]
+				[18, 23, "Guten Abend"],
 			];
 
 			let greeting;
@@ -64,7 +61,7 @@ export default class {
 			}
 
 			const helpCommand: any = (await this.client.application!.commands.fetch()).find(
-				(command: any): boolean => command.name === "help"
+				(command: any): boolean => command.name === "help",
 			);
 			const greetingText: string =
 				"**{0}**" +
@@ -78,7 +75,7 @@ export default class {
 				greeting,
 				this.client.emotes.arrow,
 				this.client.user!.username,
-				helpCommand ? "</" + helpCommand.name + ":" + helpCommand.id + ">" : "/help"
+				helpCommand ? "</" + helpCommand.name + ":" + helpCommand.id + ">" : "/help",
 			);
 			helpEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
@@ -88,13 +85,13 @@ export default class {
 				"Link",
 				null,
 				false,
-				this.client.createInvite()
+				this.client.createInvite(),
 			);
 			const buttonRow: any = this.client.createMessageComponentsRow(inviteButton);
 
 			return message.reply({
 				embeds: [helpEmbed],
-				components: [buttonRow]
+				components: [buttonRow],
 			});
 		} else if (message.content) {
 			/* split message into parts */
@@ -113,15 +110,9 @@ export default class {
 
 				/* only execute if command is a staff or owner command */
 				const clientCommand: any = this.client.commands.get(command);
-				if (
-					clientCommand &&
-					(clientCommand.conf.staffOnly || clientCommand.conf.ownerOnly)
-				) {
+				if (clientCommand && (clientCommand.conf.staffOnly || clientCommand.conf.ownerOnly)) {
 					/* check if user is staff or owner */
-					if (
-						!data.user.staff.state &&
-						!this.client.config.general["OWNER_IDS"].includes(message.author.id)
-					)
+					if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(message.author.id))
 						return;
 					if (
 						clientCommand.help.category === "owner" &&
@@ -138,7 +129,7 @@ export default class {
 							e,
 							message.guild,
 							message.member,
-							"<ClientMessageCommand>.dispatch(<message>, <args>, <data>)"
+							"<ClientMessageCommand>.dispatch(<message>, <args>, <data>)",
 						);
 					}
 				}
@@ -149,20 +140,14 @@ export default class {
 		if (data.guild.settings.aiModeration?.enabled) {
 			if (!message.author.bot) {
 				const perspective: Perspective = new Perspective({
-					apiKey: this.client.config.apikeys["GOOGLE"]
+					apiKey: this.client.config.apikeys["GOOGLE"],
 				});
 
 				const result = await perspective
 					.analyze(message.content, {
-						attributes: [
-							"TOXICITY",
-							"INSULT",
-							"PROFANITY",
-							"THREAT",
-							"SEVERE_TOXICITY"
-						],
+						attributes: ["TOXICITY", "INSULT", "PROFANITY", "THREAT", "SEVERE_TOXICITY"],
 						languages: ["de"],
-						doNotStore: true
+						doNotStore: true,
 					})
 					.catch((e: any): void => {});
 
@@ -172,8 +157,7 @@ export default class {
 						.map((attribute: any): any => attribute.summaryScore.value)
 						.sort((a, b) => b - a);
 					const averageScore: number =
-						attributeValues.reduce((sum, value) => sum + value, 0) /
-						attributeValues.length;
+						attributeValues.reduce((sum, value) => sum + value, 0) / attributeValues.length;
 
 					const threshold: any = data.guild.settings.aiModeration.threshold;
 					if (averageScore > threshold) {
@@ -184,15 +168,11 @@ export default class {
 							if (message.member.roles.cache.has(excludedRole)) excluded = true;
 						}
 						/* check excluded channels */
-						if (
-							data.guild.settings.aiModeration.excludedChannels.includes(
-								message.channel.id
-							)
-						)
+						if (data.guild.settings.aiModeration.excludedChannels.includes(message.channel.id))
 							excluded = true;
 
 						const alertChannel = message.guild.channels.cache.get(
-							data.guild.settings.aiModeration.alertChannel
+							data.guild.settings.aiModeration.alertChannel,
 						);
 						if (alertChannel && !excluded) {
 							const attributeStrings: any = {
@@ -200,27 +180,20 @@ export default class {
 								SEVERE_TOXICITY: "Schwere Unangemessenheit",
 								INSULT: "Beleidigung",
 								PROFANITY: "Vulgäre Inhalte",
-								THREAT: "Bedrohung"
+								THREAT: "Bedrohung",
 							};
 
 							const attributes: string[] = Object.keys(attributeScores)
 								.sort(
 									(a: string, b: string) =>
-										attributeScores[b].summaryScore.value -
-										attributeScores[a].summaryScore.value
+										attributeScores[b].summaryScore.value - attributeScores[a].summaryScore.value,
 								) // Sortiere die Attribute basierend auf den Werten absteigend
 								.map((key: string): string => {
 									const value: string = (
-										Math.floor(attributeScores[key].summaryScore.value * 100) /
-										100
+										Math.floor(attributeScores[key].summaryScore.value * 100) / 100
 									).toFixed(2);
 									return (
-										this.client.emotes.search +
-										" " +
-										attributeStrings[key] +
-										": **" +
-										value +
-										"**"
+										this.client.emotes.search + " " + attributeStrings[key] + ": **" + value + "**"
 									);
 								});
 
@@ -246,37 +219,28 @@ export default class {
 								message.content +
 								"**";
 
-							const embed: EmbedBuilder = this.client.createEmbed(
-								alertMessage,
-								null,
-								"warning"
-							);
-							embed.setTitle(
-								this.client.emotes.warning + " Potenziell beleidigende Nachricht"
-							);
+							const embed: EmbedBuilder = this.client.createEmbed(alertMessage, null, "warning");
+							embed.setTitle(this.client.emotes.warning + " Potenziell beleidigende Nachricht");
 
 							const deleteButton: ButtonBuilder = this.client.createButton(
 								"aimod_" + message.channel.id + "_" + message.id + "_delete",
 								"Nachricht löschen",
 								"Secondary",
 								"delete",
-								false
+								false,
 							);
 							const warnButton: ButtonBuilder = this.client.createButton(
 								"aimod_" + message.channel.id + "_" + message.id + "_warn",
 								"Verwarnen",
 								"Secondary",
 								"warning",
-								true
+								true,
 							);
-							const row: any = this.client.createMessageComponentsRow(
-								deleteButton,
-								warnButton
-							);
+							const row: any = this.client.createMessageComponentsRow(deleteButton, warnButton);
 
 							alertChannel.send({
 								embeds: [embed],
-								components: [row]
+								components: [row],
 							});
 						}
 					}
@@ -299,13 +263,12 @@ export default class {
 					"error",
 					"error",
 					this.client.emotes.arrow,
-					reason
+					reason,
 				);
 				return message.reply({ embeds: [blockedMessageEmbed] });
 			}
 
-			if (!this.client.aiChat.has(message.guild.id))
-				this.client.aiChat.set(message.guild.id, []);
+			if (!this.client.aiChat.has(message.guild.id)) this.client.aiChat.set(message.guild.id, []);
 
 			const prompt: string =
 				this.client.aiChatPrompts.default +
@@ -315,35 +278,28 @@ export default class {
 			await message.channel.sendTyping();
 			this.client.aiChat.get(message.guild.id)!.push({
 				role: "user",
-				content: message.content
+				content: message.content,
 			});
 
 			/* send request */
 			const openai: OpenAI = new OpenAI({
-				apiKey: this.client.config.apikeys["OPENAI"]
+				apiKey: this.client.config.apikeys["OPENAI"],
 			});
 
 			const messages: any = this.client.aiChat.get(message.guild.id);
-			const response: any =
-				await openai.chat.completions.create({
+			const response: any = await openai.chat.completions
+				.create({
 					model: "gpt-3.5-turbo-16k",
-					messages: messages
-				}).catch((e: any): void => {
-					if(e.status > 400 && e.status < 500){
+					messages: messages,
+				})
+				.catch((e: any): void => {
+					if (e.status > 400 && e.status < 500) {
 						message.reply({
-							content:
-								this.client.emotes.error +
-								" Fehler " +
-								e.status +
-								": " +
-								e.error.message
+							content: this.client.emotes.error + " Fehler " + e.status + ": " + e.error.message,
 						});
 
 						/* check if context is too long */
-						if (
-							e.status === 400 &&
-							e.error.code === "context_length_exceeded"
-						) {
+						if (e.status === 400 && e.error.code === "context_length_exceeded") {
 							/* remove old messages */
 							const messagesArray: any = this.client.aiChat.get(message.guild.id);
 							function removeOldestItems(arr: any, numItems: number): void {
@@ -363,22 +319,22 @@ export default class {
 							this.client.aiChat.set(message.guild.id, messagesArray);
 						}
 					}
-				})
+				});
 
 			const responseMessage: string | null = response?.choices[0]?.message.content;
 
 			if (responseMessage) {
 				this.client.aiChat.get(message.guild.id)!.push({
 					role: "assistant",
-					content: responseMessage
+					content: responseMessage,
 				});
 				message.reply({ content: responseMessage });
 			} else {
-				if(response){
+				if (response) {
 					message.reply({
 						content:
 							this.client.emotes.error +
-							" Das hat leider nicht funktioniert. Bitte versuche es später erneut."
+							" Das hat leider nicht funktioniert. Bitte versuche es später erneut.",
 					});
 				}
 			}
@@ -411,14 +367,9 @@ export default class {
 									" Löschen nach: " +
 									ms(Number(time));
 
-								const errorEmbed: EmbedBuilder = this.client.createEmbed(
-									errorText,
-									null,
-									"error"
-								);
+								const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
 								errorEmbed.setTitle(
-									this.client.emotes.error +
-										" Löschen von Nachricht durch Autodelete fehlgeschlagen"
+									this.client.emotes.error + " Löschen von Nachricht durch Autodelete fehlgeschlagen",
 								);
 
 								guild.logAction(errorEmbed, "guild");
@@ -451,14 +402,9 @@ export default class {
 						" Emoji: " +
 						emoji;
 
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(
-						errorText,
-						null,
-						"error"
-					);
+					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
 					errorEmbed.setTitle(
-						this.client.emotes.error +
-							" Reagieren auf Nachricht durch Autoreact fehlgeschlagen"
+						this.client.emotes.error + " Reagieren auf Nachricht durch Autoreact fehlgeschlagen",
 					);
 
 					guild.logAction(errorEmbed, "guild");
@@ -487,10 +433,7 @@ export default class {
 			}
 
 			/* double xp roles */
-			if (
-				data.guild.settings.levels.doubleXP &&
-				data.guild.settings.levels.doubleXP.length > 0
-			) {
+			if (data.guild.settings.levels.doubleXP && data.guild.settings.levels.doubleXP.length > 0) {
 				for (const doubleXP of data.guild.settings.levels.doubleXP) {
 					if (message.member.roles.cache.get(doubleXP)) {
 						xp = xp * 2;
@@ -503,21 +446,14 @@ export default class {
 				const hasLeveledUp: boolean = await this.client.levels.appendXp(
 					message.author.id,
 					message.guild.id,
-					xp
+					xp,
 				);
-				const levelUser: any = await this.client.levels.fetch(
-					message.author.id,
-					message.guild.id,
-					true
-				);
+				const levelUser: any = await this.client.levels.fetch(message.author.id, message.guild.id, true);
 
 				if (hasLeveledUp) {
 					const newLevel: number = Number(levelUser.level);
 					/* Level roles */
-					if (
-						data.guild.settings.levels.roles &&
-						data.guild.settings.levels.roles.length > 0
-					) {
+					if (data.guild.settings.levels.roles && data.guild.settings.levels.roles.length > 0) {
 						for (const levelRole of data.guild.settings.levels.roles) {
 							const roleId: any = levelRole.role;
 							const level: any = levelRole.level;
@@ -533,14 +469,9 @@ export default class {
 										roleId +
 										">";
 
-									const errorEmbed: EmbedBuilder = this.client.createEmbed(
-										errorText,
-										null,
-										"error"
-									);
+									const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
 									errorEmbed.setTitle(
-										this.client.emotes.error +
-											" Vergeben von Levelrolle fehlgeschlagen"
+										this.client.emotes.error + " Vergeben von Levelrolle fehlgeschlagen",
 									);
 
 									guild.logAction(errorEmbed, "guild");
@@ -565,23 +496,14 @@ export default class {
 					const parsedMessage: string = parseMessage(data.guild.settings.levels.message);
 
 					const channel: any =
-						message.guild.channels.cache.get(data.guild.settings.levels.channel) ||
-						message.channel;
+						message.guild.channels.cache.get(data.guild.settings.levels.channel) || message.channel;
 					if (!channel) return;
 
 					channel.send({ content: parsedMessage }).catch((e: any): void => {
-						const errorText: string =
-							this.client.emotes.channel + " Channel: " + channel;
+						const errorText: string = this.client.emotes.channel + " Channel: " + channel;
 
-						const errorEmbed: EmbedBuilder = this.client.createEmbed(
-							errorText,
-							null,
-							"error"
-						);
-						errorEmbed.setTitle(
-							this.client.emotes.error +
-								" Senden von Level-Up-Nachricht fehlgeschlagen"
-						);
+						const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
+						errorEmbed.setTitle(this.client.emotes.error + " Senden von Level-Up-Nachricht fehlgeschlagen");
 
 						guild.logAction(errorEmbed, "guild");
 					});

@@ -11,7 +11,7 @@ export default {
 
 		setInterval((): void => {
 			for (const memberData of [...client.databaseCache.bannedUsers.values()].filter(
-				(m: any): boolean => m.banned.bannedUntil <= Date.now()
+				(m: any): boolean => m.banned.bannedUntil <= Date.now(),
 			)) {
 				const guild: Guild | undefined = client.guilds.cache.get(memberData.guildID);
 				if (!guild) continue;
@@ -19,9 +19,7 @@ export default {
 				guild.members
 					.unban(memberData.id, "Ban-Dauer abgelaufen")
 					.then(async (): Promise<void> => {
-						const user: any = await client.users
-							.fetch(memberData.id)
-							.catch((): void => {});
+						const user: any = await client.users.fetch(memberData.id).catch((): void => {});
 						const unbanMessage: string =
 							client.emotes.user +
 							" Nutzer/-in: " +
@@ -30,29 +28,17 @@ export default {
 							client.emotes.arrow +
 							" Begründung: Ban-Dauer ist abgelaufen";
 
-						const unbanEmbed: EmbedBuilder = client.createEmbed(
-							unbanMessage,
-							null,
-							"success"
-						);
+						const unbanEmbed: EmbedBuilder = client.createEmbed(unbanMessage, null, "success");
 						unbanEmbed.setTitle("Auto-Unban durchgeführt");
 						unbanEmbed.setThumbnail(user!.displayAvatarURL());
 						await guild.logAction(unbanEmbed, "moderation");
 					})
 					.catch(async (e: any): Promise<void> => {
-						const user: any = await client.users
-							.fetch(memberData.id)
-							.catch((): void => {});
+						const user: any = await client.users.fetch(memberData.id).catch((): void => {});
 						const errorMessage: string =
-							client.emotes.user +
-							" Nutzer/-in: " +
-							(user ? user.username : memberData.id);
+							client.emotes.user + " Nutzer/-in: " + (user ? user.username : memberData.id);
 
-						const errorEmbed: EmbedBuilder = client.createEmbed(
-							errorMessage,
-							null,
-							"error"
-						);
+						const errorEmbed: EmbedBuilder = client.createEmbed(errorMessage, null, "error");
 						errorEmbed.setTitle("Auto-Unban fehlgeschlagen");
 						errorEmbed.setThumbnail(user.displayAvatarURL());
 						await guild.logAction(errorEmbed, "moderation");
@@ -63,16 +49,16 @@ export default {
 					reason: null,
 					moderator: {
 						name: null,
-						id: null
+						id: null,
 					},
 					duration: null,
 					bannedAt: null,
-					bannedUntil: null
+					bannedUntil: null,
 				};
 				memberData.markModified("banned");
 				memberData.save();
 				client.databaseCache.bannedUsers.delete(memberData.id + memberData.guildID);
 			}
 		}, 1000);
-	}
+	},
 };

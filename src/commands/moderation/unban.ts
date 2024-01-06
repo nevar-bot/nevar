@@ -13,12 +13,9 @@ export default class UnbanCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option
-						.setName("nutzer")
-						.setDescription("Gib hier die ID des/r Nutzers/-in an")
-						.setRequired(true)
-				)
-			}
+					option.setName("nutzer").setDescription("Gib hier die ID des/r Nutzers/-in an").setRequired(true),
+				),
+			},
 		});
 	}
 
@@ -35,7 +32,7 @@ export default class UnbanCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst eine ID angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -46,27 +43,24 @@ export default class UnbanCommand extends BaseCommand {
 				"{0} ist nicht gebannt.",
 				"error",
 				"error",
-				user.username
+				user.username,
 			);
 			return this.interaction.followUp({ embeds: [isNotBannedEmbed] });
 		}
 
 		try {
 			await this.interaction.guild.members.unban(user.id);
-			const memberData = await this.client.findOrCreateMember(
-				user.id,
-				this.interaction.guild.id
-			);
+			const memberData = await this.client.findOrCreateMember(user.id, this.interaction.guild.id);
 			memberData.banned = {
 				state: false,
 				reason: null,
 				moderator: {
 					name: null,
-					id: null
+					id: null,
 				},
 				duration: null,
 				bannedAt: null,
-				bannedUntil: null
+				bannedUntil: null,
 			};
 			memberData.markModified("banned");
 			await memberData.save();
@@ -76,7 +70,7 @@ export default class UnbanCommand extends BaseCommand {
 				"{0} wurde entbannt.",
 				"success",
 				"success",
-				user.username
+				user.username,
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} catch (e) {
@@ -84,7 +78,7 @@ export default class UnbanCommand extends BaseCommand {
 				"Ich konnte {0} nicht entbannen.",
 				"error",
 				"error",
-				user.username
+				user.username,
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}

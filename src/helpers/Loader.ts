@@ -26,13 +26,7 @@ export default class Loader {
 			}
 		}
 		client.logger.log(
-			"Loaded " +
-				(success + failed) +
-				" commands. Success (" +
-				success +
-				") Failed (" +
-				failed +
-				")"
+			"Loaded " + (success + failed) + " commands. Success (" + success + ") Failed (" + failed + ")",
 		);
 	}
 
@@ -59,13 +53,7 @@ export default class Loader {
 			}
 		}
 		client.logger.log(
-			"Loaded " +
-				(success + failed) +
-				" events. Success (" +
-				success +
-				") Failed (" +
-				failed +
-				")"
+			"Loaded " + (success + failed) + " events. Success (" + success + ") Failed (" + failed + ")",
 		);
 	}
 
@@ -104,7 +92,7 @@ export default class Loader {
 				success +
 				") Failed (" +
 				failed +
-				")"
+				")",
 		);
 	}
 

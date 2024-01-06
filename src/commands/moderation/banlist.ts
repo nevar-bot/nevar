@@ -14,8 +14,8 @@ export default class BanlistCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -30,19 +30,13 @@ export default class BanlistCommand extends BaseCommand {
 		const bannedUsers: any[] = [];
 		const bans: any = await this.interaction.guild.bans.fetch().catch((): void => {});
 		for (const ban of bans) {
-			const memberData: any = await this.client.findOrCreateMember(
-				ban[1].user.id,
-				this.interaction.guild.id
-			);
+			const memberData: any = await this.client.findOrCreateMember(ban[1].user.id, this.interaction.guild.id);
 			if (memberData.banned.state) {
 				// Mit Nevar gebannt
 				const duration: string =
 					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "Permanent"
-						: this.client.utils.getDiscordTimestamp(
-								Date.now() + memberData.banned.duration,
-								"R"
-						  );
+						: this.client.utils.getDiscordTimestamp(Date.now() + memberData.banned.duration, "R");
 				const bannedUntil: string =
 					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "/"
@@ -98,7 +92,7 @@ export default class BanlistCommand extends BaseCommand {
 			bannedUsers,
 			"Gebannte Nutzer/-innen",
 			"Es sind keine Nutzer gebannt",
-			null
+			null,
 		);
 	}
 }

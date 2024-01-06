@@ -12,8 +12,8 @@ export default class TopvotersCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -46,7 +46,7 @@ export default class TopvotersCommand extends BaseCommand {
 						"** - " +
 						topVoter.voteCount +
 						" Votes" +
-						"\n"
+						"\n",
 				);
 			}
 		}
@@ -55,7 +55,7 @@ export default class TopvotersCommand extends BaseCommand {
 			10,
 			voters,
 			"Topvoter",
-			"Es gibt noch keine Topvoter"
+			"Es gibt noch keine Topvoter",
 		);
 	}
 }

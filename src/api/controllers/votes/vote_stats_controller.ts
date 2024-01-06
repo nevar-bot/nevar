@@ -13,7 +13,7 @@ export async function get(req: Request, res: Response) {
 		const json: any = {
 			status_code: 200,
 			status_message: null,
-			res: votes
+			res: votes,
 		};
 		res.setHeader("Content-Type", "application/json");
 		return res.end(JSON.stringify(json, null, 4));
@@ -37,8 +37,8 @@ export async function get(req: Request, res: Response) {
 			status_message: null,
 			res: {
 				month: requestedMonth,
-				votes: votes[requestedMonth] || 0
-			}
+				votes: votes[requestedMonth] || 0,
+			},
 		};
 		res.setHeader("Content-Type", "application/json");
 		return res.end(JSON.stringify(json, null, 4));

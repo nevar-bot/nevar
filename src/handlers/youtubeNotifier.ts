@@ -7,7 +7,7 @@ async function getLastVideo(youtubeInstance: any, channelId: string): Promise<ob
 		part: "snippet",
 		channelId: channelId,
 		order: "date",
-		maxResults: 1
+		maxResults: 1,
 	});
 
 	if (response?.data?.items?.[0]) {
@@ -16,7 +16,7 @@ async function getLastVideo(youtubeInstance: any, channelId: string): Promise<ob
 			title: response.data.items[0].snippet.title,
 			url: `https://www.youtube.com/watch?v=${response.data.items[0].id.videoId}`,
 			username: response.data.items[0].snippet.channelTitle,
-			thumbnail: response.data.items[0].snippet.thumbnails.high.url
+			thumbnail: response.data.items[0].snippet.thumbnails.high.url,
 		};
 	} else {
 		return null;
@@ -26,7 +26,7 @@ export default {
 	init(client: BaseClient): void {
 		const youtube: any = google.youtube({
 			version: "v3",
-			auth: client.config.apikeys["GOOGLE"]
+			auth: client.config.apikeys["GOOGLE"],
 		});
 
 		const checkGuilds = async (): Promise<void> => {
@@ -38,12 +38,12 @@ export default {
 							const lastVideo: any = await getLastVideo(youtube, channel.id);
 							if (lastVideo && channel.lastVideoId !== lastVideo.id) {
 								guildData.settings.notifiers.youtube.channels.find(
-									(c: any): boolean => c.id === channel.id
+									(c: any): boolean => c.id === channel.id,
 								).lastVideoId = lastVideo.id;
 								guildData.markModified("settings.notifiers.youtube.channels");
 								await guildData.save();
 								const announcementChannel: any = guild.channels.cache.get(
-									guildData.settings.notifiers.youtube.announcementChannel
+									guildData.settings.notifiers.youtube.announcementChannel,
 								);
 								if (announcementChannel) {
 									const announcementEmbed: EmbedBuilder = client.createEmbed(
@@ -52,26 +52,26 @@ export default {
 										"normal",
 										client.emotes.link,
 										lastVideo.title,
-										lastVideo.url
+										lastVideo.url,
 									);
 									announcementEmbed.setTitle(
 										client.emotes.arrow +
 											" " +
 											lastVideo.username +
-											" hat ein neues Video hochgeladen!"
+											" hat ein neues Video hochgeladen!",
 									);
 									announcementEmbed.setImage(lastVideo.thumbnail);
 									announcementChannel.send({
-										embeds: [announcementEmbed]
+										embeds: [announcementEmbed],
 									});
 								}
 							}
 						}
 					}
-				})
+				}),
 			);
 		};
 
 		setInterval(checkGuilds, 5 * 60 * 1000);
-	}
+	},
 };

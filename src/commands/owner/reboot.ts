@@ -11,8 +11,8 @@ export default class RebootCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -27,7 +27,7 @@ export default class RebootCommand extends BaseCommand {
 		const rebootEmbed: EmbedBuilder = this.client.createEmbed(
 			"Der Bot wird neu gestartet...",
 			"warning",
-			"warning"
+			"warning",
 		);
 		await this.message.reply({ embeds: [rebootEmbed] });
 		process.exit(1);

@@ -9,14 +9,14 @@ export default class FloodCommand extends BaseCommand {
 			name: "flood",
 			description: "You have to fill the whole playing field with one color",
 			localizedDescriptions: {
-				de: "Du musst das gesamte Spielfeld mit einer Farbe füllen"
+				de: "Du musst das gesamte Spielfeld mit einer Farbe füllen",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -29,7 +29,7 @@ export default class FloodCommand extends BaseCommand {
 	private async startGame(): Promise<void> {
 		const game: FloodGame = new FloodGame({
 			interaction: this.interaction,
-			client: this.client
+			client: this.client,
 		});
 
 		await game.startGame();
@@ -53,15 +53,13 @@ class FloodGame extends BaseGame {
 
 		for (let y: number = 0; y < this.length; y++) {
 			for (let x: number = 0; x < this.length; x++) {
-				this.gameBoard[y * this.length + x] =
-					this.squares[Math.floor(Math.random() * this.squares.length)];
+				this.gameBoard[y * this.length + x] = this.squares[Math.floor(Math.random() * this.squares.length)];
 			}
 		}
 	}
 
 	public async startGame(): Promise<void> {
-		if (!this.interaction.deferred)
-			await this.interaction.deferReply().catch((e: any): void => {});
+		if (!this.interaction.deferred) await this.interaction.deferReply().catch((e: any): void => {});
 		this.interaction.author = this.interaction.user;
 		this.maxTurns = Math.floor((25 * (this.length * 2)) / 26);
 
@@ -69,65 +67,31 @@ class FloodGame extends BaseGame {
 			this.interaction.guild.translate("minigames/flood:embedDescription", {
 				turns: this.turns,
 				maxTurns: this.maxTurns,
-				board: this.getBoardContent()
+				board: this.getBoardContent(),
 			}),
 			"arrow",
-			"normal"
+			"normal",
 		);
 
-		const btn1: ButtonBuilder = this.options.client.createButton(
-			"flood_0",
-			null,
-			"Primary",
-			this.squares[0]
-		);
-		const btn2: ButtonBuilder = this.options.client.createButton(
-			"flood_1",
-			null,
-			"Primary",
-			this.squares[1]
-		);
-		const btn3: ButtonBuilder = this.options.client.createButton(
-			"flood_2",
-			null,
-			"Primary",
-			this.squares[2]
-		);
-		const btn4: ButtonBuilder = this.options.client.createButton(
-			"flood_3",
-			null,
-			"Primary",
-			this.squares[3]
-		);
-		const btn5: ButtonBuilder = this.options.client.createButton(
-			"flood_4",
-			null,
-			"Primary",
-			this.squares[4]
-		);
-		const row: any = this.options.client.createMessageComponentsRow(
-			btn1,
-			btn2,
-			btn3,
-			btn4,
-			btn5
-		);
+		const btn1: ButtonBuilder = this.options.client.createButton("flood_0", null, "Primary", this.squares[0]);
+		const btn2: ButtonBuilder = this.options.client.createButton("flood_1", null, "Primary", this.squares[1]);
+		const btn3: ButtonBuilder = this.options.client.createButton("flood_2", null, "Primary", this.squares[2]);
+		const btn4: ButtonBuilder = this.options.client.createButton("flood_3", null, "Primary", this.squares[3]);
+		const btn5: ButtonBuilder = this.options.client.createButton("flood_4", null, "Primary", this.squares[4]);
+		const row: any = this.options.client.createMessageComponentsRow(btn1, btn2, btn3, btn4, btn5);
 
 		const msg: any = await this.sendMessage({
 			embeds: [embed],
-			components: [row]
+			components: [row],
 		});
 		const collector = msg.createMessageComponentCollector({
-			filter: (btn: any): boolean => btn.user.id === this.interaction.user.id
+			filter: (btn: any): boolean => btn.user.id === this.interaction.user.id,
 		});
 
 		collector.on("collect", async (btn: any): Promise<any> => {
 			await btn.deferUpdate().catch((e: any): void => {});
 
-			const update: boolean | undefined = await this.updateGame(
-				this.squares[btn.customId.split("_")[1]],
-				msg
-			);
+			const update: boolean | undefined = await this.updateGame(this.squares[btn.customId.split("_")[1]], msg);
 			if (!update && update !== false) return collector.stop();
 			if (!update) return;
 
@@ -135,10 +99,10 @@ class FloodGame extends BaseGame {
 				this.interaction.guild.translate("minigames/flood:embedDescription", {
 					turns: this.turns,
 					maxTurns: this.maxTurns,
-					board: this.getBoardContent()
+					board: this.getBoardContent(),
 				}),
 				"arrow",
-				"normal"
+				"normal",
 			);
 			return await msg.edit({ embeds: [embed], components: [row] });
 		});
@@ -163,8 +127,8 @@ class FloodGame extends BaseGame {
 		const GameOverMessage: string = result
 			? this.interaction.guild.translate("minigames/flood:win", { turns: String(this.turns) })
 			: this.interaction.guild.translate("minigames/flood:lose", {
-					turns: String(this.turns)
-			  });
+					turns: String(this.turns),
+				});
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
 			this.interaction.guild.translate("minigames/flood:end") +
@@ -174,11 +138,11 @@ class FloodGame extends BaseGame {
 				"\n\n" +
 				this.getBoardContent(),
 			"rocket",
-			"normal"
+			"normal",
 		);
 		return msg.edit({
 			embeds: [embed],
-			components: this.disableButtons(msg.components)
+			components: this.disableButtons(msg.components),
 		});
 	}
 
@@ -202,18 +166,13 @@ class FloodGame extends BaseGame {
 				if (!visited.some((v) => v.x === up.x && v.y === up.y) && up.y >= 0) queue.push(up);
 
 				const down: any = { x: block.x, y: block.y + 1 };
-				if (!visited.some((v) => v.x === down.x && v.y === down.y) && down.y < this.length)
-					queue.push(down);
+				if (!visited.some((v) => v.x === down.x && v.y === down.y) && down.y < this.length) queue.push(down);
 
 				const left: any = { x: block.x - 1, y: block.y };
-				if (!visited.some((v) => v.x === left.x && v.y === left.y) && left.x >= 0)
-					queue.push(left);
+				if (!visited.some((v) => v.x === left.x && v.y === left.y) && left.x >= 0) queue.push(left);
 
 				const right: any = { x: block.x + 1, y: block.y };
-				if (
-					!visited.some((v) => v.x === right.x && v.y === right.y) &&
-					right.x < this.length
-				)
+				if (!visited.some((v) => v.x === right.x && v.y === right.y) && right.x < this.length)
 					queue.push(right);
 			}
 		}

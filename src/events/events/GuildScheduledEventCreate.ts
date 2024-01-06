@@ -14,24 +14,21 @@ export default class {
 		const { guild } = scheduledEvent;
 
 		const properties: Array<string> = [];
-		if (scheduledEvent.name)
-			properties.push(this.client.emotes.edit + " Name: " + scheduledEvent.name);
+		if (scheduledEvent.name) properties.push(this.client.emotes.edit + " Name: " + scheduledEvent.name);
 		if (scheduledEvent.id) properties.push(this.client.emotes.id + " ID: " + scheduledEvent.id);
 		if (scheduledEvent.description)
-			properties.push(
-				this.client.emotes.text + " Beschreibung: " + scheduledEvent.description
-			);
+			properties.push(this.client.emotes.text + " Beschreibung: " + scheduledEvent.description);
 		if (scheduledEvent.scheduledStartTimestamp)
 			properties.push(
 				this.client.emotes.reminder +
 					" Startzeit: " +
-					moment(scheduledEvent.scheduledStartTimestamp).format("DD.MM.YYYY HH:mm")
+					moment(scheduledEvent.scheduledStartTimestamp).format("DD.MM.YYYY HH:mm"),
 			);
 		if (scheduledEvent.scheduledEndTimestamp)
 			properties.push(
 				this.client.emotes.reminder +
 					" Endzeit: " +
-					moment(scheduledEvent.scheduledEndTimestamp).format("DD.MM.YYYY HH:mm")
+					moment(scheduledEvent.scheduledEndTimestamp).format("DD.MM.YYYY HH:mm"),
 			);
 
 		let scheduledEventLogMessage: string = properties.join("\n");
@@ -39,7 +36,7 @@ export default class {
 		const auditLogs: any = await guild
 			.fetchAuditLogs({
 				type: AuditLogEvent["GuildScheduledEventCreate"],
-				limit: 1
+				limit: 1,
 			})
 			.catch((e: any): void => {});
 		if (auditLogs) {
@@ -59,11 +56,7 @@ export default class {
 			}
 		}
 
-		const scheduledEventLogEmbed: EmbedBuilder = this.client.createEmbed(
-			scheduledEventLogMessage,
-			null,
-			"success"
-		);
+		const scheduledEventLogEmbed: EmbedBuilder = this.client.createEmbed(scheduledEventLogMessage, null, "success");
 		scheduledEventLogEmbed.setTitle(this.client.emotes.events.event.create + "Event erstellt");
 		scheduledEventLogEmbed.setThumbnail(guild.iconURL());
 

@@ -12,8 +12,7 @@ export default class {
 	}
 
 	public async dispatch(interaction: any): Promise<any> {
-		if (!interaction || !interaction.type || !interaction.member || !interaction.guildId)
-			return;
+		if (!interaction || !interaction.type || !interaction.member || !interaction.guildId) return;
 
 		/* Basic information */
 		const { guild, member, channel }: any = interaction;
@@ -21,7 +20,7 @@ export default class {
 		const data: any = {
 			guild: await this.client.findOrCreateGuild(guild.id),
 			member: await this.client.findOrCreateMember(member.id, guild.id),
-			user: await this.client.findOrCreateUser(member.user.id)
+			user: await this.client.findOrCreateUser(member.user.id),
 		};
 		guild.data = data.guild;
 		member.data = data.member;
@@ -35,16 +34,14 @@ export default class {
 					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
 					"error",
 					"error",
-					this.client.support
+					this.client.support,
 				);
-				await interaction
-					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
-					.catch((e: any): void => {});
+				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
 				return this.client.alertException(
 					"Context menu " + interaction.commandName + " not found",
 					guild.name,
 					member.user,
-					'<Client>.contextMenus.get("' + interaction.commandName + '")'
+					'<Client>.contextMenus.get("' + interaction.commandName + '")',
 				);
 			}
 
@@ -55,24 +52,17 @@ export default class {
 					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
 					"error",
 					"error",
-					this.client.support
+					this.client.support,
 				);
-				await interaction
-					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
-					.catch((e: any): void => {});
-				return this.client.alertException(
-					e,
-					guild.name,
-					member.user,
-					"<ContextInteraction>.deferReply()"
-				);
+				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
+				return this.client.alertException(e, guild.name, member.user, "<ContextInteraction>.deferReply()");
 			} finally {
 				if (!interaction.deferred) {
 					const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
 						"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
 						"error",
 						"error",
-						this.client.support
+						this.client.support,
 					);
 					await interaction
 						.reply({ embeds: [errorMessageEmbed], ephemeral: true })
@@ -81,7 +71,7 @@ export default class {
 						"ContextInteraction is not deferred",
 						guild.name,
 						member.user,
-						"<ContextInteraction>.deferReply()"
+						"<ContextInteraction>.deferReply()",
 					);
 				}
 			}
@@ -94,11 +84,11 @@ export default class {
 					"error",
 					"error",
 					this.client.emotes.arrow,
-					reason
+					reason,
 				);
 				return interaction.followUp({
 					embeds: [blockedMessageEmbed],
-					ephemeral: true
+					ephemeral: true,
 				});
 			}
 
@@ -110,7 +100,7 @@ export default class {
 					"error",
 					"error",
 					this.client.emotes.arrow,
-					reason
+					reason,
 				);
 				return interaction.followUp({ embeds: [blockedMessageEmbed] });
 			}
@@ -124,10 +114,7 @@ export default class {
 			const time = userCooldown[contextMenu.help.name] || 0;
 			if (time > Date.now()) {
 				/* Staffs can bypass cooldown */
-				if (
-					!data.user.staff.state &&
-					!this.client.config.general["OWNER_IDS"].includes(member.user.id)
-				) {
+				if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(member.user.id)) {
 					const seconds: number = Math.ceil((time - Date.now()) / 1000);
 					const secondsString: string = seconds > 1 ? "Sekunden" : "Sekunde";
 					const cooldownMessageEmbed: EmbedBuilder = this.client.createEmbed(
@@ -135,38 +122,35 @@ export default class {
 						"error",
 						"error",
 						seconds,
-						secondsString
+						secondsString,
 					);
 					return interaction.followUp({
-						embeds: [cooldownMessageEmbed]
+						embeds: [cooldownMessageEmbed],
 					});
 				}
 			}
-			interactionCooldowns[member.user.id][contextMenu.help.name] =
-				Date.now() + contextMenu.conf.cooldown;
+			interactionCooldowns[member.user.id][contextMenu.help.name] = Date.now() + contextMenu.conf.cooldown;
 
 			/* Save command log to database */
 			const log = new this.client.logs({
 				command: contextMenu.help.name,
-				type: interaction.isUserContextMenuCommand()
-					? "User Context Menu"
-					: "Message Context Menu",
+				type: interaction.isUserContextMenuCommand() ? "User Context Menu" : "Message Context Menu",
 				arguments: [],
 				user: {
 					tag: member.user.username,
 					id: member.user.id,
-					createdAt: member.user.createdAt
+					createdAt: member.user.createdAt,
 				},
 				guild: {
 					name: guild.name,
 					id: guild.id,
-					createdAt: guild.createdAt
+					createdAt: guild.createdAt,
 				},
 				channel: {
 					name: channel.name,
 					id: channel.id,
-					createdAt: channel.createdAt
-				}
+					createdAt: channel.createdAt,
+				},
 			});
 			log.save();
 
@@ -177,16 +161,14 @@ export default class {
 					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
 					"error",
 					"error",
-					this.client.support
+					this.client.support,
 				);
-				await interaction
-					.followUp({ embeds: [errorMessageEmbed] })
-					.catch((e: any): void => {});
+				await interaction.followUp({ embeds: [errorMessageEmbed] }).catch((e: any): void => {});
 				return this.client.alertException(
 					e,
 					guild.name,
 					member.user,
-					"<ContextInteraction>.dispatch(<Interaction>)"
+					"<ContextInteraction>.dispatch(<Interaction>)",
 				);
 			}
 		}
@@ -213,13 +195,7 @@ export default class {
 
 			/* User wants to participate in a giveaway */
 			if (buttonIdSplitted[0] === "giveaway") {
-				this.client.emit(
-					"GiveawayParticipated",
-					interaction,
-					buttonIdSplitted,
-					data,
-					guild
-				);
+				this.client.emit("GiveawayParticipated", interaction, buttonIdSplitted, data, guild);
 			}
 		}
 
@@ -231,16 +207,14 @@ export default class {
 					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
 					"error",
 					"error",
-					this.client.support
+					this.client.support,
 				);
-				await interaction
-					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
-					.catch((e: any): void => {});
+				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
 				return this.client.alertException(
 					"Context menu " + interaction.commandName + " not found",
 					guild.name,
 					member.user,
-					'<Client>.contextMenus.get("' + interaction.commandName + '")'
+					'<Client>.contextMenus.get("' + interaction.commandName + '")',
 				);
 			}
 
@@ -251,24 +225,17 @@ export default class {
 					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
 					"error",
 					"error",
-					this.client.support
+					this.client.support,
 				);
-				await interaction
-					.reply({ embeds: [errorMessageEmbed], ephemeral: true })
-					.catch((e: any): void => {});
-				return this.client.alertException(
-					e,
-					guild.name,
-					member.user,
-					"<CommandInteraction>.deferReply()"
-				);
+				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
+				return this.client.alertException(e, guild.name, member.user, "<CommandInteraction>.deferReply()");
 			} finally {
 				if (!interaction.deferred) {
 					const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
 						"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
 						"error",
 						"error",
-						this.client.support
+						this.client.support,
 					);
 					await interaction
 						.reply({ embeds: [errorMessageEmbed], ephemeral: true })
@@ -277,7 +244,7 @@ export default class {
 						"CommandInteraction is not deferred",
 						guild.name,
 						member.user,
-						"<CommandInteraction>.deferReply()"
+						"<CommandInteraction>.deferReply()",
 					);
 				}
 			}
@@ -293,11 +260,11 @@ export default class {
 					"error",
 					"error",
 					this.client.emotes.arrow,
-					reason
+					reason,
 				);
 				return interaction.followUp({
 					embeds: [blockedMessageEmbed],
-					ephemeral: true
+					ephemeral: true,
 				});
 			}
 
@@ -309,21 +276,20 @@ export default class {
 					"error",
 					"error",
 					this.client.emotes.arrow,
-					reason
+					reason,
 				);
 				return interaction.followUp({ embeds: [blockedMessageEmbed] });
 			}
 
 			/* Check if bot has all required permissions */
 			const neededBotPermissions: any[] = [];
-			if (!command.conf.botPermissions.includes("EmbedLinks"))
-				command.conf.botPermissions.push("EmbedLinks");
+			if (!command.conf.botPermissions.includes("EmbedLinks")) command.conf.botPermissions.push("EmbedLinks");
 			for (const neededBotPermission of command.conf.botPermissions) {
 				const permissions: any = channel.permissionsFor(guild.members.me);
 				if (
 					!permissions.has(
 						// @ts-ignore - TS7053: Element implicitly has an 'any' type
-						PermissionsBitField.Flags[neededBotPermission]
+						PermissionsBitField.Flags[neededBotPermission],
 					)
 				) {
 					neededBotPermissions.push(this.client.permissions[neededBotPermission]);
@@ -335,10 +301,10 @@ export default class {
 					"error",
 					"error",
 					this.client.emotes.arrow,
-					neededBotPermissions.join("\n" + this.client.emotes.arrow + " ")
+					neededBotPermissions.join("\n" + this.client.emotes.arrow + " "),
 				);
 				return interaction.followUp({
-					embeds: [missingPermissionMessageEmbed]
+					embeds: [missingPermissionMessageEmbed],
 				});
 			}
 
@@ -347,28 +313,23 @@ export default class {
 				const nsfwMessageEmbed: EmbedBuilder = this.client.createEmbed(
 					"Dieser Befehl kann nur in altersbeschränkten Kanälen verwendet werden.",
 					"error",
-					"error"
+					"error",
 				);
 				return interaction.followUp({ embeds: [nsfwMessageEmbed] });
 			}
 
 			/* Command is disabled */
-			const disabledCommandsJson: any = JSON.parse(
-				fs.readFileSync("./assets/disabled.json").toString()
-			);
+			const disabledCommandsJson: any = JSON.parse(fs.readFileSync("./assets/disabled.json").toString());
 			if (disabledCommandsJson.includes(command.help.name)) {
 				/* Staffs can bypass disabled commands */
-				if (
-					!data.user.staff.state &&
-					!this.client.config.general["OWNER_IDS"].includes(member.user.id)
-				) {
+				if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(member.user.id)) {
 					const disabledMessageEmbed = this.client.createEmbed(
 						"Dieser Befehl ist derzeit deaktiviert.",
 						"error",
-						"error"
+						"error",
 					);
 					return interaction.followUp({
-						embeds: [disabledMessageEmbed]
+						embeds: [disabledMessageEmbed],
 					});
 				}
 			}
@@ -382,10 +343,7 @@ export default class {
 			const time = userCooldown[command.help.name] || 0;
 			if (time > Date.now()) {
 				/* Staffs can bypass cooldown */
-				if (
-					!data.user.staff.state &&
-					!this.client.config.general["OWNER_IDS"].includes(member.user.id)
-				) {
+				if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(member.user.id)) {
 					const seconds: number = Math.ceil((time - Date.now()) / 1000);
 					const secondsString: string = seconds > 1 ? "Sekunden" : "Sekunde";
 					const cooldownMessageEmbed: EmbedBuilder = this.client.createEmbed(
@@ -393,15 +351,14 @@ export default class {
 						"error",
 						"error",
 						seconds,
-						secondsString
+						secondsString,
 					);
 					return interaction.followUp({
-						embeds: [cooldownMessageEmbed]
+						embeds: [cooldownMessageEmbed],
 					});
 				}
 			}
-			interactionCooldowns[member.user.id][command.help.name] =
-				Date.now() + command.conf.cooldown;
+			interactionCooldowns[member.user.id][command.help.name] = Date.now() + command.conf.cooldown;
 
 			/* Save command log to database */
 			const log: any = new this.client.logs({
@@ -411,18 +368,18 @@ export default class {
 				user: {
 					tag: member.user.username,
 					id: member.user.id,
-					createdAt: member.user.createdAt
+					createdAt: member.user.createdAt,
 				},
 				guild: {
 					name: interaction.guild.name,
 					id: interaction.guild.id,
-					createdAt: interaction.guild.createdAt
+					createdAt: interaction.guild.createdAt,
 				},
 				channel: {
 					name: channel.name,
 					id: channel.id,
-					createdAt: channel.createdAt
-				}
+					createdAt: channel.createdAt,
+				},
 			});
 			log.save();
 
@@ -434,16 +391,14 @@ export default class {
 					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
 					"error",
 					"error",
-					this.client.support
+					this.client.support,
 				);
-				await interaction
-					.followUp({ embeds: [errorMessageEmbed] })
-					.catch((e: any): void => {});
+				await interaction.followUp({ embeds: [errorMessageEmbed] }).catch((e: any): void => {});
 				return this.client.alertException(
 					e,
 					guild.name,
 					member.user,
-					"<ContextInteraction>.dispatch(<Interaction>)"
+					"<ContextInteraction>.dispatch(<Interaction>)",
 				);
 			}
 		}

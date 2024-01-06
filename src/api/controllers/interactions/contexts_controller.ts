@@ -11,7 +11,7 @@ export async function get(req: Request, res: Response) {
 			name: context.help.name,
 			type: context.help.type,
 			cooldown: context.conf.cooldown / 1000,
-			member_permissions: context.conf.memberPermissions
+			member_permissions: context.conf.memberPermissions,
 		});
 	}
 
@@ -20,8 +20,8 @@ export async function get(req: Request, res: Response) {
 		status_message: null,
 		res: {
 			context_count: contexts.length,
-			context_list: contexts
-		}
+			context_list: contexts,
+		},
 	};
 
 	res.setHeader("Content-Type", "application/json");

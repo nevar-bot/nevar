@@ -19,7 +19,7 @@ export default {
 		/* get user and user guilds */
 		const [user, userGuilds] = await Promise.all([
 			UserController.getUser(access_token),
-			UserController.getGuilds(access_token)
+			UserController.getGuilds(access_token),
 		]);
 
 		/* differentiates between guilds where bot is in where bot isn't in */
@@ -46,7 +46,7 @@ export default {
 			/* extra data */
 			guilds: botIsIn,
 			notInvitedGuilds: botIsNotIn,
-			inviteUrl: client.createInvite()
+			inviteUrl: client.createInvite(),
 		});
-	}
+	},
 };

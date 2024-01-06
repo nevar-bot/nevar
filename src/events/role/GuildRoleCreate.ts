@@ -14,13 +14,7 @@ export default class {
 		const { guild } = role;
 
 		let roleLogMessage: string =
-			this.client.emotes.edit +
-			" Name: " +
-			role.name +
-			"\n" +
-			this.client.emotes.id +
-			" ID: " +
-			role.id;
+			this.client.emotes.edit + " Name: " + role.name + "\n" + this.client.emotes.id + " ID: " + role.id;
 
 		const auditLogs: any = await guild
 			.fetchAuditLogs({ type: AuditLogEvent["RoleCreate"], limit: 1 })

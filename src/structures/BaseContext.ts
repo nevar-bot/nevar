@@ -9,13 +9,7 @@ export default class BaseContext {
 	protected guild!: Guild;
 
 	public constructor(client: BaseClient, options: any) {
-		const {
-			name = null,
-			type = null,
-			memberPermissions = [],
-			botPermissions = [],
-			cooldown = 0
-		} = options;
+		const { name = null, type = null, memberPermissions = [], botPermissions = [], cooldown = 0 } = options;
 
 		this.client = client;
 		this.conf = { memberPermissions, botPermissions, cooldown, type };

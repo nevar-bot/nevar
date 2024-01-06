@@ -13,5 +13,5 @@ export default {
 			Logger.error("Failed establishing MongoDB connection", e);
 			process.exit(1);
 		}
-	}
+	},
 };

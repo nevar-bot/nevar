@@ -44,11 +44,7 @@ export default class {
 						")";
 			}
 		}
-		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(
-			threadLogMessage,
-			null,
-			"success"
-		);
+		const threadLogEmbed: EmbedBuilder = this.client.createEmbed(threadLogMessage, null, "success");
 		threadLogEmbed.setTitle(this.client.emotes.events.thread.create + " Thread erstellt");
 		threadLogEmbed.setThumbnail(guild.iconURL());
 

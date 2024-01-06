@@ -17,7 +17,7 @@ export async function get(req: Request, res: Response) {
 			bot_permissions: command.conf.botPermissions,
 			nsfw: command.conf.nsfw,
 			staff_only: command.conf.staffOnly,
-			owner_only: command.conf.ownerOnly
+			owner_only: command.conf.ownerOnly,
 		});
 	}
 
@@ -26,8 +26,8 @@ export async function get(req: Request, res: Response) {
 		status_message: null,
 		res: {
 			command_count: commands.length,
-			command_list: commands
-		}
+			command_list: commands,
+		},
 	};
 
 	res.setHeader("Content-Type", "application/json");

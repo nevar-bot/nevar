@@ -7,17 +7,16 @@ export default class FindemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "findemoji",
-			description:
-				"You have to remember the order of eight different emojis, and choose the right one",
+			description: "You have to remember the order of eight different emojis, and choose the right one",
 			localizedDescriptions: {
-				de: "Du musst dir die Reihenfolge acht verschiedener Emojis merken, und den Richtigen wählen"
+				de: "Du musst dir die Reihenfolge acht verschiedener Emojis merken, und den Richtigen wählen",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
-				data: new SlashCommandBuilder()
-			}
+				data: new SlashCommandBuilder(),
+			},
 		});
 	}
 
@@ -30,7 +29,7 @@ export default class FindemojiCommand extends BaseCommand {
 	private async startGame(): Promise<void> {
 		const game: FindemojiGame = new FindemojiGame({
 			interaction: this.interaction,
-			client: this.client
+			client: this.client,
 		});
 		await game.startGame();
 	}
@@ -57,26 +56,26 @@ class FindemojiGame extends BaseGame {
 		const findEmojiEmbed: EmbedBuilder = this.client.createEmbed(
 			this.interaction.guild.translate("minigames/findemoji:text"),
 			"arrow",
-			"normal"
+			"normal",
 		);
 		findEmojiEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		const msg: any = await this.sendMessage({
 			embeds: [findEmojiEmbed],
-			components: this.getComponents(true)
+			components: this.getComponents(true),
 		});
 
 		const timeoutCallback: any = async (): Promise<void> => {
 			findEmojiEmbed.setDescription(
-				this.interaction.guild.translate("minigames/findemoji:find", { emoji: this.emoji })
+				this.interaction.guild.translate("minigames/findemoji:find", { emoji: this.emoji }),
 			);
 			await msg.edit({
 				embeds: [findEmojiEmbed],
-				components: this.getComponents(false)
+				components: this.getComponents(false),
 			});
 			const emojiCollector = msg.createMessageComponentCollector({
 				filter: (btn: any): boolean => btn.user.id === this.interaction.user.id,
-				idle: 30000
+				idle: 30000,
 			});
 
 			emojiCollector.on("collect", async (btn: any): Promise<any> => {
@@ -86,8 +85,7 @@ class FindemojiGame extends BaseGame {
 			});
 
 			emojiCollector.on("end", async (_: any, reason: any): Promise<any> => {
-				if (reason === "idle" || reason === "user")
-					return this.endGame(msg, reason === "user");
+				if (reason === "idle" || reason === "user") return this.endGame(msg, reason === "user");
 			});
 		};
 		setTimeout(timeoutCallback, 5000);
@@ -100,24 +98,20 @@ class FindemojiGame extends BaseGame {
 		let finalMessage: string;
 		if (resultMessage === "win") {
 			finalMessage = this.interaction.guild.translate("minigames/findemoji:win", {
-				emoji: this.emoji
+				emoji: this.emoji,
 			});
 		} else {
 			finalMessage = this.interaction.guild.translate("minigames/findemoji:lose", {
-				emoji: this.emoji
+				emoji: this.emoji,
 			});
 		}
 
-		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(
-			finalMessage,
-			"arrow",
-			"normal"
-		);
+		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(finalMessage, "arrow", "normal");
 		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({
 			embeds: [gameOverEmbed],
-			components: this.disableButtons(this.getComponents(true))
+			components: this.disableButtons(this.getComponents(true)),
 		});
 	}
 
@@ -131,12 +125,8 @@ class FindemojiGame extends BaseGame {
 				const btn: ButtonBuilder = this.client.createButton(
 					"findEmoji_" + (x * 4 + y),
 					"\u200b",
-					buttonEmoji === this.selected
-						? this.selected === this.emoji
-							? "Success"
-							: "Danger"
-						: "Primary",
-					showEmoji ? buttonEmoji : null
+					buttonEmoji === this.selected ? (this.selected === this.emoji ? "Success" : "Danger") : "Primary",
+					showEmoji ? buttonEmoji : null,
 				);
 				row.addComponents(btn);
 			}

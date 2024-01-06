@@ -8,8 +8,8 @@ const Schema = new mongoose.Schema({
 		default: {
 			state: false,
 			reason: null,
-			since: null
-		}
+			since: null,
+		},
 	},
 	blocked: {
 		type: Object,
@@ -18,30 +18,30 @@ const Schema = new mongoose.Schema({
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null
-		}
+			name: null,
+		},
 	},
 	staff: {
 		type: Object,
 		default: {
 			state: false,
-			role: null
-		}
+			role: null,
+		},
 	},
 	partner: {
 		type: Object,
 		default: {
-			state: false
-		}
+			state: false,
+		},
 	},
 	bughunter: {
 		type: Object,
 		default: {
-			state: false
-		}
+			state: false,
+		},
 	},
 
-	voteCount: { type: Number, default: 0 }
+	voteCount: { type: Number, default: 0 },
 });
 
 const User: Model<any> = mongoose.model("User", Schema);

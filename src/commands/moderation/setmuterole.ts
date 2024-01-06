@@ -13,9 +13,9 @@ export default class SetmuteroleCommand extends BaseCommand {
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addRoleOption((option: any) =>
-					option.setName("rolle").setDescription("Wähle eine Rolle").setRequired(true)
-				)
-			}
+					option.setName("rolle").setDescription("Wähle eine Rolle").setRequired(true),
+				),
+			},
 		});
 	}
 
@@ -32,7 +32,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst eine Rolle angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
@@ -42,7 +42,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
 				"Die @everyone Rolle kann nicht als Mute-Rolle gesetzt werden.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [everyoneEmbed] });
 		}
@@ -52,7 +52,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 			const roleIsManagedEmbed: EmbedBuilder = this.client.createEmbed(
 				"Rollen welche durch eine Integration verwaltet werden, können nicht als Mute-Rolle gesetzt werden.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.interaction.followUp({ embeds: [roleIsManagedEmbed] });
 		}
@@ -64,7 +64,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 				"error",
 				"error",
 				role.toString(),
-				this.interaction.guild.members.me.roles.highest.toString()
+				this.interaction.guild.members.me.roles.highest.toString(),
 			);
 			return this.interaction.followUp({ embeds: [roleIsTooHighEmbed] });
 		}
@@ -75,10 +75,10 @@ export default class SetmuteroleCommand extends BaseCommand {
 				"{0} ist bereits die Mute-Rolle.",
 				"error",
 				"error",
-				role.toString()
+				role.toString(),
 			);
 			return this.interaction.followUp({
-				embeds: [roleIsAlreadyMuteRoleEmbed]
+				embeds: [roleIsAlreadyMuteRoleEmbed],
 			});
 		}
 
@@ -91,7 +91,7 @@ export default class SetmuteroleCommand extends BaseCommand {
 			"{0} wurde als Mute-Rolle gesetzt.",
 			"success",
 			"success",
-			role.toString()
+			role.toString(),
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}

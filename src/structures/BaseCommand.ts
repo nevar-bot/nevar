@@ -29,7 +29,9 @@ export default class BaseCommand {
 			},
 		} = options;
 
-		const category: string = (dirname as string).split(path.sep)[parseInt(String((dirname as string).split(path.sep).length - 1), 10)]
+		const category: string = (dirname as string).split(path.sep)[
+			parseInt(String((dirname as string).split(path.sep).length - 1), 10)
+		];
 
 		this.client = client;
 		this.conf = { memberPermissions, botPermissions, nsfw, ownerOnly, staffOnly, cooldown };

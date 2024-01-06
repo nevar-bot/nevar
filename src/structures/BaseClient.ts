@@ -6,9 +6,19 @@ import * as util from "util";
 
 /* Import discord.js classes */
 import {
-	ActionRowBuilder, AnyComponentBuilder, ButtonBuilder, ButtonStyle,
-	Client, Collection, EmbedBuilder, GatewayIntentBits,
-	Guild, OAuth2Scopes, Partials, PermissionsBitField, User
+	ActionRowBuilder,
+	AnyComponentBuilder,
+	ButtonBuilder,
+	ButtonStyle,
+	Client,
+	Collection,
+	EmbedBuilder,
+	GatewayIntentBits,
+	Guild,
+	OAuth2Scopes,
+	Partials,
+	PermissionsBitField,
+	User,
 } from "discord.js";
 
 /* Import emojis */
@@ -76,7 +86,7 @@ export default class BaseClient extends Client {
 				GatewayIntentBits.GuildEmojisAndStickers,
 				GatewayIntentBits.GuildScheduledEvents,
 				GatewayIntentBits.GuildInvites,
-				GatewayIntentBits.MessageContent
+				GatewayIntentBits.MessageContent,
 			],
 			partials: [
 				Partials.User,
@@ -85,11 +95,11 @@ export default class BaseClient extends Client {
 				Partials.Message,
 				Partials.Reaction,
 				Partials.GuildScheduledEvent,
-				Partials.ThreadMember
+				Partials.ThreadMember,
 			],
 			allowedMentions: {
-				parse: ["users"]
-			}
+				parse: ["users"],
+			},
 		});
 
 		this.wait = util.promisify(setTimeout);
@@ -120,23 +130,21 @@ export default class BaseClient extends Client {
 			members: new Collection(),
 			bannedUsers: new Collection(),
 			mutedUsers: new Collection(),
-			reminders: new Collection()
+			reminders: new Collection(),
 		};
 
 		this.invites = new Collection();
 		this.aiChat = new Collection();
 	}
 
-	getLocaleString(key: string, locale: string, args?: object): Promise<string|null> {
+	getLocaleString(key: string, locale: string, args?: object): Promise<string | null> {
 		const language: any = this.locales.get(locale);
 		return language(key, args);
 	}
 
 	async findOrCreateUser(userID: string, isLean: boolean = false): Promise<any> {
 		if (this.databaseCache.users.get(userID)) {
-			return isLean
-				? this.databaseCache.users.get(userID).toJSON()
-				: this.databaseCache.users.get(userID);
+			return isLean ? this.databaseCache.users.get(userID).toJSON() : this.databaseCache.users.get(userID);
 		} else {
 			let userData: any = isLean
 				? await this.usersData.findOne({ id: userID }).lean()
@@ -155,7 +163,7 @@ export default class BaseClient extends Client {
 
 	async findUser(userID: string): Promise<any> {
 		const cachedUser: any = this.databaseCache.users.get(userID);
-		return cachedUser || await this.usersData.findOne({ id: userID });
+		return cachedUser || (await this.usersData.findOne({ id: userID }));
 	}
 
 	async deleteUser(userID: string): Promise<any> {
@@ -167,11 +175,7 @@ export default class BaseClient extends Client {
 		}
 	}
 
-	async findOrCreateMember(
-		memberID: string,
-		guildID: string,
-		isLean: boolean = false
-	): Promise<any> {
+	async findOrCreateMember(memberID: string, guildID: string, isLean: boolean = false): Promise<any> {
 		if (this.databaseCache.members.get(`${memberID}${guildID}`)) {
 			return isLean
 				? this.databaseCache.members.get(`${memberID}${guildID}`).toJSON()
@@ -186,7 +190,7 @@ export default class BaseClient extends Client {
 			} else {
 				memberData = new this.membersData({
 					id: memberID,
-					guildID: guildID
+					guildID: guildID,
 				});
 				await memberData.save();
 				const guild: any = await this.findOrCreateGuild(guildID);
@@ -207,8 +211,8 @@ export default class BaseClient extends Client {
 			? cachedMember
 			: await this.membersData.findOne({
 					id: memberID,
-					guildID: guildID
-			  });
+					guildID: guildID,
+				});
 	}
 
 	async deleteMember(memberID: string, guildID: string): Promise<any> {
@@ -218,12 +222,7 @@ export default class BaseClient extends Client {
 				.deleteOne()
 				.exec()
 				.catch((e: Error) => {
-					this.alertException(
-						e,
-						null,
-						null,
-						'<Client>.deleteMember("' + memberID + '", ' + guildID + '")'
-					);
+					this.alertException(e, null, null, '<Client>.deleteMember("' + memberID + '", ' + guildID + '")');
 				});
 			this.databaseCache.members.delete(`${memberID}${guildID}`);
 		}
@@ -231,9 +230,7 @@ export default class BaseClient extends Client {
 
 	async findOrCreateGuild(guildID: string, isLean: boolean = false): Promise<any> {
 		if (this.databaseCache.guilds.get(guildID)) {
-			return isLean
-				? this.databaseCache.guilds.get(guildID).toJSON()
-				: this.databaseCache.guilds.get(guildID);
+			return isLean ? this.databaseCache.guilds.get(guildID).toJSON() : this.databaseCache.guilds.get(guildID);
 		} else {
 			let guildData: any = isLean
 				? await this.guildsData.findOne({ id: guildID }).populate("members").lean()
@@ -318,12 +315,9 @@ export default class BaseClient extends Client {
 			.setAuthor({
 				name: this.user!.username,
 				iconURL: this.user!.displayAvatarURL(),
-				url: this.config.general["WEBSITE"]
+				url: this.config.general["WEBSITE"],
 			})
-			.setDescription(
-				(emote ? this.emotes[emote] + " " : " ") +
-					(formattedMessage ? formattedMessage : " ")
-			)
+			.setDescription((emote ? this.emotes[emote] + " " : " ") + (formattedMessage ? formattedMessage : " "))
 			.setColor(color)
 			.setFooter({ text: this.config.embeds["FOOTER_TEXT"] });
 	}
@@ -334,7 +328,7 @@ export default class BaseClient extends Client {
 		style: string,
 		emote: string | null = null,
 		disabled: boolean = false,
-		url: string | null = null
+		url: string | null = null,
 	): ButtonBuilder {
 		const button: ButtonBuilder = new ButtonBuilder()
 			.setLabel(label ? label : " ")
@@ -373,8 +367,8 @@ export default class BaseClient extends Client {
 				PermissionsBitField.Flags.ReadMessageHistory,
 				PermissionsBitField.Flags.UseExternalEmojis,
 				PermissionsBitField.Flags.AddReactions,
-				PermissionsBitField.Flags.ManageGuild
-			]
+				PermissionsBitField.Flags.ManageGuild,
+			],
 		});
 	}
 
@@ -382,25 +376,17 @@ export default class BaseClient extends Client {
 		exception: any,
 		guild: string | null = null,
 		user: User | null = null,
-		action: string | null = null
+		action: string | null = null,
 	): any {
 		const supportGuild: Guild | undefined = this.guilds.cache.get(this.config.support["ID"]);
-		const errorLogChannel: any = supportGuild?.channels.cache.get(
-			this.config.support["ERROR_LOG"]
-		);
+		const errorLogChannel: any = supportGuild?.channels.cache.get(this.config.support["ERROR_LOG"]);
 		if (!supportGuild || !errorLogChannel) return;
 
-		const exceptionEmbed: EmbedBuilder = this.createEmbed(
-			"Ein Fehler ist aufgetreten",
-			"error",
-			"error"
-		);
+		const exceptionEmbed: EmbedBuilder = this.createEmbed("Ein Fehler ist aufgetreten", "error", "error");
 		let description: string | undefined = exceptionEmbed.data.description;
 
 		if (guild) description += "\n" + this.emotes.arrow + " Server: " + guild;
-		if (user)
-			description +=
-				"\n" + this.emotes.arrow + " Nutzer/-in: " + user.username + " (" + user.id + ")";
+		if (user) description += "\n" + this.emotes.arrow + " Nutzer/-in: " + user.username + " (" + user.id + ")";
 		if (action) description += "\n" + this.emotes.arrow + " Aktion: " + action;
 		description += "\n```js\n" + exception.stack + "```";
 
@@ -427,21 +413,16 @@ export default class BaseClient extends Client {
 		const patternMatch: RegExpExecArray | null = RegExp(USER_MENTION).exec(query);
 		if (patternMatch) {
 			const id: string = patternMatch[1];
-			const fetchedUser: any = await this.users
-				.fetch(id, { cache: true })
-				.catch((): void => {});
+			const fetchedUser: any = await this.users.fetch(id, { cache: true }).catch((): void => {});
 			if (fetchedUser) return fetchedUser;
 		}
 
-		const matchingUsernames: any = this.users.cache.filter(
-			(user: any): boolean => user.username === query
-		);
+		const matchingUsernames: any = this.users.cache.filter((user: any): boolean => user.username === query);
 		if (matchingUsernames.size === 1) return matchingUsernames.first();
 
 		if (!exact) {
 			return this.users.cache.find(
-				(x: any): any =>
-					x.username === query || x.username.toLowerCase().includes(query.toLowerCase())
+				(x: any): any => x.username === query || x.username.toLowerCase().includes(query.toLowerCase()),
 			);
 		}
 	}

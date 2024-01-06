@@ -11,8 +11,8 @@ export default class ReloadCommand extends BaseCommand {
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
-				data: null
-			}
+				data: null,
+			},
 		});
 	}
 
@@ -28,7 +28,7 @@ export default class ReloadCommand extends BaseCommand {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				"Du musst einen Befehl angeben.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidOptionsEmbed] });
 		}
@@ -41,14 +41,14 @@ export default class ReloadCommand extends BaseCommand {
 			const reloadEmbed: EmbedBuilder = this.client.createEmbed(
 				"Der Befehl wurde neugeladen.",
 				"success",
-				"success"
+				"success",
 			);
 			return this.message.reply({ embeds: [reloadEmbed] });
 		} else {
 			const invalidCommandEmbed: EmbedBuilder = this.client.createEmbed(
 				"Der Befehl existiert nicht.",
 				"error",
-				"error"
+				"error",
 			);
 			return this.message.reply({ embeds: [invalidCommandEmbed] });
 		}

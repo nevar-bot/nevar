@@ -24,31 +24,23 @@ export default class {
 					oldMember.displayName +
 					"~~ **" +
 					newMember.displayName +
-					"**"
+					"**",
 			);
 
 		newMember.roles.cache.forEach((role: any): void => {
 			if (!oldMember.roles.cache.has(role.id))
-				properties.push(
-					this.client.emotes.events.role.create + " Rolle hinzugefügt: " + role.toString()
-				);
+				properties.push(this.client.emotes.events.role.create + " Rolle hinzugefügt: " + role.toString());
 		});
 
 		oldMember.roles.cache.forEach((role: any): void => {
 			if (!newMember.roles.cache.has(role.id))
-				properties.push(
-					this.client.emotes.events.role.delete + " Rolle entfernt: " + role.toString()
-				);
+				properties.push(this.client.emotes.events.role.delete + " Rolle entfernt: " + role.toString());
 		});
 		if (properties.length < 1) return;
 
 		const memberUpdateText: string = properties.join("\n");
 
-		const memberUpdateEmbed: EmbedBuilder = this.client.createEmbed(
-			memberUpdateText,
-			null,
-			"warning"
-		);
+		const memberUpdateEmbed: EmbedBuilder = this.client.createEmbed(memberUpdateText, null, "warning");
 		memberUpdateEmbed.setTitle(
 			this.client.emotes.events.member.update +
 				" " +
@@ -56,7 +48,7 @@ export default class {
 				" (@" +
 				newMember.user.username +
 				")" +
-				" wurde aktualisiert"
+				" wurde aktualisiert",
 		);
 		memberUpdateEmbed.setThumbnail(newMember.user.displayAvatarURL());
 
