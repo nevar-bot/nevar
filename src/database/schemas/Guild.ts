@@ -52,11 +52,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 			invites: {
 				enabled: false,
 			},
-			tickets: {
-				enabled: false,
-				channel: null,
-				supportRoles: [],
-			},
 			levels: {
 				enabled: false,
 				channel: null,
@@ -103,7 +98,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 			muterole: null,
 			autodelete: [],
 			autoreact: [],
-			reactionroles: [],
 		},
 	},
 });
