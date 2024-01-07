@@ -87,7 +87,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		}
 	}
 
-	private async enable(data: any): Promise<void> {
+	private async enable(data: any): Promise<any> {
 		if (data.guild.settings.suggestions.enabled) {
 			const isAlreadyEnabled: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:alreadyEnabled"),
@@ -104,7 +104,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async disable(data: any): Promise<void> {
+	private async disable(data: any): Promise<any> {
 		if (!data.guild.settings.suggestions.enabled) {
 			const isAlreadyDisabled: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:alreadyDisabled"),
@@ -121,7 +121,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setChannel(channel: any, data: any): Promise<void> {
+	private async setChannel(channel: any, data: any): Promise<any> {
 		if (!channel) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannel", {}, true),
@@ -142,7 +142,7 @@ export default class SuggestsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setReviewChannel(channel: any, data: any): Promise<void> {
+	private async setReviewChannel(channel: any, data: any): Promise<any> {
 		if (!channel) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannel", {}, true),

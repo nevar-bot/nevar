@@ -1,10 +1,10 @@
 {
   "errors": {
-    "alreadyEnabled": "Das Ideen-System ist bereits aktiviert.",
-    "alreadyDisabled": "Das Ideen-System ist bereits deaktiviert.",
+    "alreadyEnabled": "Das Ideen-System wurde bereits aktiviert.",
+    "alreadyDisabled": "Das Ideen-System wurde bereits deaktiviert."
   },
   "enabled": "Das Ideen-System wurde aktiviert.",
   "disabled": "Das Ideen-System wurde deaktiviert.",
-  "channelSet": "Neue Ideen werden absofort in {{channel}} gesendet.",
-  "reviewChannelSet": "Neue Ideen werden absofort in {{channel}} verwaltet."
+  "channelSet": "Eingereichte Ideen werden ab jetzt in {{channel}} gesendet.",
+  "reviewChannelSet": "Eingereichte Ideen werden ab jetzt in {{channel}} verwaltet."
 }
