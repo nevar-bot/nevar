@@ -148,7 +148,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		}
 	}
 
-	async addNotifier(channel: string, data: any): Promise<void> {
+	async addNotifier(channel: string, data: any): Promise<any> {
 		const authProvider: AppTokenAuthProvider = new AppTokenAuthProvider(
 			this.client.config.apikeys["TWITCH_CLIENT_ID"],
 			this.client.config.apikeys["TWITCH_CLIENT_SECRET"],
@@ -205,7 +205,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		}
 	}
 
-	async removeNotifier(channel: string, data: any): Promise<void> {
+	async removeNotifier(channel: string, data: any): Promise<any> {
 		const authProvider: AppTokenAuthProvider = new AppTokenAuthProvider(
 			this.client.config.apikeys["TWITCH_CLIENT_ID"],
 			this.client.config.apikeys["TWITCH_CLIENT_SECRET"],
@@ -250,7 +250,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		}
 	}
 
-	async listNotifiers(data: any): Promise<void> {
+	async listNotifiers(data: any): Promise<any> {
 		const authProvider: AppTokenAuthProvider = new AppTokenAuthProvider(
 			this.client.config.apikeys["TWITCH_CLIENT_ID"],
 			this.client.config.apikeys["TWITCH_CLIENT_SECRET"],
@@ -261,7 +261,7 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		for (const channel of data.guild.settings.notifiers.twitch.channels) {
 			const user: HelixUser | null = await apiClient.users.getUserById(channel.id);
 			if (!user) continue;
-			channels.push("[" + user.name + "](https://www.twitch.tv/" + user.name + ")");
+			channels.push(this.client.emotes.twitch + " [" + user.name + "](https://www.twitch.tv/" + user.name + ")");
 		}
 
 		this.client.utils.sendPaginatedEmbed(
@@ -270,14 +270,13 @@ export default class TwitchnotifierCommand extends BaseCommand {
 			channels,
 			this.translate("list:title"),
 			this.translate("list:empty"),
-			"link",
 		);
 	}
 
-	async setStatus(status: string, data: any): Promise<void> {
+	async setStatus(status: string, data: any): Promise<any> {
 		if (!["on", "off"].includes(status)) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingStatus"),
+				this.translate("basics:errors:missingStatus", undefined, true),
 				"error",
 				"error",
 				status,
@@ -308,10 +307,10 @@ export default class TwitchnotifierCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	async setChannel(channel: any, data: any): Promise<void> {
+	async setChannel(channel: any, data: any): Promise<any> {
 		if (!channel) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingChannel"),
+				this.translate("basics:errors:missingChannel", undefined, true),
 				"error",
 				"error",
 			);
