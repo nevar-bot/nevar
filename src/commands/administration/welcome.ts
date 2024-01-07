@@ -233,7 +233,7 @@ export default class WelcomeCommand extends BaseCommand {
 		}
 	}
 
-	private async setStatus(status: any, data: any): Promise<void> {
+	private async setStatus(status: any, data: any): Promise<any> {
 		if (data.guild.settings.welcome.enabled === JSON.parse(status)) {
 			const statusString: string = JSON.parse(status)
 				? this.translate("basics:enabled", {}, true)
@@ -263,7 +263,7 @@ export default class WelcomeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async sendPreview(data: any): Promise<void> {
+	private async sendPreview(data: any): Promise<any> {
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
@@ -300,23 +300,23 @@ export default class WelcomeCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [noTypeEmbed] });
 		}
 
-		const member = this.interaction.member;
+		const member: any = this.interaction.member;
 		const self = this;
 		function parseMessage(str: string): string {
 			return str
-				.replaceAll(/{user}/g, member)
-				.replaceAll(/{user:username}/g, member.user.username)
-				.replaceAll(/{user:displayname}/g, member.user.displayName)
-				.replaceAll(/{user:id}/g, member.user.id)
-				.replaceAll(/{server:name}/g, self.interaction.guild.name)
-				.replaceAll(/{server:id}/g, self.interaction.guild.id)
-				.replaceAll(/{server:membercount}/g, self.interaction.guild.memberCount)
-				.replaceAll(/{inviter}/g, member)
-				.replaceAll(/{inviter:username}/g, member.user.username)
-				.replaceAll(/{inviter:displayname}/g, member.user.displayName)
-				.replaceAll(/{inviter:id}/g, member.user.id)
-				.replaceAll(/{inviter:invites}/g, String(1))
-				.replaceAll(/{newline}/g, "\n");
+				.replaceAll(/%user.name/g, member.user.username)
+				.replaceAll(/%user.displayName/g, member.displayName)
+				.replaceAll(/%user.id/g, member.user.id)
+				.replaceAll(/%user/g, member)
+				.replaceAll(/%server.name/g, self.interaction.guild!.name)
+				.replaceAll(/%server.id/g, self.interaction.guild!.id)
+				.replaceAll(/%server.memberCount/g, self.interaction.guild!.memberCount.toString())
+				.replaceAll(/%inviter.name/g, member.user.username)
+				.replaceAll(/%inviter.displayName/g, member.displayName)
+				.replaceAll(/%inviter.id/g, member.user.id)
+				.replaceAll(/%inviter.invites/g, String(1))
+				.replaceAll(/%inviter/g, member)
+				.replaceAll(/%newline/g, "\n");
 		}
 
 		const channel: any = this.client.channels.cache.get(data.guild.settings.welcome.channel);
@@ -349,7 +349,7 @@ export default class WelcomeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [testExecutedEmbed] });
 	}
 
-	private async setChannel(channel: any, data: any): Promise<void> {
+	private async setChannel(channel: any, data: any): Promise<any> {
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
@@ -371,7 +371,7 @@ export default class WelcomeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setType(type: any, data: any): Promise<void> {
+	private async setType(type: any, data: any): Promise<any> {
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
@@ -405,7 +405,7 @@ export default class WelcomeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setMessage(message: string, data: any): Promise<void> {
+	private async setMessage(message: string, data: any): Promise<any> {
 		if (!data.guild.settings.welcome.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:disabled"),
@@ -423,19 +423,18 @@ export default class WelcomeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	async showVariables(): Promise<void> {
-		const variables: string[] = this.translate("variables:list");
+	async showVariables(): Promise<any> {
+		const variables: any = this.translate("variables:list", { e: this.client.emotes });
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
 			10,
 			variables,
 			this.translate("variables:title"),
 			this.translate("variables:empty"),
-			"shine",
 		);
 	}
 
-	private async setThumbnail(status: any, data: any): Promise<void> {
+	private async setThumbnail(status: any, data: any): Promise<any> {
 		if (!data.guild.settings.welcome.profilePicture) {
 			data.guild.settings.welcome.profilePicture = true;
 			data.guild.markModified("settings.welcome.profilePicture");
@@ -487,7 +486,7 @@ export default class WelcomeCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setColor(color: any, data: any): Promise<void> {
+	private async setColor(color: any, data: any): Promise<any> {
 		if (!data.guild.settings.welcome.color) {
 			data.guild.settings.welcome.color = "#5865F2";
 			data.guild.markModified("settings.welcome.color");

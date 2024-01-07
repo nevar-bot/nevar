@@ -1,27 +1,27 @@
 {
   "errors": {
-    "disabled": "Die Willkommensnachricht ist deaktiviert."
+    "disabled": "Die Willkommensnachricht wurde noch nicht aktiviert."
   },
   "status": {
     "errors": {
-      "alreadySet": "Die Willkommensnachricht ist bereits {{status}}."
+      "alreadySet": "Die Willkommensnachricht wurde bereits {{status}}."
     },
     "set": "Die Willkommensnachricht wurde {{status}}."
   },
   "preview": {
     "errors": {
-      "noChannel": "Es wurde kein Channel für die Willkommensnachricht festgelegt.",
-      "noMessage": "Es wurde keine Nachricht für die Willkommensnachricht festgelegt.",
-      "noType": "Es wurde kein Typ für die Willkommensnachricht festgelegt."
+      "noChannel": "Es wurde noch kein Kanal für die Willkommensnachricht festgelegt.",
+      "noMessage": "Es wurde noch keine Nachricht für die Willkommensnachricht festgelegt.",
+      "noType": "Es wurde noch kein Typ für die Willkommensnachricht festgelegt."
     },
-    "sent": "Die Willkommensnachricht wurde gesendet."
+    "sent": "Die Willkommensnachricht wurde getestet."
   },
   "channel": {
     "set": "Die Willkommensnachricht wird ab jetzt in {{channel}} gesendet."
   },
   "type": {
     "errors": {
-      "sameType": "Die Willkommensnachricht wird bereits als {{type}} gesendet."
+      "sameType": "Der Typ der Willkommensnachricht wurde bereits auf {{type}} gesetzt."
     },
     "embed": "Embed",
     "text": "Textnachricht",
@@ -32,35 +32,35 @@
   },
   "thumbnail": {
     "errors": {
-      "typeNotEmbed": "Der Typ der Willkommensnachricht muss auf Embed gesetzt sein.",
-      "alreadySet": "Das Profilbild im Embed ist bereits {{status}}.",
-      "invalid": "Du musst eine gültige Farbe im HEX-Format angeben."
+      "typeNotEmbed": "Bitte setze den Typ der Willkommensnachricht auf Embed.",
+      "alreadySet": "Das Profilbild im Embed wurde bereits {{status}}."
     },
     "set": "Das Profilbild im Embed wurde {{status}}."
   },
   "color": {
     "errors": {
-      "typeNotEmbed": "Der Typ der Willkommensnachricht muss auf Embed gesetzt sein."
+      "typeNotEmbed": "Bitte setze den Typ der Willkommensnachricht auf Embed.",
+      "invalid": "Bitte gib eine gültige Farbe im Hex-Format an."
     },
     "set": "Die Farbe des Embeds wurde auf {{color}} geändert."
   },
   "variables": {
     "list": [
-      "**{user}** - Erwähnt das Mitglied",
-      "**{user:username}** - Der Nutzername des Mitglieds",
-      "**{user:displayname}** - Der Anzeigename des Mitglieds",
-      "**{user:id}** - ID des Mitglieds",
-      "**{server:name}** - Name des Servers",
-      "**{server:id}** - ID des Servers",
-      "**{server:membercount}** - Anzahl an Mitgliedern des Servers",
-      "**{inviter}** - Erwähnt den Einladenden",
-      "**{inviter:username}** - Der Nutzername des Einladenden",
-      "**{inviter:displayname}** - Der Anzeigename des Einladenden",
-      "**{inviter:id}** - ID des Einladenden",
-      "**{inviter:invites}** - Anzahl der Einladungen des Einladenden",
-      "**{newline}** - Fügt eine neue Zeile ein"
+      "{{e.arrow}} **%user** - Erwähnt das Mitglied",
+      "{{e.arrow}} **%user.name** - Der Nutzername des Mitglieds",
+      "{{e.arrow}} **%user.displayName** - Der Anzeigename des Mitglieds",
+      "{{e.arrow}} **%user.id** - ID des Mitglieds",
+      "{{e.arrow}} **%server.name** - Name des Servers",
+      "{{e.arrow}} **%server.id** - ID des Servers",
+      "{{e.arrow}} **%server.memberCount** - Anzahl an Mitgliedern des Servers",
+      "{{e.arrow}} **%inviter** - Erwähnt den Einladenden",
+      "{{e.arrow}} **%inviter.name** - Der Nutzername des Einladenden",
+      "{{e.arrow}} **%inviter.displayName** - Der Anzeigename des Einladenden",
+      "{{e.arrow}} **%inviter.id** - ID des Einladenden",
+      "{{e.arrow}} **%inviter.invites** - Anzahl der Einladungen des Einladenden",
+      "{{e.arrow}} **%newline** - Fügt eine neue Zeile ein"
     ],
     "title": "Verfügbare Variablen",
-    "empty": "Es sind keine Variablen verfügbar."
+    "empty": "Es sind noch keine Variablen verfügbar."
   }
 }
