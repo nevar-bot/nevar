@@ -133,7 +133,7 @@ export default class SetlogCommand extends BaseCommand {
 		await this.setLogs(data);
 	}
 
-	private async setLogs(data: any): Promise<void> {
+	private async setLogs(data: any): Promise<any> {
 		const moderation: any = this.interaction.options.getChannel("moderation");
 		const members: any = this.interaction.options.getChannel("members");
 		const server: any = this.interaction.options.getChannel("server");
