@@ -36,7 +36,7 @@
       "{{e.arrow}} **%user.name** - der Nutzername des Mitglieds",
       "{{e.arrow}} **%user.displayName** - der Anzeigename des Mitglieds",
       "{{e.arrow}} **%user.id** - ID des Mitglieds",
-      "{{e.arrow}} **%server.name** - Name des Servers",
+      "{{e.arrow}} **%server** - Name des Servers",
       "{{e.arrow}} **%server.id** - ID des Servers",
       "{{e.arrow}} **%server.memberCount** - Anzahl an Mitgliedern des Servers",
       "{{e.arrow}} **%newline** - fügt eine neue Zeile ein"

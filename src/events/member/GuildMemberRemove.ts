@@ -51,14 +51,14 @@ export default class {
 		if (guildData.settings?.farewell.enabled) {
 			function parseMessage(str: string): string {
 				return str
-					.replaceAll(/{user}/g, member)
-					.replaceAll(/{user:username}/g, member.user.username)
-					.replaceAll(/{user:displayname}/g, member.user.displayName)
-					.replaceAll(/{user:id}/g, member.user.id)
-					.replaceAll(/{server:name}/g, guild.name)
-					.replaceAll(/{server:id}/g, guild.id)
-					.replaceAll(/{server:membercount}/g, guild.memberCount)
-					.replaceAll(/{newline}/g, "\n");
+					.replaceAll(/%user.name/g, member.user.username)
+					.replaceAll(/%user.displayName/g, member.user.displayName)
+					.replaceAll(/%user.id/g, member.user.id)
+					.replaceAll(/%user/g, member)
+					.replaceAll(/%server.id/g, guild.id)
+					.replaceAll(/%server.memberCount/g, guild.memberCount)
+					.replaceAll(/%server/g, guild.name)
+					.replaceAll(/%newline/g, "\n");
 			}
 
 			const farewellMessage: string = parseMessage(guildData.settings.farewell.message);

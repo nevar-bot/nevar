@@ -298,9 +298,9 @@ export default class GoodbyeCommand extends BaseCommand {
 				.replaceAll(/%user.id/g, member.user.id)
 				.replaceAll(/%user/g, member)
 
-				.replaceAll(/%server.name/g, self.interaction.guild.name)
 				.replaceAll(/%server.id/g, self.interaction.guild.id)
 				.replaceAll(/%server.memberCount/g, self.interaction.guild.memberCount)
+				.replaceAll(/%server/g, self.interaction.guild.name)
 
 				.replaceAll(/%newline/g, "\n");
 		}

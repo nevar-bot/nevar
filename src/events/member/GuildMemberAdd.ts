@@ -142,19 +142,19 @@ export default class {
 		if (guildData.settings?.welcome.enabled) {
 			function parseMessage(str: string): string {
 				return str
-					.replaceAll(/{user}/g, member)
-					.replaceAll(/{user:username}/g, member.user.username)
-					.replaceAll(/{user:displayname}/g, member.user.displayName)
-					.replaceAll(/{user:id}/g, member.user.id)
-					.replaceAll(/{server:name}/g, guild.name)
-					.replaceAll(/{server:id}/g, guild.id)
-					.replaceAll(/{server:membercount}/g, guild.memberCount)
-					.replaceAll(/{inviter}/g, inviteData.inviter || "Unbekannt")
-					.replaceAll(/{inviter:username}/g, inviteData.inviter?.username || "Unbekannt")
-					.replaceAll(/{inviter:displayname}/g, inviteData.inviter?.displayName || "Unbekannt")
-					.replaceAll(/{inviter:id}/g, inviteData.inviter?.id || "000000000000000000")
-					.replaceAll(/{inviter:invites}/g, inviteData.totalInvites || 0)
-					.replaceAll(/{newline}/g, "\n");
+					.replaceAll(/%user.name/g, member.user.username)
+					.replaceAll(/%user.displayName/g, member.user.displayName)
+					.replaceAll(/%user.id/g, member.user.id)
+					.replaceAll(/%user/g, member)
+					.replaceAll(/%server.id/g, guild.id)
+					.replaceAll(/%server.memberCount/g, guild.memberCount)
+					.replaceAll(/%server/g, guild.name)
+					.replaceAll(/%inviter.name/g, inviteData.inviter?.username || "Unbekannt")
+					.replaceAll(/%inviter.displayName/g, inviteData.inviter?.displayName || "Unbekannt")
+					.replaceAll(/%inviter.id/g, inviteData.inviter?.id || "000000000000000000")
+					.replaceAll(/%inviter.invites/g, inviteData.totalInvites || 0)
+					.replaceAll(/%inviter/g, inviteData.inviter || "Unbekannt")
+					.replaceAll(/%newline/g, "\n");
 			}
 
 			const welcomeMessage: string = parseMessage(guildData.settings.welcome.message);
