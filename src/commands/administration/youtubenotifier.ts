@@ -147,7 +147,7 @@ export default class Youtubenotifier extends BaseCommand {
 		}
 	}
 
-	private async addNotifier(channelId: string, data: any): Promise<void> {
+	private async addNotifier(channelId: string, data: any): Promise<any> {
 		if (!channelId) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingChannelId"),
@@ -206,7 +206,7 @@ export default class Youtubenotifier extends BaseCommand {
 		}
 	}
 
-	private async removeNotifier(channelId: string, data: any): Promise<void> {
+	private async removeNotifier(channelId: string, data: any): Promise<any> {
 		if (!channelId) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingChannelId"),
@@ -243,11 +243,11 @@ export default class Youtubenotifier extends BaseCommand {
 		}
 	}
 
-	private async listNotifiers(data: any): Promise<void> {
+	private async listNotifiers(data: any): Promise<any> {
 		const channels: any[] = [];
 		for (const channel of data.guild.settings.notifiers.youtube.channels) {
 			const channelData: any = await this.getChannelNameFromId(channel.id);
-			channels.push("[" + channelData.username + "](https://www.youtube.com/channel/" + channel.id + ")");
+			channels.push(this.client.emotes.youtube + " [" + channelData.username + "](https://www.youtube.com/channel/" + channel.id + ")");
 		}
 
 		this.client.utils.sendPaginatedEmbed(
@@ -256,14 +256,13 @@ export default class Youtubenotifier extends BaseCommand {
 			channels,
 			this.translate("list:title"),
 			this.translate("list:empty"),
-			"link",
 		);
 	}
 
-	private async setStatus(status: string, data: any): Promise<void> {
+	private async setStatus(status: string, data: any): Promise<any> {
 		if (!["on", "off"].includes(status)) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingStatus"),
+				this.translate("basics:errors:missingStatus", undefined, true),
 				"error",
 				"error",
 				status,
@@ -296,7 +295,7 @@ export default class Youtubenotifier extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setChannel(channel: any, data: any): Promise<void> {
+	private async setChannel(channel: any, data: any): Promise<any> {
 		if (!channel) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("basics:errors:missingChannel", {}, true),

@@ -1,16 +1,15 @@
 {
   "errors": {
-    "missingChannelId": "Du musst eine YouTube-Kanal-ID angeben.",
-    "limitExceeded": "Es können nur maximal 3 Kanäle überwacht werden.",
-    "alreadyAdded": "Dieser Kanal wird bereits überwacht.",
-    "notAdded": "Dieser Kanal wird nicht überwacht.",
-    "cantFindChannel": "Der Kanal konnte nicht gefunden werden.",
-    "missingStatus": "Du musst einen Status wählen.",
-    "statusAlready": "Der YouTube-Notifier ist bereits {{status}}.",
+    "missingChannelId": "Bitte gib eine YouTube-Kanal-ID an.",
+    "limitExceeded": "Es können derzeit leider nur maximal 3 YouTube-Kanäle überwacht werden.",
+    "alreadyAdded": "Dieser YouTube-Kanal wurde bereits zur Überwachung hinzugefügt.",
+    "notAdded": "Dieser YouTube-Kanal wurde noch nicht zur Überwachung hinzugefügt.",
+    "cantFindChannel": "Dein angegebener Kanal konnte nicht gefunden werden.",
+    "statusAlready": "Der YouTube-Notifier wurde bereits {{status}}.",
     "channelAlready": "YouTube-Videos werden bereits in {{channel}} gesendet."
   },
-  "added": "[{{name}}]({{url}}) wird ab jetzt überwacht.",
-  "removed": "[{{name}}]({{url}}) wird ab jetzt nicht mehr überwacht.",
+  "added": "[{{name}}]({{url}}) wurde zur Überwachung hinzugefügt.",
+  "removed": "[{{name}}]({{url}}) wurde aus der Überwachung entfernt.",
   "statusSet": "Der YouTube-Notifier wurde {{status}}.",
   "channelSet": "YouTube-Videos werden ab jetzt in {{channel}} gesendet.",
   "list": {
