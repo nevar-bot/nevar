@@ -421,7 +421,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 	}
 
-	private async setStatus(status: any, data: any): Promise<void> {
+	private async setStatus(status: any, data: any): Promise<any> {
 		/* Status is already set */
 		if (data.guild.settings.levels.enabled === JSON.parse(status)) {
 			const text: string = JSON.parse(status)
@@ -450,7 +450,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setChannel(channel: any, data: any): Promise<void> {
+	private async setChannel(channel: any, data: any): Promise<any> {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
@@ -477,7 +477,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setMessage(message: string, data: any): Promise<void> {
+	private async setMessage(message: string, data: any): Promise<any> {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
@@ -507,7 +507,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async addRole(role: any, level: any, data: any): Promise<void> {
+	private async addRole(role: any, level: any, data: any): Promise<any> {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
@@ -531,7 +531,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is already added */
 		if (data.guild.settings.levels.roles.find((r: any): boolean => r.role === role.id)) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("roles:errors:roleAlreadyAdded"),
+				this.translate("roles:errors:roleAlreadyAdded", { role: role.toString() }),
 				"error",
 				"error",
 			);
@@ -539,7 +539,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 
 		/* Role is @everyone */
-		if (role.id === this.interaction.guild.roles.everyone.id) {
+		if (role.id === this.interaction.guild!.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("roles:errors:cantUseEveryone"),
 				"error",
@@ -559,11 +559,10 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 
 		/* Role is too high */
-		if (this.interaction.guild.members.me.roles.highest.position <= role.position) {
+		if (this.interaction.guild!.members.me!.roles.highest.position <= role.position) {
 			const roleIsTooHighEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("roles:errors:cantUseHigherRole", {
-					role: role.toString(),
-					botrole: this.interaction.guild.members.me.roles.highest.toString(),
+					botRole: this.interaction.guild!.members.me!.roles.highest.toString(),
 				}),
 				"error",
 				"error",
@@ -580,14 +579,14 @@ export default class LevelsystemCommand extends BaseCommand {
 		await data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("roles:added", { role: role.toString() }),
+			this.translate("roles:added", { role: role.toString(), level: level.toString() }),
 			"success",
 			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async removeRole(role: any, data: any): Promise<void> {
+	private async removeRole(role: any, data: any): Promise<any> {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
@@ -633,24 +632,25 @@ export default class LevelsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async listRoles(data: any): Promise<void> {
+	private async listRoles(data: any): Promise<any> {
 		const response: any = data.guild.settings.levels.roles;
 		const levelroles: any[] = [];
 
-		for (let i: number = 0; i < response.length; i++) {
-			const cachedRole = this.interaction.guild!.roles.cache.get(response[i].role);
+		for (const element of response) {
+			const cachedRole: any = this.interaction.guild!.roles.cache.get(element.role);
 			if (cachedRole)
 				levelroles.push(
-					" " +
-						this.translate("roles:list:role") +
-						": " +
-						cachedRole.toString() +
-						"\n" +
-						this.client.emotes.arrow +
-						" " +
-						this.translate("roles:list:level") +
-						": " +
-						response[i].level,
+					this.client.emotes.ping + " **" +
+					this.translate("roles:list:role") +
+					":** " +
+					cachedRole.toString() +
+					"\n" +
+					this.client.emotes.rocket +
+					" **" +
+					this.translate("roles:list:level") +
+					":** " +
+					element.level +
+					"\n"
 				);
 		}
 
@@ -660,11 +660,10 @@ export default class LevelsystemCommand extends BaseCommand {
 			levelroles,
 			this.translate("roles:list:title"),
 			this.translate("roles:list:empty"),
-			"ping",
 		);
 	}
 
-	private async addDoubleXp(role: any, data: any): Promise<void> {
+	private async addDoubleXp(role: any, data: any): Promise<any> {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
@@ -688,7 +687,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		/* Role is already added */
 		if (data.guild.settings.levels.doubleXP.includes(role.id)) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("doublexp:errors:alreadyAdded"),
+				this.translate("doublexp:errors:alreadyAdded", { role: role.toString() }),
 				"error",
 				"error",
 			);
@@ -696,7 +695,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 
 		/* Role is @everyone */
-		if (role.id === this.interaction.guild.roles.everyone.id) {
+		if (role.id === this.interaction.guild!.roles.everyone.id) {
 			const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("doublexp:errors:cantUseEveryone"),
 				"error",
@@ -728,7 +727,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async removeDoubleXp(role: any, data: any): Promise<void> {
+	private async removeDoubleXp(role: any, data: any): Promise<any> {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
@@ -777,13 +776,13 @@ export default class LevelsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async listDoubleXp(data: any): Promise<void> {
+	private async listDoubleXp(data: any): Promise<any> {
 		const response: any = data.guild.settings.levels.doubleXP;
 		const doublexpRoles: any[] = [];
 
-		for (let i: number = 0; i < response.length; i++) {
-			const cachedRole: any = this.interaction.guild.roles.cache.get(response[i]);
-			if (cachedRole) doublexpRoles.push(cachedRole.toString());
+		for (const element of response) {
+			const cachedRole: any = this.interaction.guild!.roles.cache.get(element);
+			if (cachedRole) doublexpRoles.push(this.client.emotes.ping + " " + cachedRole.toString());
 		}
 
 		await this.client.utils.sendPaginatedEmbed(
@@ -792,11 +791,10 @@ export default class LevelsystemCommand extends BaseCommand {
 			doublexpRoles,
 			this.translate("doublexp:list:title"),
 			this.translate("doublexp:list:empty"),
-			"ping",
 		);
 	}
 
-	private async setXp(min: number, max: number, data: any): Promise<void> {
+	private async setXp(min: number, max: number, data: any): Promise<any> {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
@@ -833,19 +831,18 @@ export default class LevelsystemCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async listVariables(): Promise<void> {
-		const variables: string[] = this.translate("variables:list");
+	private async listVariables(): Promise<any> {
+		const variables: any = this.translate("variables:list", { e: this.client.emotes });
 		await this.client.utils.sendPaginatedEmbed(
 			this.interaction,
 			10,
 			variables,
 			this.translate("variables:title"),
 			this.translate("variables:empty"),
-			"shine",
 		);
 	}
 
-	private async sendPreview(data: any): Promise<void> {
+	private async sendPreview(data: any): Promise<any> {
 		/* Levelsystem is disabled */
 		if (!data.guild.settings.levels.enabled) {
 			const notEnabledEmbed: EmbedBuilder = this.client.createEmbed(
@@ -866,18 +863,18 @@ export default class LevelsystemCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [noMessageEmbed] });
 		}
 
-		const member = this.interaction.member;
+		const member: any = this.interaction.member;
 		const self = this;
 		function parseMessage(str: string): string {
 			return str
-				.replaceAll(/{level}/g, String(1))
-				.replaceAll(/{user}/g, member)
-				.replaceAll(/{user:username}/g, member.user.username)
-				.replaceAll(/{user:displayname}/g, member.user.displayName)
-				.replaceAll(/{user:id}/g, member.user.id)
-				.replaceAll(/{server:name}/g, self.interaction.guild.name)
-				.replaceAll(/{server:id}/g, self.interaction.guild.id)
-				.replaceAll(/{server:membercount}/g, self.interaction.guild.memberCount);
+				.replaceAll(/%level/g, String(1))
+				.replaceAll(/%user.name/g, member.user.username)
+				.replaceAll(/%user.displayName/g, member.displayName)
+				.replaceAll(/%user.id/g, member.user.id)
+				.replaceAll(/%user/g, member)
+				.replaceAll(/%server.name/g, self.interaction.guild!.name)
+				.replaceAll(/%server.id/g, self.interaction.guild!.id)
+				.replaceAll(/%server.membercount/g, self.interaction.guild!.memberCount.toString());
 		}
 
 		const channel: any =
@@ -902,7 +899,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 	}
 
-	private async addExclude(channel: any, role: any, data: any): Promise<void> {
+	private async addExclude(channel: any, role: any, data: any): Promise<any> {
 		if (!data.guild.settings.levels.exclude) {
 			data.guild.settings.levels.exclude = {
 				channels: [],
@@ -966,7 +963,7 @@ export default class LevelsystemCommand extends BaseCommand {
 			}
 
 			/* Role is @everyone */
-			if (toExclude.id === this.interaction.guild.roles.everyone.id) {
+			if (toExclude.id === this.interaction.guild!.roles.everyone.id) {
 				const everyoneEmbed: EmbedBuilder = this.client.createEmbed(
 					this.translate("exclude:errors:cantUseEveryone"),
 					"error",
@@ -1000,7 +997,7 @@ export default class LevelsystemCommand extends BaseCommand {
 		}
 	}
 
-	private async removeExclude(channel: any, role: any, data: any): Promise<void> {
+	private async removeExclude(channel: any, role: any, data: any): Promise<any> {
 		if (!data.guild.settings.levels.exclude) {
 			data.guild.settings.levels.exclude = {
 				channels: [],
@@ -1097,13 +1094,13 @@ export default class LevelsystemCommand extends BaseCommand {
 		const response = data.guild.settings.levels.exclude;
 		const excluded: any[] = [];
 
-		for (let i: number = 0; i < response.roles.length; i++) {
-			const cachedRole = this.interaction.guild.roles.cache.get(response.roles[i]);
+		for (const element of response.roles) {
+			const cachedRole = this.interaction.guild!.roles.cache.get(element);
 			if (cachedRole) excluded.push(this.client.emotes.ping + " " + cachedRole.toString());
 		}
 
-		for (let i: number = 0; i < response.channels.length; i++) {
-			const cachedChannel = this.interaction.guild.channels.cache.get(response.channels[i]);
+		for (const element of response.channels) {
+			const cachedChannel = this.interaction.guild!.channels.cache.get(element);
 			if (cachedChannel) excluded.push(this.client.emotes.channel + " " + cachedChannel.toString());
 		}
 
@@ -1113,7 +1110,6 @@ export default class LevelsystemCommand extends BaseCommand {
 			excluded,
 			this.translate("exclude:list:title"),
 			this.translate("exclude:list:empty"),
-			null,
 		);
 	}
 }
