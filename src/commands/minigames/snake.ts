@@ -141,7 +141,6 @@ class SnakeGame extends BaseGame {
 			"normal",
 		);
 		snakeEmbed.setTitle("Snake");
-		snakeEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		const up: ButtonBuilder = this.client.createButton("snake_up", null, "Primary", this.client.emotes.arrows.up);
 		const down: ButtonBuilder = this.client.createButton(
@@ -195,7 +194,6 @@ class SnakeGame extends BaseGame {
 			"normal",
 		);
 		snakeEmbed.setTitle("Snake");
-		snakeEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({ embeds: [snakeEmbed] });
 	}
@@ -209,7 +207,6 @@ class SnakeGame extends BaseGame {
 			"normal",
 		);
 		gameOverEmbed.setTitle("Snake");
-		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({
 			embeds: [gameOverEmbed],
