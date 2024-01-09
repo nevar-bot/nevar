@@ -16,6 +16,6 @@
   ],
   "hint": "{{e.arrow}} **Wort ({{wordLength}} Buchstaben)**",
   "guessedLetters": "{{e.question}} **Geratene Buchstaben**",
-  "win": "**{{word}}** ist das richtige Wort! Du hast gewonnen.",
-  "lose": "Du hast leider verloren. Das richtige Wort wäre **{{word}}** gewesen."
+  "win": "Du hast gewonnen! Das Wort war **{{word}}**.",
+  "lose": "Du hast verloren! Das Wort war **{{word}}**."
 }

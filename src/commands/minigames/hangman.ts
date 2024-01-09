@@ -50,7 +50,8 @@ class HangmanGame extends BaseGame {
 			head: "😟",
 			shirt: "👕",
 			pants: "🩳",
-			boots: "👞👞",
+			boots_left: "👞",
+			boots_right: "👞",
 		};
 
 		const words: string[] = this.interaction.guild.translate("minigames/hangman:words");
@@ -104,7 +105,8 @@ class HangmanGame extends BaseGame {
 		board += (this.damage > 1 ? this.hangman.head : " ") + " \n|      ";
 		board += (this.damage > 2 ? this.hangman.shirt : " ") + " \n|      ";
 		board += (this.damage > 3 ? this.hangman.pants : " ") + " \n|     ";
-		board += (this.damage > 4 ? this.hangman.boots : " ") + " \n|     ";
+		board += (this.damage > 4 ? this.hangman.boots_left : " ") + "";
+		board += (this.damage > 5 ? this.hangman.boots_right : " ") +  "\n|     ";
 		board += "\n|__________                      ```";
 		return board;
 	}
@@ -123,7 +125,6 @@ class HangmanGame extends BaseGame {
 			this.getWordEmojis();
 		const hangmanEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
 		hangmanEmbed.setTitle("Hangman");
-		hangmanEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		const hangmanMessage: any = await this.sendMessage({
 			embeds: [hangmanEmbed],
@@ -150,7 +151,7 @@ class HangmanGame extends BaseGame {
 			this.guessed.push(guess);
 
 			if (!this.word.toUpperCase().includes(guess)) this.damage += 1;
-			if (this.damage > 4 || this.foundWord()) return hangmanCollector.stop();
+			if (this.damage > 5 || this.foundWord()) return hangmanCollector.stop();
 
 			const description: string =
 				this.getBoardContent() +
@@ -172,7 +173,6 @@ class HangmanGame extends BaseGame {
 
 			const hangmanEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
 			hangmanEmbed.setTitle("Hangman");
-			hangmanEmbed.setThumbnail(this.client.user!.displayAvatarURL({}));
 
 			return msg.edit({
 				embeds: [hangmanEmbed],
@@ -209,7 +209,6 @@ class HangmanGame extends BaseGame {
 		this.getWordEmojis();
 
 		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(description, null, "normal");
-		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 		gameOverEmbed.setTitle("Hangman");
 
 		return msg.edit({ embeds: [gameOverEmbed], components: [] });
