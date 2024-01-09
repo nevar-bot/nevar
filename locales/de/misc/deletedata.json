@@ -28,9 +28,7 @@
       "Mute-Rolle",
       "Autodelete",
       "Autoreact",
-      "Reactionroles",
-      "AI-gestützte Chatmoderation",
-      "AI-Chat"
+      "Reactionroles"
     ]
   },
   "confirmation": "Bist du dir sicher, dass du **{{type}}** löschen möchtest? Folgende Daten sind davon betroffen:\n\n**{{affected}}**",

@@ -78,7 +78,7 @@ export default class DeletedataCommand extends BaseCommand {
 	}
 
 	private async deleteData(member: any, type: any, reason: any, data: any): Promise<any> {
-		if (type === "guild" && (await this.interaction.guild.fetchOwner()).user.id !== this.interaction.user.id) {
+		if (type === "guild" && (await this.interaction.guild!.fetchOwner()).user.id !== this.interaction.user.id) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:ownerOnly"),
 				"error",
@@ -173,12 +173,12 @@ export default class DeletedataCommand extends BaseCommand {
 				const bannedOld = data.member.banned;
 				const mutedOld = data.member.muted;
 
-				await this.client.deleteMember(this.interaction.user.id, this.interaction.guild.id);
+				await this.client.deleteMember(this.interaction.user.id, this.interaction.guild!.id);
 				// ban/mute/warn user again, if he was banned/muted/warned before
 				if (bannedOld.state || mutedOld.state || warningsOld.length > 0) {
 					const newMemberdata: any = await this.client.findOrCreateMember(
 						this.interaction.user.id,
-						this.interaction.guild.id,
+						this.interaction.guild!.id,
 					);
 					newMemberdata.banned = bannedOld;
 					newMemberdata.muted = mutedOld;
@@ -199,7 +199,7 @@ export default class DeletedataCommand extends BaseCommand {
 				return this.client.alert(
 					this.interaction.user.username +
 						" hat seine Mitgliedsdaten auf " +
-						this.interaction.guild.name +
+						this.interaction.guild!.name +
 						" gelöscht" +
 						(reason ? " mit dem Grund: " + reason : ""),
 					"warning",
@@ -208,11 +208,11 @@ export default class DeletedataCommand extends BaseCommand {
 			if (type === "guild") {
 				const blockedOld: any = data.guild.blocked;
 
-				await this.client.deleteGuild(this.interaction.guild.id);
+				await this.client.deleteGuild(this.interaction.guild!.id);
 
 				// block guild again, if it was blocked before
 				if (blockedOld.state) {
-					const newGuilddata: any = await this.client.findOrCreateGuild(this.interaction.guild.id);
+					const newGuilddata: any = await this.client.findOrCreateGuild(this.interaction.guild!.id);
 					newGuilddata.blocked = blockedOld;
 					newGuilddata.markModified("blocked");
 					await newGuilddata.save();
@@ -228,7 +228,7 @@ export default class DeletedataCommand extends BaseCommand {
 				return this.client.alert(
 					this.interaction.user.username +
 						" hat die Serverdaten von " +
-						this.interaction.guild.name +
+						this.interaction.guild!.name +
 						" gelöscht" +
 						(reason ? " mit dem Grund: " + reason : ""),
 					"warning",
