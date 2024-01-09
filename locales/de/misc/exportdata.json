@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "onlyOwnerCanExportGuildData": "Nur der Eigentümer dieses Servers kann die Serverdaten exportieren."
+  },
+  "removedToSecurityReasons": "-- aus Sicherheitsgründen entfernt --",
+  "exported": {
+    "user": "Hier sind deine exportierten Nutzerdaten:",
+    "member": "Hier sind deine exportierten Mitgliedsdaten:",
+    "guild": "Hier sind deine exportierten Serverdaten:"
+  }
+}

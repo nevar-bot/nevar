@@ -7,27 +7,45 @@ export default class ExportdataCommand extends BaseCommand {
 	constructor(client: BaseClient) {
 		super(client, {
 			name: "exportdata",
-			description: "Exportiert deine Daten als JSON Datei",
+			description: "Exports your data as a JSON file",
+			localizedDescriptions: {
+				de: "Exportiert deine Daten als JSON Datei"
+			},
 			cooldown: 5000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
 					option
-						.setName("daten")
-						.setDescription("Wähle, welche Daten du exportieren möchtest")
+						.setName("data")
+						.setNameLocalizations({
+							de: "daten"
+						})
+						.setDescription("Choose which data you want to export")
+						.setDescriptionLocalizations({
+							de: "Wähle, welche Daten du exportieren möchtest"
+						})
 						.setRequired(true)
 						.addChoices(
 							{
-								name: "deine Nutzerdaten",
+								name: "your user data",
+								name_localizations: {
+									de: "deine Nutzerdaten"
+								},
 								value: "user",
 							},
 							{
-								name: "deine Mitgliedsdaten auf diesem Server",
+								name: "your member data on this server",
+								name_localizations: {
+									de: "deine Mitgliedsdaten auf diesem Server"
+								},
 								value: "member",
 							},
 							{
-								name: "Daten dieses Servers",
+								name: "data of this server",
+								name_localizations: {
+									de: "Daten dieses Servers"
+								},
 								value: "guild",
 							},
 						),
@@ -36,19 +54,20 @@ export default class ExportdataCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.exportData(interaction.member, interaction.options.getString("daten"), data);
+		this.guild = interaction.guild;
+		await this.exportData(interaction.member, interaction.options.getString("data"), data);
 	}
 
-	private async exportData(member: any, type: string, data: any): Promise<void> {
+	private async exportData(member: any, type: string, data: any): Promise<any> {
+		const removedToSecurityReasons: string = this.translate("removedToSecurityReasons");
 		if (type === "user") {
 			const userData = data.user.toObject();
 			const fieldsToReplace: string[] = ["_id", "__v"];
 			for (const field of fieldsToReplace) {
-				userData[field] = "-- aus Sicherheitsgründen entfernt --";
+				userData[field] = removedToSecurityReasons;
 			}
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
@@ -57,7 +76,7 @@ export default class ExportdataCommand extends BaseCommand {
 				},
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
-				"Hier sind deine exportierten Nutzerdaten:",
+				this.translate("exported:user"),
 				"success",
 				"success",
 			);
@@ -71,7 +90,7 @@ export default class ExportdataCommand extends BaseCommand {
 			const userData = data.member.toObject();
 			const fieldsToReplace: string[] = ["_id", "__v"];
 			for (const field of fieldsToReplace) {
-				userData[field] = "-- aus Sicherheitsgründen entfernt --";
+				userData[field] = removedToSecurityReasons;
 			}
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
@@ -80,7 +99,7 @@ export default class ExportdataCommand extends BaseCommand {
 				},
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
-				"Hier sind deine exportierten Nutzerdaten:",
+				this.translate("exported:member"),
 				"success",
 				"success",
 			);
@@ -91,9 +110,9 @@ export default class ExportdataCommand extends BaseCommand {
 		}
 
 		if (type === "guild") {
-			if ((await this.interaction.guild.fetchOwner()).user.id !== this.interaction.user.id) {
+			if ((await this.interaction.guild!.fetchOwner()).user.id !== this.interaction.user.id) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					"Nur der Eigentümer dieses Servers kann die Serverdaten exportieren.",
+					this.translate("errors:onlyOwnerCanExportGuildData"),
 					"error",
 					"error",
 				);
@@ -103,7 +122,7 @@ export default class ExportdataCommand extends BaseCommand {
 			const userData = data.guild.toObject();
 			const fieldsToReplace: string[] = ["_id", "__v", "members", "membersData"];
 			for (const field of fieldsToReplace) {
-				userData[field] = "-- aus Sicherheitsgründen entfernt --";
+				userData[field] = removedToSecurityReasons;
 			}
 			const attachment: AttachmentBuilder = new AttachmentBuilder(
 				Buffer.from(JSON.stringify(userData, null, 4)),
@@ -112,7 +131,7 @@ export default class ExportdataCommand extends BaseCommand {
 				},
 			);
 			const embed: EmbedBuilder = this.client.createEmbed(
-				"Hier sind deine exportierten Nutzerdaten:",
+				this.translate("exported:guild"),
 				"success",
 				"success",
 			);
