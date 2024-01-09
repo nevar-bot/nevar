@@ -1,6 +1,6 @@
 {
-  "text": "Du hast 5 Sekunden, um dir die Emojis in richtiger Reihenfolge zu merken!",
-  "find": "Finde den {{emoji}} Emoji, bevor die Zeit abläuft",
-  "lose": "Du hast den falschen Emoji ausgewählt. {{emoji}}",
-  "win": "Du hast den richtigen Emoji ausgewählt. {{emoji}}"
+  "text": "Merke dir die Reihenfolge der Emojis innerhalb von 5 Sekunden!",
+  "find": "Finde {{emoji}}, bevor die Zeit endet!",
+  "lose": "Das war leider falsch. {{emoji}}",
+  "win": "Du hast gewonnen! {{emoji}}"
 }

@@ -58,7 +58,6 @@ class FindemojiGame extends BaseGame {
 			"arrow",
 			"normal",
 		);
-		findEmojiEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		const msg: any = await this.sendMessage({
 			embeds: [findEmojiEmbed],
@@ -107,7 +106,6 @@ class FindemojiGame extends BaseGame {
 		}
 
 		const gameOverEmbed: EmbedBuilder = this.client.createEmbed(finalMessage, "arrow", "normal");
-		gameOverEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return msg.edit({
 			embeds: [gameOverEmbed],
