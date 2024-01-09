@@ -46,7 +46,7 @@ export default class LetmegooglethatCommand extends BaseCommand {
 		return this.googleThat(interaction.options.getString("text"), interaction.options.getUser("user"));
 	}
 
-	private async googleThat(text: string, user: any = null): Promise<void> {
+	private async googleThat(text: string, user: any = null): Promise<any> {
 		const searchUrl: string = "https://google.com/search?q=" + encodeURIComponent(text);
 		const googleText: string = user
 			? this.translate("searchFor", { user: user.displayName, text, searchUrl })
