@@ -52,9 +52,9 @@ export default class Join2CreateCommand extends BaseCommand {
 					.addStringOption((option) =>
 						option
 							.setName("name")
-							.setDescription("Set the default name for the channel (variables: {count} and {user})")
+							.setDescription("Set the default name for the channel (variables: %count and %user)")
 							.setDescriptionLocalizations({
-								de: "Setze den Standard-Namen für die Channel (Variablen: {count} und {user})",
+								de: "Setze den Standard-Namen für die Channel (Variablen: %count und %user)",
 							})
 							.setRequired(true)
 							.setMaxLength(100),

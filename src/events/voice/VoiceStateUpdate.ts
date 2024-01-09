@@ -19,8 +19,8 @@ export default class {
 
 		if (newChannel && joinToCreateSettings?.enabled && joinToCreateSettings?.channel) {
 			const channelName: string = joinToCreateSettings.defaultName
-				.replaceAll("{count}", joinToCreateSettings.channels?.length || 1)
-				.replaceAll("{user}", newMember!.displayName);
+				.replaceAll("%count", joinToCreateSettings.channels?.length || 1)
+				.replaceAll("%user", newMember!.displayName);
 
 			if (newChannel.id !== joinToCreateSettings.channel) return;
 
