@@ -1,6 +1,6 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
-import { SlashCommandBuilder } from "discord.js";
+import {EmbedBuilder, SlashCommandBuilder} from "discord.js";
 import fs from "fs";
 
 export default class TopicCommand extends BaseCommand {
@@ -26,12 +26,13 @@ export default class TopicCommand extends BaseCommand {
 		return await this.getTopic();
 	}
 
-	private async getTopic(): Promise<void> {
+	private async getTopic(): Promise<any> {
 		const json = JSON.parse(String(fs.readFileSync("./assets/topics.json")));
 		const topics: any[] = Object.values(json);
 
+		const topicEmbed: EmbedBuilder = this.client.createEmbed(topics[Math.floor(Math.random() * topics.length)], "arrow", "normal");
 		return this.interaction.followUp({
-			content: topics[Math.floor(Math.random() * topics.length)],
+			embeds: [topicEmbed]
 		});
 	}
 }
