@@ -73,10 +73,6 @@ TOP_GG = ""
 TOP_GG_AUTH = ""
 # openweathermap.org/api
 WEATHER = ""
-# platform.openai.com
-OPENAI = ""
-# perspectiveapi.com
-GOOGLE = ""
 # dev.twitch.tv/console/apps
 TWITCH_CLIENT_ID = ""
 TWITCH_CLIENT_SECRET = ""
