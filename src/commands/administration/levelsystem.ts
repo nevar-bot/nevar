@@ -872,9 +872,9 @@ export default class LevelsystemCommand extends BaseCommand {
 				.replaceAll(/%user.displayName/g, member.displayName)
 				.replaceAll(/%user.id/g, member.user.id)
 				.replaceAll(/%user/g, member)
-				.replaceAll(/%server.name/g, self.interaction.guild!.name)
 				.replaceAll(/%server.id/g, self.interaction.guild!.id)
-				.replaceAll(/%server.membercount/g, self.interaction.guild!.memberCount.toString());
+				.replaceAll(/%server.memberCount/g, self.interaction.guild!.memberCount.toString())
+				.replaceAll(/%server/g, self.interaction.guild!.name);
 		}
 
 		const channel: any =

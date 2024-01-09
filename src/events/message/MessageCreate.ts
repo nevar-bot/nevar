@@ -279,14 +279,14 @@ export default class {
 					/* send level up message */
 					function parseMessage(str: string): string {
 						return str
-							.replaceAll(/{level}/g, String(newLevel))
-							.replaceAll(/{user}/g, message.author)
-							.replaceAll(/{user:username}/g, message.author.username)
-							.replaceAll(/{user:displayname}/g, message.author.displayName)
-							.replaceAll(/{user:id}/g, message.author.id)
-							.replaceAll(/{server:name}/g, message.guild.name)
-							.replaceAll(/{server:id}/g, message.guild.id)
-							.replaceAll(/{server:membercount}/g, message.guild.memberCount);
+							.replaceAll(/%level/g, String(newLevel))
+							.replaceAll(/%user.name/g, message.author.username)
+							.replaceAll(/%user.displayName/g, message.author.displayName)
+							.replaceAll(/%user.id/g, message.author.id)
+							.replaceAll(/%user/g, message.author)
+							.replaceAll(/%server.id/g, message.guild.id)
+							.replaceAll(/%server.memberCount/g, message.guild.memberCount)
+							.replaceAll(/%server/g, message.guild.name);
 					}
 
 					const parsedMessage: string = parseMessage(data.guild.settings.levels.message);
