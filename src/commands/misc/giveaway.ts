@@ -18,31 +18,61 @@ export default class GiveawayCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("start")
-							.setDescription("Startet ein neue Gewinnspiel")
+							.setNameLocalizations({
+								de: "starten"
+							})
+							.setDescription("Starts a new giveaway")
+							.setDescriptionLocalizations({
+								de: "Startet ein neue Gewinnspiel"
+							})
 							.addChannelOption((option: any) =>
 								option
 									.setName("channel")
-									.setDescription("Wähle, in welchem Channel das Gewinnspiel gestartet werden soll")
+									.setNameLocalizations({
+										de: "kanal"
+									})
+									.setDescription("Choose in which channel the giveaway should be started")
+									.setDescriptionLocalizations({
+										de: "Wähle, in welchem Channel das Gewinnspiel gestartet werden soll"
+									})
 									.setRequired(true)
 									.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement),
 							)
 							.addStringOption((option: any) =>
 								option
-									.setName("gewinn")
-									.setDescription("Gib den Gewinn an")
+									.setName("price")
+									.setNameLocalizations({
+										de: "gewinn"
+									})
+									.setDescription("Choose the price of the giveaway")
+									.setDescriptionLocalizations({
+										de: "Gib den Gewinn an"
+									})
 									.setMaxLength(256)
 									.setRequired(true),
 							)
 							.addStringOption((option: any) =>
 								option
-									.setName("dauer")
-									.setDescription("Gib die Dauer an (z.B. 1h, 1d, 1w, 1h 30m)")
+									.setName("duration")
+									.setNameLocalizations({
+										de: "dauer"
+									})
+									.setDescription("Choose the duration of the giveaway (e.g. 1h, 1d, 1w, 1h 30m)")
+									.setDescriptionLocalizations({
+										de: "Gib die Dauer an (z.B. 1h, 1d, 1w, 1h 30m)"
+									})
 									.setRequired(true),
 							)
 							.addIntegerOption((option: any) =>
 								option
-									.setName("gewinner")
-									.setDescription("Gib an wieviele Gewinner es geben soll")
+									.setName("winners")
+									.setNameLocalizations({
+										de: "gewinner"
+									})
+									.setDescription("Choose how many winners there should be")
+									.setDescriptionLocalizations({
+										de: "Gib an wieviele Gewinner es geben soll"
+									})
 									.setMinValue(1)
 									.setMaxValue(10)
 									.setRequired(true),
@@ -51,47 +81,91 @@ export default class GiveawayCommand extends BaseCommand {
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("end")
-							.setDescription("Beendet ein laufendes Gewinnspiel")
+							.setNameLocalizations({
+								de: "beenden"
+							})
+							.setDescription("Ends a running giveaway")
+							.setDescriptionLocalizations({
+								de: "Beendet ein laufendes Gewinnspiel"
+							})
 							.addStringOption((option: any) =>
 								option
 									.setName("id")
-									.setDescription("Gib die ID der Nachricht des Gewinnspiels an")
+									.setNameLocalizations({
+										de: "id"
+									})
+									.setDescription("Enter the message id of the giveaway message")
+									.setDescriptionLocalizations({
+										de: "Gib die ID der Nachricht des Gewinnspiels an"
+									})
 									.setRequired(true),
 							),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("reroll")
-							.setDescription("Lost neue Gewinner für ein beendetes Gewinnspiel aus")
+							.setNameLocalizations({
+								de: "wiederholen"
+							})
+							.setDescription("Rerolls a ended giveaway")
+							.setDescriptionLocalizations({
+								de: "Lost neue Gewinner für ein beendetes Gewinnspiel aus"
+							})
 							.addStringOption((option: any) =>
 								option
 									.setName("id")
-									.setDescription("Gib die ID der Nachricht des beendeten Gewinnspiels an")
+									.setNameLocalizations({
+										de: "id"
+									})
+									.setDescription("Enter the message id of the giveaway message")
+									.setDescriptionLocalizations({
+										de: "Gib die ID der Nachricht des beendeten Gewinnspiels an"
+									})
 									.setRequired(true),
 							),
 					)
 					.addSubcommand((subcommand: any) =>
 						subcommand
 							.setName("delete")
-							.setDescription("Löscht ein Gewinnspiel")
+							.setNameLocalizations({
+								de: "löschen"
+							})
+							.setDescription("Deletes a giveaway")
+							.setDescriptionLocalizations({
+								de: "Löscht ein Gewinnspiel"
+							})
 							.addStringOption((option: any) =>
 								option
 									.setName("id")
-									.setDescription("Gib die ID der Nachricht des Gewinnspiels an")
+									.setNameLocalizations({
+										de: "id"
+									})
+									.setDescription("Enter the message id of the giveaway message")
+									.setDescriptionLocalizations({
+										de: "Gib die ID der Nachricht des Gewinnspiels an"
+									})
 									.setRequired(true),
 							),
 					)
 					.addSubcommand((subcommand: any) =>
-						subcommand.setName("list").setDescription("Zeigt alle laufenden Gewinnspiele an"),
+						subcommand
+							.setName("list")
+							.setNameLocalizations({
+								de: "liste"
+							})
+							.setDescription("Shows all running giveaways")
+							.setDescriptionLocalizations({
+								de: "Zeigt alle laufenden Gewinnspiele an"
+							}),
 					),
 			},
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 
 		const subcommand = interaction.options.getSubcommand();
 
@@ -114,15 +188,15 @@ export default class GiveawayCommand extends BaseCommand {
 		}
 	}
 
-	private async start(): Promise<void> {
+	private async start(): Promise<any> {
 		const channel: any = this.interaction.options.getChannel("channel");
-		const win: any = this.interaction.options.getString("gewinn");
-		const duration: any = this.interaction.options.getString("dauer");
-		const winner: any = this.interaction.options.getInteger("gewinner");
+		const win: any = this.interaction.options.getString("price");
+		const duration: any = this.interaction.options.getString("duration");
+		const winner: any = this.interaction.options.getInteger("winners");
 
 		if (!ms(duration)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst eine gültige Dauer angeben.",
+				this.translate("errors:invalidDuration"),
 				"error",
 				"error",
 			);
@@ -132,7 +206,7 @@ export default class GiveawayCommand extends BaseCommand {
 		await this.client.giveawayManager.createGiveaway({
 			messageId: null,
 			channelId: channel.id,
-			guildId: this.interaction.guild.id,
+			guildId: this.interaction.guild!.id,
 			startAt: Date.now(),
 			endAt: Date.now() + ms(duration),
 			ended: false,
@@ -144,26 +218,26 @@ export default class GiveawayCommand extends BaseCommand {
 			exemptMembers: [],
 		});
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"Das Gewinnspiel wurde gestartet.",
+			this.translate("started"),
 			"success",
 			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async end(): Promise<void> {
+	private async end(): Promise<any> {
 		const id: string = this.interaction.options.getString("id");
 		const endGiveaway: boolean = await this.client.giveawayManager.endGiveaway(id);
 		if (endGiveaway) {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				"Das Gewinnspiel wurde beendet.",
+				this.translate("stopped"),
 				"success",
 				"success",
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				"Mit der ID habe ich kein Gewinnspiel gefunden.",
+				this.translate("errors:noGiveawayFound"),
 				"error",
 				"error",
 			);
@@ -171,19 +245,19 @@ export default class GiveawayCommand extends BaseCommand {
 		}
 	}
 
-	private async reroll(): Promise<void> {
+	private async reroll(): Promise<any> {
 		const id: string = this.interaction.options.getString("id");
 		const rerollGiveaway: boolean | Object = await this.client.giveawayManager.rerollGiveaway(id);
 		if (rerollGiveaway) {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				"Das Gewinnspiel wurde neu ausgelost.",
+				this.translate("rerolled"),
 				"success",
 				"success",
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				"Mit der ID habe ich kein Gewinnspiel gefunden.",
+				this.translate("errors:noGiveawayFound"),
 				"error",
 				"error",
 			);
@@ -191,19 +265,19 @@ export default class GiveawayCommand extends BaseCommand {
 		}
 	}
 
-	private async delete(): Promise<void> {
+	private async delete(): Promise<any> {
 		const id: string = this.interaction.options.getString("id");
 		const deleteGiveaway: boolean = await this.client.giveawayManager.deleteGiveaway(id);
 		if (deleteGiveaway) {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				"Das Gewinnspiel wurde gelöscht.",
+				this.translate("deleted"),
 				"success",
 				"success",
 			);
 			return this.interaction.followUp({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				"Mit der ID habe ich kein Gewinnspiel gefunden.",
+				this.translate("errors:noGiveawayFound"),
 				"error",
 				"error",
 			);
@@ -211,16 +285,16 @@ export default class GiveawayCommand extends BaseCommand {
 		}
 	}
 
-	private async list(): Promise<void> {
+	private async list(): Promise<any> {
 		const guildGiveaways: any = (await this.client.giveawayManager.getGiveaways()).filter(
-			(g: any): boolean => g.guildId === this.interaction.guild.id && !g.ended,
+			(g: any): boolean => g.guildId === this.interaction.guild!.id && !g.ended,
 		);
 
 		const giveaways: any[] = [];
 
 		for (const giveaway of guildGiveaways) {
-			const prize = giveaway.prize;
-			const channel = await this.interaction.guild.channels.fetch(giveaway.channelId).catch((): void => {});
+			const prize: string = giveaway.prize;
+			const channel: any = await this.interaction.guild!.channels.fetch(giveaway.channelId).catch((): void => {});
 			if (!channel) continue;
 			const winnerCount = giveaway.winnerCount;
 			const hostedBy: any = await this.client.users.fetch(giveaway.hostedBy).catch((): void => {});
@@ -228,27 +302,27 @@ export default class GiveawayCommand extends BaseCommand {
 			const endAt = giveaway.endAt;
 
 			const text: string =
-				" **" +
+				"### " +
 				prize +
-				"**\n" +
+				"\n" +
 				this.client.emotes.channel +
-				"Channel: " +
+				" **" + this.translate("list:channel") + ":** " +
 				channel.toString() +
 				"\n" +
 				this.client.emotes.tada +
-				"Gewinner: " +
+				" **" + this.translate("list:winnerCount") + ":** " +
 				winnerCount +
 				"\n" +
 				this.client.emotes.user +
-				"Veranstaltet durch: " +
+				" **" + this.translate("list:hostedBy") + ":** " +
 				hostedBy.toString() +
 				"\n" +
 				this.client.emotes.calendar +
-				"Gestartet " +
+				" **" + this.translate("list:started") + ":** " +
 				this.client.utils.getDiscordTimestamp(startedAt, "R") +
 				"\n" +
 				this.client.emotes.reminder +
-				"Endet " +
+				" **" + this.translate("list:endsAt") + ":** " +
 				this.client.utils.getDiscordTimestamp(endAt, "R") +
 				"\n\n";
 			giveaways.push(text);
@@ -258,9 +332,8 @@ export default class GiveawayCommand extends BaseCommand {
 			this.interaction,
 			3,
 			giveaways,
-			"Gewinnspiele",
-			"Es sind keine Gewinnspiele vorhanden",
-			"gift",
+			this.translate("list:title"),
+			this.translate("list:empty"),
 		);
 	}
 }
