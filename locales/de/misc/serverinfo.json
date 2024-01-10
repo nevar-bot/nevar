@@ -1,0 +1,15 @@
+{
+  "title": "Informationen zu {{guild.name}}",
+  "name": "Name",
+  "id": "ID",
+  "owner": "Eigentümer/-in",
+  "members": "Mitglieder",
+  "channels": "Kanäle:",
+  "categories": "davon Kategorien",
+  "textChannels": "davon Textkanäle",
+  "voiceChannels": "davon Sprachkanäle",
+  "threadChannels": "davon Threads",
+  "forumChannels": "davon Foren",
+  "createdAt": "Erstellt am",
+  "createdAgo": "Erstellt vor"
+}
