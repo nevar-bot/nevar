@@ -7,23 +7,35 @@ export default class ReportbugCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "reportbug",
-			description: "Meldet einen Fehler an unser Entwickler-Team",
+			description: "Report a bug to our development team",
+			localizedDescriptions: {
+				de: "Meldet einen Fehler an unser Entwickler-Team",
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
-					option.setName("beschreibung").setDescription("Beschreibe den Fehler").setRequired(true),
+					option
+						.setName("description")
+						.setNameLocalizations({
+							de: "beschreibung"
+						})
+						.setDescription("Please describe the bug as precisely as possible")
+						.setDescriptionLocalizations({
+							de: "Bitte beschreibe den Fehler so genau wie möglich"
+						})
+						.setRequired(true),
 				),
 			},
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.reportBug(this.interaction.options.getString("beschreibung"));
+		this.guild = interaction.guild;
+		await this.reportBug(this.interaction.options.getString("description"));
 	}
 
 	private async reportBug(bug: string): Promise<void> {
@@ -31,24 +43,22 @@ export default class ReportbugCommand extends BaseCommand {
 		const supportGuild: any = this.client.guilds.cache.get(this.client.config.support["ID"]);
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0} Danke für deine Meldung! Wir werden uns so schnell wie möglich darum kümmern.",
+			this.client.emotes.flags.BugHunterLevel1 + " " +
+			this.translate("confirmation"),
 			null,
-			"success",
-			this.client.emotes.flags.BugHunterLevel1,
+			"success"
 		);
-		successEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 		await this.interaction.followUp({ embeds: [successEmbed] });
 
+
 		const supportEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0} ({1}) hat einen Fehler gemeldet: {2}",
+			supportGuild.translate("misc/reportbug:supportTitle", { user: this.interaction.user }) + "\n\n" +
+			this.client.emotes.bug + " " + bug,
 			"information",
-			"warning",
-			this.interaction.user.username,
-			this.interaction.user.id,
-			bug,
+			"warning"
 		);
 		supportEmbed.setFooter({
-			text: "Server-ID: " + this.interaction.guild.id + " | " + date,
+			text: supportGuild.translate("misc/reportbug:guildId") + ": " + this.interaction.guild!.id + " | " + date,
 		});
 
 		const errorLogChannel: any = await supportGuild.channels.fetch(this.client.config.support["ERROR_LOG"]);
