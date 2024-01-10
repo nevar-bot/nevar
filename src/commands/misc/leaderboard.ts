@@ -35,7 +35,7 @@ export default class LeaderboardCommand extends BaseCommand {
 		const leaderboardData: any[] = [
 			...(await this.client.levels.computeLeaderboard(
 				this.client,
-				await this.client.levels.fetchLeaderboard(this.interaction.guild.id, 10),
+				await this.client.levels.fetchLeaderboard(this.interaction.guild!.id, 10),
 				true,
 			)),
 		];

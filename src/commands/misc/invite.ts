@@ -25,7 +25,7 @@ export default class InviteCommand extends BaseCommand {
 		await this.sendLinks();
 	}
 
-	private async sendLinks(): Promise<void> {
+	private async sendLinks(): Promise<any> {
 		// First row
 		const inviteButton: ButtonBuilder = this.client.createButton(
 			null,

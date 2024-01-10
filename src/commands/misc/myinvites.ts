@@ -25,14 +25,14 @@ export default class MyinvitesCommand extends BaseCommand {
 		await this.showInvites(data.member);
 	}
 
-	private async showInvites(memberData: any): Promise<void> {
-		const guildInvites: any = await this.interaction.guild.invites.fetch().catch((): void => {});
+	private async showInvites(memberData: any): Promise<any> {
+		const guildInvites: any = await this.interaction.guild!.invites.fetch().catch((): void => {});
 
 		const memberInvites: any = guildInvites.filter((i: any): boolean => i.inviterId === memberData.id);
 		for (const invite of memberInvites.values()) {
-			if (!this.client.invites.get(this.interaction.guild.id).has(invite.code))
+			if (!this.client.invites.get(this.interaction.guild!.id).has(invite.code))
 				this.client.invites
-					.get(this.interaction.guild.id)
+					.get(this.interaction.guild!.id)
 					.set(invite.code, { uses: invite.uses, inviterId: invite.inviterId });
 			if (!memberData.invites) memberData.invites = [];
 			if (!memberData.invites.find((i: any): boolean => i.code === invite.code))
