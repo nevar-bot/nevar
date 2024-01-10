@@ -8,7 +8,10 @@ export default class GiveawayCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "giveaway",
-			description: "Verwaltet die Giveaways auf dem Server",
+			description: "Manages the giveaways on the server",
+			localizedDescriptions: {
+				de: "Verwaltet die Giveaways auf dem Server"
+			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
 			dirname: __dirname,
