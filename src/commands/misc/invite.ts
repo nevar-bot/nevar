@@ -109,7 +109,6 @@ export default class InviteCommand extends BaseCommand {
 
 		const text: string = "### " + this.client.emotes.discover + " " + this.translate("text");
 		const linksEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
-		linksEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		return this.interaction.followUp({
 			embeds: [linksEmbed],
