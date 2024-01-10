@@ -101,7 +101,7 @@ export default class ReminderCommand extends BaseCommand {
 		}
 	}
 
-	private async addReminder(name: string, dauer: string, data: any): Promise<void> {
+	private async addReminder(name: string, dauer: string, data: any): Promise<any> {
 		if (!name || !dauer || !ms(dauer)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingNameOrDuration"),
@@ -115,14 +115,14 @@ export default class ReminderCommand extends BaseCommand {
 			startDate: Date.now(),
 			endDate: Date.now() + ms(dauer),
 			reason: name,
-			channel: this.interaction.channel.id,
+			channel: this.interaction.channel!.id,
 		};
 
 		data.member.reminders.push(reminder);
 		data.member.markModified("reminders");
 		await data.member.save();
 		this.client.databaseCache.reminders.set(
-			this.interaction.member.user.id + this.interaction.guild.id,
+			this.interaction.member!.user.id + this.interaction.guild!.id,
 			data.member,
 		);
 
@@ -134,7 +134,7 @@ export default class ReminderCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async deleteReminder(name: string, data: any): Promise<void> {
+	private async deleteReminder(name: string, data: any): Promise<any> {
 		if (!name) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:missingName"),
@@ -161,7 +161,7 @@ export default class ReminderCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async listReminders(data: any): Promise<void> {
+	private async listReminders(data: any): Promise<any> {
 		const reminders: any[] = [];
 		for (const reminder of data.member.reminders) {
 			const text: string =
@@ -196,7 +196,6 @@ export default class ReminderCommand extends BaseCommand {
 			reminders,
 			this.translate("reminders"),
 			this.translate("errors:noReminders"),
-			null,
 		);
 	}
 }
