@@ -72,7 +72,6 @@ export default class LeaderboardCommand extends BaseCommand {
 			null,
 			"normal",
 		);
-		leaderboardEmbed.setThumbnail(this.interaction.guild.iconURL());
 		if (beautifiedLeaderboard.length === 0)
 			leaderboardEmbed.setDescription(this.client.emotes.error + " " + this.translate("errors:noXp"));
 		return this.interaction.followUp({ embeds: [leaderboardEmbed] });
