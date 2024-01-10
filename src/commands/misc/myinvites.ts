@@ -82,7 +82,6 @@ export default class MyinvitesCommand extends BaseCommand {
 			invitesData,
 			this.translate("yourInvites"),
 			this.translate("noInvites"),
-			null,
 		);
 	}
 }
