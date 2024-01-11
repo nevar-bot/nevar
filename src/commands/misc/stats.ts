@@ -9,7 +9,10 @@ export default class StatsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "stats",
-			description: "Zeigt allgemeine Statistiken über den Bot an",
+			description: "Displays general statistics about the bot",
+			localizedDescriptions: {
+				de: "Zeigt allgemeine Statistiken über den Bot an",
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -19,15 +22,14 @@ export default class StatsCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
 		await this.sendStats();
 	}
 
-	private async sendStats(): Promise<void> {
-		const staffsdata: any = await (await mongoose.connection.db.collection("users"))
+	private async sendStats(): Promise<any> {
+		const staffData: any = await (await mongoose.connection.db.collection("users"))
 			.find({ "staff.state": true })
 			.toArray();
 		const head_staffs: any[] = [];
@@ -38,7 +40,7 @@ export default class StatsCommand extends BaseCommand {
 			head_staffs.push("**" + headStaff.displayName + "** (@" + headStaff.username + ")");
 		}
 
-		for (const userdata of staffsdata) {
+		for (const userdata of staffData) {
 			const user: any = await this.client.users.fetch(userdata.id).catch(() => {});
 			if (userdata.staff.role === "head-staff") {
 				if (!head_staffs.includes("**" + user.displayName + "** (@" + user.username + ")"))
@@ -52,7 +54,6 @@ export default class StatsCommand extends BaseCommand {
 			}
 		}
 
-		//const uptime: any = this.client.utils.getRelativeTime(Date.now() - (this.client.uptime as number));
 		const uptime: string = this.client.utils.getDiscordTimestamp(Date.now() - (this.client.uptime as number), "R");
 		const serverCount: number = this.client.guilds.cache.size;
 		const voteCount =
@@ -67,77 +68,116 @@ export default class StatsCommand extends BaseCommand {
 		).size;
 		const executedCommands: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray())
 			.length;
+
+		const executedCommandsThisYear: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).filter((log: any) => {
+			return moment(log.date).format("YYYY") === moment().format("YYYY")
+		}).length;
+
+		const executedCommandsThisMonth: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).filter((log: any) => {
+			return moment(log.date).format("MMMM") === moment().format("MMMM")
+		}).length;
+
+		const executedCommandsThisWeek: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).filter((log: any) => {
+			return moment(log.date).format("WW") === moment().format("WW") && moment(log.date).format("MMMM") === moment().format("MMMM")
+		}).length;
+
+		const executedCommandsToday: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).filter((log: any) => {
+			return moment(log.date).format("DD") === moment().format("DD") && moment(log.date).format("MMMM") === moment().format("MMMM")
+		}).length;
+
+
 		const packageJson: any = require("../../../package.json");
 		const botVersion: any = packageJson.version;
 		const nodeVer: string = process.version.replace("v", "");
 		const djsV: string = require("discord.js").version;
 		const tsV: string = require("typescript").version;
 		const date: Date = new Date(Date.now());
-		let month: string = date.toLocaleString("de-DE", { month: "long" });
-		month = month.charAt(0).toUpperCase() + month.slice(1);
+
+
 
 		const text: string =
 			"### " +
-			this.client.emotes.users +
-			" Staffs:\n" +
-			this.client.emotes.shine +
+			this.client.emotes.flags.Staff + " " +
+			this.translate("staffs") + "\n" +
+			this.client.emotes.verified_server +
 			" " +
-			head_staffs.join("\n" + this.client.emotes.shine + " ") +
+			head_staffs.join("\n" + this.client.emotes.verified_server + " ") +
 			"\n" +
-			this.client.emotes.shine2 +
+			this.client.emotes.verified_server +
 			" " +
-			staffs.join("\n" + this.client.emotes.shine2 + " ") +
+			staffs.join("\n" + this.client.emotes.verified_server + " ") +
 			"\n\n" +
 			"### " +
-			this.client.emotes.rocket +
-			" Statistiken:\n" +
-			this.client.emotes.discord +
-			" Server: **" +
+			this.client.emotes.logo.icon + " " +
+			this.translate("statistics") + "\n" +
+			this.client.emotes.discord + " " +
+			this.translate("servers") + ": **" +
 			this.client.format(serverCount) +
 			"**\n" +
-			this.client.emotes.users +
-			" Nutzer/-innen: **" +
+			this.client.emotes.users + " " +
+			this.translate("users") + ": ** " +
 			this.client.format(userCount) +
 			"**\n" +
-			this.client.emotes.channel +
-			" Channel: **" +
+			this.client.emotes.channel + " " +
+			this.translate("channels") + ": **" +
 			this.client.format(channelCount) +
-			"**\n\n" +
-			this.client.emotes.reminder +
-			" Uptime: **" +
+			"**\n" +
+			this.client.emotes.reminder + " " +
+			this.translate("uptime") + ": **" +
 			uptime +
 			"**\n" +
-			this.client.emotes.shine +
-			" Votes im " +
-			month +
-			": **" +
+			this.client.emotes.latency.good + " " +
+			this.translate("ping") + ": **" +
+			this.client.ws.ping + "ms" +
+			"**\n" +
+			this.client.emotes.topgg + " " +
+			this.translate("votes") + ": **" +
 			this.client.format(voteCount) +
 			"**\n\n" +
-			this.client.emotes.slashcommand +
-			" Befehle: **" +
+			"### " +
+			this.client.emotes.slashcommand + " " +
+			this.translate("commands") + "\n" +
+			this.client.emotes.magic + " " +
+			this.translate("commandsAvailable") + ": **" +
 			commandCount +
 			"**\n" +
-			this.client.emotes.loading +
-			" Befehle ausgeführt: **" +
+			this.client.emotes.growth_up + " " +
+			this.translate("commandsExecuted") + ": **" +
 			this.client.format(executedCommands) +
+			"**\n" +
+			this.client.emotes.calendar + " " +
+			this.translate("commandsExecutedThisYear") + ": **" +
+			this.client.format(executedCommandsThisYear) +
+			"**\n" +
+			this.client.emotes.calendar + " " +
+			this.translate("commandsExecutedThisMonth") + ": **" +
+			this.client.format(executedCommandsThisMonth) +
+			"**\n" +
+			this.client.emotes.calendar + " " +
+			this.translate("commandsExecutedThisWeek") + ": **" +
+			this.client.format(executedCommandsThisWeek) +
+			"**\n" +
+			this.client.emotes.calendar + " " +
+			this.translate("commandsExecutedToday") + ": **" +
+			this.client.format(executedCommandsToday) +
 			"**\n\n" +
 			"### " +
-			this.client.emotes.label +
-			" Versionen:\n" +
-			this.client.emotes.code +
-			" Bot-Version: **" +
+			this.client.emotes.code + " " +
+			this.translate("versions") + "\n" +
+			this.client.emotes.logo.icon + " " +
+			this.client.user!.username + ": **" +
 			botVersion +
 			"**\n" +
-			this.client.emotes.discordjs +
-			" Discord.js-Version: **" +
+			this.client.emotes.discordjs + " " +
+			"Discord.js: **" +
 			djsV +
 			"**\n" +
-			this.client.emotes.javascript +
-			" NodeJS-Version: **" +
+			this.client.emotes.javascript + " " +
+			"NodeJS: **" +
 			nodeVer +
 			"**\n" +
-			this.client.emotes.typescript +
-			" Typescript-Version: **" +
+			this.client.emotes.typescript + " " +
+			"TypeScript: **" +
 			tsV +
 			"**";
 
