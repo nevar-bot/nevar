@@ -47,7 +47,7 @@ export default class LetmegooglethatCommand extends BaseCommand {
 	}
 
 	private async googleThat(text: string, user: any = null): Promise<any> {
-		const searchUrl: string = "https://google.com/search?q=" + encodeURIComponent(text);
+		const searchUrl: string = "https://letmegooglethat.com/?q=" + encodeURIComponent(text);
 		const googleText: string = user
 			? this.translate("searchFor", { user: user.displayName, text, searchUrl })
 			: this.translate("search", { text, searchUrl });
