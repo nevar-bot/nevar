@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "notEnabled": "Das Ideen-System wurde noch nicht aktiviert.",
+    "channelNotFound": "Der Ideen-Kanal wurde nicht gefunden.",
+    "attachmentMustBeImage": "Bitte wähle ein Bild als angehängte Datei aus."
+  },
+  "submitted": "Deine Idee wurde eingereicht."
+}
