@@ -2,13 +2,13 @@ import BaseCommand from "@structures/BaseCommand";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import BaseClient from "@structures/BaseClient";
 
-export default class EightballCommand extends BaseCommand {
+export default class AskCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
-			name: "8ball",
-			description: "Ask a question and get magical answers",
+			name: "ask",
+			description: "Ask a question and get 100% correct answers",
 			localizedDescriptions: {
-				de: "Stelle eine Frage und erhalte magische Antworten",
+				de: "Stelle eine Frage und erhalte 100% wahre Antworten",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
