@@ -6,7 +6,10 @@ export default class KickCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "kick",
-			description: "Kickt ein Mitglied vom Server",
+			description: "Kicks a member from the server",
+			localizedDescriptions: {
+				de: "Kickt ein Mitglied vom Server",
+			},
 			memberPermissions: ["KickMembers"],
 			botPermissions: ["KickMembers"],
 			cooldown: 1000,
@@ -15,26 +18,44 @@ export default class KickCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addUserOption((option: any) =>
-						option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true),
+						option
+							.setName("member")
+							.setNameLocalizations({
+								de: "mitglied"
+							})
+							.setDescription("Choose a member")
+							.setDescriptionLocalizations({
+								de: "Wähle ein Mitglied"
+							})
+							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
-						option.setName("grund").setDescription("Gib ggf. einen Grund an").setRequired(false),
+						option
+							.setName("reason")
+							.setNameLocalizations({
+								de: "grund"
+							})
+							.setDescription("Give a reason if necessary")
+							.setDescriptionLocalizations({
+								de: "Gib ggf. einen Grund an"
+							})
+							.setRequired(false),
 					),
 			},
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.kick(interaction.options.getMember("mitglied"), interaction.options.getString("grund"));
+		this.guild = interaction;
+		await this.kick(interaction.options.getMember("member"), interaction.options.getString("reason"));
 	}
 
-	private async kick(member: any, reason: string): Promise<void> {
-		if (member.user.id === this.interaction.member.user.id) {
+	private async kick(member: any, reason: string): Promise<any> {
+		if (member.user.id === this.interaction.member!.user.id) {
 			const cantKickYourselfEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du kannst dich nicht selber kicken.",
+				this.translate("errors:cantKickYourself"),
 				"error",
 				"error",
 			);
@@ -44,7 +65,7 @@ export default class KickCommand extends BaseCommand {
 		}
 		if (member.user.id === this.client.user!.id) {
 			const cantKickBotEmbed: EmbedBuilder = this.client.createEmbed(
-				"Ich kann mich nicht selber kicken.",
+				this.translate("errors:cantKickMyself"),
 				"error",
 				"error",
 			);
@@ -52,78 +73,72 @@ export default class KickCommand extends BaseCommand {
 		}
 		if (!member.kickable) {
 			const cantKickEmbed: EmbedBuilder = this.client.createEmbed(
-				"Ich kann {0} nicht kicken.",
+				this.translate("errors:cantKick", { user: member.user.toString() }),
 				"error",
 				"error",
 				member.user.username,
 			);
 			return this.interaction.followUp({ embeds: [cantKickEmbed] });
 		}
-		if (member.roles.highest.position >= this.interaction.member.roles.highest.position) {
+		if (member.roles.highest.position >= this.interaction.member!.roles.highest.position) {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du kannst keine Mitglieder kicken, die eine höhere Rolle haben als du.",
+				this.translate("errors:cantKickHigher"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [higherRoleEmbed] });
 		}
-		if (!reason) reason = "Kein Grund angegeben";
+		if (!reason) reason = this.translate("noReasonSpecified");
 
 		member
-			.kick("Gekickt von " + this.interaction.member.user.username + " - Begründung: " + reason)
-			.then(async (): Promise<void> => {
+			.kick(this.interaction.member!.user.username + " - " + reason)
+			.then(async (): Promise<any> => {
 				const privateText: string =
 					"### " +
-					this.client.emotes.leave +
-					" Du wurdest von " +
-					this.interaction.guild.name +
-					" gekickt.\n\n" +
-					this.client.emotes.arrow +
-					" Begründung: " +
+					this.client.emotes.leave + " " +
+					this.translate("privateMessage:title", { guild: this.interaction.guild!.name }) + "\n\n" +
+					this.client.emotes.arrow + " " +
+					this.translate("reason") + ": " +
 					reason +
 					"\n" +
-					this.client.emotes.arrow +
-					" Moderator: " +
-					this.interaction.member.user.username;
+					this.client.emotes.arrow + " " +
+					this.translate("moderator") + ": " +
+					this.interaction.member!.user.username;
 				const privateEmbed: EmbedBuilder = this.client.createEmbed(privateText, null, "error");
 				await member.send({ embeds: [privateEmbed] }).catch((): void => {});
 
 				const logText: string =
 					"### " +
-					this.client.emotes.events.member.ban +
-					" " +
-					member.user.username +
-					" wurde gekickt\n\n" +
-					this.client.emotes.user +
-					" Moderator: " +
-					this.interaction.member.user.username +
+					this.client.emotes.events.member.ban + " " +
+					this.translate("publicMessage:title", { user: member.user.username }) + "\n\n" +
+					this.client.emotes.user + " " +
+					this.translate("moderator") + ": " +
+					this.interaction.member!.user.username +
 					"\n" +
-					this.client.emotes.text +
-					" Begründung: " +
+					this.client.emotes.text + " " +
+					this.translate("reason") + ": " +
 					reason;
 				const logEmbed: EmbedBuilder = this.client.createEmbed(logText, null, "error");
 				logEmbed.setThumbnail(member.user.displayAvatarURL());
-				await this.interaction.guild.logAction(logEmbed, "moderation");
+				await this.interaction.guild!.logAction(logEmbed, "moderation");
 
 				const publicText: string =
 					"### " +
-					this.client.emotes.leave +
-					" " +
-					member.user.username +
-					" wurde gekickt.\n\n" +
-					this.client.emotes.arrow +
-					" Begründung: " +
+					this.client.emotes.leave + " " +
+					this.translate("publicMessage:title", { user: member.user.username }) + "\n\n" +
+					this.client.emotes.arrow + " " +
+					this.translate("reason") + ": " +
 					reason +
 					"\n" +
-					this.client.emotes.arrow +
-					" Moderator: " +
-					this.interaction.member.user.username;
+					this.client.emotes.arrow + " " +
+					this.translate("moderator") + ": " +
+					this.interaction.member!.user.username;
 				const publicEmbed: EmbedBuilder = this.client.createEmbed(publicText, null, "error");
 				return this.interaction.followUp({ embeds: [publicEmbed] });
 			})
-			.catch(async (): Promise<void> => {
+			.catch(async (): Promise<any> => {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					"Ich konnte {0} nicht kicken.",
+					this.translate("errors:kickFailed", { user: member.user.toString() }),
 					"error",
 					"error",
 					member.user.username,

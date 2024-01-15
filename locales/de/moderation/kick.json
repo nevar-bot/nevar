@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "cantKickYourself": "Du kannst dich nicht selber kicken.",
+    "cantKickMyself": "Ich kann mich nicht selber kicken.",
+    "cantKick": "Ich kann {{user}} nicht kicken.",
+    "cantKickHigher": "Du kannst keine Mitglieder kicken, die eine höhere Rolle als du haben.",
+    "kickFailed": "Ich konnte {{user}} nicht kicken."
+  },
+  "noReasonSpecified": "Kein Grund angegeben.",
+  "reason": "Begründung",
+  "moderator": "Moderator",
+  "privateMessage": {
+    "title": "Du wurdest von {{guild}} gekickt."
+  },
+  "publicMessage": {
+    "title": "{{user}} wurde gekickt."
+  }
+}
