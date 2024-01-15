@@ -33,13 +33,14 @@ export default class EightballCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		return this.getAnswer();
+		return this.getAnswer(this.interaction.options.getString("question"));
 	}
 
-	private async getAnswer(): Promise<any> {
+	private async getAnswer(question: string): Promise<any> {
 		const eightBallAnswers: any = this.translate("answers");
 		const randomAnswer: string = eightBallAnswers[Math.floor(Math.random() * eightBallAnswers.length)];
-		const eightBallEmbed: EmbedBuilder = this.client.createEmbed("{0}", "question", "normal", randomAnswer);
+  const text: string = this.client.emotes.question + " " + question + "\n\n" + this.client.emotes.arrow + " " + randomAnswer;
+		const eightBallEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		return this.interaction.followUp({ embeds: [eightBallEmbed] });
 	}
 }
