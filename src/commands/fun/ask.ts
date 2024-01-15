@@ -33,13 +33,13 @@ export default class AskCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		return this.getAnswer(this.interaction.options.getString("question"));
+		return this.getAnswer(interaction.options.getString("question"));
 	}
 
 	private async getAnswer(question: string): Promise<any> {
 		const eightBallAnswers: any = this.translate("answers");
 		const randomAnswer: string = eightBallAnswers[Math.floor(Math.random() * eightBallAnswers.length)];
-  const text: string = this.client.emotes.question + " " + question + "\n\n" + this.client.emotes.arrow + " " + randomAnswer;
+  		const text: string = this.client.emotes.question + " " + question + "\n" + this.client.emotes.arrow + " " + randomAnswer;
 		const eightBallEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 		return this.interaction.followUp({ embeds: [eightBallEmbed] });
 	}
