@@ -1,0 +1,8 @@
+{
+  "from": "von",
+  "cleared": "Ich habe {{count}} Nachrichten {{user}} gelöscht.",
+  "count": "Anzahl",
+  "channel": "Kanal",
+  "moderator": "Moderator",
+  "title": "Nachrichten gelöscht"
+}
