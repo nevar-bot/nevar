@@ -1,0 +1,12 @@
+{
+  "reason": "Begründung",
+  "moderator": "Moderator",
+  "duration": "Dauer",
+  "bannedAt": "Gebannt am",
+  "bannedUntil": "Gebannt bis",
+  "list": {
+    "title": "Gebannte Benutzer",
+    "empty": "Es wurden noch keine Benutzer gebannt."
+  },
+  "noReasonSpecified": "Keine Begründung angegeben"
+}
