@@ -1,0 +1,25 @@
+{
+  "errors": {
+    "missingMember": "Bitte wähle ein Mitglied.",
+    "cantBanYourself": "Du kannst dich nicht selber bannen.",
+    "cantBanMyself": "Ich kann mich nicht selber bannen.",
+    "cantBanHigher": "Du kannst keine Mitglieder bannen, die eine höhere Rolle als du haben.",
+    "cantBan": "Ich kann dieses Mitglied nicht bannen.",
+    "invalidDuration": "Bitte gib eine gültige Dauer an.",
+    "banFailed": "Ich konnte {{user}} nicht bannen."
+  },
+  "noReasonSpecified": "Kein Grund angegeben.",
+  "permanent": "Permanent",
+  "confirmation": "Bist du sicher, dass du {{user}} bannen möchtest?",
+  "reason": "Begründung",
+  "duration": "Dauer",
+  "moderator": "Moderator",
+  "unbanAt": "Entbannung am",
+  "privateMessage": {
+    "title": "Du wurdest auf {{guild}} gebannt."
+  },
+  "publicEmbed": {
+    "title": "{{user}} wurde gebannt."
+  },
+  "banRejected": "{{user}} wurde nicht gebannt."
+}
