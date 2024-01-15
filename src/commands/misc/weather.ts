@@ -7,29 +7,41 @@ export default class WeatherCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "weather",
-			description: "Zeigt das Wetter für eine Stadt an",
+			description: "View the weather for a specific location",
+			localizedDescriptions: {
+				de: "Lasse dir das Wetter für einen bestimmten Ort anzeigen",
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option) =>
-					option.setName("stadt").setDescription("Gib einen Ort oder Stadt an").setRequired(true),
+					option
+						.setName("city")
+						.setNameLocalizations({
+							de: "stadt"
+						})
+						.setDescription("Specify a location or city")
+						.setDescriptionLocalizations({
+							de: "Gib einen Ort oder Stadt an"
+						})
+						.setRequired(true),
 				),
 			},
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.showWeather(interaction.options.getString("stadt"));
+		this.guild = interaction.guild;
+		await this.showWeather(interaction.options.getString("city"), data);
 	}
 
-	private async showWeather(city: string): Promise<void> {
+	private async showWeather(city: string, data: any): Promise<any> {
 		if (!this.client.config.apikeys["WEATHER"] || this.client.config.apikeys["WEATHER"] === "") {
 			const noApiKeyEmbed: EmbedBuilder = this.client.createEmbed(
-				"Da in der Bot-Config der nötige Openweathermap-API-Key nicht hinterlegt wurde, kann der Weather-Befehl nicht genutzt werden.",
+				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
 				"error",
 				"error",
 			);
@@ -37,7 +49,7 @@ export default class WeatherCommand extends BaseCommand {
 		}
 		if (!city) {
 			const noCityEmbed: EmbedBuilder = this.client.createEmbed(
-				"Bitte gib einen Ort oder eine Stadt an.",
+				this.translate("errors:missingLocationOrCity"),
 				"error",
 				"error",
 			);
@@ -50,7 +62,7 @@ export default class WeatherCommand extends BaseCommand {
 					encodeURI(city) +
 					"&appid=" +
 					this.client.config.apikeys["WEATHER"] +
-					"&lang=de&units=metric",
+					"&lang=" + data.guild.locale + "&units=metric",
 				{
 					validateStatus: (): boolean => true,
 				},
@@ -74,7 +86,8 @@ export default class WeatherCommand extends BaseCommand {
 			};
 
 			const text: string =
-				" Temperatur (min/max/gefühlt): " +
+				this.client.emotes.bright + " " +
+				this.translate("temperature") + ": " +
 				weather.temp +
 				"°C (" +
 				weather.tempMin +
@@ -83,31 +96,33 @@ export default class WeatherCommand extends BaseCommand {
 				"°C /" +
 				weather.tempFeelsLike +
 				"°C)\n\n" +
-				this.client.emotes.text +
-				" Luftfeuchtigkeit: " +
+				this.client.emotes.text + " " +
+				this.translate("humidity") + ": " +
 				weather.humidity +
 				"%\n\n" +
-				this.client.emotes.strike +
-				" Windgeschwindigkeit: " +
+				this.client.emotes.strike + " " +
+				this.translate("windSpeed") + ": " +
 				weather.wind.kmh +
-				"km/h (" +
+				this.translate("speedUnit:kph") +
+				" (" +
 				weather.wind.ms +
-				"m/s)\n\n" +
-				this.client.emotes.shine +
-				" Sonnenaufgang: " +
+				this.translate("speedUnit:mps") +
+				")\n\n" +
+				this.client.emotes.shine + " " +
+				this.translate("sunrise") + ": " +
 				weather.sunrise +
 				"\n" +
-				this.client.emotes.shine2 +
-				" Sonnenuntergang: " +
+				this.client.emotes.shine2 + " " +
+				this.translate("sunset") + ": " +
 				weather.sunset;
 
-			const weatherEmbed: EmbedBuilder = this.client.createEmbed(text, "bright", "normal");
+			const weatherEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
 			weatherEmbed.setTitle(weatherInformation.name + ": " + weather.description);
 
 			return this.interaction.followUp({ embeds: [weatherEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				'Es konnte kein Ort mit dem Namen "' + city + '" gefunden werden.',
+				this.translate("errors:locationNotFound"),
 				"error",
 				"error",
 			);
