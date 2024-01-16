@@ -1,0 +1,10 @@
+{
+  "warn": "Verwarnung",
+  "moderator": "Moderator",
+  "reason": "Begründung",
+  "warnedAt": "Verwarnt am",
+  "list": {
+    "title": "Verwarnungen von {{user}}",
+    "empty": "{{user}} hat noch keine Verwarnungen erhalten."
+  }
+}
