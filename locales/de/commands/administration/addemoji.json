@@ -5,5 +5,5 @@
     "emojiNameIsMissing": "Bitte gib einen Namen für den Emoji an.",
     "emojiNameIsTooLong": "Bitte gib einen maximal 32 Zeichen langen Namen für den Emoji an."
   },
-  "emojiCreated": "Ich habe den Emoji {{emoji}} erstellt.",
+  "emojiCreated": "Ich habe den Emoji {{emoji}} erstellt."
 }
