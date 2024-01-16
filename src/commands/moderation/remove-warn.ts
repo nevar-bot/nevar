@@ -2,11 +2,14 @@ import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
-export default class RemoveWarnCommand extends BaseCommand {
+export default class RemovewarnCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "remove-warn",
-			description: "Entfernt eine Verwarnung eines Mitglieds",
+			description: "Removes a member's warning",
+			localizedDescriptions: {
+				de: "Entfernt eine Verwarnung eines Mitglieds"
+			},
 			memberPermissions: ["KickMembers"],
 			cooldown: 1000,
 			dirname: __dirname,
@@ -14,12 +17,27 @@ export default class RemoveWarnCommand extends BaseCommand {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addUserOption((option: any) =>
-						option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true),
+						option
+							.setName("member")
+							.setNameLocalizations({
+								de: "mitglied"
+							})
+							.setDescription("Choose a member")
+							.setDescriptionLocalizations({
+								de: "Wähle ein Mitglied"
+							})
+							.setRequired(true),
 					)
 					.addIntegerOption((option: any) =>
 						option
-							.setName("nummer")
-							.setDescription("Gib die Nummer der Verwarnung an")
+							.setName("number")
+							.setNameLocalizations({
+								de: "nummer"
+							})
+							.setDescription("Choose the warning's number")
+							.setDescriptionLocalizations({
+								de: "Gib die Nummer der Verwarnung an"
+							})
 							.setRequired(true)
 							.setMinValue(1),
 					),
@@ -27,27 +45,26 @@ export default class RemoveWarnCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.removeWarn(interaction.options.getUser("mitglied"), interaction.options.getInteger("nummer"));
+		this.guild = interaction.guild;
+		await this.removeWarn(interaction.options.getMember("member"), interaction.options.getInteger("number"));
 	}
 
-	private async removeWarn(user: any, num: number): Promise<void> {
-		const member = await this.interaction.guild.resolveMember(user.id);
+	private async removeWarn(member: any, num: number): Promise<any> {
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst ein Mitglied angeben.",
+				this.translate("basics:errors:missingMember", {}, true),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
-		if (user.id === this.interaction.user.id) {
+		if (member.user.id === this.interaction.user.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du kannst nicht eine Verwarnung von dir entfernen.",
+				this.translate("errors:cantRemoveFromYourself"),
 				"error",
 				"error",
 			);
@@ -58,7 +75,7 @@ export default class RemoveWarnCommand extends BaseCommand {
 
 		if (!targetData.warnings.list[num - 1]) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst eine gültige Nummer angeben.",
+				this.translate("errors:missingNumber"),
 				"error",
 				"error",
 			);
@@ -72,28 +89,21 @@ export default class RemoveWarnCommand extends BaseCommand {
 		await targetData.save();
 
 		const logText: string =
-			"### " +
-			this.client.emotes.delete +
-			" Verwarnung von " +
-			member.user.username +
-			" entfernt\n\n" +
-			this.client.emotes.user +
-			" Moderator: " +
-			this.interaction.user.username +
-			"\n" +
-			this.client.emotes.text +
-			" Warn-Nr.: " +
-			num;
+			"### " + this.client.emotes.delete + " " +
+			this.translate("logText", { user: member.toString() }) + "\n\n" +
+			this.client.emotes.user + " " +
+			this.translate("moderator") + ": " +
+			this.interaction.member!.toString() + "\n" +
+			this.client.emotes.text + " " +
+			this.translate("number") + ": " + num;
 		const logEmbed: EmbedBuilder = this.client.createEmbed(logText, null, "normal");
 		logEmbed.setThumbnail(member.user.displayAvatarURL());
-		await this.interaction.guild.logAction(logEmbed, "moderation");
+		await this.interaction.guild!.logAction(logEmbed, "moderation");
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"Die {0}. Verwarnung von {1} wurde entfernt.",
+			this.translate("removed", { number: num, user: member.toString() }),
 			"success",
 			"success",
-			num,
-			member.user.username,
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}

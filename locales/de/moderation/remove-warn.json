@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "cantRemoveFromYourself": "Du kannst keine Verwarnungen von dir selbst entfernen.",
+    "missingNumber": "Bitte gib die Nummer einer Verwarnung an."
+  },
+  "logText": "Verwarnung von {{user}} entfernt",
+  "moderator": "Moderator",
+  "number": "Warn-Nr.",
+  "removed": "Die {{number}}. Verwarnung von {{user}} wurde entfernt."
+}
