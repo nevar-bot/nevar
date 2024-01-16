@@ -1,8 +1,0 @@
-{
-  "errors": {
-    "invalidEmojiOrLink": "Bitte gib einen Emoji oder Link zu einem Bild an.",
-    "invalidLinkExtension": "Dein angegebener Link muss zu einem Bild führen. (png, jpg, gif)",
-    "missingName": "Bitte gib einen Namen für den Emoji an."
-  },
-  "created": "Ich habe {{emoji}} erstellt."
-}

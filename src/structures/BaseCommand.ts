@@ -8,6 +8,7 @@ export default class BaseCommand {
 	public help: any;
 	public slashCommand: any;
 	protected guild!: Guild;
+	protected data!: any;
 	protected interaction!: CommandInteraction;
 	protected message!: Message;
 
@@ -39,10 +40,15 @@ export default class BaseCommand {
 		this.slashCommand = slashCommand;
 	}
 
-	protected translate(key: string, args?: object, isFullPath?: boolean): string {
-		let languageKey: string = key;
-		if (!isFullPath) languageKey = `${this.help.category.toLowerCase()}/${this.help.name}:${key}`;
+	protected translate(key: string, args?: object): string {
+		const languageKey: string = "commands/" + this.help.category.toLowerCase() + "/" + this.help.name + ":" + key;
 		if (!this.guild) return "Missing guild";
+		return this.guild.translate(languageKey, args);
+	}
+
+	protected getBasicTranslation(key: string, args?: object): string {
+		const languageKey: string = "commands/" + this.help.category.toLowerCase() + "/basics:" + key;
+		if(!this.guild) return "Missing guild";
 		return this.guild.translate(languageKey, args);
 	}
 }
