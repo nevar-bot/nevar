@@ -171,20 +171,17 @@ export default class DeletedataCommand extends BaseCommand {
 			if (type === "member") {
 				const warningsOld = data.member.warnings;
 				const bannedOld = data.member.banned;
-				const mutedOld = data.member.muted;
 
 				await this.client.deleteMember(this.interaction.user.id, this.interaction.guild!.id);
-				// ban/mute/warn user again, if he was banned/muted/warned before
-				if (bannedOld.state || mutedOld.state || warningsOld.length > 0) {
+				// ban/warn user again, if he was banned/warned before
+				if (bannedOld.state || warningsOld.length > 0) {
 					const newMemberdata: any = await this.client.findOrCreateMember(
 						this.interaction.user.id,
 						this.interaction.guild!.id,
 					);
 					newMemberdata.banned = bannedOld;
-					newMemberdata.muted = mutedOld;
 					newMemberdata.warnings = warningsOld;
 					newMemberdata.markModified("banned");
-					newMemberdata.markModified("muted");
 					newMemberdata.markModified("warnings");
 					await newMemberdata.save();
 				}

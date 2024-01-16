@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "cantFetchMembers": "Ich konnte die Servermitglieder nicht abrufen. Bitte versuche es später erneut.",
+    "noTimeoutedMembers": "Es wurden noch keine Mitglieder getimeoutet."
+  },
+  "until": "Getimeoutet bis",
+  "list": {
+    "title": "Getimeoutete Mitglieder",
+    "empty": "Es wurden noch keine Mitglieder getimeoutet."
+  }
+}

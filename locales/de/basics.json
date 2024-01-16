@@ -10,6 +10,7 @@
     "missingChannel": "Bitte gib einen Kanal an.",
     "missingRole": "Bitte gib eine Rolle an.",
     "missingStatus": "Bitte wähle zwischen an und aus.",
+    "missingMember": "Bitte gib ein Mitglied an.",
     "missingChannelOrRole": "Bitte gib einen Kanal oder eine Rolle an."
   }
 }

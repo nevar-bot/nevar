@@ -95,7 +95,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 					announcementChannel: null,
 				},
 			},
-			muterole: null,
 			autodelete: [],
 			autoreact: [],
 		},
