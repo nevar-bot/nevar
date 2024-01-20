@@ -1,0 +1,17 @@
+{
+  "errors": {
+    "unexpected": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuche es später erneut, oder kontaktiere unseren [Support]({{support}}).",
+    "channelIsMissing": "Bitte wähle einen Kanal aus.",
+    "roleIsMissing": "Bitte wähle eine Rolle aus.",
+    "statusIsMissing": "Bitte wähle einen Status aus.",
+    "dontUseEveryoneRole": "Bitte verwende nicht die @everyone Rolle.",
+    "dontUseManagedRole": "Bitte wähle eine Rolle, die nicht durch einen Bot verwaltet wird.",
+    "roleIsHigherThanBot": "Bitte wähle eine Rolle, die sich unter meiner höchsten Rolle ({{role}}) befindet."
+  },
+
+  "channel": "Kanal",
+  "duration": "Dauer",
+  "emojis": "Emojis",
+  "role": "Rolle",
+  "level": "Level"
+}

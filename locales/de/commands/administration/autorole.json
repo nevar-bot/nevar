@@ -1,15 +1,14 @@
 {
   "errors": {
-    "cantUseEveryone": "Bitte gib eine andere Rolle als @everyone an.",
-    "roleIsManaged": "Bitte gib eine Rolle an, welche nicht durch eine Integration verwaltet wird.",
-    "roleIsTooHigh": "Bitte gib eine Rolle an, welche eine niedrigere Position als meine höchste Rolle ({{botRole}}) hat.",
-    "alreadyAdded": "{{role}} wurde bereits als Autorolle hinzugefügt.",
-    "notAdded": "{{role}} wurde noch nicht als Autorolle hinzugefügt."
+    "roleIsAlreadyAddedToAutoroles": "{{role}} wurde bereits als Autorolle eingerichtet.",
+    "roleIsNotAddedToAutoroles": "{{role}} wurde noch nicht als Autorolle eingerichtet."
   },
-  "added": "Neuen Mitgliedern wird ab jetzt die {{role}} Rolle zugewiesen.",
-  "removed": "Neuen Mitgliedern wird ab jetzt nicht mehr die {{role}} Rolle zugewiesen.",
+
+  "roleAddedToAutoroles": "Neue Mitglieder bekommen ab jetzt die {{role}} Rolle zugewiesen.",
+  "roleRemovedFromAutoroles": "Neuen Mitgliedern wird ab jetzt nicht mehr die {{role}} Rolle zugewiesen.",
+
   "list": {
     "title": "Autorollen",
-    "empty": "Es wurden noch keine Autorollen hinzugefügt."
+    "noAutorolesAdded": "Es wurden noch keine Autorollen eingerichtet."
   }
 }

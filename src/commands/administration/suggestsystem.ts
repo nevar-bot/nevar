@@ -6,9 +6,9 @@ export default class SuggestsystemCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "suggestsystem",
-			description: "Manages the server's idea system",
+			description: "Give your users the opportunity to submit ideas",
 			localizedDescriptions: {
-				de: "Verwaltet das Ideen-System des Servers",
+				de: "Gib deinen Nutzern die Möglichkeit, Ideen einzureichen",
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
@@ -19,35 +19,28 @@ export default class SuggestsystemCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
-							.setNameLocalizations({
-								de: "aktion",
-							})
+							.setNameLocalization("de", "aktion")
 							.setDescription("Choose from the following actions")
-							.setDescriptionLocalizations({
-								de: "Wähle aus den folgenden Aktionen",
-							})
+							.setDescriptionLocalization("de", "Wähle eine Aktion")
 							.setRequired(true)
-							.addChoices(
-								{
+							.addChoices({
 									name: "enable",
-									name_localizations: {
-										de: "aktivieren",
-									},
+									name_localizations: { de: "aktivieren" },
 									value: "enable",
 								},
 								{
 									name: "disable",
-									name_localizations: {
-										de: "deaktivieren",
-									},
+									name_localizations: { de: "deaktivieren" },
 									value: "disable",
 								},
 								{
 									name: "channel",
+									name_localizations: { de: "kanal" },
 									value: "channel",
 								},
 								{
 									name: "reviewchannel",
+									name_localizations: { de: "bearbeitungskanal" },
 									value: "reviewchannel",
 								},
 							),
@@ -55,10 +48,9 @@ export default class SuggestsystemCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setDescription("Choose a channel")
-							.setDescriptionLocalizations({
-								de: "Wähle einen Channel",
-							})
+							.setNameLocalization("de", "kanal")
+							.setDescription("Select one of the following channels")
+							.setDescriptionLocalization("de", "Wähle einen der folgenden Kanäle")
 							.addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
 							.setRequired(false),
 					),
@@ -69,94 +61,95 @@ export default class SuggestsystemCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 
 		const action: string = interaction.options.getString("action");
 		switch (action) {
 			case "enable":
-				await this.enable(data);
+				await this.enable();
 				break;
 			case "disable":
-				await this.disable(data);
+				await this.disable();
 				break;
 			case "channel":
-				await this.setChannel(interaction.options.getChannel("channel"), data);
+				await this.setChannel(interaction.options.getChannel("channel"));
 				break;
 			case "reviewchannel":
-				await this.setReviewChannel(interaction.options.getChannel("channel"), data);
+				await this.setReviewChannel(interaction.options.getChannel("channel"));
 				break;
 		}
 	}
 
-	private async enable(data: any): Promise<any> {
-		if (data.guild.settings.suggestions.enabled) {
+	private async enable(): Promise<any> {
+		if (this.data.guild.settings.suggestions.enabled) {
 			const isAlreadyEnabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:alreadyEnabled"),
+				this.translate("errors:suggestionSystemIsAlreadyEnabled"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [isAlreadyEnabled] });
 		}
-		data.guild.settings.suggestions.enabled = true;
-		data.guild.markModified("settings.suggestions.enabled");
-		await data.guild.save();
+		this.data.guild.settings.suggestions.enabled = true;
+		this.data.guild.markModified("settings.suggestions.enabled");
+		await this.data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("enabled"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("suggestionSystemEnabled"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async disable(data: any): Promise<any> {
-		if (!data.guild.settings.suggestions.enabled) {
+	private async disable(): Promise<any> {
+		if (!this.data.guild.settings.suggestions.enabled) {
 			const isAlreadyDisabled: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:alreadyDisabled"),
+				this.translate("errors:suggestionSystemIsAlreadyDisabled"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [isAlreadyDisabled] });
 		}
-		data.guild.settings.suggestions.enabled = false;
-		data.guild.markModified("settings.suggestions.enabled");
-		await data.guild.save();
+		this.data.guild.settings.suggestions.enabled = false;
+		this.data.guild.markModified("settings.suggestions.enabled");
+		await this.data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("disabled"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("suggestionSystemDisabled"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setChannel(channel: any, data: any): Promise<any> {
+	private async setChannel(channel: any): Promise<any> {
 		if (!channel) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingChannel", {}, true),
+				this.getBasicTranslation("errors:channelIsMissing"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
-		data.guild.settings.suggestions.channel = channel.id;
-		data.guild.markModified("settings.suggestions.channel");
-		await data.guild.save();
+		this.data.guild.settings.suggestions.channel = channel.id;
+		this.data.guild.markModified("settings.suggestions.channel");
+		await this.data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("channelSet", { channel: channel.toString() }),
+			this.translate("suggestionInputChannelSet", { channel: channel.toString() }),
 			"success",
 			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async setReviewChannel(channel: any, data: any): Promise<any> {
+	private async setReviewChannel(channel: any): Promise<any> {
 		if (!channel) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingChannel", {}, true),
+				this.getBasicTranslation("errors:channelIsMissing"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
-		data.guild.settings.suggestions.review_channel = channel.id;
-		data.guild.markModified("settings.suggestions.review_channel");
-		await data.guild.save();
+		this.data.guild.settings.suggestions.review_channel = channel.id;
+		this.data.guild.markModified("settings.suggestions.review_channel");
+		await this.data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("reviewChannelSet", { channel: channel.toString() }),
+			this.translate("suggestionReviewChannelSet", { channel: channel.toString() }),
 			"success",
 			"success",
 		);

@@ -3,39 +3,6 @@ import i18nextBackend from "i18next-fs-backend";
 import * as path from "path";
 import fs from "fs/promises";
 
-
-/**
-async function walkDirectory(dir: any, namespaces: any = [], folderName: string = ""): Promise<any> {
-	const files: string[] = fs.readdirSync(dir);
-
-	const languages: any[] = [];
-	for (const file of files) {
-		const stat: any = await fs.statSync(path.join(dir, file));
-		if (stat.isDirectory()) {
-			const isLanguage: any = RegExp(/^[a-z]{2}(-[A-Z]{2})?$/).exec(file);
-			if (isLanguage) languages.push(file);
-
-			const folder: any = await walkDirectory(
-				path.join(dir, file),
-				namespaces,
-				isLanguage ? "" : file + "/",
-			);
-
-
-			namespaces = folder.namespaces;
-
-			//console.log(path.join(dir, file))
-			//console.log(isLanguage ? "" : file + "/");
-			//console.log(namespaces);
-		} else {
-			namespaces.push(folderName + file.replace(".json", ""));
-		}
-	}
-
-	return { namespaces: [...new Set(namespaces)], languages };
-}
-*/
-
 async function loadNamespaces(basePath: string): Promise<any> {
 	const namespaces = new Set<string>();
 	const languages: string[] = [];
@@ -80,7 +47,6 @@ export async function languages() {
 	};
 
 	const { namespaces, languages } = await loadNamespaces(path.resolve(__dirname, '../../locales'));
-	console.log(namespaces);
 
 	i18next.use(i18nextBackend);
 

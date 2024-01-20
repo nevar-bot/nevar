@@ -5,7 +5,7 @@ import BaseClient from "@structures/BaseClient";
 export default class BaseCommand {
 	protected guild!: Guild;
 	protected data!: any;
-	protected interaction!: CommandInteraction;
+	protected interaction!: any;
 	protected message!: Message;
 	public client: BaseClient;
 	public conf: any;
@@ -41,7 +41,7 @@ export default class BaseCommand {
 	}
 
 	protected getBasicTranslation(key: string, args?: object): string {
-		const requestedKey: string = "command/" + this.help.category + "/basics:" + key;
+		const requestedKey: string = "commands/basics:" + key;
 		return this.guild ? this.guild.translate(requestedKey, args) : "Guild is missing in command structure";
 	}
 }

@@ -1,19 +1,23 @@
 {
   "errors": {
-    "missingChannelName": "Bitte gib den Namen eines Twitch-Kanals an.",
-    "cantFindChannel": "Dein angegebener Kanal konnte nicht gefunden werden.",
-    "limitExceeded": "Es können derzeit leider nur maximal 3 Twitch-Kanäle überwacht werden.",
-    "alreadyAdded": "Dieser Twitch-Kanal wurde bereits zur Überwachung hinzugefügt.",
-    "notAdded": "Dieser Twitch-Kanal wurde noch nicht zur Überwachung hinzugefügt.",
-    "statusAlready": "Der Twitch-Notifier wurde bereits {{status}}.",
-    "channelAlready": "Twitch-Livestreams werden bereits in {{channel}} gesendet."
+    "maximalMonitoringLimitReached": "Derzeit können nur maximal 5 Twitch-Kanäle überwacht werden.",
+    "twitchChannelAlreadyAddedToMonitoring": "{{user}} wurde bereits zur Überwachung hinzugefügt.",
+    "twitchChannelCannotBeFound": "Ich konnte den angegebenen Twitch-Kanal nicht finden.",
+    "twitchChannelNameIsMissing": "Bitte gib einen Twitch-Kanal an.",
+    "twitchChannelIsNotAddedToMonitoring": "{{user}} wurde noch nicht zur Überwachung hinzugefügt.",
+    "twitchChannelMonitoringIsAlreadyEnabled": "Der Twitch-Notifier wurde bereits aktiviert.",
+    "twitchChannelMonitoringIsAlreadyDisabled": "Der Twitch-Notifier wurde bereits deaktiviert.",
+    "twitchChannelMonitoringChannelIsAlreadySet": "Twitch-Livestreams werden bereits in {{channel}} gesendet."
   },
-  "added": "[{{name}}]({{url}}) wurde zur Überwachung hinzugefügt.",
-  "removed": "[{{name}}]({{url}}) wurde aus der Überwachung entfernt.",
-  "statusSet": "Der Twitch-Notifier wurde {{status}}.",
-  "channelSet": "Twitch-Livestreams werden ab jetzt in {{channel}} gesendet.",
+
+  "twitchChannelAddedToMonitoring": "[{{name}}]({{url}}) wurde zur Überwachung hinzugefügt.",
+  "twitchChannelRemovedFromMonitoring": "[{{name}}]({{url}}) wurde aus der Überwachung entfernt.",
+  "twitchChannelMonitoringEnabled": "Der Twitch-Notifier wurde aktiviert.",
+  "twitchChannelMonitoringDisabled": "Der Twitch-Notifier wurde deaktiviert.",
+  "twitchChannelMonitoringChannelSet": "Twitch-Livestreams werden ab jetzt in {{channel}} gesendet.",
+
   "list": {
     "title": "Überwachte Twitch-Kanäle",
-    "empty": "Es wurden noch keine Twitch-Kanäle zur Überwachung hinzugefügt."
+    "noTwitchChannelsAddedToMonitoring": "Es wurden noch keine Twitch-Kanäle zur Überwachung hinzugefügt."
   }
 }

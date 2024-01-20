@@ -1,19 +1,23 @@
 {
   "errors": {
-    "missingChannelId": "Bitte gib eine YouTube-Kanal-ID an.",
-    "limitExceeded": "Es können derzeit leider nur maximal 3 YouTube-Kanäle überwacht werden.",
-    "alreadyAdded": "Dieser YouTube-Kanal wurde bereits zur Überwachung hinzugefügt.",
-    "notAdded": "Dieser YouTube-Kanal wurde noch nicht zur Überwachung hinzugefügt.",
-    "cantFindChannel": "Dein angegebener Kanal konnte nicht gefunden werden.",
-    "statusAlready": "Der YouTube-Notifier wurde bereits {{status}}.",
-    "channelAlready": "YouTube-Videos werden bereits in {{channel}} gesendet."
+    "maximalMonitoringLimitReached": "Derzeit können nur maximal 5 YouTube-Kanäle überwacht werden.",
+    "channelIdIsMissing": "Bitte gib die ID eines YouTube-Kanals an.",
+    "youtubeChannelAlreadyAddedToMonitoring": "{{user}} wurde bereits zur Überwachung hinzugefügt.",
+    "youtubeChannelIsNotAddedToMonitoring": "Der angegebene YouTube-Kanal wurde noch nicht zur Überwachung hinzugefügt.",
+    "youtubeChannelCannotBeFound": "Ich konnte den angegebenen YouTube-Kanal nicht finden.",
+    "youtubeChannelMonitoringIsAlreadyEnabled": "Der YouTube-Notifier wurde bereits aktiviert.",
+    "youtubeChannelMonitoringIsAlreadyDisabled": "Der YouTube-Notifier wurde bereits deaktiviert.",
+    "youtubeChannelMonitoringChannelIsAlreadySet": "YouTube-Videos werden bereits in {{channel}} gesendet."
   },
-  "added": "[{{name}}]({{url}}) wurde zur Überwachung hinzugefügt.",
-  "removed": "[{{name}}]({{url}}) wurde aus der Überwachung entfernt.",
-  "statusSet": "Der YouTube-Notifier wurde {{status}}.",
-  "channelSet": "YouTube-Videos werden ab jetzt in {{channel}} gesendet.",
+
+  "youtubeChannelAddedToMonitoring": "[{{name}}]({{url}}) wurde zur Überwachung hinzugefügt.",
+  "youtubeChannelRemovedFromMonitoring": "[{{name}}]({{url}}) wurde aus der Überwachung entfernt.",
+  "youtubeChannelMonitoringEnabled": "Der YouTube-Notifier wurde aktiviert.",
+  "youtubeChannelMonitoringDisabled": "Der YouTube-Notifier wurde deaktiviert.",
+  "youtubeChannelMonitoringChannelSet": "YouTube-Videos werden ab jetzt in {{channel}} gesendet.",
+
   "list": {
     "title": "Überwachte YouTube-Kanäle",
-    "empty": "Es werden keine Kanäle überwacht."
+    "noYoutubeChannelsAddedToMonitoring": "Es werden keine Kanäle überwacht."
   }
 }

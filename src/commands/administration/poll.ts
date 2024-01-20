@@ -6,9 +6,9 @@ export default class PollCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "poll",
-			description: "Starts a new poll",
+			description: "Get the opinion of the users",
 			localizedDescriptions: {
-				de: "Startet eine neue Umfrage",
+				de: "Hole dir die Meinung der Nutzer ein",
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
@@ -19,25 +19,17 @@ export default class PollCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("title")
-							.setNameLocalizations({
-								de: "titel",
-							})
-							.setDescription("Give the poll a meaningful title")
-							.setDescriptionLocalizations({
-								de: "Gib der Umfrage einen aussagekräftigen Titel",
-							})
+							.setNameLocalization("de", "titel")
+							.setDescription("Enter the title of your survey")
+							.setDescriptionLocalization("de", "Gib den Titel deiner Umfrage an")
 							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("options")
-							.setNameLocalizations({
-								de: "optionen",
-							})
-							.setDescription("Enter the answer choices, separated by a comma")
-							.setDescriptionLocalizations({
-								de: "Gib die Antwortmöglichkeiten ein, getrennt durch ein Komma",
-							})
+							.setNameLocalization("de", "optionen")
+							.setDescription("Choose your answer options, separated by a comma")
+							.setDescriptionLocalization("de", "Wähle deine Antwortmöglichkeiten, getrennt durch ein Komma")
 							.setRequired(true),
 					),
 			},
@@ -46,11 +38,12 @@ export default class PollCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 
-		await this.startPoll(interaction.options.getString("title"), interaction.options.getString("options"), data);
+		await this.startPoll(interaction.options.getString("title"), interaction.options.getString("options"));
 	}
 
-	private async startPoll(title: string, options: string, data: any): Promise<void> {
+	private async startPoll(title: string, options: string): Promise<void> {
 		let circles: string[] = ["🔵", "🟢", "🔴", "🟡", "🟤", "🟣", "🟠"];
 		circles = this.client.utils.shuffleArray(circles);
 
@@ -93,9 +86,9 @@ export default class PollCommand extends BaseCommand {
 			circles: circles,
 		};
 
-		if (!data.guild.settings.polls) data.guild.settings.polls = [];
-		data.guild.settings.polls.push(poll);
-		data.guild.markModified("settings.polls");
-		await data.guild.save();
+		if (!this.data.guild.settings.polls) this.data.guild.settings.polls = [];
+		this.data.guild.settings.polls.push(poll);
+		this.data.guild.markModified("settings.polls");
+		await this.data.guild.save();
 	}
 }

@@ -1,10 +1,11 @@
 {
   "errors": {
-    "colorHasToBeHex": "Bitte gib eine Farbe im Hex-Format an.",
-    "authorIconHasToBeImage": "Bitte wähle ein Bild als Autor-Icon.",
-    "thumbnailHasToBeImage": "Bitte wähle ein Bild als Thumbnail.",
-    "imageHasToBeImage": "Bitte wähle ein Bild als Embed-Bild.",
-    "footerIconHasToBeImage": "Bitte wähle ein Bild als Footer-Icon."
+    "colorIsNotHex": "Bitte gib eine Farbe im Hex-Format an.",
+    "authorIconIsNoImage": "Bitte wähle ein Bild als Autor-Avatar.",
+    "thumbnailIsNoImage": "Bitte wähle ein Bild als Thumbnail-Bild.",
+    "imageIsNoImage": "Bitte wähle ein Bild als Embed-Bild.",
+    "footerIconIsNoImage": "Bitte wähle ein Bild als Fußzeilen-Bild."
   },
-  "sent": "Ich habe das Embed erstellt und gesendet."
+
+  "embedCreatedAndSent": "Das Embed wurde erstellt und als Webhook gesendet."
 }

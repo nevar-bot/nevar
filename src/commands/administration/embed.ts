@@ -6,9 +6,9 @@ export default class EmbedCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "embed",
-			description: "Allows you to send a customized embed",
+			description: "Send your personalised embed",
 			localizedDescriptions: {
-				de: "Ermöglicht das Senden eines angepassten Embeds",
+				de: "Sende dein persönlich angepasstes Embed",
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["ManageWebhooks"],
@@ -20,97 +20,71 @@ export default class EmbedCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("author")
-							.setNameLocalizations({
-								de: "autor",
-							})
-							.setDescription("Enter the name of the author")
-							.setDescriptionLocalizations({
-								de: "Gib den Namen des Autors ein",
-							})
+							.setNameLocalization("de", "autor")
+							.setDescription("Select the name of the embed author")
+							.setDescriptionLocalization("de", "Wähle den Namen des Embed-Autors")
 							.setRequired(true),
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("icon")
-							.setDescription("Choose the avatar of the author")
-							.setDescriptionLocalizations({
-								de: "Wähle den Avatar des Autors",
-							})
+							.setDescription("Choose the avatar of the embed author")
+							.setDescriptionLocalization("de", "Wähle den Avatar des Embed-Autors")
 							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("title")
-							.setNameLocalizations({
-								de: "titel",
-							})
-							.setDescription("Enter the title of the embed")
-							.setDescriptionLocalizations({
-								de: "Gib den Titel des Embeds ein",
-							})
+							.setNameLocalization("de", "titel")
+							.setDescription("Enter the title of your embed")
+							.setDescriptionLocalization("de", "Gib den Titel deines Embeds an")
 							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("description")
-							.setNameLocalizations({
-								de: "beschreibung",
-							})
-							.setDescription("Enter the description of the embed")
-							.setDescriptionLocalizations({
-								de: "Gib die Beschreibung des Embeds ein",
-							})
+							.setNameLocalization("de", "beschreibung")
+							.setDescription("Choose a description for your embed")
+							.setDescriptionLocalization("de", "Wähle eine Beschreibung für dein Embed")
 							.setRequired(false),
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("thumbnail")
-							.setDescription("Choose the thumbnail of the embed")
-							.setDescriptionLocalizations({
-								de: "Wähle das Thumbnail des Embeds",
-							})
+							.setDescription("Select the thumbnail image of your embed")
+							.setDescriptionLocalization("de", "Wähle das Thumbnail-Bild deines Embeds")
 							.setRequired(false),
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("image")
-							.setNameLocalizations({
-								de: "bild",
-							})
-							.setDescription("Choose the image of the embed")
-							.setDescriptionLocalizations({
-								de: "Wähle das Bild des Embeds",
-							})
+							.setNameLocalization("de", "bild")
+							.setDescription("Choose an image for your embed")
+							.setDescriptionLocalization("de", "Wähle ein Bild für dein Embed")
 							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
-							.setName("footertext")
-							.setDescription("Enter the text of the footer")
-							.setDescriptionLocalizations({
-								de: "Gib den Text des Footers ein",
-							})
+							.setName("footer")
+							.setNameLocalization("de", "fußzeile")
+							.setDescription("Enter the text of the footer of your embed")
+							.setDescriptionLocalization("de", "Gib den Text der Fußzeile deines Embeds an")
 							.setRequired(false),
 					)
 					.addAttachmentOption((option: any) =>
 						option
 							.setName("footericon")
-							.setDescription("Choose the icon of the footer")
-							.setDescriptionLocalizations({
-								de: "Wähle das Icon des Footers",
-							})
+							.setNameLocalization("de", "fußzeilenbild")
+							.setDescription("Choose an image for the footer of your embed")
+							.setDescriptionLocalization("de", "Wähle ein Bild für die Fußzeile deines Embeds")
 							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("color")
-							.setNameLocalizations({
-								de: "farbe",
-							})
-							.setDescription("Enter the color of the embed in HEX format")
-							.setDescriptionLocalizations({
-								de: "Gib die Farbe des Embeds im HEX-Format ein",
-							})
+							.setNameLocalization("de", "farbe")
+							.setDescription("Select the colour of your embed in hex format")
+							.setDescriptionLocalization("de", "Wähle die Farbe deines Embeds im Hex-Format")
 							.setRequired(false),
 					),
 			},
@@ -120,6 +94,7 @@ export default class EmbedCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.createEmbed();
 	}
 
@@ -130,13 +105,13 @@ export default class EmbedCommand extends BaseCommand {
 		const description: string = this.interaction.options.getString("description");
 		const thumbnail: any = this.interaction.options.getAttachment("thumbnail");
 		const image: any = this.interaction.options.getAttachment("image");
-		const footerText: string = this.interaction.options.getString("footertext");
+		const footerText: string = this.interaction.options.getString("footer");
 		const footerIcon: any = this.interaction.options.getAttachment("footericon");
 		const color: any = this.interaction.options.getString("color") || this.client.config.embeds["DEFAULT_COLOR"];
 
 		if (color && !this.client.utils.stringIsHexColor(color)) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:colorHasToBeHex"),
+				this.translate("errors:colorIsNotHex"),
 				"error",
 				"error",
 			);
@@ -145,7 +120,7 @@ export default class EmbedCommand extends BaseCommand {
 
 		if (authorIcon && !authorIcon.contentType.startsWith("image/")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:authorIconHasToBeImage"),
+				this.translate("errors:authorIconIsNoImage"),
 				"error",
 				"error",
 			);
@@ -154,7 +129,7 @@ export default class EmbedCommand extends BaseCommand {
 
 		if (thumbnail && !thumbnail.contentType.startsWith("image/")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:thumbnailHasToBeImage"),
+				this.translate("errors:thumbnailIsNoImage"),
 				"error",
 				"error",
 			);
@@ -163,7 +138,7 @@ export default class EmbedCommand extends BaseCommand {
 
 		if (image && !image.contentType.startsWith("image/")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:imageHasToBeImage"),
+				this.translate("errors:imageIsNoImage"),
 				"error",
 				"error",
 			);
@@ -172,14 +147,14 @@ export default class EmbedCommand extends BaseCommand {
 
 		if (footerIcon && !footerIcon.contentType.startsWith("image/")) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:footerIconHasToBeImage"),
+				this.translate("errors:footerIconIsNoImage"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [errorEmbed] });
 		}
 
-		// Generate embed
+		/* Generate embed */
 		const embed: EmbedBuilder = new EmbedBuilder()
 			.setAuthor({
 				name: author,
@@ -207,7 +182,7 @@ export default class EmbedCommand extends BaseCommand {
 			webhook.send({ embeds: [embed] })
 				.catch((): any => {
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(
-						this.translate("basics:errors:unexpected", { support: this.client.support }, true),
+						this.getBasicTranslation("errors:unexpected", { support: this.client.support }),
 						"error",
 						"error",
 
@@ -216,12 +191,12 @@ export default class EmbedCommand extends BaseCommand {
 				})
 				.then((): any => {
 					webhook.delete().catch((e: any): void => {});
-					const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("sent"), "success", "success");
+					const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("embedCreatedAndSent"), "success", "success");
 					return this.interaction.followUp({ embeds: [successEmbed] });
 				});
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
+				this.getBasicTranslation("errors:unexpected", { support: this.client.support }),
 				"error",
 				"error",
 			);

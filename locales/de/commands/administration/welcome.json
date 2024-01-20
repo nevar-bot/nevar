@@ -1,49 +1,44 @@
 {
   "errors": {
-    "disabled": "Die Willkommensnachricht wurde noch nicht aktiviert."
+    "welcomeMessageIsNotEnabled": "Die Willkommensnachricht wurde noch nicht aktiviert.",
+    "welcomeTypeHasToBeEmbed": "Bitte setze den Typ der Willkommensnachricht zuerst auf Embed."
   },
+
   "status": {
     "errors": {
-      "alreadySet": "Die Willkommensnachricht wurde bereits {{status}}."
+      "welcomeMessageIsAlreadyEnabled": "Die Willkommensnachricht wurde bereits aktiviert.",
+      "welcomeMessageIsAlreadyDisabled": "Die Willkommensnachricht wurde bereits deaktiviert."
     },
-    "set": "Die Willkommensnachricht wurde {{status}}."
+    "welcomeMessageEnabled": "Die Willkommensnachricht wurde aktiviert.",
+    "welcomeMessageDisabled": "Die Willkommensnachricht wurde deaktiviert."
   },
-  "preview": {
+
+  "test": {
     "errors": {
-      "noChannel": "Es wurde noch kein Kanal für die Willkommensnachricht festgelegt.",
-      "noMessage": "Es wurde noch keine Nachricht für die Willkommensnachricht festgelegt.",
-      "noType": "Es wurde noch kein Typ für die Willkommensnachricht festgelegt."
+      "noWelcomeChannelSet": "Bitte lege erst einen Kanal für die Willkommensnachricht fest.",
+      "noWelcomeMessageSet": "Bitte lege erst eine Willkommensnachricht fest.",
+      "noWelcomeTypeSet": "Bitte lege erst einen Typ für die Willkommensnachricht fest."
     },
-    "sent": "Die Willkommensnachricht wurde getestet."
+    "testExecuted": "Die Willkommensnachricht wurde getestet."
   },
+
   "channel": {
-    "set": "Die Willkommensnachricht wird ab jetzt in {{channel}} gesendet."
+    "welcomeChannelSet": "Willkommensnachrichten werden ab jetzt in {{channel}} gesendet."
   },
+
   "type": {
     "errors": {
-      "sameType": "Der Typ der Willkommensnachricht wurde bereits auf {{type}} gesetzt."
+      "welcomeTypeIsAlreadyEmbed": "Willkommensnachrichten werden bereits als Embed gesendet.",
+      "welcomeTypeIsAlreadyText": "Willkommensnachrichten werden bereits als Textnachricht gesendet."
     },
-    "embed": "Embed",
-    "text": "Textnachricht",
-    "set": "Die Willkommensnachricht wird ab jetzt als {{type}} gesendet."
+    "welcomeTypeSetToEmbed": "Willkommensnachrichten werden ab jetzt als Embed gesendet.",
+    "welcomeTypeSetToText": "Willkommensnachrichten werden ab jetzt als Textnachricht gesendet."
   },
+
   "message": {
-    "set": "Die Willkommensnachricht wurde geändert."
+    "welcomeMessageSet": "Die Willkommensnachricht wurde gespeichert."
   },
-  "thumbnail": {
-    "errors": {
-      "typeNotEmbed": "Bitte setze den Typ der Willkommensnachricht auf Embed.",
-      "alreadySet": "Das Profilbild im Embed wurde bereits {{status}}."
-    },
-    "set": "Das Profilbild im Embed wurde {{status}}."
-  },
-  "color": {
-    "errors": {
-      "typeNotEmbed": "Bitte setze den Typ der Willkommensnachricht auf Embed.",
-      "invalid": "Bitte gib eine gültige Farbe im Hex-Format an."
-    },
-    "set": "Die Farbe des Embeds wurde auf {{color}} geändert."
-  },
+
   "variables": {
     "list": [
       "{{e.arrow}} **%user** - Erwähnt das Mitglied",
@@ -61,6 +56,22 @@
       "{{e.arrow}} **%newline** - Fügt eine neue Zeile ein"
     ],
     "title": "Verfügbare Variablen",
-    "empty": "Es sind noch keine Variablen verfügbar."
+    "noWelcomeVariables": "Es sind noch keine Variablen verfügbar."
+  },
+
+  "thumbnail": {
+    "errors": {
+      "welcomeThumbnailIsAlreadyEnabled": "Das Profilbild im Embed wurde bereits aktiviert.",
+      "welcomeThumbnailIsAlreadyDisabled": "Das Profilbild im Embed wurde bereits deaktiviert."
+    },
+    "welcomeThumbnailEnabled": "Das Profilbild im Embed wurde aktiviert.",
+    "welcomeThumbnailDisabled": "Das Profilbild im Embed wurde deaktiviert."
+  },
+
+  "color": {
+    "errors": {
+      "welcomeEmbedColorHasToBeHex": "Bitte gib eine gültige Farbe im Hex-Format an."
+    },
+    "welcomeEmbedColorSet": "Die Farbe des Embeds wurde auf {{color}} geändert."
   }
 }

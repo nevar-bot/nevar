@@ -8,9 +8,9 @@ export default class AddemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "addemoji",
-			description: "Creates a new emoji based on a given emoji or a link to an image",
+			description: "Create a new emoji based on an emoji or link",
 			localizedDescriptions: {
-				de: "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild",
+				de: "Erstelle einen neuen Emoji anhand eines Emojis oder Links",
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -23,19 +23,17 @@ export default class AddemojiCommand extends BaseCommand {
 						option
 							.setRequired(true)
 							.setName("emoji")
-							.setDescription("Enter an emoji or a link to an image")
-							.setDescriptionLocalizations({
-								de: "Gib einen Emoji oder einen Link zu einem Bild ein",
-							}),
+							.setNameLocalization("de", "emoji")
+							.setDescription("Enter an existing emoji or a link to an image")
+							.setDescriptionLocalization("de", "Gib einen bestehenden Emoji oder einen Link zu einem Bild an")
 					)
 					.addStringOption((option: any) =>
 						option
 							.setRequired(false)
 							.setName("name")
-							.setDescription("Enter what you want the new emoji to be called")
-							.setDescriptionLocalizations({
-								de: "Gib ein, wie der neue Emoji heißen soll",
-							})
+							.setNameLocalization("de", "name")
+							.setDescription("Choose a name for the new emoji")
+							.setDescriptionLocalization("de", "Wähle einen Namen für den neuen Emoji")
 							.setMaxLength(32),
 					),
 			},
@@ -81,15 +79,6 @@ export default class AddemojiCommand extends BaseCommand {
 		if (stringIsUrl(emoji) && urlIsImage(emoji) && !name) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:emojiNameIsMissing"),
-				"error",
-				"error",
-			);
-			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
-		}
-
-		if(name && name.length > 32){
-			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:emojiNameIsTooLong"),
 				"error",
 				"error",
 			);

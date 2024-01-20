@@ -1,37 +1,46 @@
 {
   "errors": {
-    "disabled": "Die Verabschiedungsnachricht wurde noch nicht aktiviert."
+    "farewellIsNotEnabled": "Die Verabschiedungsnachricht wurde noch nicht aktiviert.",
+    "farewellTypeHasToBeEmbed": "Bitte setze den Typ der Verabschiedungsnachricht zuerst auf Embed."
   },
+
   "status": {
     "errors": {
-      "alreadySet": "Die Verabschiedungsnachricht wurde bereits {{status}}."
+      "farewellIsAlreadyEnabled": "Die Verabschiedungsnachricht wurde bereits aktiviert.",
+      "farewellIsAlreadyDisabled": "Die Verabschiedungsnachricht wurde bereits deaktiviert."
     },
-    "set": "Die Verabschiedungsnachricht wurde {{status}}."
+    "farewellEnabled": "Die Verabschiedungsnachricht wurde aktiviert.",
+    "farewellDisabled": "Die Verabschiedungsnachricht wurde deaktiviert."
   },
-  "preview": {
+
+  "test": {
     "errors": {
-      "noChannel": "Es wurde noch kein Kanal für die Verabschiedungsnachricht festgelegt.",
-      "noMessage": "Es wurde noch keine Nachricht für die Verabschiedungsnachricht festgelegt.",
-      "noType": "Es wurde noch kein Typ für die Verabschiedungsnachricht festgelegt."
+      "noFarewellChannelSet": "Bitte lege erst einen Kanal für die Verabschiedungsnachricht fest.",
+      "noFarewellMessageSet": "Bitte lege erst eine Verabschiedungsnachricht fest.",
+      "noFarewellTypeSet": "Bitte lege erst einen Typ für die Verabschiedungsnachricht fest."
     },
-    "sent": "Die Verabschiedungsnachricht wurde getestet."
+    "farewellTestExecuted": "Die Verabschiedungsnachricht wurde getestet."
   },
+
   "channel": {
-    "set": "Die Verabschiedungsnachricht wird ab jetzt in {{channel}} gesendet."
+    "farewellChannelSet": "Verabschiedungsnachrichten werden ab jetzt in {{channel}} gesendet."
   },
+
   "type": {
     "errors": {
-      "alreadySet": "Der Typ der Verabschiedungsnachricht wurde bereits auf {{type}} gesetzt."
+      "farewellTypeIsAlreadyEmbed": "Verabschiedungsnachrichten werden bereits als Embed gesendet.",
+      "farewellTypeIsAlreadyText": "Verabschiedungsnachrichten werden bereits als Textnachricht gesendet."
     },
-    "text": "Textnachricht",
-    "embed": "Embed",
-    "set": "Die Verabschiedungsnachricht wird ab jetzt als {{type}} gesendet."
+    "farewellTypeSetToEmbed": "Verabschiedungsnachrichten werden ab jetzt als Embed gesendet.",
+    "farewellTypeSetToText": "Verabschiedungsnachrichten werden ab jetzt als Textnachricht gesendet."
   },
+
   "message": {
-    "set": "Die Verabschiedungsnachricht wurde geändert."
+    "farewellMessageSet": "Die Verabschiedungsnachricht wurde gespeichert."
   },
+
   "variables": {
-    "list": [
+    "farewellVariablesList": [
       "{{e.arrow}} **%user** - erwähnt das Mitglied",
       "{{e.arrow}} **%user.name** - der Nutzername des Mitglieds",
       "{{e.arrow}} **%user.displayName** - der Anzeigename des Mitglieds",
@@ -41,21 +50,25 @@
       "{{e.arrow}} **%server.memberCount** - Anzahl an Mitgliedern des Servers",
       "{{e.arrow}} **%newline** - fügt eine neue Zeile ein"
     ],
-    "title": "Verfügbare Variablen",
-    "empty": "Es sind noch keine Variablen verfügbar."
+    "list": {
+      "title": "Verfügbare Variablen",
+      "noFarewellVariables": "Es sind noch keine Variablen verfügbar."
+    }
   },
+
   "thumbnail": {
     "errors": {
-      "typeNotEmbed": "Bitte setze den Typ der Verabschiedungsnachricht auf Embed.",
-      "alreadySet": "Das Profilbild im Embed wurde bereits {{status}}."
+      "farewellThumbnailIsAlreadyEnabled": "Das Profilbild im Embed wurde bereits aktiviert.",
+      "farewellThumbnailIsAlreadyDisabled": "Das Profilbild im Embed wurde bereits deaktiviert."
     },
-    "set": "Das Profilbild im Embed wurde {{status}}."
+    "farewellThumbnailEnabled": "Das Profilbild im Embed wurde aktiviert.",
+    "farewellThumbnailDisabled": "Das Profilbild im Embed wurde deaktiviert."
   },
+
   "color": {
     "errors": {
-      "typeNotEmbed": "Bitte setze den Typ der Verabschiedungsnachricht auf Embed.",
-      "colorNotHex": "Bitte gib eine gültige Farbe im Hex-Format an."
+      "farewellEmbedColorHasToBeHex": "Bitte gib eine gültige Farbe im Hex-Format an."
     },
-    "set": "Die Farbe des Embeds wurde auf {{color}} geändert."
+    "farewellEmbedColorSet": "Die Farbe des Embeds wurde auf {{color}} geändert."
   }
 }
