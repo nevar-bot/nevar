@@ -6,9 +6,9 @@ export default class AskCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "ask",
-			description: "Ask a question and get 100% correct answers",
+			description: "Ask a question and you will get 100% true answers",
 			localizedDescriptions: {
-				de: "Stelle eine Frage und erhalte 100% wahre Antworten",
+				de: "Stelle eine Frage und du wirst 100% wahre Antworten erhalten",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -21,9 +21,9 @@ export default class AskCommand extends BaseCommand {
 						.setNameLocalizations({
 							de: "frage",
 						})
-						.setDescription("Enter your question")
+						.setDescription("Ask your question")
 						.setDescriptionLocalizations({
-							de: "Gib deine Frage ein",
+							de: "Stelle deine Frage",
 						}),
 				),
 			},
@@ -33,6 +33,7 @@ export default class AskCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		return this.getAnswer(interaction.options.getString("question"));
 	}
 

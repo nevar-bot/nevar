@@ -7,9 +7,9 @@ export default class MemeCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "meme",
-			description: "Sends randomly selected memes",
+			description: "Sends memes from r/ich_iel",
 			localizedDescriptions: {
-				de: "Sendet zufällig gewählte Memes",
+				de: "Sendet Memes aus r/ich_iel",
 			},
 			cooldown: 3 * 1000,
 			dirname: __dirname,
@@ -23,6 +23,7 @@ export default class MemeCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		return await this.sendMeme(interaction.member);
 	}
 
@@ -39,7 +40,7 @@ export default class MemeCommand extends BaseCommand {
 		const reloadId: string = member.user.id + "_reload";
 		const reloadButton: ButtonBuilder = this.client.createButton(
 			reloadId,
-			this.translate("reload"),
+			this.translate("loadNewMeme"),
 			"Secondary",
 			"loading",
 		);

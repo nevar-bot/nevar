@@ -7,9 +7,9 @@ export default class CalculatorCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "calculator",
-			description: "A calculator for Discord",
+			description: "Check whether 1+1 really equals 2",
 			localizedDescriptions: {
-				de: "Ein Taschenrechner auf Discord",
+				de: "Prüfe ob 1+1 wirklich 2 ergibt"
 			},
 			cooldown: 2 * 1000,
 			dirname: __dirname,
@@ -23,6 +23,7 @@ export default class CalculatorCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.buildCalculator(interaction.user);
 	}
 
