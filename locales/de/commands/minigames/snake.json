@@ -1,4 +1,4 @@
 {
-  "points": "Punkte:",
-  "end": "Spiel vorbei! Du hast {{points}} Punkte erreicht."
+  "currentScore": "Punkte:",
+  "gameEnd": "Spiel vorbei! Du hast {{points}} Punkte erreicht."
 }

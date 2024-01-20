@@ -1,6 +1,6 @@
 {
-  "embedDescription": "Züge: {{turns}}/{{maxTurns}}\n\n{{board}}",
-  "end": "Spiel beendet\n",
-  "lose": "Du hast leider verloren!",
-  "win": "Du hast gewonnen! Du hast **{{turns}} Züge** gebraucht."
+  "gameBoard": "Züge: {{turns}}/{{maxTurns}}\n\n{{board}}",
+  "gameEnd": "Spiel beendet\n",
+  "youWonTheGame": "Du hast gewonnen! Du hast **{{turns}} Züge** gebraucht.",
+  "youLostTheGame": "Du hast leider verloren!"
 }

@@ -7,9 +7,9 @@ export default class FloodCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "flood",
-			description: "You have to fill the whole playing field with one color",
+			description: "Fill the entire playing field with one colour",
 			localizedDescriptions: {
-				de: "Du musst das gesamte Spielfeld mit einer Farbe füllen",
+				de: "Fülle das komplette Spielfeld mit einer Farbe",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -23,6 +23,7 @@ export default class FloodCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.startGame();
 	}
 
@@ -64,7 +65,7 @@ class FloodGame extends BaseGame {
 		this.maxTurns = Math.floor((25 * (this.length * 2)) / 26);
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
-			this.interaction.guild.translate("minigames/flood:embedDescription", {
+			this.interaction.guild.translate("commands/minigames/flood:gameBoard", {
 				turns: this.turns,
 				maxTurns: this.maxTurns,
 				board: this.getBoardContent(),
@@ -96,7 +97,7 @@ class FloodGame extends BaseGame {
 			if (!update) return;
 
 			const embed: EmbedBuilder = this.options.client.createEmbed(
-				this.interaction.guild.translate("minigames/flood:embedDescription", {
+				this.interaction.guild.translate("commands/minigames/flood:gameBoard", {
 					turns: this.turns,
 					maxTurns: this.maxTurns,
 					board: this.getBoardContent(),
@@ -125,13 +126,13 @@ class FloodGame extends BaseGame {
 
 	private endGame(msg: any, result: any): any {
 		const GameOverMessage: string = result
-			? this.interaction.guild.translate("minigames/flood:win", { turns: String(this.turns) })
-			: this.interaction.guild.translate("minigames/flood:lose", {
+			? this.interaction.guild.translate("commands/minigames/flood:youWonTheGame", { turns: String(this.turns) })
+			: this.interaction.guild.translate("commands/minigames/flood:youLostTheGame", {
 					turns: String(this.turns),
 				});
 
 		const embed: EmbedBuilder = this.options.client.createEmbed(
-			this.interaction.guild.translate("minigames/flood:end") +
+			this.interaction.guild.translate("commands/minigames/flood:gameEnd") +
 				this.options.client.emotes.arrow +
 				" " +
 				GameOverMessage +

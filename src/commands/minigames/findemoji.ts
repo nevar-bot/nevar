@@ -7,9 +7,9 @@ export default class FindemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "findemoji",
-			description: "You have to remember the order of eight different emojis, and choose the right one",
+			description: "Memorise the order of eight different emojis and choose the right one",
 			localizedDescriptions: {
-				de: "Du musst dir die Reihenfolge acht verschiedener Emojis merken, und den Richtigen wählen",
+				de: "Merke dir die Reihenfolge acht verschiedener Emojis, und wähle den Richtigen",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -23,6 +23,7 @@ export default class FindemojiCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.startGame();
 	}
 
@@ -54,7 +55,7 @@ class FindemojiGame extends BaseGame {
 		this.emoji = this.emojis[Math.floor(Math.random() * this.emojis.length)];
 
 		const findEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-			this.interaction.guild.translate("minigames/findemoji:text"),
+			this.interaction.guild.translate("commands/minigames/findemoji:memorizeEmojis"),
 			"arrow",
 			"normal",
 		);
@@ -66,7 +67,7 @@ class FindemojiGame extends BaseGame {
 
 		const timeoutCallback: any = async (): Promise<void> => {
 			findEmojiEmbed.setDescription(
-				this.interaction.guild.translate("minigames/findemoji:find", { emoji: this.emoji }),
+				this.interaction.guild.translate("commands/minigames/findemoji:selectEmoji", { emoji: this.emoji }),
 			);
 			await msg.edit({
 				embeds: [findEmojiEmbed],
@@ -96,11 +97,11 @@ class FindemojiGame extends BaseGame {
 
 		let finalMessage: string;
 		if (resultMessage === "win") {
-			finalMessage = this.interaction.guild.translate("minigames/findemoji:win", {
+			finalMessage = this.interaction.guild.translate("commands/minigames/findemoji:youWonTheGame", {
 				emoji: this.emoji,
 			});
 		} else {
-			finalMessage = this.interaction.guild.translate("minigames/findemoji:lose", {
+			finalMessage = this.interaction.guild.translate("commands/minigames/findemoji:youLostTheGame", {
 				emoji: this.emoji,
 			});
 		}
