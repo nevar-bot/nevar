@@ -6,9 +6,9 @@ export default class ServericonCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "servericon",
-			description: "Sends the icon of the server",
+			description: "Look at the icon of the server",
 			localizedDescriptions: {
-				de: "Sendet das Icon des Servers",
+				de: "Sieh dir das Icon des Servers an",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -53,7 +53,7 @@ export default class ServericonCommand extends BaseCommand {
 		});
 
 		const avatarEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("links") + ": " +
+			this.translate("serverIconLinks") + ": " +
 			"[x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
 			null,
 			"normal",
@@ -64,7 +64,7 @@ export default class ServericonCommand extends BaseCommand {
 			x1024,
 			x2048,
 		);
-		avatarEmbed.setTitle(this.translate("title", { guild: this.guild }))
+		avatarEmbed.setTitle(this.translate("serverIcon", { guild: this.guild }))
 		avatarEmbed.setImage(x256);
 
 		return this.interaction.followUp({ embeds: [avatarEmbed] });

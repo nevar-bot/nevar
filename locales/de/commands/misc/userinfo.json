@@ -12,20 +12,21 @@
     "PremiumEarlySupporter": "Supporter der ersten Stunde",
     "Staff": "Discord-Mitarbeiter",
     "VerifiedBot": "Verifizierter Bot",
-    "VerifiedDeveloper": "Verifizierter Bot-Entwickler der ersten Stunde"
+    "VerifiedDeveloper": "Verifizierter Bot-Entwickler der ersten Stunde",
+    "NevarStaff": "Staff",
+    "NevarPartner": "Partner",
+    "NevarBugHunter": "Bughunter"
   },
-  "staff": "Staff",
-  "partner": "Partner",
-  "bughunter": "Bughunter",
-  "noBadges": "Keine Badges vorhanden",
+
+  "userDontHaveFlags": "Keine Badges vorhanden.",
   "displayName": "Displayname",
   "serverDisplayName": "Server-Displayname",
   "userName": "Benutzername",
   "bot": "Bot",
-  "createdAt": "Account erstellt am",
-  "createdAgo": "Account erstellt vor",
-  "joinedAt": "Server betreten am",
-  "joinedAgo": "Server betreten vor",
-  "badges": "Badges",
+  "accountCreatedAt": "Account erstellt am",
+  "accountCreatedBefore": "Account erstellt vor",
+  "userJoinedGuildAt": "Server betreten am",
+  "userJoinedGuildBefore": "Server betreten vor",
+  "userFlags": "Badges",
   "title": "Information zu"
 }

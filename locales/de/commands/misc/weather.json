@@ -1,8 +1,9 @@
 {
   "errors": {
-    "missingLocationOrCity": "Bitte gib einen Ort oder eine Stadt an.",
-    "locationNotFound": "Mit dem Namen konnte ich keinen Ort oder Stadt finden."
+    "locationOrCityIsMissing": "Bitte gib einen Ort oder eine Stadt an.",
+    "givenLocationIsNotFound": "Der angegebene Ort oder die Stadt konnte nicht gefunden werden."
   },
+
   "temperature": "Temperatur (min/max/gefühlt)",
   "humidity": "Luftfeuchtigkeit",
   "windSpeed": "Windgeschwindigkeit",

@@ -7,9 +7,9 @@ export default class ServerinfoCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "serverinfo",
-			description: "Shows general information about the server",
+			description: "Take a look at general information about the server",
 			localizedDescriptions: {
-				de: "Zeigt allgemeine Informationen über den Server an",
+				de: "Schau dir allgemeine Informationen über den Server an",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -24,6 +24,7 @@ export default class ServerinfoCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.showServerInfo();
 	}
 

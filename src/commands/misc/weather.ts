@@ -18,13 +18,9 @@ export default class WeatherCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addStringOption((option) =>
 					option
 						.setName("city")
-						.setNameLocalizations({
-							de: "stadt"
-						})
+						.setNameLocalization("de", "stadt")
 						.setDescription("Specify a location or city")
-						.setDescriptionLocalizations({
-							de: "Gib einen Ort oder Stadt an"
-						})
+						.setDescriptionLocalization("de", "Gib einen Ort oder eine Stadt an")
 						.setRequired(true),
 				),
 			},
@@ -35,13 +31,14 @@ export default class WeatherCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		await this.showWeather(interaction.options.getString("city"), data);
+		this.data = data;
+		await this.showWeather(interaction.options.getString("city"));
 	}
 
-	private async showWeather(city: string, data: any): Promise<any> {
+	private async showWeather(city: string): Promise<any> {
 		if (!this.client.config.apikeys["WEATHER"] || this.client.config.apikeys["WEATHER"] === "") {
 			const noApiKeyEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
+				this.getBasicTranslation("errors:unexpected", { support: this.client.support }),
 				"error",
 				"error",
 			);
@@ -49,7 +46,7 @@ export default class WeatherCommand extends BaseCommand {
 		}
 		if (!city) {
 			const noCityEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingLocationOrCity"),
+				this.translate("errors:locationOrCityIsMissing"),
 				"error",
 				"error",
 			);
@@ -62,7 +59,7 @@ export default class WeatherCommand extends BaseCommand {
 					encodeURI(city) +
 					"&appid=" +
 					this.client.config.apikeys["WEATHER"] +
-					"&lang=" + data.guild.locale + "&units=metric",
+					"&lang=" + this.data.guild.locale + "&units=metric",
 				{
 					validateStatus: (): boolean => true,
 				},
@@ -81,8 +78,8 @@ export default class WeatherCommand extends BaseCommand {
 					ms: weatherInformation.wind.speed,
 					kmh: Math.round(weatherInformation.wind.speed * 3.6),
 				},
-				sunrise: new Date(weatherInformation.sys.sunrise * 1000).toLocaleTimeString("de-DE"),
-				sunset: new Date(weatherInformation.sys.sunset * 1000).toLocaleTimeString("de-DE"),
+				sunrise: this.client.utils.getDiscordTimestamp(new Date(weatherInformation.sys.sunrise * 1000), "t"),
+				sunset: this.client.utils.getDiscordTimestamp(new Date(weatherInformation.sys.sunset * 1000), "t"),
 			};
 
 			const text: string =
@@ -122,7 +119,7 @@ export default class WeatherCommand extends BaseCommand {
 			return this.interaction.followUp({ embeds: [weatherEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:locationNotFound"),
+				this.translate("errors:givenLocationIsNotFound"),
 				"error",
 				"error",
 			);

@@ -9,9 +9,9 @@ export default class StatsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "stats",
-			description: "Displays general statistics about the bot",
+			description: "Take a look at the statistics for Nevar",
 			localizedDescriptions: {
-				de: "Zeigt allgemeine Statistiken über den Bot an",
+				de: "Wirf einen Blick auf Statistiken zu Nevar",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -25,6 +25,7 @@ export default class StatsCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.sendStats();
 	}
 
@@ -98,7 +99,7 @@ export default class StatsCommand extends BaseCommand {
 		const text: string =
 			"### " +
 			this.client.emotes.flags.Staff + " " +
-			this.translate("staffs") + "\n" +
+			this.translate("clientStaffs") + "\n" +
 			this.client.emotes.verified_server +
 			" " +
 			head_staffs.join("\n" + this.client.emotes.verified_server + " ") +

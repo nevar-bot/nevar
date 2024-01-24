@@ -6,9 +6,9 @@ export default class AfkCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "afk",
-			description: "Marks you as absent",
+			description: "In case you are not there for once",
 			localizedDescriptions: {
-				de: "Markiert dich als abwesend",
+				de: "Für den Fall, dass du Mal nicht da bist",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -17,13 +17,9 @@ export default class AfkCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
 					option
 						.setName("reason")
-						.setNameLocalizations({
-							de: "grund",
-						})
-						.setDescription("Why are you absent?")
-						.setDescriptionLocalizations({
-							de: "Warum bist du abwesend?",
-						})
+						.setNameLocalization("de", "grund")
+						.setDescription("What is the reason for your absence?")
+						.setDescriptionLocalization("de", "Was ist der Grund für deine Abwesenheit?")
 						.setRequired(false),
 				),
 			},
@@ -33,42 +29,43 @@ export default class AfkCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		await this.setAfk(interaction.member, interaction.options.getString("reason"), data);
+		this.data = data;
+		await this.setAfk(interaction.member, interaction.options.getString("reason"));
 	}
 
-	private async setAfk(member: any, reason: string, data: any) {
-		if (data.user.afk.state) {
-			const afkSince: any = data.user.afk.since;
-			const reason: string = data.user.afk.reason || this.translate("noReason");
+	private async setAfk(member: any, reason: string) {
+		if (this.data.user.afk.state) {
+			const afkSince: any = this.data.user.afk.since;
+			const reason: string = this.data.user.afk.reason || this.translate("noAbsenceReasonSpecified");
 
 			const relativeTime: string = this.client.utils.getDiscordTimestamp(afkSince, "f");
 			const welcomeBackEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("welcomeBack", { time: relativeTime, reason }),
+				this.translate("absenceIsEnded", { time: relativeTime, reason }),
 				"reminder",
 				"normal",
 			);
 
-			data.user.afk = {
+			this.data.user.afk = {
 				state: false,
 				reason: null,
 				since: null,
 			};
-			data.user.markModified("afk");
-			await data.user.save();
+			this.data.user.markModified("afk");
+			await this.data.user.save();
 
 			return this.interaction.followUp({ embeds: [welcomeBackEmbed] });
 		}
 
-		data.user.afk = {
+		this.data.user.afk = {
 			state: true,
 			reason: reason,
 			since: Date.now(),
 		};
-		data.user.markModified("afk");
-		await data.user.save();
+		this.data.user.markModified("afk");
+		await this.data.user.save();
 
 		const afkEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("afk", { reason: reason || this.translate("noReason") }),
+			this.translate("absenceIsStarted", { reason: reason || this.translate("noReason") }),
 			"reminder",
 			"normal",
 		);

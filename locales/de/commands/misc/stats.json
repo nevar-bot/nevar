@@ -1,7 +1,6 @@
 {
-  "staffs": "Staffs",
+  "clientStaffs": "Staffs",
   "statistics": "Statistiken",
-
   "servers": "Server",
   "users": "Nutzer/-innen",
   "channels": "Kanäle",

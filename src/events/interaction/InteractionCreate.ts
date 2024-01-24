@@ -26,6 +26,22 @@ export default class {
 		member.data = data.member;
 		member.user.data = data.user;
 
+		/* Handle auto complete for help command */
+		if(interaction.isAutocomplete()){
+			if(interaction.commandName !== "help") return;
+
+			const searchInput: string = interaction.options.getFocused();
+			const matchingCommands: string[] = [];
+			for(const command of this.client.commands.values()){
+				if(command.help.name.includes(searchInput) && searchInput !== "" && matchingCommands.length < 25){
+					matchingCommands.push(command.help.name)
+				}
+
+			}
+			await interaction.respond(
+				matchingCommands.map((choice: string): any => ({ name: choice, value: choice })),
+			);
+		}
 		/* Handle context menus */
 		if (interaction.isContextMenuCommand()) {
 			const contextMenu: any = this.client.contextMenus.get(interaction.commandName);

@@ -1,4 +1,4 @@
 {
-  "links": "Links:",
-  "title": "Avatar von {{user}}"
+  "avatarLinks": "Links:",
+  "avatarEmbedTitle": "Avatar von {{user}}"
 }

@@ -8,28 +8,26 @@
     "owner": "Owner",
     "staff": "Staff"
   },
-  "main": {
-    "choose": "Wähle eine Kategorie",
-    "home": "Zur Startseite",
-    "links": {
-      "support": "Support",
-      "invite": "Einladen",
-      "web": "Webseite",
-      "donate": "Unterstützen"
-    },
-    "guilds": "{{client.user.username}} ist ein Bot, der auf aktuell mehr als {{guilds}} Servern genutzt wird.",
-    "discover": "Hier findest du eine Liste aller Befehle, welche du nutzen kannst.",
-    "slash": "Jeder Befehl beginnt mit dem **Slash (/)**.",
-    "help": "Um Hilfe zu einem spezifischen Befehl zu erhalten, hänge den gewünschten Befehl an den Hilfe-Command an."
+
+  "list": {
+    "mainEmbedDescription": [
+      "### • {{e.discord}} [Support]({{support}}) • {{e.growth_up}} [Einladen]({{invite}}) • {{e.globe}} [Webseite]({{web}}) • {{e.gift}} [Unterstützen]({{donate}}) •\n",
+      "### {{e.globe}} {{client.user.username}} ist ein Bot, der auf aktuell mehr als {{guilds}} Servern genutzt wird.\n",
+      "{{e.discover}} Hier findest du eine Liste aller Befehle, welche du nutzen kannst.\n\n",
+      "{{e.slashcommand}} Jeder Befehl beginnt mit dem **Slash (/)**.\n",
+      "{{e.question}} Um Hilfe zu einem spezifischen Befehl zu erhalten, hänge den gewünschten Befehl an den Hilfe-Command an.\n\n"
+    ],
+    "chooseCategory": "Wähle eine Kategorie",
+    "backToOverview": "Zur Startseite"
   },
+
   "help": {
-    "title": "Hilfe für den {{command}} Befehl ({{category}})",
-    "cooldown": "Cooldown",
-    "seconds": "Sekunde(n)",
-    "nsfw": "NSFW",
-    "userPermissions": "Benötigte Rechte (Nutzer/-in)",
-    "botPermissions": "Benötigte Rechte (Bot)",
-    "ownerOnly": "Nur für {{client.user.username}}-Entwickler/-innen",
-    "staffOnly": "Nur für {{client.user.username}}-Staffs"
+    "helpTitle": "Hilfe für den {{command}} Befehl ({{category}})",
+    "commandCooldown": "Cooldown",
+    "commandIsNsfw": "NSFW",
+    "commandUserPermissions": "Benötigte Rechte (Nutzer/-in)",
+    "commandBotPermissions": "Benötigte Rechte (Bot)",
+    "commandIsOwnerOnly": "Nur für {{client.user.username}}-Entwickler/-innen",
+    "commandIsStaffOnly": "Nur für {{client.user.username}}-Staffs"
   }
 }

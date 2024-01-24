@@ -1,8 +1,7 @@
 {
   "errors": {
-    "isDisabled": "Das Levelsystem wurde noch nicht aktiviert.",
-    "noXp": "Es haben noch keine Mitglieder XP gesammelt."
+    "levelsystemIsNotEnabled": "Das Levelsystem wurde noch nicht aktiviert.",
+    "noMembersGainedXp": "Es haben noch keine Mitglieder XP gesammelt."
   },
-  "level": "Level",
-  "xp": "XP"
+  "viewFullLeaderboardHere": "[Schaue dir hier das vollständige Leaderboard an!](https://nevar.eu/leaderboard/{{guildId}})"
 }

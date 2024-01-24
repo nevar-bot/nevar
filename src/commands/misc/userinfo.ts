@@ -7,9 +7,9 @@ export default class UserinfoCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "userinfo",
-			description: "Displays information about a user",
+			description: "View information about a user",
 			localizedDescriptions: {
-				de: "Zeigt Informationen über eine/n Nutzer/-in an"
+				de: "Schau dir Informationen über einen Benutzer an"
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -18,13 +18,9 @@ export default class UserinfoCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
 						.setName("user")
-						.setNameLocalizations({
-							de: "mitglied",
-						})
+						.setNameLocalization("de", "mitglied")
 						.setDescription("Select a member")
-						.setDescriptionLocalizations({
-							de: "Wähle ein Mitglied aus"
-						})
+						.setDescriptionLocalization("de", "Wähle ein Mitglied aus")
 						.setRequired(false),
 				),
 			},
@@ -35,13 +31,12 @@ export default class UserinfoCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		await this.showUserInfo(interaction.options.getUser("member"));
+		this.data = data;
+		await this.showUserInfo(interaction.options.getMember("member"));
 	}
 
 	private async showUserInfo(member: any): Promise<any> {
-		if (member) {
-			member = await this.interaction.guild!.members.fetch(member.id);
-		} else {
+		if (!member) {
 			member = this.interaction.member;
 		}
 
@@ -78,20 +73,20 @@ export default class UserinfoCommand extends BaseCommand {
 		// Custom Badges
 		// Nevar staff
 		if (data.staff.state || this.client.config.general["OWNER_IDS"].includes(member.user.id))
-			badges.push(this.client.emotes.flags.Staff + " " + this.client.user!.username + "-" + this.translate("staff"));
+			badges.push(this.client.emotes.flags.Staff + " " + this.client.user!.username + "-" + this.translate("flags:NevarStaff"));
 		// Nevar partner
 		if (data.partner.state)
-			badges.push(this.client.emotes.flags.Partner + " " + this.client.user!.username + "-" + this.translate("partner"));
+			badges.push(this.client.emotes.flags.Partner + " " + this.client.user!.username + "-" + this.translate("flags:NevarPartner"));
 		// Nevar Bughunter
 		if (data.bughunter.state)
-			badges.push(this.client.emotes.flags.BugHunterLevel1 + " " + this.client.user!.username + "-" + this.translate("bughunter"));
+			badges.push(this.client.emotes.flags.BugHunterLevel1 + " " + this.client.user!.username + "-" + this.translate("flags:NevarBughunter"));
 
 		// Discord badges
 		for (const flag of userFlags) {
 			if (flags[flag]) badges.push(this.client.emotes.flags[flag] + " " + flags[flag]);
 		}
 
-		if (badges.length === 0) badges = [this.client.emotes.arrow + " " + this.translate("noBadges")];
+		if (badges.length === 0) badges = [this.client.emotes.arrow + " " + this.translate("userDontHaveFlags")];
 
 		const text: string =
 			this.client.emotes.label + " " +
@@ -111,23 +106,23 @@ export default class UserinfoCommand extends BaseCommand {
 			bot +
 			"**\n\n" +
 			this.client.emotes.calendar + " " +
-			this.translate("createdAt") + ": **" +
+			this.translate("accountCreatedAt") + ": **" +
 			createdAt +
 			"**\n" +
 			this.client.emotes.reminder + " " +
-			this.translate("createdBefore") + ": **" +
+			this.translate("accountCreatedBefore") + ": **" +
 			createdDiff +
 			"**\n\n" +
 			this.client.emotes.calendar + " " +
-			this.translate("joinedAt") + ": **" +
+			this.translate("userJoinedGuildAt") + ": **" +
 			joinedAt +
 			"**\n" +
 			this.client.emotes.reminder + " " +
-			this.translate("joinedBefore") + ": **" +
+			this.translate("userJoinedGuildBefore") + ": **" +
 			joinedDiff +
 			"**\n\n### " +
 			this.client.emotes.shine + " " +
-			this.translate("badges") + "\n**" +
+			this.translate("userFlags") + "\n**" +
 			badges.join("\n") +
 			"**";
 

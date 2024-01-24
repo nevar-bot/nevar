@@ -1,5 +1,7 @@
 {
-  "confirmation": "Danke für deine Meldung! Wir werden uns so schnell wie möglich darum kümmern.",
+  "bugIsReported": "Danke für deine Meldung! Bei Rückfragen werden wir uns bei dir melden.",
+  "internalBugEmbed": "### {{e.bug}} Es wurde ein Fehler gemeldet.\n\n{{e.user}} Nutzer: {{user}}\n{{e.discord}} Server: {{server}}\n\n{{e.text}} {{description}}",
+  "supportServerEmbedTitle": "{{user.username}} ({{user.id}}) hat einen Fehler gemeldet.",
   "supportTitle": "{{user.username}} ({{user.id}}) hat einen Fehler gemeldet",
   "guildId": "Server-ID"
 }

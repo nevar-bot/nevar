@@ -1,41 +1,18 @@
 {
-  "year": {
-    "plural": "Jahre",
-    "singular": "Jahr"
-  },
-
-  "month": {
-    "plural": "Monate",
-    "singular": "Monat"
-  },
-
-  "week": {
-    "plural": "Wochen",
-    "singular": "Woche"
-  },
-
-  "day": {
-    "plural": "Tage",
-    "singular": "Tag"
-  },
-
-  "hour": {
-    "plural": "Stunden",
-    "singular": "Stunde"
-  },
-
-  "minute": {
-    "plural": "Minuten",
-    "singular": "Minute"
-  },
-
-  "second": {
-    "plural": "Sekunden",
-    "singular": "Sekunde"
-  },
-
-  "millisecond": {
-    "plural": "Millisekunden",
-    "singular": "Millisekunde"
-  }
+  "years": "Jahre",
+  "year": "Jahr",
+  "months": "Monate",
+  "month": "Monat",
+  "weeks": "Wochen",
+  "week": "Woche",
+  "days": "Tage",
+  "day": "Tag",
+  "hours": "Stunden",
+  "hour": "Stunde",
+  "minutes": "Minuten",
+  "minute": "Minute",
+  "seconds": "Sekunden",
+  "second": "Sekunde",
+  "milliseconds": "Millisekunden",
+  "millisecond": "Millisekunde"
 }

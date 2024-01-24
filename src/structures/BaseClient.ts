@@ -26,7 +26,6 @@ import {
 import * as emotes from "@assets/emojis.json";
 
 /* Import helpers */
-import { permissions } from "@helpers/Permissions";
 import { ChannelTypes } from "@helpers/ChannelTypes";
 
 import Logger from "@helpers/Logger";
@@ -46,7 +45,6 @@ export default class BaseClient extends Client {
 	public config: any;
 	public emotes: any;
 	public support: string;
-	public permissions: any;
 	public channelTypes: any;
 	public locales: any;
 	public commands: Collection<string, any>;
@@ -103,7 +101,6 @@ export default class BaseClient extends Client {
 		this.config = toml.parse(fs.readFileSync("./config.toml", "utf8"));
 		this.emotes = emotes;
 		this.support = this.config.support["INVITE"];
-		this.permissions = permissions;
 		this.channelTypes = ChannelTypes;
 
 		this.commands = new Collection();

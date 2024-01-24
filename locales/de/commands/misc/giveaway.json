@@ -1,19 +1,19 @@
 {
   "errors": {
-    "invalidDuration": "Bitte gib eine gültige Dauer ein.",
-    "noGiveawayFound": "Bitte gib die ID der Gewinnspiel-Nachricht an."
+    "giveawayWasNotFound": "Bitte gib die Nachrichten-ID des Gewinnspiels an."
   },
-  "started": "Das Gewinnspiel wurde gestartet.",
-  "stopped": "Das Gewinnspiel wurde gestoppt.",
-  "rerolled": "Das Gewinnspiel wurde neu ausgelost.",
-  "deleted": "Das Gewinnspiel wurde gelöscht.",
+
+  "giveawayStarted": "Das Gewinnspiel wurde gestartet.",
+  "giveawayStopped": "Das Gewinnspiel wurde beendet.",
+  "giveawayRerolled": "Das Gewinnspiel wurde neu ausgelost.",
+  "giveawayDeleted": "Das Gewinnspiel wurde gelöscht.",
+
   "list": {
     "title": "Gewinnspiele",
-    "empty": "Es wurden noch keine Gewinnspiele erstellt",
-    "channel": "Kanal",
-    "winnerCount": "Gewinner",
-    "hostedBy": "Veranstaltet von",
-    "started": "Gestartet",
-    "endsAt": "Endet"
+    "noGiveawayCreated": "Es wurden noch keine Gewinnspiele erstellt",
+    "giveawayWinnerCount": "Gewinner",
+    "giveawayHostedBy": "Veranstaltet von",
+    "giveawayStartedAt": "Gestartet",
+    "giveawayEndsAt": "Endet"
   }
 }

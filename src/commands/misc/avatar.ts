@@ -6,9 +6,9 @@ export default class AvatarCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "avatar",
-			description: "Sends the avatar of a user",
+			description: "View the profile picture of a member",
 			localizedDescriptions: {
-				de: "Sendet den Avatar eines/r Nutzers/-in",
+				de: "Schaue dir das Profilbild eines Mitglieds an",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -17,13 +17,9 @@ export default class AvatarCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addUserOption((option) =>
 					option
 						.setName("member")
-						.setNameLocalizations({
-							de: "mitglied",
-						})
-						.setDescription("Choose a member")
-						.setDescriptionLocalizations({
-							de: "Wähle ein Mitglied",
-						})
+						.setNameLocalization("de", "mitglied")
+						.setDescription("Select one of the following members")
+						.setDescriptionLocalization("de", "Wähle eines der folgenden Mitglieder")
 						.setRequired(false),
 				),
 			},
@@ -33,6 +29,7 @@ export default class AvatarCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.showAvatar(interaction.options.getUser("member"));
 	}
 
@@ -47,7 +44,7 @@ export default class AvatarCommand extends BaseCommand {
 		const x2048 = user.displayAvatarURL({ extension: "png", size: 2048 });
 
 		const avatarEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("links") +
+			this.translate("avatarLinks") +
 				" [x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
 			null,
 			"normal",
@@ -58,7 +55,7 @@ export default class AvatarCommand extends BaseCommand {
 			x1024,
 			x2048,
 		);
-		avatarEmbed.setTitle(this.translate("title", { user: user.displayName }));
+		avatarEmbed.setTitle(this.translate("avatarEmbedTitle", { user: user.displayName }));
 		avatarEmbed.setImage(x256);
 
 		return this.interaction.followUp({ embeds: [avatarEmbed] });

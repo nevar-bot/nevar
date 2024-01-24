@@ -1,7 +1,9 @@
 {
-  "usages": "Verwendungen",
+  "inviteUsages": "Verwendungen",
   "guildLeft": "Server verlassen",
-  "fake": "Gefälscht",
-  "yourInvites": "Deine Einladungslinks",
-  "noInvites": "Du hast bisher niemanden eingeladen."
+  "joinsFaked": "Gefälscht",
+  "list": {
+    "title": "Deine Einladungslinks",
+    "noInviteLinksCreated": "Du hast bisher keine Einladungslinks erstellt."
+  }
 }

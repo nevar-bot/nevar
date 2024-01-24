@@ -1,14 +1,16 @@
 {
   "errors": {
-    "missingNameOrDuration": "Bitte gib einen Namen und eine Dauer an.",
-    "missingName": "Bitte gib einen Namen an.",
-    "noReminderWithThisName": "Du hast noch keine Erinnerung mit diesem Namen.",
-    "noReminders": "Du hast noch keine Erinnerungen erstellt."
+    "nameOrDurationIsMissing": "Bitte gib einen Namen und eine Dauer an.",
+    "nameIsMissing": "Bitte gib den Namen einer Erinnerung an.",
+    "cantFindReminderWithThisName": "Du hast noch keine Erinnerung mit diesem Namen erstellt."
   },
-  "created": "In {{duration}} werde ich dich erinnern.",
-  "deleted": "Die Erinnerung wurde gelöscht.",
-  "createdAt": "Erstellt am:",
-  "endsAt": "Endet am:",
-  "endsIn": "Endet in:",
-  "reminders": "Erinnerungen"
+  "reminderCreated": "In {{duration}} werde ich dich erinnern.",
+  "reminderDeleted": "Die Erinnerung {{reminder}} wurde gelöscht.",
+  "list": {
+    "title": "Erinnerungen",
+    "noRemindersCreated": "Du hast noch keine Erinnerungen erstellt.",
+    "reminderCreatedAt": "Erstellt am:",
+    "reminderEndsAt": "Endet am:",
+    "reminderEndsIn": "Endet in:"
+  }
 }

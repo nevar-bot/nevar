@@ -6,9 +6,9 @@ export default class LeaderboardCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "leaderboard",
-			description: "Sends the level leaderboard",
+			description: "Take a look at the server leaderboard",
 			localizedDescriptions: {
-				de: "Sendet das Level-Leaderboard",
+				de: "Sieh dir das Server-Leaderboard an",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -22,13 +22,14 @@ export default class LeaderboardCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		await this.sendLeaderboard(data);
+		this.data = data;
+		await this.sendLeaderboard();
 	}
 
-	private async sendLeaderboard(data: any): Promise<any> {
-		if (!data.guild.settings.levels.enabled) {
+	private async sendLeaderboard(): Promise<any> {
+		if (!this.data.guild.settings.levels.enabled) {
 			return this.interaction.followUp({
-				content: this.client.emotes.error + " " + this.translate("errors:isDisabled"),
+				content: this.client.emotes.error + " " + this.translate("errors:levelsystemIsNotEnabled"),
 			});
 		}
 
@@ -44,36 +45,29 @@ export default class LeaderboardCommand extends BaseCommand {
 		for (const user of leaderboardData) {
 			const emote: any = user.position < 4 ? this.client.emotes[user.position] : this.client.emotes.arrow;
 			beautifiedLeaderboard.push(
-				"### " +
-					emote +
+					"**" + emote + " " +
+					user.user.username +
+					"**\n" +
+					this.client.emotes.rocket +
 					" " +
-					user.displayName +
-					" (*@" +
-					user.username +
-					"*)" +
-					"\n" +
-					this.client.emotes.shine2 +
-					" " +
-					this.translate("level") +
+					this.getBasicTranslation("level") +
 					" " +
 					user.level +
-					"\n" +
-					this.client.emotes.shine2 +
-					" " +
-					this.client.format(user.xp) +
-					" / " +
-					this.client.format(this.client.levels.xpFor(user.level + 1)) +
-					" " +
-					this.translate("xp"),
+					" - " +
+					this.client.format(user.cleanXp) + " " +
+					this.getBasicTranslation("xp"),
 			);
 		}
 		const leaderboardEmbed: EmbedBuilder = this.client.createEmbed(
+			"### " + this.client.emotes.shine + " " + this.translate("viewFullLeaderboardHere", { guildId: this.interaction.guild.id }) + "\n\n" +
 			beautifiedLeaderboard.join("\n\n"),
 			null,
 			"normal",
 		);
 		if (beautifiedLeaderboard.length === 0)
-			leaderboardEmbed.setDescription(this.client.emotes.error + " " + this.translate("errors:noXp"));
+			leaderboardEmbed.setDescription(this.client.emotes.error + " " + this.translate("errors:noMembersGainedXp"));
+
+
 		return this.interaction.followUp({ embeds: [leaderboardEmbed] });
 	}
 }

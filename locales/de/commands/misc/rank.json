@@ -1,8 +1,6 @@
 {
   "errors": {
-    "isDisabled": "Das Levelsystem wurde noch nicht aktiviert.",
-    "noXp": "Der Nutzer hat noch keine XP."
-  },
-  "rank": "RANG",
-  "level": "LEVEL"
+    "levelsystemIsNotEnabled": "Das Levelsystem wurde noch nicht aktiviert.",
+    "userGainedNoXp": "{{user}} hat noch keine XP gesammelt."
+  }
 }

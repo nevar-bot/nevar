@@ -6,9 +6,9 @@ export default class InviteCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "invite",
-			description: "Lists all links that might interest you",
+			description: "See a list of links that might interest you",
 			localizedDescriptions: {
-				de: "Listet alle Links auf, die dich interessieren könnten",
+				de: "Sieh eine Liste an Links, die dich interessieren könnten",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -22,6 +22,7 @@ export default class InviteCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.sendLinks();
 	}
 
@@ -31,7 +32,7 @@ export default class InviteCommand extends BaseCommand {
 			null,
 			this.translate("invite"),
 			"Link",
-			this.client.emotes.growth_up,
+			this.client.emotes.logo.icon,
 			false,
 			this.client.createInvite(),
 		);
@@ -47,7 +48,7 @@ export default class InviteCommand extends BaseCommand {
 			null,
 			this.translate("web"),
 			"Link",
-			this.client.emotes.text,
+			this.client.emotes.globe,
 			false,
 			this.client.config.general["WEBSITE"],
 		);
@@ -73,7 +74,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.socials.x,
 			false,
-			"https://x.com/nevar_eu",
+			"https://nevar.eu/redirect/x",
 		);
 		const instagramButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -81,7 +82,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.socials.instagram,
 			false,
-			"https://www.instagram.com/nevar_eu/",
+			"https://nevar.eu/redirect/instagram",
 		);
 		const githubButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -89,7 +90,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.socials.github,
 			false,
-			"https://github.com/nevar-bot",
+			"https://nevar.eu/redirect/github",
 		);
 		const voteButton: ButtonBuilder = this.client.createButton(
 			null,
@@ -97,7 +98,7 @@ export default class InviteCommand extends BaseCommand {
 			"Link",
 			this.client.emotes.topgg,
 			false,
-			"https://top.gg/" + this.client.user!.id + "/vote",
+			"https://nevar.eu/redirect/vote"
 		);
 
 		const buttonRow2: any = this.client.createMessageComponentsRow(

@@ -6,12 +6,20 @@
     "statusIsMissing": "Bitte wähle einen Status aus.",
     "dontUseEveryoneRole": "Bitte verwende nicht die @everyone Rolle.",
     "dontUseManagedRole": "Bitte wähle eine Rolle, die nicht durch einen Bot verwaltet wird.",
-    "roleIsHigherThanBot": "Bitte wähle eine Rolle, die sich unter meiner höchsten Rolle ({{role}}) befindet."
+    "roleIsHigherThanBot": "Bitte wähle eine Rolle, die sich unter meiner höchsten Rolle ({{role}}) befindet.",
+    "durationIsInvalid": "Bitte gib eine gültige Dauer an."
   },
 
+  "yes": "Ja",
+  "no": "Nein",
   "channel": "Kanal",
   "duration": "Dauer",
   "emojis": "Emojis",
   "role": "Rolle",
-  "level": "Level"
+  "rank": "Rang",
+  "level": "Level",
+  "xp": "XP",
+  "back": "Zurück",
+  "further": "Weiter",
+  "pagination": "Seite {{pages.current}} von {{pages.total}}"
 }

@@ -1,4 +1,4 @@
 {
-  "title": "Icon von {{guild.name}}",
-  "links": "Links"
+  "serverIcon": "Icon von {{guild.name}}",
+  "serverIconLinks": "Links"
 }
