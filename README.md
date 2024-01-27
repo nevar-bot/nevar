@@ -54,7 +54,7 @@ Distributed under the AGPLv3 License. See `LICENSE` for more information.
 
 [contributors-shield]: https://img.shields.io/github/contributors/nevar-bot/nevar.svg?style=for-the-badge
 [contributors-url]: https://github.com/nevar-bot/nevar/graphs/contributors
-[node-shield]:https://img.shields.io/badge/NODE-%3E%3D%2020.0.0-2?style=for-the-badge&color=c634f7
+[node-shield]:https://img.shields.io/badge/NODE-%3E%3D%2020.11.0-2?style=for-the-badge&color=c634f7
 [node-url]:https://node.js.org
 [license-shield]: https://img.shields.io/github/license/nevar-bot/nevar.svg?style=for-the-badge
 [license-url]:https://choosealicense.com/licenses/agpl-3.0/
