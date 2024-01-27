@@ -1,0 +1,8 @@
+{
+  "memberCount": "Mitglieder",
+  "id": "ID",
+  "list": {
+    "title": "Serverliste",
+    "noGuilds": "Der Bot ist noch auf keinem Server."
+  }
+}

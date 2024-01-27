@@ -1,0 +1,13 @@
+{
+  "createChangelogButtonLabel": "Changelog erstellen",
+  "createChangelogEmbedDescription": "Drücken den Button, um einen Changelog zu senden",
+  "changelogModal": {
+    "title": "Changelog erstellen",
+    "newFeatures": "Neue Funktionen",
+    "improvedFeatures": "Verbesserte Funktionen",
+    "bugFixes": "Gefixte Bugs",
+    "removedFeatures": "Entfernte Funktionen"
+  },
+  "changelogTitle": "Changelog vom {{date}}",
+  "changelogSent": "Der Changelog wurde gesendet."
+}

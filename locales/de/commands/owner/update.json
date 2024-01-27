@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "cantPullFromGithub": "Beim Pullen von GitHub ist ein Fehler aufgetreten.",
+    "cantCompileTypescript": "Beim Kompilieren von TypeScript ist ein Fehler aufgetreten."
+  },
+  "codeUpdated": "Der Code wurde auf den neuesten Stand gebracht und kompiliert.",
+  "startUpdate": "Starte Aktualisierung..."
+}

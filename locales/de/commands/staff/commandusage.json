@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "commandIsMissing": "Bitte gib einen Befehl an.",
+    "commandNotFound": "Dieser Befehl existiert nicht."
+  },
+
+  "statisticsTitle": "Nutzungsstatistiken zum {{command}} Befehl",
+  "executedTotal": "Insgesamt: **{{total}}x**",
+  "executedYear": "Dieses Jahr: **{{year}}x**",
+  "executedMonth": "Dieser Monat: **{{month}}x**",
+  "executedWeek": "Diese Woche: **{{week}}x**",
+  "executedToday": "Heute: **{{day}}x**",
+  "executedHour": "Diese Stunde: **{{hour}}x**",
+}

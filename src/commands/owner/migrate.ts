@@ -9,10 +9,10 @@ export default class MigrateCommand extends BaseCommand {
 			name: "migrate",
 			description: "Migrates datasets to the current database schema",
 			localizedDescriptions: {
-				de: "Migriert Datensätze angepasst an das aktuelle Datenbankschema",
+				de: "Migriert Datensätze an das aktuelle Datenbankschema",
 			},
 			dirname: __dirname,
-			staffOnly: true,
+			ownerOnly: true,
 			slashCommand: {
 				addCommand: false,
 				data: null,
@@ -23,19 +23,20 @@ export default class MigrateCommand extends BaseCommand {
 	public async dispatch(message: any, args: string[], data: any) {
 		this.message = message;
 		this.guild = message.guild;
+		this.data = data;
 		switch (args[0]) {
 			case "users":
-				this.migrateUsers();
+				await this.migrateUsers();
 				break;
 			case "guilds":
-				this.migrateGuilds();
+				await this.migrateGuilds();
 				break;
 			case "members":
-				this.migrateMembers();
+				await this.migrateMembers();
 				break;
 			default:
 				const embed: EmbedBuilder = this.client.createEmbed(
-					this.translate("staff/migrate:errors:wrongOption"),
+					this.translate("errors:optionIsMissing"),
 					"error",
 					"error",
 				);
@@ -43,30 +44,30 @@ export default class MigrateCommand extends BaseCommand {
 		}
 	}
 
-	private async migrateUsers(): Promise<void> {
+	private async migrateUsers(): Promise<any> {
 		const count: number = await DatabaseMigration.migrateUsers();
 		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("staff/migrate:success_users", { count }),
+			this.translate("migratedUsers", { count }),
 			"success",
 			"success",
 		);
 		return this.message.reply({ embeds: [embed] });
 	}
 
-	private async migrateGuilds(): Promise<void> {
+	private async migrateGuilds(): Promise<any> {
 		const count: number = await DatabaseMigration.migrateGuilds();
 		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("staff/migrate:success_guilds", { count }),
+			this.translate("migratedGuilds", { count }),
 			"success",
 			"success",
 		);
 		return this.message.reply({ embeds: [embed] });
 	}
 
-	private async migrateMembers(): Promise<void> {
+	private async migrateMembers(): Promise<any> {
 		const count: number = await DatabaseMigration.migrateMembers();
 		const embed: EmbedBuilder = this.client.createEmbed(
-			this.translate("staff/migrate:success_members", { count }),
+			this.translate("migratedMembers", { count }),
 			"success",
 			"success",
 		);

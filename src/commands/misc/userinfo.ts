@@ -74,12 +74,6 @@ export default class UserinfoCommand extends BaseCommand {
 		// Nevar staff
 		if (data.staff.state || this.client.config.general["OWNER_IDS"].includes(member.user.id))
 			badges.push(this.client.emotes.flags.Staff + " " + this.client.user!.username + "-" + this.translate("flags:NevarStaff"));
-		// Nevar partner
-		if (data.partner.state)
-			badges.push(this.client.emotes.flags.Partner + " " + this.client.user!.username + "-" + this.translate("flags:NevarPartner"));
-		// Nevar Bughunter
-		if (data.bughunter.state)
-			badges.push(this.client.emotes.flags.BugHunterLevel1 + " " + this.client.user!.username + "-" + this.translate("flags:NevarBughunter"));
 
 		// Discord badges
 		for (const flag of userFlags) {

@@ -3,12 +3,15 @@ import BaseClient from "@structures/BaseClient";
 import { EmbedBuilder } from "discord.js";
 import { exec } from "child_process";
 
-export default class PullCommand extends BaseCommand {
+export default class UpdateCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "update",
-			description: "Bringt den Bot auf den aktuellen Stand des GitHub Repositories",
-			staffOnly: true,
+			description: "Brings the code up to date with the GitHub repository",
+			localizedDescriptions: {
+				de: "Bringt den Code auf Stand des GitHub Repositories"
+			},
+			ownerOnly: true,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: false,
@@ -17,32 +20,33 @@ export default class PullCommand extends BaseCommand {
 		});
 	}
 
-	private message: any;
 
 	public async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
 		await this.update();
 	}
 
-	private async update(): Promise<void> {
-		const updateEmbed: EmbedBuilder = this.client.createEmbed("Starte Aktualisierung...", "warning", "warning");
+	private async update(): Promise<any> {
+		const updateEmbed: EmbedBuilder = this.client.createEmbed(this.translate("startUpdate"), "warning", "warning");
 		const repliedMessage = await this.message.reply({
 			embeds: [updateEmbed],
 		});
 
-		exec("git pull", (err: any, stdout: string, stderr: string): void => {
+		exec("git pull", (err: any, stdout: string, stderr: string): any => {
 			if (err) {
 				const errorEmbed: EmbedBuilder = this.client.createEmbed(
-					`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``,
+					this.translate("errors:cantPullFromGithub") + `\`\`\`${err}\`\`\``,
 					"error",
 					"error",
 				);
 				return repliedMessage.edit({ embeds: [errorEmbed] });
 			}
-			exec("npm run build", (err: any, stdout: string, stderr: string): void => {
+			exec("npm run build", (err: any, stdout: string, stderr: string): any => {
 				if (err) {
 					const errorEmbed: EmbedBuilder = this.client.createEmbed(
-						`Beim Aktualisieren ist ein Fehler aufgetreten:\`\`\`${err}\`\`\``,
+						this.translate("errors:cantCompileTypescript") + `\`\`\`${err}\`\`\``,
 						"error",
 						"error",
 					);
@@ -50,13 +54,11 @@ export default class PullCommand extends BaseCommand {
 				}
 			});
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				"Aktualisierung erfolgreich, starte neu...",
+				this.translate("codeUpdated"),
 				"success",
 				"success",
 			);
-			repliedMessage.edit({ embeds: [successEmbed] }).then((): void => {
-				process.exit(1);
-			});
+			repliedMessage.edit({ embeds: [successEmbed] });
 		});
 	}
 }

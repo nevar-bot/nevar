@@ -18,7 +18,6 @@ const Schema = new mongoose.Schema({
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null,
 		},
 	},
 	staff: {
@@ -26,18 +25,6 @@ const Schema = new mongoose.Schema({
 		default: {
 			state: false,
 			role: null,
-		},
-	},
-	partner: {
-		type: Object,
-		default: {
-			state: false,
-		},
-	},
-	bughunter: {
-		type: Object,
-		default: {
-			state: false,
 		},
 	},
 

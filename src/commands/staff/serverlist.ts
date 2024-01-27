@@ -5,7 +5,10 @@ export default class ServerlistCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "serverlist",
-			description: "Sendet die Serverliste",
+			description: "Sends the server list",
+			localizedDescriptions: {
+				de: "Sendet die Serverliste",
+			},
 			staffOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -15,10 +18,11 @@ export default class ServerlistCommand extends BaseCommand {
 		});
 	}
 
-	private message: any;
 
 	public async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
 		await this.showServerList();
 	}
 
@@ -32,12 +36,12 @@ export default class ServerlistCommand extends BaseCommand {
 				" " +
 				guild[1].name +
 				"\n" +
-				this.client.emotes.arrow +
-				" Mitglieder: " +
+				this.client.emotes.arrow + " " +
+				this.translate("memberCount") + ": " +
 				this.client.format(guild[1].memberCount) +
 				"\n" +
-				this.client.emotes.arrow +
-				" ID: " +
+				this.client.emotes.arrow + " " +
+				this.translate("id") + ": " +
 				guild[1].id +
 				"\n";
 			servers.push({ guild: guild[1], text: text });
@@ -50,9 +54,8 @@ export default class ServerlistCommand extends BaseCommand {
 			this.message,
 			5,
 			serverTexts,
-			"Serverliste",
-			"Der Bot ist auf keinem Server",
-			null,
+			this.translate("list:title"),
+			this.translate("list:noGuilds")
 		);
 	}
 }

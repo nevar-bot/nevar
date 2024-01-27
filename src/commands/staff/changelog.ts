@@ -14,7 +14,10 @@ export default class ChangelogCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "changelog",
-			description: "Sendet den Changelog als übersichtliche Nachricht",
+			description: "Send a changelog as a clear message",
+			localizedDescriptions: {
+				de: "Sende einen Changelog als übersichtliche Nachricht"
+			},
 			ownerOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -24,22 +27,23 @@ export default class ChangelogCommand extends BaseCommand {
 		});
 	}
 
-	private message: any;
 
 	public async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
 		await this.sendChangelog();
 	}
 
 	private async sendChangelog(): Promise<void> {
 		const createButton: ButtonBuilder = this.client.createButton(
 			"create",
-			"Changelog erstellen",
+			this.translate("createChangelogButtonLabel"),
 			"Secondary",
 			"text",
 		);
 		const createEmbed: EmbedBuilder = this.client.createEmbed(
-			"Wenn du einen Changelog erstellen möchtest, drücke den Button",
+			this.translate("createChangelogEmbedDescription"),
 			"arrow",
 			"normal",
 		);
@@ -55,29 +59,29 @@ export default class ChangelogCommand extends BaseCommand {
 		});
 		buttonCollector.on("collect", async (interaction: any): Promise<void> => {
 			// Create changelog modal
-			const modal: ModalBuilder = new ModalBuilder().setCustomId("changelog").setTitle("Changelog erstellen");
+			const modal: ModalBuilder = new ModalBuilder().setCustomId("changelog").setTitle(this.translate("changelogModal:title"))
 
 			const newInput: TextInputBuilder = new TextInputBuilder()
 				.setCustomId("new")
-				.setLabel("Neue Funktionen")
+				.setLabel(this.translate("changelogModal:newFeatures"))
 				.setRequired(false)
 				.setStyle(TextInputStyle.Paragraph);
 
 			const improvedInput: TextInputBuilder = new TextInputBuilder()
 				.setCustomId("improved")
-				.setLabel("Verbesserte Funktionen")
+				.setLabel(this.translate("changelogModal:improvedFeatures"))
 				.setRequired(false)
 				.setStyle(TextInputStyle.Paragraph);
 
 			const fixedInput: TextInputBuilder = new TextInputBuilder()
 				.setCustomId("fixed")
-				.setLabel("Gefixte Bugs")
+				.setLabel(this.translate("changelogModal:bugFixes"))
 				.setRequired(false)
 				.setStyle(TextInputStyle.Paragraph);
 
 			const removedInput: TextInputBuilder = new TextInputBuilder()
 				.setCustomId("removed")
-				.setLabel("Entfernte Funktionen")
+				.setLabel(this.translate("changelogModal:removedFeatures"))
 				.setRequired(false)
 				.setStyle(TextInputStyle.Paragraph);
 
@@ -111,33 +115,33 @@ export default class ChangelogCommand extends BaseCommand {
 					if (removedFeatures === "") removedFeatures = "/";
 					removedFeatures = removedFeatures.split(/\r?\n/);
 
-					const date: string = moment(Date.now()).format("DD.MM.YYYY, HH:mm");
+					const date: string = this.client.utils.getDiscordTimestamp(Date.now(), "F");
 
 					const text: string =
 						"### " +
 						this.client.emotes.shine +
-						" Neue Funktionen\n" +
+						this.translate("changelogModal:newFeatures") + "\n" +
 						this.client.emotes.arrow +
 						" " +
 						newFeatures.join("\n" + this.client.emotes.arrow + " ") +
 						"\n\n\n\n" +
 						"### " +
 						this.client.emotes.rocket +
-						"Verbesserte Funktionen\n" +
+						this.translate("changelogModal:improvedFeatures") + "\n" +
 						this.client.emotes.arrow +
 						" " +
 						improvedFeatures.join("\n" + this.client.emotes.arrow + " ") +
 						"\n\n\n\n" +
 						"### " +
 						this.client.emotes.bug +
-						" Behobene Fehler\n" +
+						this.translate("changelogModal:bugFixes") + "\n" +
 						this.client.emotes.arrow +
 						" " +
 						fixedFeatures.join("\n" + this.client.emotes.arrow + " ") +
 						"\n\n\n\n" +
 						"### " +
 						this.client.emotes.error +
-						" Entfernte Funktionen\n" +
+						this.translate("changelogModal:removedFeatures") + "\n" +
 						this.client.emotes.arrow +
 						" " +
 						removedFeatures.join("\n" + this.client.emotes.arrow + " ") +
@@ -145,12 +149,12 @@ export default class ChangelogCommand extends BaseCommand {
 
 					const changelogEmbed: EmbedBuilder = this.client.createEmbed("{0}", null, "normal", text);
 					changelogEmbed.setThumbnail(this.client.user!.displayAvatarURL());
-					changelogEmbed.setTitle("Changelog vom " + date);
+					changelogEmbed.setTitle(this.translate("changelogTitle", { date }));
 					this.message.channel.send({ embeds: [changelogEmbed] });
 
 					// Delete messages and close modal
 					const sentEmbed: EmbedBuilder = await this.client.createEmbed(
-						"Der Changelog wurde erstellt und gesendet",
+						this.translate("changelogSent"),
 						"success",
 						"success",
 					);

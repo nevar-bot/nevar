@@ -17,7 +17,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null,
 		},
 	},
 	locale: { type: String, default: "de" },
