@@ -44,7 +44,7 @@ export default class AvatarContext extends BaseContext {
 		});
 
 		const avatarEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("misc/avatar:links") +
+			this.translate("links") +
 				" [x64]({0}) • [x128]({1}) • [x256]({2}) • [x512]({3}) • [x1024]({4}) • [x2048]({5})",
 			null,
 			"normal",
@@ -55,7 +55,7 @@ export default class AvatarContext extends BaseContext {
 			x1024,
 			x2048,
 		);
-		avatarEmbed.setTitle(this.translate("misc/avatar:title", { user: user.displayName }));
+		avatarEmbed.setTitle(this.translate("title", { user: user.displayName }));
 		avatarEmbed.setImage(x256);
 
 		return this.interaction.followUp({ embeds: [avatarEmbed] });
