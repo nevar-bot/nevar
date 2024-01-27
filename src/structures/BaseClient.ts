@@ -50,7 +50,7 @@ export default class BaseClient extends Client {
 	public commands: Collection<string, any>;
 	public contextMenus: Collection<string, any>;
 	public giveawayManager: any;
-	public logger: Logger;
+	public logger: any;
 	public utils: any;
 	public levels: any;
 	public logs: any;

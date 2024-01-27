@@ -97,6 +97,7 @@ export default class Loader {
 	}
 
 	static async loadLanguages(client: BaseClient): Promise<void> {
+		client.logger.log("Loading languages...");
 		client.locales = await languages();
 		const locales: string = Array.from(client.locales.keys()).join(", ");
 		client.logger.log("Loaded " + client.locales.size + " languages (" + locales + ")");
