@@ -23,37 +23,25 @@ export default class BanCommand extends BaseCommand {
 					.addUserOption((option: any) =>
 						option
 							.setName("member")
-							.setNameLocalizations({
-								de: "mitglied"
-							})
-							.setDescription("Choose a member")
-							.setDescriptionLocalizations({
-								de: "Wähle ein Mitglied aus"
-							})
+							.setNameLocalization("de", "mitglied")
+							.setDescription("Select a member")
+							.setDescriptionLocalization("de", "Wähle ein Mitglied")
 							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("reason")
-							.setNameLocalizations({
-								de: "grund"
-							})
+							.setNameLocalization("de", "grund")
 							.setDescription("Choose a reason")
-							.setDescriptionLocalizations({
-								de: "Gib einen Grund an"
-							})
+							.setDescriptionLocalization("de", "Gib einen Grund an")
 							.setRequired(false),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("duration")
-							.setNameLocalizations({
-								de: "dauer"
-							})
+							.setNameLocalization("de", "dauer")
 							.setDescription("Choose a duration (e.g. 1h, 1d, 1h 30m, etc.)")
-							.setDescriptionLocalizations({
-								de: "Gib eine Dauer an (bspw. 1h, 1d, 1h 30m, etc.)"
-							})
+							.setDescriptionLocalization("de", "Gib eine Dauer an (bspw. 1h, 1d, 1h 30m, etc.)")
 							.setRequired(false),
 					),
 			},
@@ -62,19 +50,20 @@ export default class BanCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
+		this.guild = interaction.guild;
+		this.data = data;
 		await this.ban(
 			interaction.options.getUser("member"),
 			interaction.options.getString("reason"),
-			interaction.options.getString("duration"),
-			data,
+			interaction.options.getString("duration")
 		);
 	}
 
-	private async ban(member: any, reason: string, duration: string, data: any): Promise<any> {
-		member = await this.interaction.guild!.resolveMember(member.id);
+	private async ban(member: any, reason: string, duration: string): Promise<any> {
+		member = await this.guild!.resolveMember(member.id);
 		if (!member) {
 			const noMemberEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingMember"),
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -101,7 +90,7 @@ export default class BanCommand extends BaseCommand {
 
 		if (member.roles.highest.position >= this.interaction.member!.roles.highest.position) {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantBanHigher"),
+				this.translate("errors:targetHasHigherRole"),
 				"error",
 				"error",
 			);
@@ -110,7 +99,7 @@ export default class BanCommand extends BaseCommand {
 
 		if (!member.bannable) {
 			const cantBanEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantBan"),
+				this.translate("errors:targetIsNotBannable", { user: member.toString() }),
 				"error",
 				"error",
 			);
@@ -119,7 +108,7 @@ export default class BanCommand extends BaseCommand {
 
 		if (duration && !ms(duration)) {
 			const invalidDurationEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:invalidDuration"),
+				this.getBasicTranslation("errors:durationIsInvalid"),
 				"error",
 				"error",
 			);
@@ -130,13 +119,13 @@ export default class BanCommand extends BaseCommand {
 
 		const ban: any = {
 			victim: member,
-			reason: reason || this.translate("noReasonSpecified"),
+			reason: reason || this.translate("noBanReasonSpecified"),
 			duration: duration ? ms(duration) : 200 * 60 * 60 * 24 * 365 * 1000,
 		};
 
 		let relativeTime: string = this.client.utils.getDiscordTimestamp(Date.now() + ban.duration, "R");
 		if (ban.duration === 200 * 60 * 60 * 24 * 365 * 1000) {
-			relativeTime = this.translate("permanent");
+			relativeTime = this.translate("permanentDuration");
 		}
 		let unbanDate: string = moment(Date.now() + ban.duration).format("DD.MM.YYYY, HH:mm");
 		if (ban.duration === 200 * 60 * 60 * 24 * 365 * 1000) {
@@ -144,12 +133,12 @@ export default class BanCommand extends BaseCommand {
 		}
 
 		const areYouSureEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("confirmation", { user: member.toString() }),
+			this.translate("confirmRequestedBan", { user: member.toString() }),
 			"arrow",
 			"warning",
 		);
-		const buttonYes: ButtonBuilder = this.client.createButton("confirm", this.translate("basics:yes", undefined, true), "Secondary", "success");
-		const buttonNo: ButtonBuilder = this.client.createButton("decline", this.translate("basics:no", undefined, true), "Secondary", "error");
+		const buttonYes: ButtonBuilder = this.client.createButton("confirm", this.getBasicTranslation("yes"), "Secondary", "success");
+		const buttonNo: ButtonBuilder = this.client.createButton("decline", this.getBasicTranslation("no"), "Secondary", "error");
 		const buttonRow: any = this.client.createMessageComponentsRow(buttonYes, buttonNo);
 
 		const confirmationAskMessage: any = await this.interaction.followUp({
@@ -170,21 +159,21 @@ export default class BanCommand extends BaseCommand {
 					const privateText: string =
 						"### " +
 						this.client.emotes.ban + " " +
-						this.translate("privateMessage:title", { guild: this.interaction.guild!.name }) + "\n\n" +
+						this.translate("privateInformationTitle", { guild: this.interaction.guild!.name }) + "\n\n" +
 						this.client.emotes.arrow + " " +
-						this.translate("reason") + ": " +
+						this.getBasicTranslation("reason") + ": " +
 						ban.reason +
 						"\n" +
 						this.client.emotes.arrow + " " +
-						this.translate("duration") + ": " +
+						this.getBasicTranslation("duration") + ": " +
 						relativeTime +
 						"\n" +
 						this.client.emotes.arrow + " " +
-						this.translate("moderator") + ": " +
+						this.getBasicTranslation("moderator") + ": " +
 						this.interaction.user.username +
 						"\n" +
 						this.client.emotes.arrow + " " +
-						this.translate("unbanAt") + ": " +
+						this.translate("unbanIsAt") + ": " +
 						unbanDate;
 
 					const privateBanEmbed: EmbedBuilder = this.client.createEmbed(
@@ -196,13 +185,13 @@ export default class BanCommand extends BaseCommand {
 					try {
 						await ban.victim.ban({
 							reason:
-								this.translate("duration") + ": " +
+								this.getBasicTranslation("duration") + ": " +
 								relativeTime + " | " +
-								this.translate("reason") + ": " +
+								this.getBasicTranslation("reason") + ": " +
 								ban.reason + " | " +
-								this.translate("moderator") + ": " +
+								this.getBasicTranslation("moderator") + ": " +
 								this.interaction.user.username + " | " +
-								this.translate("unbanAt") + ": " +
+								this.translate("unbanIsAt") + ": " +
 								unbanDate,
 						});
 						const victimData = await this.client.findOrCreateMember(
@@ -231,21 +220,21 @@ export default class BanCommand extends BaseCommand {
 						const publicText: string =
 							"### " +
 							this.client.emotes.ban + " " +
-							this.translate("publicMessage:title", { user: ban.victim.user.username }) + "\n\n" +
+							this.translate("publicInformationTitle", { user: ban.victim.user.username }) + "\n\n" +
 							this.client.emotes.arrow + " " +
-							this.translate("reason") + ": " +
+							this.getBasicTranslation("reason") + ": " +
 							ban.reason +
 							"\n" +
 							this.client.emotes.arrow + " " +
-							this.translate("duration") + ": " +
+							this.getBasicTranslation("duration") + ": " +
 							relativeTime +
 							"\n" +
 							this.client.emotes.arrow + " " +
-							this.translate("moderator") + ": " +
+							this.getBasicTranslation("moderator") + ": " +
 							this.interaction.user.username +
 							"\n" +
 							this.client.emotes.arrow + " " +
-							this.translate("unbanAt") + ": " +
+							this.translate("unbanIsAt") + ": " +
 							unbanDate;
 						const publicBanEmbed: EmbedBuilder = this.client.createEmbed(
 							publicText,
@@ -274,7 +263,7 @@ export default class BanCommand extends BaseCommand {
 					break;
 				case "decline":
 					const declineEmbed: EmbedBuilder = this.client.createEmbed(
-						this.translate("banRejected", { user: ban.victim.user.toString() }),
+						this.translate("banConfirmationRejected", { user: ban.victim.user.toString() }),
 						"error",
 						"error",
 					);

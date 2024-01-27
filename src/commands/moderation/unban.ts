@@ -18,13 +18,9 @@ export default class UnbanCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
 					option
 						.setName("user")
-						.setNameLocalizations({
-							de: "nutzer"
-						})
+						.setNameLocalization("de", "nutzer")
 						.setDescription("Enter the ID or name of the user")
-						.setDescriptionLocalizations({
-							de: "Gib hier die ID oder den Namen des Nutzers an"
-						})
+						.setDescriptionLocalization("de", "Gib hier die ID oder den Namen des Nutzers an")
 						.setRequired(true),
 				),
 			},
@@ -34,6 +30,7 @@ export default class UnbanCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.unban(interaction.options.getString("user"));
 	}
 
@@ -41,7 +38,7 @@ export default class UnbanCommand extends BaseCommand {
 		user = await this.client.resolveUser(user);
 		if (!user || !user.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingUser", {}, true),
+				this.getBasicTranslation("errors:userIsMissing"),
 				"error",
 				"error",
 			);
@@ -51,7 +48,7 @@ export default class UnbanCommand extends BaseCommand {
 		const guildBans: any = await this.interaction.guild!.bans.fetch().catch((): void => {});
 		if (!guildBans.some((u: any): boolean => u.user.id === user.id)) {
 			const isNotBannedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:isNotBanned", { user: user.username }),
+				this.translate("errors:userIsNotBanned", { user: user.username }),
 				"error",
 				"error"
 			);
@@ -77,7 +74,7 @@ export default class UnbanCommand extends BaseCommand {
 			this.client.databaseCache.bannedUsers.delete(memberData.id + memberData.guildID);
 
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("unbanned", { user: user.username }),
+				this.translate("unbannedUser", { user: user.username }),
 				"success",
 				"success"
 			);

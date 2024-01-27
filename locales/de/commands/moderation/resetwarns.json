@@ -1,5 +1,4 @@
-{
-  "logTitle": "Verwarnungen von {{user}} zurückgesetzt",
-  "moderator": "Moderator",
-  "reset": "Die Verwarnungen von {{user}} wurden zurückgesetzt."
+ {
+  "loggingTitle": "Verwarnungen von {{user}} zurückgesetzt",
+  "warningsResetted": "Die Verwarnungen von {{user}} wurden zurückgesetzt."
 }

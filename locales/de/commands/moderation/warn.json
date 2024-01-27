@@ -1,18 +1,11 @@
 {
   "errors": {
-    "cantWarnMe": "Ich kann mich nicht selber verwarnen.",
-    "cantWarnYourSelf": "Du kannst dich nicht selber verwarnen.",
-    "cantWarnHigher": "Du kannst keine Mitglieder verwarnen, die eine höhere Rolle als du haben."
+    "cantWarnMyself": "Ich kann mich nicht selber verwarnen.",
+    "cantWarnYourself": "Du kannst dich nicht selber verwarnen.",
+    "targetHasHigherRole": "Du kannst keine Mitglieder verwarnen, die eine höhere Rolle als du haben."
   },
-  "moderator": "Moderator",
-  "reason": "Begründung",
-  "privateMessage": {
-    "title": "Du wurdest auf {{guild}} verwarnt."
-  },
-  "logMessage": {
-    "title": "{{user}} wurde verwarnt"
-  },
-  "publicMessage": {
-    "title": "{{user}} wurde verwarnt",
-  }
+
+  "noWarningReasonSpecified": "Kein Grund angegeben",
+  "privateInformationTitle": "Du wurdest auf {{guild}} verwarnt.",
+  "publicInformationTitle": "{{user}} wurde verwarnt"
 }

@@ -18,13 +18,9 @@ export default class UntimeoutCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
 						.setName("member")
-						.setNameLocalizations({
-							de: "mitglied"
-						})
+						.setNameLocalization("de", "mitglied")
 						.setDescription("Choose a member")
-						.setDescriptionLocalizations({
-							de: "Wähle ein Mitglied"
-						})
+						.setDescriptionLocalization("de", "Wähle ein Mitglied")
 						.setRequired(true),
 				),
 			},
@@ -35,6 +31,7 @@ export default class UntimeoutCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 
 		await this.untimeout(interaction.options.getMember("member"));
 	}
@@ -42,7 +39,7 @@ export default class UntimeoutCommand extends BaseCommand {
 	private async untimeout(member: any): Promise<any> {
 		if(!member){
 			const invalidMemberEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingMember", {}, true),
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -51,7 +48,7 @@ export default class UntimeoutCommand extends BaseCommand {
 
 		if(!member.communicationDisabledUntil){
 			const memberIsNotTimeoutedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:notTimeouted", { user: member.toString() }),
+				this.translate("errors:userIsNotTimeouted", { user: member.toString() }),
 				"error",
 				"error",
 			);
@@ -60,15 +57,15 @@ export default class UntimeoutCommand extends BaseCommand {
 
 		member.timeout(null, this.interaction.user.username);
 		const untimeoutedEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("untimeouted", { user: member.toString() }),
+			this.translate("untimeoutedUser", { user: member.toString() }),
 			"success",
 			"success",
 		);
 		await this.interaction.followUp({ embeds: [untimeoutedEmbed] });
 
 		const logMessageText: string =
-			"### " + this.translate("logMessage", { user: member.toString() }) + "\n\n" +
-			this.client.emotes.user + " " + this.translate("moderator") + ": " + this.interaction.user.toString();
+			"### " + this.translate("loggingMessage", { user: member.toString() }) + "\n\n" +
+			this.client.emotes.user + " " + this.getBasicTranslation("moderator") + ": " + this.interaction.user.toString();
 
 		const logMessageEmbed: EmbedBuilder = this.client.createEmbed(logMessageText, null, "normal");
 		return this.interaction.guild!.logAction(logMessageEmbed, "moderation");

@@ -4,6 +4,8 @@
     "channelIsMissing": "Bitte wähle einen Kanal aus.",
     "roleIsMissing": "Bitte wähle eine Rolle aus.",
     "statusIsMissing": "Bitte wähle einen Status aus.",
+    "memberIsMissing": "Bitte wähle ein Mitglied aus.",
+    "userIsMissing": "Bitte wähle einen Benutzer aus.",
     "dontUseEveryoneRole": "Bitte verwende nicht die @everyone Rolle.",
     "dontUseManagedRole": "Bitte wähle eine Rolle, die nicht durch einen Bot verwaltet wird.",
     "roleIsHigherThanBot": "Bitte wähle eine Rolle, die sich unter meiner höchsten Rolle ({{role}}) befindet.",
@@ -14,12 +16,15 @@
   "no": "Nein",
   "channel": "Kanal",
   "duration": "Dauer",
+  "reason": "Begründung",
   "emojis": "Emojis",
+  "moderator": "Moderator",
   "role": "Rolle",
   "rank": "Rang",
   "level": "Level",
   "xp": "XP",
   "back": "Zurück",
   "further": "Weiter",
-  "pagination": "Seite {{pages.current}} von {{pages.total}}"
+  "pagination": "Seite {{pages.current}} von {{pages.total}}",
+  "number": "Anzahl"
 }

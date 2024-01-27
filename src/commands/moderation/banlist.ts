@@ -26,6 +26,7 @@ export default class BanlistCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.showBanList();
 	}
 
@@ -38,12 +39,13 @@ export default class BanlistCommand extends BaseCommand {
 				// Mit Nevar gebannt
 				const duration: string =
 					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
-						? "Permanent"
+						? this.translate("permanentDuration")
 						: this.client.utils.getDiscordTimestamp(Date.now() + memberData.banned.duration, "R");
 				const bannedUntil: string =
 					memberData.banned.duration === 200 * 60 * 60 * 24 * 365 * 1000
 						? "/"
-						: moment(memberData.banned.bannedUntil).format("DD.MM.YYYY, HH:mm");
+						: this.client.utils.getDiscordTimestamp(memberData.banned.bannedUntil, "f");
+
 				const moderator: any = await this.client.users
 					.fetch(memberData.banned.moderator.id)
 					.catch((): void => {});
@@ -54,23 +56,23 @@ export default class BanlistCommand extends BaseCommand {
 					ban[1].user.username +
 					"\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("reason") + ": " +
+					this.getBasicTranslation("reason") + ": " +
 					memberData.banned.reason +
 					"\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("moderator") + ": " +
+					this.getBasicTranslation("moderator") + ": " +
 					(moderator ? moderator.username : memberData.banned.moderator.name) +
 					"\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("duration") + ": " +
+					this.getBasicTranslation("duration") + ": " +
 					duration +
 					"\n" +
 					this.client.emotes.arrow + " " +
 					this.translate("bannedAt") + ": " +
-					moment(memberData.banned.bannedAt).format("DD.MM.YYYY, HH:mm") +
+					this.client.utils.getDiscordTimestamp(memberData.banned.bannedAt, "f") +
 					"\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("bannedUntil") + ": " +
+					this.translate("unbanIsAt") + ": " +
 					bannedUntil +
 					"\n";
 				bannedUsers.push(text);
@@ -83,8 +85,8 @@ export default class BanlistCommand extends BaseCommand {
 					ban[1].user.username +
 					"\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("reason") + ": " +
-					(ban[1].reason ? ban[1].reason : this.translate("noReasonSpecified")) +
+					this.getBasicTranslation("reason") + ": " +
+					(ban[1].reason ? ban[1].reason : this.translate("noBanReasonSpecified")) +
 					"\n";
 				bannedUsers.push(text);
 			}
@@ -94,7 +96,7 @@ export default class BanlistCommand extends BaseCommand {
 			3,
 			bannedUsers,
 			this.translate("list:title"),
-			this.translate("list:empty")
+			this.translate("list:noBannedUsers")
 		);
 	}
 }

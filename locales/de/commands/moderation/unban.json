@@ -1,7 +1,7 @@
 {
   "errors": {
-    "isNotBanned": "{{user}} wurde nicht gebannt.",
+    "userIsNotBanned": "{{user}} wurde nicht gebannt.",
     "unbanFailed": "Ich konnte {{user}} nicht entbannen."
   },
-  "unbanned": "{{user}} wurde entbannt."
+  "unbannedUser": "{{user}} wurde entbannt."
 }

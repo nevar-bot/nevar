@@ -32,7 +32,7 @@ export default class Timeoutlist extends BaseCommand {
 		const guildMembers: any = await this.interaction.guild!.members.fetch().catch((): void => {});
 		if(!guildMembers){
 			const cantFetchMembersEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantFetchMembers"),
+				this.getBasicTranslation("errors:unexpected", { support: this.client.support }),
 				"error",
 				"error",
 			);
@@ -45,21 +45,12 @@ export default class Timeoutlist extends BaseCommand {
 			}
 		});
 
-		if(!timeoutedMembers.length){
-			const noTimeoutedMembersEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:noTimeoutedMembers"),
-				"error",
-				"error",
-			);
-			return this.interaction.followUp({ embeds: [noTimeoutedMembersEmbed] });
-		}
-
 		const timeoutedUsersText: string[] = [];
 		for(const timeoutedMember of timeoutedMembers){
 			const timeoutedUntilText: string = this.client.utils.getDiscordTimestamp(timeoutedMember.communicationDisabledUntil, "F");
 			const timeoutedUserText: string =
 				this.client.emotes.timeout + " " + timeoutedMember.toString() + "\n" +
-				this.client.emotes.arrow + " " + this.translate("until") + " " + timeoutedUntilText;
+				this.client.emotes.arrow + " " + this.translate("timeoutedUntil") + " " + timeoutedUntilText;
 			timeoutedUsersText.push(timeoutedUserText);
 		}
 
@@ -68,7 +59,7 @@ export default class Timeoutlist extends BaseCommand {
 			5,
 			timeoutedUsersText,
 			this.translate("list:title"),
-			this.translate("list:empty"),
+			this.translate("list:noTimeoutedUsers"),
 		);
 	}
 }

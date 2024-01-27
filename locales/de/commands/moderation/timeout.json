@@ -2,23 +2,16 @@
   "errors": {
     "cantTimeoutYourself": "Du kannst dich nicht selber timeouten.",
     "cantTimeoutBots": "Du kannst keine Bots timeouten.",
-    "cantTimeoutHigher": "Du kannst keine Mitglieder mit einer höheren Rolle timeouten.",
-    "alreadyInTimeout": "{{user}} wurde bereits bis {{date}} getimeoutet.",
-    "invalidDuration": "Bitte gib eine gültige Dauer an.",
+    "targetHasHigherRole": "Du kannst keine Mitglieder mit einer höheren Rolle timeouten.",
+    "targetIsAlreadyInTimeout": "{{user}} wurde bereits bis {{date}} getimeoutet.",
     "timeoutFailed": "Ich konnte {{user}} nicht timeouten.",
-    "durationTooLong": "Die Dauer darf maximal 28 Tage betragen."
+    "durationIsTooLong": "Die Dauer darf maximal 28 Tage betragen."
   },
-  "noReasonSpecified": "Kein Grund angegeben.",
-  "confirmation": "Bist du sicher, dass du {{user}} timeouten möchtest?",
-  "reason": "Begründung",
-  "duration": "Dauer",
-  "moderator": "Moderator",
+
+  "noTimeoutReasonSpecified": "Kein Grund angegeben.",
+  "confirmRequestedTimeout": "Bist du sicher, dass du {{user}} timeouten möchtest?",
+  "privateInformationTitle": "Du wurdest auf {{guild}} getimeoutet.",
   "timeoutEndsAt": "Timeout endet am",
-  "privateMessage": {
-    "title": "Du wurdest auf {{guild}} getimeoutet."
-  },
-  "publicMessage": {
-    "title": "{{user}} wurde getimeoutet."
-  },
-  "timeoutDeclined": "{{user}} wurde nicht getimeoutet."
+  "publicInformationTitle": "{{user}} wurde getimeoutet.",
+  "requestedTimeoutDeclined": "{{user}} wurde nicht getimeoutet."
 }

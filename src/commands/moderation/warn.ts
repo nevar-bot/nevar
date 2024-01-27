@@ -19,25 +19,17 @@ export default class WarnCommand extends BaseCommand {
 					.addUserOption((option: any) =>
 						option
 							.setName("member")
-							.setNameLocalizations({
-								de: "mitglied",
-							})
-							.setDescription("Choose a member to warn")
-							.setDescriptionLocalizations({
-								de: "Wähle ein Mitglied, welches du verwarnen möchtest"
-							})
+							.setNameLocalization("de", "mitglied")
+							.setDescription("Select the member you want to warn")
+							.setDescriptionLocalization("de", "Wähle das Mitglied, welches du verwarnen möchtest")
 							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("reason")
-							.setNameLocalizations({
-								de: "grund",
-							})
-							.setDescription("Give a reason if you want to")
-							.setDescriptionLocalizations({
-								de: "Gib ggf. einen Grund an"
-							})
+							.setNameLocalization("de", "grund")
+							.setDescription("Give a reason")
+							.setDescriptionLocalization("de", "Gib ggf. einen Grund an")
 							.setRequired(false),
 					),
 			},
@@ -47,14 +39,15 @@ export default class WarnCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.warnMember(interaction.options.getMember("member"), interaction.options.getString("reason"));
 	}
 
 	private async warnMember(member: any, reason: string): Promise<any> {
-		if (!reason) reason = "Kein Grund angegeben";
+		if (!reason) reason = this.translate("noWarningReasonSpecified");
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingMember", {}, true),
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -62,7 +55,7 @@ export default class WarnCommand extends BaseCommand {
 		}
 		if (member.user.id === this.client.user!.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantWarnMe"),
+				this.translate("errors:cantWarnMyself"),
 				"error",
 				"error",
 			);
@@ -78,7 +71,7 @@ export default class WarnCommand extends BaseCommand {
 		}
 		if (member.roles.highest.position >= this.interaction.member!.roles.highest.position) {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantWarnHigher"),
+				this.translate("errors:targetHasHigherRole"),
 				"error",
 				"error",
 			);
@@ -98,36 +91,36 @@ export default class WarnCommand extends BaseCommand {
 
 		const privateText: string =
 			"### " + this.client.emotes.ban + " " +
-			this.translate("privateMessage:title", { guild: this.interaction.guild!.name }) + "\n\n" +
+			this.translate("privateInformationTitle", { guild: this.interaction.guild!.name }) + "\n\n" +
 			this.client.emotes.arrow + " " +
-			this.translate("moderator") + ": " +
+			this.getBasicTranslation("moderator") + ": " +
 			this.interaction.member!.toString() + "\n" +
 			this.client.emotes.arrow + " " +
-			this.translate("reason") + ": " + reason;
+			this.getBasicTranslation("reason") + ": " + reason;
 
 		const privateEmbed: EmbedBuilder = this.client.createEmbed(privateText, "ban", "warning");
 		await member.user.send({ embeds: [privateEmbed] }).catch((): void => {});
 
 		const logText: string =
 			"### " + this.client.emotes.ban + " " +
-			this.translate("logMessage:title", { user: member.toString() }) + "\n\n" +
+			this.translate("publicInformationTitle", { user: member.toString() }) + "\n\n" +
 			this.client.emotes.user + " " +
-			this.translate("moderator") + ": " +
+			this.getBasicTranslation("moderator") + ": " +
 			this.interaction.member!.toString() + "\n" +
 			this.client.emotes.text + " " +
-			this.translate("reason") + ": " + reason;
+			this.getBasicTranslation("reason") + ": " + reason;
 		const logEmbed: EmbedBuilder = this.client.createEmbed(logText, null, "normal");
 		logEmbed.setThumbnail(member.user.displayAvatarURL());
 		await this.interaction.guild!.logAction(logEmbed, "moderation");
 
 		const publicText: string =
 			"### " + this.client.emotes.ban + " " +
-			this.translate("publicMessage:title", { user: member.toString() }) + "\n\n" +
+			this.translate("publicInformationTitle", { user: member.toString() }) + "\n\n" +
 			this.client.emotes.arrow + " " +
-			this.translate("moderator") + ": " +
+			this.getBasicTranslation("moderator") + ": " +
 			this.interaction.member!.toString() + "\n" +
 			this.client.emotes.arrow + " " +
-			this.translate("reason") + ": " + reason;
+			this.getBasicTranslation("reason") + ": " + reason;
 		const publicEmbed: EmbedBuilder = this.client.createEmbed(publicText, null, "success");
 		return this.interaction.followUp({ embeds: [publicEmbed] });
 	}

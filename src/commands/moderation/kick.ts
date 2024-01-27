@@ -20,25 +20,17 @@ export default class KickCommand extends BaseCommand {
 					.addUserOption((option: any) =>
 						option
 							.setName("member")
-							.setNameLocalizations({
-								de: "mitglied"
-							})
+							.setNameLocalization("de", "mitglied")
 							.setDescription("Choose a member")
-							.setDescriptionLocalizations({
-								de: "Wähle ein Mitglied"
-							})
+							.setDescriptionLocalization("de", "Wähle ein Mitglied")
 							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("reason")
-							.setNameLocalizations({
-								de: "grund"
-							})
-							.setDescription("Give a reason if necessary")
-							.setDescriptionLocalizations({
-								de: "Gib ggf. einen Grund an"
-							})
+							.setNameLocalization("de", "grund")
+							.setDescription("Enter a reason")
+							.setDescriptionLocalization("de", "Gib ggf. einen Grund an")
 							.setRequired(false),
 					),
 			},
@@ -49,6 +41,7 @@ export default class KickCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction;
+		this.data = data;
 		await this.kick(interaction.options.getMember("member"), interaction.options.getString("reason"));
 	}
 
@@ -73,22 +66,21 @@ export default class KickCommand extends BaseCommand {
 		}
 		if (!member.kickable) {
 			const cantKickEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantKick", { user: member.user.toString() }),
+				this.translate("errors:targetIsNotKickable", { user: member.toString() }),
 				"error",
-				"error",
-				member.user.username,
+				"error"
 			);
 			return this.interaction.followUp({ embeds: [cantKickEmbed] });
 		}
 		if (member.roles.highest.position >= this.interaction.member!.roles.highest.position) {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantKickHigher"),
+				this.translate("errors:targetHasHigherRole"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [higherRoleEmbed] });
 		}
-		if (!reason) reason = this.translate("noReasonSpecified");
+		if (!reason) reason = this.translate("noKickReasonSpecified");
 
 		member
 			.kick(this.interaction.member!.user.username + " - " + reason)
@@ -96,13 +88,13 @@ export default class KickCommand extends BaseCommand {
 				const privateText: string =
 					"### " +
 					this.client.emotes.leave + " " +
-					this.translate("privateMessage:title", { guild: this.interaction.guild!.name }) + "\n\n" +
+					this.translate("privateInformationTitle", { guild: this.interaction.guild!.name }) + "\n\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("reason") + ": " +
+					this.getBasicTranslation("reason") + ": " +
 					reason +
 					"\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("moderator") + ": " +
+					this.getBasicTranslation("moderator") + ": " +
 					this.interaction.member!.user.username;
 				const privateEmbed: EmbedBuilder = this.client.createEmbed(privateText, null, "error");
 				await member.send({ embeds: [privateEmbed] }).catch((): void => {});
@@ -110,13 +102,13 @@ export default class KickCommand extends BaseCommand {
 				const logText: string =
 					"### " +
 					this.client.emotes.events.member.ban + " " +
-					this.translate("publicMessage:title", { user: member.user.username }) + "\n\n" +
+					this.translate("publicInformationTitle", { user: member.user.username }) + "\n\n" +
 					this.client.emotes.user + " " +
-					this.translate("moderator") + ": " +
+					this.getBasicTranslation("moderator") + ": " +
 					this.interaction.member!.user.username +
 					"\n" +
 					this.client.emotes.text + " " +
-					this.translate("reason") + ": " +
+					this.getBasicTranslation("reason") + ": " +
 					reason;
 				const logEmbed: EmbedBuilder = this.client.createEmbed(logText, null, "error");
 				logEmbed.setThumbnail(member.user.displayAvatarURL());
@@ -125,13 +117,13 @@ export default class KickCommand extends BaseCommand {
 				const publicText: string =
 					"### " +
 					this.client.emotes.leave + " " +
-					this.translate("publicMessage:title", { user: member.user.username }) + "\n\n" +
+					this.translate("publicInformationTitle", { user: member.user.username }) + "\n\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("reason") + ": " +
+					this.getBasicTranslation("reason") + ": " +
 					reason +
 					"\n" +
 					this.client.emotes.arrow + " " +
-					this.translate("moderator") + ": " +
+					this.getBasicTranslation("moderator") + ": " +
 					this.interaction.member!.user.username;
 				const publicEmbed: EmbedBuilder = this.client.createEmbed(publicText, null, "error");
 				return this.interaction.followUp({ embeds: [publicEmbed] });

@@ -18,13 +18,9 @@ export default class ResetwarnsCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
 						.setName("member")
-						.setNameLocalizations({
-							de: "mitglied"
-						})
+						.setNameLocalization("de", "mitglied")
 						.setDescription("Choose a member")
-						.setDescriptionLocalizations({
-							de: "Wähle ein Mitglied"
-						})
+						.setDescriptionLocalization("de", "Wähle ein Mitglied")
 						.setRequired(true),
 				),
 			},
@@ -35,13 +31,14 @@ export default class ResetwarnsCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.resetWarns(interaction.options.getMember("member"));
 	}
 
 	private async resetWarns(member: any): Promise<any> {
 		if(!member){
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingMember", {}, true),
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -59,9 +56,9 @@ export default class ResetwarnsCommand extends BaseCommand {
 
 		const logText: string =
 			"### " + this.client.emotes.delete + " " +
-			this.translate("logTitle", { user: member.toString() }) + "\n\n" +
+			this.translate("loggingTitle", { user: member.toString() }) + "\n\n" +
 			this.client.emotes.user + " " +
-			this.translate("moderator") + ": " +
+			this.getBasicTranslation("moderator") + ": " +
 			this.interaction.member!.toString();
 
 		const logEmbed: EmbedBuilder = this.client.createEmbed(logText, null, "normal");
@@ -69,7 +66,7 @@ export default class ResetwarnsCommand extends BaseCommand {
 		await this.interaction.guild!.logAction(logEmbed, "moderation");
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("reset", { user: member.toString() }),
+			this.translate("warningsResetted", { user: member.toString() }),
 			"success",
 			"success"
 		);

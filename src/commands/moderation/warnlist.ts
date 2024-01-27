@@ -19,13 +19,9 @@ export default class WarnlistCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
 						.setName("member")
-						.setNameLocalizations({
-							de: "mitglied"
-						})
+						.setNameLocalization("de", "mitglied")
 						.setDescription("Choose a member")
-						.setDescriptionLocalizations({
-							de: "Wähle ein Mitglied"
-						})
+						.setDescriptionLocalization("de", "Wähle ein Mitglied")
 						.setRequired(true),
 				),
 			},
@@ -36,13 +32,14 @@ export default class WarnlistCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.listWarnings(interaction.options.getMember("member"));
 	}
 
 	private async listWarnings(member: any): Promise<any> {
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingMember", {}, true),
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -60,11 +57,11 @@ export default class WarnlistCommand extends BaseCommand {
 			indicator++;
 			const text: string =
 				"### " + this.client.emotes.ban + " " +
-				this.translate("warn") + " " + indicator + "\n" +
+				this.translate("warning") + " " + indicator + "\n" +
 				this.client.emotes.arrow + " " +
-				this.translate("moderator") + ": " + warn.moderator + "\n" +
+				this.getBasicTranslation("moderator") + ": " + warn.moderator + "\n" +
 				this.client.emotes.arrow + " " +
-				this.translate("reason") + ": " + warn.reason + "\n" +
+				this.getBasicTranslation("reason") + ": " + warn.reason + "\n" +
 				this.client.emotes.arrow + " " +
 				this.translate("warnedAt") + ": " + this.client.utils.getDiscordTimestamp(warn.date, "F") + "\n";
 			warnList.push(text);
@@ -75,7 +72,7 @@ export default class WarnlistCommand extends BaseCommand {
 			5,
 			warnList,
 			this.translate("list:title", { user: member.toString() }),
-			this.translate("list:empty", {user: member.toString() }),
+			this.translate("list:noWarningsYet", {user: member.toString() }),
 		);
 	}
 }

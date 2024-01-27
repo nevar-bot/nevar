@@ -1,6 +1,7 @@
 import BaseCommand from "@structures/BaseCommand";
 import BaseClient from "@structures/BaseClient";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import * as timers from "timers";
 
 export default class RemovewarnCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -19,25 +20,17 @@ export default class RemovewarnCommand extends BaseCommand {
 					.addUserOption((option: any) =>
 						option
 							.setName("member")
-							.setNameLocalizations({
-								de: "mitglied"
-							})
+							.setNameLocalization("de", "mitglied")
 							.setDescription("Choose a member")
-							.setDescriptionLocalizations({
-								de: "Wähle ein Mitglied"
-							})
+							.setDescriptionLocalization("de", "Wähle ein Mitglied")
 							.setRequired(true),
 					)
 					.addIntegerOption((option: any) =>
 						option
 							.setName("number")
-							.setNameLocalizations({
-								de: "nummer"
-							})
-							.setDescription("Choose the warning's number")
-							.setDescriptionLocalizations({
-								de: "Gib die Nummer der Verwarnung an"
-							})
+							.setNameLocalization("de", "nummer")
+							.setDescription("Enter the warning's number")
+							.setDescriptionLocalization("de", "Wähle die Nummer der Verwarnung")
 							.setRequired(true)
 							.setMinValue(1),
 					),
@@ -49,13 +42,14 @@ export default class RemovewarnCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.removeWarn(interaction.options.getMember("member"), interaction.options.getInteger("number"));
 	}
 
 	private async removeWarn(member: any, num: number): Promise<any> {
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingMember", {}, true),
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -64,7 +58,7 @@ export default class RemovewarnCommand extends BaseCommand {
 
 		if (member.user.id === this.interaction.user.id) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantRemoveFromYourself"),
+				this.translate("errors:cantRemoveWarnsFromYourself"),
 				"error",
 				"error",
 			);
@@ -75,7 +69,7 @@ export default class RemovewarnCommand extends BaseCommand {
 
 		if (!targetData.warnings.list[num - 1]) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingNumber"),
+				this.translate("errors:numberIsMissing"),
 				"error",
 				"error",
 			);
@@ -90,18 +84,18 @@ export default class RemovewarnCommand extends BaseCommand {
 
 		const logText: string =
 			"### " + this.client.emotes.delete + " " +
-			this.translate("logText", { user: member.toString() }) + "\n\n" +
+			this.translate("loggingTitle", { user: member.toString() }) + "\n\n" +
 			this.client.emotes.user + " " +
-			this.translate("moderator") + ": " +
+			this.getBasicTranslation("moderator") + ": " +
 			this.interaction.member!.toString() + "\n" +
 			this.client.emotes.text + " " +
-			this.translate("number") + ": " + num;
+			this.translate("warningNumber") + ": " + num;
 		const logEmbed: EmbedBuilder = this.client.createEmbed(logText, null, "normal");
 		logEmbed.setThumbnail(member.user.displayAvatarURL());
 		await this.interaction.guild!.logAction(logEmbed, "moderation");
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("removed", { number: num, user: member.toString() }),
+			this.translate("warningRemoved", { number: num, user: member.toString() }),
 			"success",
 			"success",
 		);

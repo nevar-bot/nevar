@@ -1,8 +1,7 @@
 {
   "errors": {
-    "notTimeouted": "{{user}} wurde nicht getimeoutet."
+    "userIsNotTimeouted": "{{user}} wurde nicht getimeoutet."
   },
-  "untimeouted": "Der Timeout von {{user}} wurde aufgehoben.",
-  "logMessage": "Der Timeout von {{user}} wurde aufgehoben.",
-  "moderator": "Moderator"
+  "untimeoutedUser": "Der Timeout von {{user}} wurde aufgehoben.",
+  "loggingMessage": "Der Timeout von {{user}} wurde aufgehoben."
 }

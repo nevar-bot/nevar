@@ -12,8 +12,8 @@ export default class TimeoutCommand extends BaseCommand {
 			localizedDescriptions: {
 				de: "Timeoutet ein Mitglied für eine bestimmte Zeit",
 			},
-			memberPermissions: ["ManageRoles", "ModerateMembers"],
-			botPermissions: ["ManageRoles"],
+			memberPermissions: ["ModerateMembers"],
+			botPermissions: [],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -22,37 +22,25 @@ export default class TimeoutCommand extends BaseCommand {
 					.addUserOption((option: any) =>
 						option
 							.setName("member")
-							.setNameLocalizations({
-								de: "mitglied"
-							})
+							.setNameLocalization("de", "mitglied")
 							.setDescription("Choose a member")
-							.setDescriptionLocalizations({
-								de: "Wähle ein Mitglied"
-							})
+							.setDescriptionLocalization("de", "Wähle ein Mitglied")
 							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("duration")
-							.setNameLocalizations({
-								de: "dauer"
-							})
+							.setNameLocalization("de", "dauer")
 							.setDescription("Choose a duration (e.g. 1h, 1d, 1h 30m, etc.)")
-							.setDescriptionLocalizations({
-								de: "Gib eine Dauer an (bspw. 1h, 1d, 1h 30m, etc.)"
-							})
+							.setDescriptionLocalization("de", "Gib eine Dauer an (bspw. 1h, 1d, 1h 30m, etc.)")
 							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("reason")
-							.setNameLocalizations({
-								de: "grund"
-							})
-							.setDescription("Choose a reason")
-							.setDescriptionLocalizations({
-								de: "Gib einen Grund an"
-							})
+							.setNameLocalization("de", "grund")
+							.setDescription("Enter a reason")
+							.setDescriptionLocalization("de", "Gib einen Grund an")
 							.setRequired(false),
 					)
 
@@ -64,6 +52,7 @@ export default class TimeoutCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.timeout(
 			interaction.options.getMember("member"),
 			interaction.options.getString("reason"),
@@ -73,13 +62,13 @@ export default class TimeoutCommand extends BaseCommand {
 
 	private async timeout(targetMember: any, givenReason: string, duration: string): Promise<any> {
 		const moderator: any = this.interaction.member;
-		const reason: string = givenReason || this.translate("noReasonSpecified");
+		const reason: string = givenReason || this.translate("noTimeoutReasonSpecified");
 		const durationInMs: string|undefined = ms(duration);
 
 		/* No member chosen */
 		if (!targetMember) {
 			const noMemberEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:missingMember", undefined, true),
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -105,7 +94,7 @@ export default class TimeoutCommand extends BaseCommand {
 		/* Target has higher role */
 		if (targetMember.roles.highest.position >= this.interaction.member!.roles.highest.position) {
 			const higherRoleEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantTimeoutHigher"),
+				this.translate("errors:targetHasHigherRole"),
 				"error",
 				"error",
 			);
@@ -116,7 +105,7 @@ export default class TimeoutCommand extends BaseCommand {
 		if(targetMember.communicationDisabledUntil){
 			const timeoutedUntilString: string = this.client.utils.getDiscordTimestamp(targetMember.communicationDisabledUntilTimestamp, "R");
 			const alreadyTimeoutedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:alreadyInTimeout", { user: targetMember.user.toString(), date: timeoutedUntilString }),
+				this.translate("errors:targetIsAlreadyInTimeout", { user: targetMember.user.toString(), date: timeoutedUntilString }),
 				"error",
 				"error",
 			);
@@ -126,7 +115,7 @@ export default class TimeoutCommand extends BaseCommand {
 		/* Invalid duration */
 		if (duration && !ms(duration)) {
 			const invalidDurationEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:invalidDuration"),
+				this.getBasicTranslation("errors:durationIsInvalid"),
 				"error",
 				"error",
 			);
@@ -136,7 +125,7 @@ export default class TimeoutCommand extends BaseCommand {
 		/* Duration is more than 28 days */
 		if (ms(duration) > 28 * 24 * 60 * 60 * 1000) {
 			const tooLongDurationEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:durationTooLong"),
+				this.translate("errors:durationIsTooLong"),
 				"error",
 				"error",
 			);
@@ -148,13 +137,13 @@ export default class TimeoutCommand extends BaseCommand {
 
 		/* Send confirmation message */
 		const confirmationEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("confirmation", { user: targetMember.toString() }),
+			this.translate("confirmRequestedTimeout", { user: targetMember.toString() }),
 			"arrow",
 			"warning"
 		);
 
-		const confirmButton: ButtonBuilder = this.client.createButton("confirm", this.translate("basics:yes", {}, true), "Secondary", "success");
-		const declineButton: ButtonBuilder = this.client.createButton("decline", this.translate("basics:no", {}, true), "Secondary", "error");
+		const confirmButton: ButtonBuilder = this.client.createButton("confirm", this.getBasicTranslation("yes"), "Secondary", "success");
+		const declineButton: ButtonBuilder = this.client.createButton("decline", this.getBasicTranslation("no"), "Secondary", "error");
 		const buttonRow: any = this.client.createMessageComponentsRow(confirmButton, declineButton);
 
 		const confirmationMessage: any = await this.interaction.followUp({
@@ -177,11 +166,11 @@ export default class TimeoutCommand extends BaseCommand {
 						.then(async (): Promise<void> => {
 							const privateMessageText: string =
 								"### " + this.client.emotes.timeout + " " +
-								this.translate("privateMessage:title", { guild: this.interaction.guild!.name }) + "\n\n" +
-								this.client.emotes.arrow + " " + this.translate("reason")+ ": " + reason + "\n" +
-								this.client.emotes.arrow + " " + this.translate("duration") + ": " + relativeTimeString + "\n" +
+								this.translate("privateInformationTitle", { guild: this.interaction.guild!.name }) + "\n\n" +
+								this.client.emotes.arrow + " " + this.getBasicTranslation("reason")+ ": " + reason + "\n" +
+								this.client.emotes.arrow + " " + this.getBasicTranslation("duration") + ": " + relativeTimeString + "\n" +
 								this.client.emotes.arrow + " " + this.translate("timeoutEndsAt") + ": " + timeoutEndsAt + "\n" +
-								this.client.emotes.arrow + " " + this.translate("moderator") + ": " + moderator.toString();
+								this.client.emotes.arrow + " " + this.getBasicTranslation("moderator") + ": " + moderator.toString();
 
 							const privateMessageEmbed: EmbedBuilder = this.client.createEmbed(
 								privateMessageText,
@@ -192,21 +181,21 @@ export default class TimeoutCommand extends BaseCommand {
 							await targetMember.send({ embeds: [privateMessageEmbed] }).catch((): void => {});
 
 							const logMessageText: string =
-								this.client.emotes.user + " " + this.translate("moderator") + ": " + moderator.toString() + "\n" +
-								this.client.emotes.text + " " + this.translate("reason") + ": " + reason;
+								this.client.emotes.user + " " + this.getBasicTranslation("moderator") + ": " + moderator.toString() + "\n" +
+								this.client.emotes.text + " " + this.getBasicTranslation("reason") + ": " + reason;
 
 							const logMessageEmbed: EmbedBuilder = this.client.createEmbed(logMessageText, null, "normal");
-							logMessageEmbed.setTitle(this.client.emotes.timeout + " " + this.translate("publicMessage:title", { user: targetMember.toString() }));
+							logMessageEmbed.setTitle(this.client.emotes.timeout + " " + this.translate("publicInformationTitle", { user: targetMember.toString() }));
 							logMessageEmbed.setThumbnail(targetMember.displayAvatarURL());
 							await this.interaction.guild!.logAction(logMessageEmbed, "moderation");
 
 							const publicMessageText: string =
 								"### " + this.client.emotes.timeout + " " +
-								this.translate("publicMessage:title", { user: targetMember.toString() }) + "\n\n" +
-								this.client.emotes.arrow + " " + this.translate("reason") + ": " + reason + "\n" +
-								this.client.emotes.arrow + " " + this.translate("duration") + ": " + relativeTimeString + "\n" +
+								this.translate("publicInformationTitle", { user: targetMember.toString() }) + "\n\n" +
+								this.client.emotes.arrow + " " + this.getBasicTranslation("reason") + ": " + reason + "\n" +
+								this.client.emotes.arrow + " " + this.getBasicTranslation("duration") + ": " + relativeTimeString + "\n" +
 								this.client.emotes.arrow + " " + this.translate("timeoutEndsAt") + ": " + timeoutEndsAt + "\n" +
-								this.client.emotes.arrow + " " + this.translate("moderator") + ": " + moderator.toString();
+								this.client.emotes.arrow + " " + this.getBasicTranslation("moderator") + ": " + moderator.toString();
 
 							const publicMessageEmbed: EmbedBuilder = this.client.createEmbed(
 								publicMessageText,
@@ -228,7 +217,7 @@ export default class TimeoutCommand extends BaseCommand {
 					break;
 				case "decline":
 					const timeoutDeclinedEmbed: EmbedBuilder = this.client.createEmbed(
-						this.translate("timeoutDeclined", { user: targetMember.toString() }),
+						this.translate("requestedTimeoutDeclined", { user: targetMember.toString() }),
 						"error",
 						"error",
 					);
