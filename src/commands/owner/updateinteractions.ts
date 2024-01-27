@@ -7,7 +7,10 @@ export default class UpdateinteractionsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "updateinteractions",
-			description: "Updatet alle Slash-Commands und Kontext-Menüs",
+			description: "Update slash commands and context menus",
+			localizedDescriptions: {
+				de: "Update Slash-Commands und Kontext-Menüs"
+			},
 			ownerOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,26 +20,25 @@ export default class UpdateinteractionsCommand extends BaseCommand {
 		});
 	}
 
-	private message: any;
-
 	public async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
 		await this.updateInteractions();
 	}
 
-	private async updateInteractions() {
+	private async updateInteractions(): Promise<any> {
 		const res: any = await registerInteractions(this.client);
 		if (res.success) {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				"{0} Slash-Commands und Kontext-Menüs wurden aktualisiert.",
+				this.translate("updatedInteractions", { count: res.interactionsRegistered }),
 				"slashcommand",
 				"success",
-				res.interactionsRegistered,
 			);
 			return this.message.reply({ embeds: [successEmbed] });
 		} else {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				"Beim Aktualisieren der Slash-Commands und Kontext-Menüs ist ein Fehler aufgetreten.",
+				this.translate("errors:errorWhileRegisteringInteractions"),
 				"error",
 				"error",
 			);

@@ -7,7 +7,10 @@ export default class StaffsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "staffs",
-			description: "Verwaltet die Staffs des Bots",
+			description: "Manage the bot staff",
+			localizedDescriptions: {
+				de: "Verwalte die Bot-Staffs"
+			},
 			ownerOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,13 +20,15 @@ export default class StaffsCommand extends BaseCommand {
 		});
 	}
 
-	private message: any;
 
 	public async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
+
 		if (!args[0]) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst zwischen folgenden Aktionen wählen: add, remove, list",
+				this.translate("errors:actionIsMissing"),
 				"error",
 				"error",
 			);
@@ -43,7 +48,7 @@ export default class StaffsCommand extends BaseCommand {
 				break;
 			default:
 				const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-					"Du musst zwischen folgenden Aktionen wählen: add, remove, list",
+					this.translate("errors:actionIsMissing"),
 					"error",
 					"error",
 				);
@@ -51,11 +56,11 @@ export default class StaffsCommand extends BaseCommand {
 		}
 	}
 
-	private async addStaff(args: any[]): Promise<void> {
-		const member: any = await this.message.guild.resolveMember(args[0]);
+	private async addStaff(args: any[]): Promise<any> {
+		const member: any = await this.message.guild!.resolveMember(args[0]);
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst ein Mitglied angeben.",
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -63,7 +68,7 @@ export default class StaffsCommand extends BaseCommand {
 		}
 		if (!args[1]) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst einen Staff-Typ angeben.",
+				this.translate("errors:typeIsMissing"),
 				"error",
 				"error",
 			);
@@ -71,7 +76,7 @@ export default class StaffsCommand extends BaseCommand {
 		}
 		if (!["head-staff", "staff"].includes(args[1].toLowerCase())) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				'Du musst entweder "staff" oder "head-staff" als Staff-Typ angeben.',
+				this.translate("errors:typeIsMissing"),
 				"error",
 				"error",
 			);
@@ -86,22 +91,19 @@ export default class StaffsCommand extends BaseCommand {
 		userdata.markModified("staff");
 		await userdata.save();
 
-		const string: string = args[1].toLowerCase() === "head-staff" ? "Head-Staff" : "Staff";
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0} wurde als {1} hinzugefügt.",
+			args[1].toLowerCase() === "head-staff" ? this.translate("userAddedAsHeadStaff", { user: member.toString() }) : this.translate("userAddedAsStaff", { user: member.toString() }),
 			"success",
 			"success",
-			member.user.username,
-			string,
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
 
-	private async removeStaff(args: any[]): Promise<void> {
-		const member = await this.message.guild.resolveMember(args[0]);
+	private async removeStaff(args: any[]): Promise<any> {
+		const member = await this.message.guild!.resolveMember(args[0]);
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst ein Mitglied angeben.",
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
@@ -111,7 +113,7 @@ export default class StaffsCommand extends BaseCommand {
 		const userdata: any = await this.client.findOrCreateUser(member.user.id);
 		if (!userdata.staff.state) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Dieses Mitglied ist kein Staff.",
+				this.translate("errors:memberIsNotStaff", { user: member.toString() }),
 				"error",
 				"error",
 			);
@@ -126,10 +128,9 @@ export default class StaffsCommand extends BaseCommand {
 		await userdata.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"{0} wurde als Staff entfernt.",
+			this.translate("userRemovedFromStaff", { user: member.toString() }),
 			"success",
-			"success",
-			member.user.username,
+			"success"
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}
@@ -144,16 +145,7 @@ export default class StaffsCommand extends BaseCommand {
 			const role: string = userdata.staff.role === "head-staff" ? "Head-Staff" : "Staff";
 			staffs.push(user.username + " (" + role + ")");
 		}
-		if (staffs.length === 0) staffs = ["Keine Staffs vorhanden"];
 
-		const embed: EmbedBuilder = this.client.createEmbed(
-			"Folgend sind alle Bot-Staffs aufgelistet:\n\n{0} {1}",
-			"arrow",
-			"normal",
-			this.client.emotes.shine2,
-			staffs.join("\n" + this.client.emotes.shine2 + " "),
-		);
-
-		return this.message.reply({ embeds: [embed] });
+		await this.client.utils.sendPaginatedEmbedMessage(this.message, 10, staffs, this.translate("list:title", { client: this.client.user!.displayName}), this.translate("list:noStaffs"))
 	}
 }

@@ -1,0 +1,6 @@
+{
+  "errors": {
+    "errorWhileRegisteringInteractions": "Beim Aktualisieren der Slash-Commands und Kontext-Menüs ist ein Fehler aufgetreten."
+  },
+  "updatedInteractions": "{{count}} Slash-Commands und Kontext-Menüs wurden aktualisiert."
+}

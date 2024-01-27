@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "commandIsMissing": "Bitte gib einen Befehl an.",
+    "commandIsNotDisabled": "Der Befehl wurde noch nicht deaktiviert.",
+    "commandNotFound": "Der Befehl wurde nicht gefunden."
+  },
+  "enabledCommand": "Der Befehl wurde aktiviert."
+}

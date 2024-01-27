@@ -1,0 +1,6 @@
+{
+  "errors": {
+    "guildHasToBeSupportGuild": "Dieser Befehl kann nur auf dem Support-Server ausgeführt werden."
+  },
+  "deleteResponse": "Löschen"
+}

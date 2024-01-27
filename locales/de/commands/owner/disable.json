@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "commandIsMissing": "Bitte gib einen Befehl an.",
+    "commandIsAlreadyDisabled": "Dieser Befehl wurde bereits deaktiviert.",
+    "commandNotFound": "Dieser Befehl wurde nicht gefunden."
+  },
+
+  "disabledCommand": "Der Befehl wurde deaktiviert.",
+
+  "list": {
+    "title": "Deaktivierte Befehle",
+    "noDisabledCommand": "Es wurden noch keine Befehle deaktiviert."
+  }
+}
