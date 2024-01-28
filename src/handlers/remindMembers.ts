@@ -24,7 +24,7 @@ export default {
 								const reminderAgo: string = client.utils.getDiscordTimestamp(reminder.startDate, "R");
 								const text: string =
 									"### " + client.emotes.reminder + " " +
-									guild.translate("helpers/remindMembers:hereIsYourReminder", { time: reminderAgo, reminder: reminder.reason });
+									guild.translate("handlers/remindMembers:hereIsYourReminder", { time: reminderAgo, reminder: reminder.reason });
 
 								const remindEmbed = client.createEmbed(text, null, "normal");
 

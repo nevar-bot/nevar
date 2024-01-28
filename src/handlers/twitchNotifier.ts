@@ -46,7 +46,7 @@ export default {
 										"https://twitch.tv/" + stream.userName,
 									);
 									announcementEmbed.setTitle(
-										client.emotes.arrow + " " + guild.translate("helpers/twitchNotifier:userIsNowStreamingTitle", { user: stream.userName })
+										client.emotes.arrow + " " + guild.translate("handlers/twitchNotifier:userIsNowStreamingTitle", { user: stream.userName })
 									);
 									announcementEmbed.setImage(stream.getThumbnailUrl(1280, 720));
 									announcementChannel.send({
