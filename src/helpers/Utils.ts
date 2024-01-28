@@ -120,7 +120,7 @@ export default class Utils {
 			// @ts-ignore - Property 'createEmbed' does not exist on type 'Client'
 			const paginatedEmbed: EmbedBuilder = client.createEmbed(text, null, "normal");
 			if(pages.total > 1){
-				paginatedEmbed.setTitle(title + " • " + interaction.guild.translate("utils:pagination", { pages }));
+				paginatedEmbed.setTitle(title + " • " + interaction.guild.translate("basics:pagination", { pages }));
 			}else{
 				paginatedEmbed.setTitle(title);
 			}
@@ -196,7 +196,7 @@ export default class Utils {
 
 			const paginatedEmbed: EmbedBuilder = client.createEmbed(text, null, "normal");
 			if(pages.total > 1){
-				paginatedEmbed.setTitle(title + " • " + message.guild.translate("utils:pagination", { pages }));
+				paginatedEmbed.setTitle(title + " • " + message.guild.translate("basics:pagination", { pages }));
 			}else{
 				paginatedEmbed.setTitle(title);
 			}

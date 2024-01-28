@@ -3,7 +3,6 @@ import {
 	REST,
 	Routes,
 	ContextMenuCommandBuilder,
-	SlashCommandSubcommandBuilder,
 } from "discord.js";
 
 async function registerInteractions(client: any): Promise<any> {
@@ -31,7 +30,6 @@ async function registerInteractions(client: any): Promise<any> {
 		if (commandData.conf.memberPermissions.length >= 1) {
 			const PermissionsField: PermissionsBitField = new PermissionsBitField();
 			for (const neededMemberPermission of commandData.conf.memberPermissions) {
-				// @ts-ignore - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
 				PermissionsField.add(PermissionsBitField.Flags[neededMemberPermission]);
 			}
 			slashData.setDefaultMemberPermissions(PermissionsField.bitfield);
@@ -52,7 +50,6 @@ async function registerInteractions(client: any): Promise<any> {
 		if (contextMenuData.conf.memberPermissions.length >= 1) {
 			const PermissionsField: PermissionsBitField = new PermissionsBitField();
 			for (const neededMemberPermission of contextMenuData.conf.memberPermissions) {
-				// @ts-ignore - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
 				PermissionsField.add(PermissionsBitField.Flags[neededMemberPermission]);
 			}
 			contextData.setDefaultMemberPermissions(PermissionsField.bitfield);

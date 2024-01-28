@@ -41,7 +41,7 @@ export default class BaseCommand {
 	}
 
 	protected getBasicTranslation(key: string, args?: object): string {
-		const requestedKey: string = "commands/basics:" + key;
+		const requestedKey: string = "basics:" + key;
 		return this.guild ? this.guild.translate(requestedKey, args) : "Guild is missing in command structure";
 	}
 

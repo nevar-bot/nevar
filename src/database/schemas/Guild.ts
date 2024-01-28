@@ -54,7 +54,7 @@ const GuildSchema: Schema = new mongoose.Schema({
 			levels: {
 				enabled: false,
 				channel: null,
-				message: "GG {user:username}, du bist jetzt Level {level}!",
+				message: "GG %user.name, you're level %level now!",
 				roles: [],
 				doubleXP: [],
 				exclude: {
