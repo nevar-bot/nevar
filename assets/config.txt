@@ -50,6 +50,8 @@ TRANSPARENT_COLOR = "#36393F"
 ENABLED = true
 # If so, a port must be specified
 PORT = 8075
+# Enter a string which is used in the authorization header of the requests
+AUTHORIZATION = ""
 
 [ channels ]
 # ID and design of the channel where the current number of servers is displayed (the already existing variable in {} is automatically replaced)
@@ -70,7 +72,6 @@ VOTE_ANNOUNCEMENT_ID = ""
 # Most of the following APIs offer a free API key and no paid subscription is required, but some, such as openai.com, require a paid subscription.
 # top.gg
 TOP_GG = ""
-TOP_GG_AUTH = ""
 # openweathermap.org/api
 WEATHER = ""
 # perspectiveapi.com
