@@ -39,10 +39,10 @@ ERROR_LOG = ""
 # Default footer text for all embeds*
 FOOTER_TEXT = ""
 # Color settings for embeds*
-DEFAULT_COLOR = "#5865F2"
-SUCCESS_COLOR = "#00A56A"
-WARNING_COLOR = "#F7E919"
-ERROR_COLOR = "#D61A3C"
+DEFAULT_COLOR = "#11abc1"
+SUCCESS_COLOR = "#5daa68"
+WARNING_COLOR = "#fdee30"
+ERROR_COLOR = "#fe4a49"
 TRANSPARENT_COLOR = "#36393F"
 
 [ api ]

@@ -17,8 +17,6 @@ export default {
             status_message: null,
         };
 
-        console.log("TEST");
-
         /* No authorization required */
         /**
          * if(!req.headers.authorization || req.headers.authorization !== client.config.api["AUTHORIZATION"]) {
@@ -101,6 +99,7 @@ export default {
             /* Get staff members */
             const staffsCollection: any = await mongoose.connection.db.collection("users").find({ "staff.state": true }).toArray();
             for(const staff of staffsCollection) {
+                if(head_staffs.find((headStaff: any): boolean => headStaff.id === staff.id)) continue;
                 const staffUser: any = await client.users.fetch(staff.id);
                 const staffData: any = {
                     id: staffUser.id,
