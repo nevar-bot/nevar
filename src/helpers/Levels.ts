@@ -219,7 +219,11 @@ export default class Levels {
 					displayName: user.displayName,
 					avatar: user.displayAvatarURL()
 				},
-				guildId: key.guildID,
+				guild: {
+					id: key.guildID,
+					name: client.guilds.cache.get(key.guildID)?.name || "Unknown",
+					icon: client.guilds.cache.get(key.guildID)?.iconURL() || client.displayAvatarURL()
+				},
 				level: key.level,
 				xp: key.xp,
 				nextLevelXp: this.xpFor(key.level + 1),
