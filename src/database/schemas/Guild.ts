@@ -17,7 +17,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null,
 		},
 	},
 	locale: { type: String, default: "de" },
@@ -55,7 +54,7 @@ const GuildSchema: Schema = new mongoose.Schema({
 			levels: {
 				enabled: false,
 				channel: null,
-				message: "GG {user:username}, du bist jetzt Level {level}!",
+				message: "GG %user.name, you're level %level now!",
 				roles: [],
 				doubleXP: [],
 				exclude: {
@@ -95,7 +94,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 					announcementChannel: null,
 				},
 			},
-			muterole: null,
 			autodelete: [],
 			autoreact: [],
 		},

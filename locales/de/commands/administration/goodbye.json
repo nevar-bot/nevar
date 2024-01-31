@@ -1,0 +1,74 @@
+{
+  "errors": {
+    "farewellIsNotEnabled": "Die Verabschiedungsnachricht wurde noch nicht aktiviert.",
+    "farewellTypeHasToBeEmbed": "Bitte setze den Typ der Verabschiedungsnachricht zuerst auf Embed."
+  },
+
+  "status": {
+    "errors": {
+      "farewellIsAlreadyEnabled": "Die Verabschiedungsnachricht wurde bereits aktiviert.",
+      "farewellIsAlreadyDisabled": "Die Verabschiedungsnachricht wurde bereits deaktiviert."
+    },
+    "farewellEnabled": "Die Verabschiedungsnachricht wurde aktiviert.",
+    "farewellDisabled": "Die Verabschiedungsnachricht wurde deaktiviert."
+  },
+
+  "test": {
+    "errors": {
+      "noFarewellChannelSet": "Bitte lege erst einen Kanal für die Verabschiedungsnachricht fest.",
+      "noFarewellMessageSet": "Bitte lege erst eine Verabschiedungsnachricht fest.",
+      "noFarewellTypeSet": "Bitte lege erst einen Typ für die Verabschiedungsnachricht fest."
+    },
+    "farewellTestExecuted": "Die Verabschiedungsnachricht wurde getestet."
+  },
+
+  "channel": {
+    "farewellChannelSet": "Verabschiedungsnachrichten werden ab jetzt in {{channel}} gesendet."
+  },
+
+  "type": {
+    "errors": {
+      "farewellTypeIsAlreadyEmbed": "Verabschiedungsnachrichten werden bereits als Embed gesendet.",
+      "farewellTypeIsAlreadyText": "Verabschiedungsnachrichten werden bereits als Textnachricht gesendet."
+    },
+    "farewellTypeSetToEmbed": "Verabschiedungsnachrichten werden ab jetzt als Embed gesendet.",
+    "farewellTypeSetToText": "Verabschiedungsnachrichten werden ab jetzt als Textnachricht gesendet."
+  },
+
+  "message": {
+    "farewellMessageSet": "Die Verabschiedungsnachricht wurde gespeichert."
+  },
+
+  "variables": {
+    "farewellVariablesList": [
+      "{{e.arrow}} **%user** - erwähnt das Mitglied",
+      "{{e.arrow}} **%user.name** - der Nutzername des Mitglieds",
+      "{{e.arrow}} **%user.displayName** - der Anzeigename des Mitglieds",
+      "{{e.arrow}} **%user.id** - ID des Mitglieds",
+      "{{e.arrow}} **%server** - Name des Servers",
+      "{{e.arrow}} **%server.id** - ID des Servers",
+      "{{e.arrow}} **%server.memberCount** - Anzahl an Mitgliedern des Servers",
+      "{{e.arrow}} **%newline** - fügt eine neue Zeile ein"
+    ],
+    "list": {
+      "title": "Verfügbare Variablen",
+      "noFarewellVariables": "Es sind noch keine Variablen verfügbar."
+    }
+  },
+
+  "thumbnail": {
+    "errors": {
+      "farewellThumbnailIsAlreadyEnabled": "Das Profilbild im Embed wurde bereits aktiviert.",
+      "farewellThumbnailIsAlreadyDisabled": "Das Profilbild im Embed wurde bereits deaktiviert."
+    },
+    "farewellThumbnailEnabled": "Das Profilbild im Embed wurde aktiviert.",
+    "farewellThumbnailDisabled": "Das Profilbild im Embed wurde deaktiviert."
+  },
+
+  "color": {
+    "errors": {
+      "farewellEmbedColorHasToBeHex": "Bitte gib eine gültige Farbe im Hex-Format an."
+    },
+    "farewellEmbedColorSet": "Die Farbe des Embeds wurde auf {{color}} geändert."
+  }
+}

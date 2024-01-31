@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "dateIsInvalid": "Bitte gib ein gültiges Datum an. Dieses muss aus einem Datum und einer Uhrzeit, nur einem Datum oder nur einer Uhrzeit bestehen."
+  },
+  "timestampGenerated": "Hier ist dein generierter Zeitstempel:\n{{e.calendar}} {{timestamp}}\n{{e.text}} {{rawTimestamp}}",
+  "copyTimestamp": "Zeitstempel kopieren"
+}

@@ -1,5 +1,0 @@
-{
-  "confirmation": "Danke für deine Meldung! Wir werden uns so schnell wie möglich darum kümmern.",
-  "supportTitle": "{{user.username}} ({{user.id}}) hat einen Fehler gemeldet",
-  "guildId": "Server-ID"
-}

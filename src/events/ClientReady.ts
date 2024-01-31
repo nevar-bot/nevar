@@ -7,7 +7,6 @@ import handlePresence from "@handlers/presence";
 import registerInteractions from "@handlers/registerInteractions";
 import TOPGG from "@helpers/Top.gg";
 import unbanMembers from "@handlers/unbanMembers";
-import unmuteMembers from "@handlers/unmuteMembers";
 import remindMembers from "@handlers/remindMembers";
 import youtubeNotifier from "@handlers/youtubeNotifier";
 import twitchNotifier from "@handlers/twitchNotifier";
@@ -48,7 +47,6 @@ export default class {
 		/* Initiate handlers */
 		TOPGG.init(client);
 		unbanMembers.init(client);
-		unmuteMembers.init(client);
 		remindMembers.init(client);
 		youtubeNotifier.init(client);
 		twitchNotifier.init(client);

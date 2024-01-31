@@ -46,6 +46,15 @@ export default class Utils {
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 
+	static stringIsValidJson(str: string): boolean {
+		try {
+			JSON.parse(str);
+		}catch(error) {
+			return false;
+		}
+		return true;
+	}
+
 	static stringIsUrl(str: string): boolean {
 		const pattern: RegExp = new RegExp(
 			"^(https?:\\/\\/)?" + // protocol
@@ -120,7 +129,7 @@ export default class Utils {
 			// @ts-ignore - Property 'createEmbed' does not exist on type 'Client'
 			const paginatedEmbed: EmbedBuilder = client.createEmbed(text, null, "normal");
 			if(pages.total > 1){
-				paginatedEmbed.setTitle(title + " • " + interaction.guild.translate("utils:pagination", { pages }));
+				paginatedEmbed.setTitle(title + " • " + interaction.guild.translate("basics:pagination", { pages }));
 			}else{
 				paginatedEmbed.setTitle(title);
 			}
@@ -164,8 +173,7 @@ export default class Utils {
 		entriesPerPage: number,
 		data: Array<any>,
 		title: string,
-		empty: string,
-		emote: string,
+		empty: string
 	): Promise<void> {
 		const { client } = message;
 
@@ -186,17 +194,21 @@ export default class Utils {
 
 		async function generatePaginateEmbed(start: number): Promise<any> {
 			const current: any[] = data.slice(start, start + entriesPerPage);
-			let text: string = current.map((item) => "\n" + (emote ? client.emotes[emote] + " " : "") + item).join("");
+			let text: string = current.map((item) => "\n" + item).join("");
 
 			const pages: any = {
 				total: Math.ceil(data.length / entriesPerPage),
 				current: Math.round(start / entriesPerPage) + 1,
 			};
 			if (pages.total === 0) pages.total = 1;
-			if (data.length === 0) text = (emote ? client.emotes[emote] + " " : "") + empty;
+			if (data.length === 0) text = client.emotes.error + " " + empty;
 
 			const paginatedEmbed: EmbedBuilder = client.createEmbed(text, null, "normal");
-			paginatedEmbed.setTitle(title + " • " + message.guild.translate("utils:pagination", { pages }));
+			if(pages.total > 1){
+				paginatedEmbed.setTitle(title + " • " + message.guild.translate("basics:pagination", { pages }));
+			}else{
+				paginatedEmbed.setTitle(title);
+			}
 			//paginatedEmbed.setThumbnail(message.guild.iconURL({ dynamic: true, size: 4096 }));
 			return paginatedEmbed;
 		}

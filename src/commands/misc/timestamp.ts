@@ -7,7 +7,10 @@ export default class TimestampCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "timestamp",
-			description: "Erstellt einen Discord-Timestamp aus einem Datum",
+			description: "Create a Discord timestamp from a date",
+			localizedDescriptions: {
+				de: "Erstelle einen Discord-Timestamp aus einem Datum",
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
@@ -15,44 +18,53 @@ export default class TimestampCommand extends BaseCommand {
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
 						option
-							.setName("datum")
-							.setDescription(
-								"Gib hier das Datum im deutschen Format an (Datum & Zeit, nur Datum oder nur Zeit)",
-							)
+							.setName("date")
+							.setNameLocalization("de", "datum")
+							.setDescription("Enter the date in German format (DD.MM.YYYY HH:mm) (date & time, only date or only time)")
+							.setDescriptionLocalization("de", "Gib hier das Datum im deutschen Format an (Datum & Zeit, nur Datum oder nur Zeit)")
 							.setRequired(true),
 					)
 					.addStringOption((option: any) =>
 						option
 							.setName("format")
-							.setDescription("Wähle, wie der Timestamp angezeigt werden soll")
+							.setNameLocalization("de", "format")
+							.setDescription("Choose how the timestamp should be displayed")
+							.setDescriptionLocalization("de", "Wähle, wie der Timestamp angezeigt werden soll")
 							.setRequired(true)
 							.addChoices(
 								{
-									name: "Kurze Zeit (bspw. 17:30)",
+									name: "Short time (e.g. 9:01 p.m.)",
+									name_localizations: { de: "Kurze Zeit (bspw. 09:01)" },
 									value: "t",
 								},
 								{
-									name: "Lange Zeit (bspw. 17:30:12)",
+									name: "Long time (e.g. 9:01:00 AM)",
+									name_localizations: { de: "Lange Zeit (bspw. 09:01:00)" },
 									value: "T",
 								},
 								{
-									name: "Kurzes Datum (bspw. 01.01.2023)",
+									name: "Short date (e.g. 11/28/2024)",
+									name_localizations: { de: "Kurzes Datum (bspw. 28.11.2024)" },
 									value: "d",
 								},
 								{
-									name: "Langes Datum (bspw. 01. Januar 2023)",
+									name: "Long date (e.g. November 28, 2024)",
+									name_localizations: { de: "Langes Datum (bspw. 28. November 2024)" },
 									value: "D",
 								},
 								{
-									name: "Kurzes Datum und kurze Zeit (bspw. 01.01.2023 17:30)",
+									name: "Short date and short time (e.g. November 28, 2024 9:01 AM)",
+									name_localizations: { de: "Kurzes Datum und kurze Zeit (bspw. 28. November 2024 09:01)" },
 									value: "f",
 								},
 								{
-									name: "Langes Datum und lange Zeit (bspw. 01. Januar 2023 17:30)",
+									name: "Long date and long time (e.g. Thursday, November 28, 2024 9:01 AM)",
+									name_localizations: { de: "Langes Datum und lange Zeit (bspw. Donnerstag, 28. November 2024 09:01)" },
 									value: "F",
 								},
 								{
-									name: "Relative Zeit (bspw. vor 5 Minuten)",
+									name: "Relative time (e.g. 3 years ago)",
+									name_localizations: { de: "Relative Zeit (bspw. vor 3 Jahren)" },
 									value: "R",
 								},
 							),
@@ -61,18 +73,18 @@ export default class TimestampCommand extends BaseCommand {
 		});
 	}
 
-	private interaction: any;
-
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.createTimestamp(interaction.options.getString("datum"), interaction.options.getString("format"));
+		this.guild = interaction.guild;
+		this.data = data;
+		await this.createTimestamp(interaction.options.getString("date"), interaction.options.getString("format"));
 	}
 
-	private async createTimestamp(date: string, type: string): Promise<void> {
+	private async createTimestamp(date: string, type: string): Promise<any> {
 		const unix: number | null = this.parseGermanDateTime(date);
 		if (!unix) {
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du hast kein gültiges Datum angegeben! Dieses muss aus einem Datum und einer Uhrzeit, nur einem Datum oder nur einer Uhrzeit bestehen.",
+				this.translate("errors:dateIsInvalid"),
 				"error",
 				"normal",
 			);
@@ -81,19 +93,15 @@ export default class TimestampCommand extends BaseCommand {
 		const timestamp: string = "<t:" + unix + ":" + type + ">";
 		const rawTimestamp: string = "`<t:" + unix + ":" + type + ">`";
 		const timestampEmbed: EmbedBuilder = this.client.createEmbed(
-			"Hier ist dein generierter Zeitstempel:\n{0} {1}\n{2} {3}",
+			this.translate("timestampGenerated", { e: this.client.emotes, timestamp, rawTimestamp}),
 			"success",
-			"normal",
-			this.client.emotes.calendar,
-			timestamp,
-			this.client.emotes.text,
-			rawTimestamp,
+			"normal"
 		);
 
 		const custom_id: string = "timestamp_copy" + Date.now();
 		const copyButton: ButtonBuilder = this.client.createButton(
 			custom_id,
-			"Zeitstempel kopieren",
+			this.translate("copyTimestamp"),
 			"Secondary",
 			"text",
 		);
@@ -104,7 +112,7 @@ export default class TimestampCommand extends BaseCommand {
 		});
 
 		const filter: any = (i: any): boolean => i.customId === custom_id;
-		const collector: any = this.interaction.channel.createMessageComponentCollector({
+		const collector: any = this.interaction.channel!.createMessageComponentCollector({
 			filter,
 		});
 		collector.on("collect", async (i: any): Promise<void> => {

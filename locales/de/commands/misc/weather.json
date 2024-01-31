@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "locationOrCityIsMissing": "Bitte gib einen Ort oder eine Stadt an.",
+    "givenLocationIsNotFound": "Der angegebene Ort oder die Stadt konnte nicht gefunden werden."
+  },
+
+  "temperature": "Temperatur (min/max/gefühlt)",
+  "humidity": "Luftfeuchtigkeit",
+  "windSpeed": "Windgeschwindigkeit",
+  "speedUnit": {
+    "kph": "km/h",
+    "mps": "m/s"
+  },
+  "sunrise": "Sonnenaufgang",
+  "sunset": "Sonnenuntergang"
+}

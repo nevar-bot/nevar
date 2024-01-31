@@ -1,4 +1,3 @@
-import moment from "moment";
 import { Guild, GuildMember } from "discord.js";
 
 export default {
@@ -23,23 +22,9 @@ export default {
 							.fetch(memberData.id)
 							.then((member: GuildMember): void => {
 								const reminderAgo: string = client.utils.getDiscordTimestamp(reminder.startDate, "R");
-								const reminderStarted: string = client.utils.getDiscordTimestamp(
-									reminder.startDate,
-									"f",
-								);
 								const text: string =
-									"### " +
-									client.emotes.reminder +
-									" Hier ist deine Erinnerung, die du vor " +
-									reminderAgo +
-									" erstellt hast!\n" +
-									client.emotes.arrow +
-									" Erstellt am: " +
-									reminderStarted +
-									"\n" +
-									client.emotes.arrow +
-									" Erinnerung: " +
-									reminder.reason;
+									"### " + client.emotes.reminder + " " +
+									guild.translate("handlers/remindMembers:hereIsYourReminder", { time: reminderAgo, reminder: reminder.reason });
 
 								const remindEmbed = client.createEmbed(text, null, "normal");
 

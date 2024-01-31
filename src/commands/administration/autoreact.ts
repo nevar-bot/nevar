@@ -7,9 +7,9 @@ export default class AutoreactCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "autoreact",
-			description: "Manages automatic reactions to messages",
+			description: "Automatically react to new messages with your favourite emojis",
 			localizedDescriptions: {
-				de: "Verwaltet das automatische Reagieren auf Nachrichten",
+				de: "Reagiere mit deinen Lieblingsemojis automatisch auf neue Nachrichten",
 			},
 			memberPermissions: ["ManageGuild"],
 			botPermissions: ["AddReactions"],
@@ -21,13 +21,9 @@ export default class AutoreactCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("action")
-							.setNameLocalizations({
-								de: "aktion",
-							})
-							.setDescription("Choose from the following actions")
-							.setDescriptionLocalizations({
-								de: "Wähle aus den folgenden Aktionen",
-							})
+							.setNameLocalization("de", "aktion")
+							.setDescription("Choose one of the above actions")
+							.setDescriptionLocalization("de", "Wähle eine der genannten Aktionen")
 							.setRequired(true)
 							.addChoices(
 								{
@@ -56,13 +52,9 @@ export default class AutoreactCommand extends BaseCommand {
 					.addChannelOption((option: any) =>
 						option
 							.setName("channel")
-							.setNameLocalizations({
-								de:	"kanal"
-							})
-							.setDescription("Choose for which channel you want to perform the action")
-							.setDescriptionLocalizations({
-								de: "Wähle, für welchen Channel du die Aktion ausführen möchtest",
-							})
+							.setNameLocalization("de", "kanal")
+							.setDescription("Select a channel")
+							.setDescriptionLocalization("de", "Wähle einen Kanal")
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
@@ -74,10 +66,8 @@ export default class AutoreactCommand extends BaseCommand {
 					.addStringOption((option: any) =>
 						option
 							.setName("emoji")
-							.setDescription("Enter the emoji you want")
-							.setDescriptionLocalizations({
-								de: "Gib den gewünschten Emoji ein",
-							})
+							.setDescription("Select your desired emoji")
+							.setDescriptionLocalization("de", "Wähle deinen gewünschten Emoji")
 							.setRequired(false),
 					),
 			},
@@ -87,44 +77,34 @@ export default class AutoreactCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<any> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 
 		const action: string = interaction.options.getString("action");
 
 		switch (action) {
 			case "add":
 				await this.addAutoReact(
-					data,
 					interaction.options.getChannel("channel"),
 					interaction.options.getString("emoji"),
 				);
 				break;
 			case "remove":
 				await this.removeAutoReact(
-					data,
 					interaction.options.getChannel("channel"),
 					interaction.options.getString("emoji"),
 				);
 				break;
 			case "list":
-				await this.showList(data);
+				await this.showList();
 				break;
-			default:
-				const unexpectedErrorEmbed: EmbedBuilder = this.client.createEmbed(
-					this.translate("basics:errors:unexpected", { support: this.client.support }, true),
-					"error",
-					"error",
-				);
-				return this.interaction.followUp({
-					embeds: [unexpectedErrorEmbed],
-				});
 		}
 	}
 
-	private async addAutoReact(data: any, channel: any, emote: string): Promise<any> {
+	private async addAutoReact(channel: any, emote: string): Promise<any> {
 		/* Missing arguments */
 		if (!channel || !channel.id || !emote) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingChannelOrEmoji"),
+				this.translate("errors:channelOrEmojiIsMissing"),
 				"error",
 				"error",
 			);
@@ -135,7 +115,7 @@ export default class AutoreactCommand extends BaseCommand {
 		const { stringIsEmoji, stringIsCustomEmoji } = Utils;
 		if (!stringIsEmoji(emote) && !stringIsCustomEmoji(emote)) {
 			const invalidEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:invalidEmoji"),
+				this.translate("errors:emojiIsInvalid"),
 				"error",
 				"error",
 			);
@@ -148,7 +128,7 @@ export default class AutoreactCommand extends BaseCommand {
 		/* Bot can't use this emoji */
 		if (stringIsCustomEmoji(originEmote) && !this.client.emojis.cache.find((e: any): boolean => e.id === emote)) {
 			const unusableEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:cantUseEmoji"),
+				this.translate("errors:emojiIsNotUsable"),
 				"error",
 				"error",
 			);
@@ -156,9 +136,9 @@ export default class AutoreactCommand extends BaseCommand {
 		}
 
 		/* Emoji is already added to this channel */
-		if (data.guild.settings.autoreact.find((r: any): boolean => r.channel === channel.id && r.emoji === emote)) {
+		if (this.data.guild.settings.autoreact.find((r: any): boolean => r.channel === channel.id && r.emoji === emote)) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:alreadyAddedInChannel", { channel: channel.toString() }),
+				this.translate("errors:emojiIsAlreadyAddedToAutoreact", { channel: channel.toString() }),
 				"error",
 				"error",
 			);
@@ -166,15 +146,15 @@ export default class AutoreactCommand extends BaseCommand {
 		}
 
 		/* Add emoji to autoreact */
-		data.guild.settings.autoreact.push({
+		this.data.guild.settings.autoreact.push({
 			channel: channel.id,
 			emoji: emote,
 		});
-		data.guild.markModified("settings.autoreact");
-		await data.guild.save();
+		this.data.guild.markModified("settings.autoreact");
+		await this.data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("added", {
+			this.translate("emojiAddedToAutoreact", {
 				emoji: originEmote,
 				channel: channel.toString(),
 			}),
@@ -184,11 +164,11 @@ export default class AutoreactCommand extends BaseCommand {
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async removeAutoReact(data: any, channel: any, emote: string): Promise<any> {
+	private async removeAutoReact(channel: any, emote: string): Promise<any> {
 		/* Missing arguments */
 		if (!channel || !channel.id || !emote) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingChannelOrEmoji"),
+				this.translate("errors:channelOrEmojiIsMissing"),
 				"error",
 				"error",
 			);
@@ -199,7 +179,7 @@ export default class AutoreactCommand extends BaseCommand {
 		const { stringIsEmoji, stringIsCustomEmoji } = Utils;
 		if (!stringIsEmoji(emote) && !stringIsCustomEmoji(emote)) {
 			const invalidEmojiEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:invalidEmoji"),
+				this.translate("errors:emojiIsInvalid"),
 				"error",
 				"error",
 			);
@@ -211,9 +191,9 @@ export default class AutoreactCommand extends BaseCommand {
 		if (stringIsCustomEmoji(emote)) emote = emote.replace(/<a?:\w+:(\d+)>/g, "$1");
 
 		/* Emoji is not added to this channel */
-		if (!data.guild.settings.autoreact.find((r: any): boolean => r.channel === channel.id && r.emoji === emote)) {
+		if (!this.data.guild.settings.autoreact.find((r: any): boolean => r.channel === channel.id && r.emoji === emote)) {
 			const alreadyAddedEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:notAddedInChannel", { channel: channel.toString() }),
+				this.translate("errors:emojiIsNotAddedToAutoreact", { channel: channel.toString() }),
 				"error",
 				"error",
 			);
@@ -221,22 +201,22 @@ export default class AutoreactCommand extends BaseCommand {
 		}
 
 		/* Remove emoji from autoreact */
-		data.guild.settings.autoreact = data.guild.settings.autoreact.filter(
+		this.data.guild.settings.autoreact = this.data.guild.settings.autoreact.filter(
 			(r: any): boolean => r.channel !== channel.id || r.emoji !== emote,
 		);
-		data.guild.markModified("settings.autoreact");
-		await data.guild.save();
+		this.data.guild.markModified("settings.autoreact");
+		await this.data.guild.save();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("removed", { emoji: originEmote, channel: channel.toString() }),
+			this.translate("emojiRemovedFromAutoreact", { emoji: originEmote, channel: channel.toString() }),
 			"success",
 			"success",
 		);
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 
-	private async showList(data: any): Promise<void> {
-		const response: any = data.guild.settings.autoreact;
+	private async showList(): Promise<void> {
+		const response: any = this.data.guild.settings.autoreact;
 		const sortedAutoReactArray: any[] = [];
 		const finalSortedAutoReactArray: any[] = [];
 
@@ -254,12 +234,12 @@ export default class AutoreactCommand extends BaseCommand {
 		for (const item in sortedAutoReactArray) {
 			finalSortedAutoReactArray.push(
 				this.client.emotes.channel + " **" +
-				this.translate("list:channel") +
+				this.getBasicTranslation("channel") +
 				":** " +
 				item +
 				"\n" +
 				this.client.emotes.wave + " **" +
-				this.translate("list:emojis") +
+				this.getBasicTranslation("emojis") +
 				":** " +
 				sortedAutoReactArray[item].join(" ") +
 				"\n",
@@ -270,8 +250,8 @@ export default class AutoreactCommand extends BaseCommand {
 			this.interaction,
 			5,
 			finalSortedAutoReactArray,
-			"Autoreact",
-			this.translate("list:empty"),
+			this.translate("list:title"),
+			this.translate("list:noEmojisAddedToAutoreact"),
 		);
 	}
 }

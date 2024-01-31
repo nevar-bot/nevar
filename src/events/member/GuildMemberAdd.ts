@@ -92,25 +92,6 @@ export default class {
 
 		await guild.logAction(memberJoinEmbed, "member");
 
-		/* Check member mute state */
-		if (memberData?.muted?.state) {
-			member.roles.add(guildData.settings.muterole).catch((e: any): void => {
-				const errorText: string =
-					this.client.emotes.user +
-					" Mitglied: " +
-					member.user.displayName +
-					" (@" +
-					member.user.username +
-					")";
-
-				const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-				errorEmbed.setTitle(this.client.emotes.error + " Automatischer Mute fehlgeschlagen");
-				errorEmbed.setThumbnail(member.user.displayAvatarURL());
-
-				guild.logAction(errorEmbed, "moderation");
-			});
-		}
-
 		/* Add auto roles */
 		for (const roleId of guildData.settings.welcome.autoroles) {
 			const role: any =

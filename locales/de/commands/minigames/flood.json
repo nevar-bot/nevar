@@ -1,0 +1,6 @@
+{
+  "gameBoard": "Züge: {{turns}}/{{maxTurns}}\n\n{{board}}",
+  "gameEnd": "Spiel beendet\n",
+  "youWonTheGame": "Du hast gewonnen! Du hast **{{turns}} Züge** gebraucht.",
+  "youLostTheGame": "Du hast leider verloren!"
+}

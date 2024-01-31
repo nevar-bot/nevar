@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "cantBanYourself": "Du kannst dich nicht selber bannen.",
+    "cantBanMyself": "Ich kann mich nicht selber bannen.",
+    "targetHasHigherRole": "Du kannst keine Mitglieder bannen, die eine höhere Rolle als du haben.",
+    "targetIsNotBannable": "Ich kann {{user}} nicht bannen.",
+    "banFailed": "Ich konnte {{user}} nicht bannen."
+  },
+
+  "noBanReasonSpecified": "Kein Grund angegeben.",
+  "banReason": "Begründung",
+  "permanentDuration": "Permanent",
+  "unbanIsAt": "Entbannung am",
+  "confirmRequestedBan": "Bist du sicher, dass du {{user}} bannen möchtest?",
+  "privateInformationTitle": "Du wurdest auf {{guild}} gebannt.",
+  "publicInformationTitle": "{{user}} wurde gebannt.",
+  "banConfirmationRejected": "{{user}} wurde nicht gebannt.",
+}

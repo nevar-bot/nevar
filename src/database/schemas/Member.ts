@@ -25,20 +25,6 @@ const Schema = new mongoose.Schema({
 			bannedUntil: null,
 		},
 	},
-	muted: {
-		type: Object,
-		default: {
-			state: false,
-			reason: null,
-			moderator: {
-				name: null,
-				id: null,
-			},
-			duration: null,
-			mutedAt: null,
-			mutedUntil: null,
-		},
-	},
 	suggestions: {
 		type: Array,
 		default: [],

@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "cantRemoveWarnsFromYourself": "Du kannst keine Verwarnungen von dir selbst entfernen.",
+    "numberIsMissing": "Bitte gib die Nummer einer Verwarnung an."
+  },
+
+  "loggingTitle": "Verwarnung von {{user}} entfernt",
+  "warningNumber": "Warn-Nr.",
+  "warningRemoved": "Die {{number}}. Verwarnung von {{user}} wurde entfernt."
+}

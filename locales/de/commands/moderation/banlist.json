@@ -1,0 +1,10 @@
+{
+  "permanentDuration": "Permanent",
+  "bannedAt": "Gebannt am",
+  "unbanIsAt": "Entbannung am",
+  "noBanReasonSpecified": "Kein Grund angegeben",
+  "list": {
+    "title": "Gebannte Benutzer",
+    "noBannedUsers": "Es wurden noch keine Benutzer gebannt."
+  }
+}

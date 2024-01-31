@@ -8,9 +8,9 @@ export default class RankCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "rank",
-			description: "Sends your level card",
+			description: "Take a look at your level card",
 			localizedDescriptions: {
-				de: "Sendet deine Levelcard",
+				de: "Sieh dir deine Levelkarte an",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -19,13 +19,9 @@ export default class RankCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
 					option
 						.setName("member")
-						.setNameLocalizations({
-							de: "mitglied",
-						})
-						.setDescription("Select a member whose level card you would like to see")
-						.setDescriptionLocalizations({
-							de: "Wähle ein Mitglied, dessen Levelcard du sehen möchtest",
-						})
+						.setNameLocalization("de", "mitglied")
+						.setDescription("Select a member")
+						.setDescriptionLocalization("de", "Wähle ein Mitglied")
 						.setRequired(false),
 				),
 			},
@@ -35,13 +31,14 @@ export default class RankCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		await this.showRank(data);
+		this.data = data;
+		await this.showRank();
 	}
 
-	private async showRank(data: any): Promise<any> {
-		if (!data.guild.settings.levels.enabled) {
+	private async showRank(): Promise<any> {
+		if (!this.data.guild.settings.levels.enabled) {
 			return this.interaction.followUp({
-				content: this.client.emotes.error + " " + this.translate("errors:isDisabled"),
+				content: this.client.emotes.error + " " + this.translate("errors:levelsystemIsNotEnabled"),
 			});
 		}
 
@@ -52,8 +49,8 @@ export default class RankCommand extends BaseCommand {
 			level: await this.client.levels.fetch(user.id, this.interaction.guild!.id, true),
 		};
 
-		const importedFont: Buffer = fs.readFileSync("./assets/Aguarita.ttf");
-		new Font(importedFont, "Aguarita");
+		const importedFont: Buffer = fs.readFileSync("./assets/Roboto-Black.ttf");
+		new Font(importedFont, "RobotoBlack");
 
 		const rankCard: RankCardBuilder = new RankCardBuilder()
 			.setDisplayName(userData.user.displayName)
@@ -62,22 +59,22 @@ export default class RankCommand extends BaseCommand {
 			.setRequiredXP(userData.level.cleanNextLevelXp || 0)
 			.setBackground("https://nevar.eu/img/banner_background_1920x1078.webp")
 			.setAvatar(userData.user.displayAvatarURL())
-			.setTextStyles({ rank: "Platz", xp: "XP", level: "Level" })
+			.setTextStyles({ rank: this.getBasicTranslation("rank"), xp: this.getBasicTranslation("xp"), level: this.getBasicTranslation("level") })
 			.setStyles({
 				progressbar: {
-					thumb: { style: { backgroundColor: "#5773c9" } },
-					track: { style: { backgroundColor: "#ffffff" } },
+					thumb: { style: { backgroundColor: "#5773c9", borderRadius: "0%" } },
+					track: { style: { backgroundColor: "#ffffff", borderRadius: "0%" } },
 				},
 				username: { name: { style: { fontSize: "35px" } }, handle: { style: { fontSize: "23px" } } },
 				statistics: { container: { style: { fontSize: "20px" } } },
 			})
 			.setRank(userData.level.position || 100)
 			.setFonts({
-				username: { name: "Aguarita", handle: "Aguarita" },
+				username: { name: "RobotoBlack", handle: "RobotoBlack" },
 				progress: {
-					rank: { text: "Aguarita", value: "Aguarita" },
-					level: { text: "Aguarita", value: "Aguarita" },
-					xp: { text: "Aguarita", value: "Aguarita" },
+					rank: { text: "RobotoBlack", value: "RobotoBlack" },
+					level: { text: "RobotoBlack", value: "RobotoBlack" },
+					xp: { text: "RobotoBlack", value: "RobotoBlack" },
 				},
 			})
 			.setLevel(userData.level.level || 0);
@@ -91,7 +88,7 @@ export default class RankCommand extends BaseCommand {
 			return this.interaction.followUp({ files: [attachment] });
 		} else {
 			return this.interaction.followUp({
-				content: this.client.emotes.error + " " + this.translate("errors:noXp"),
+				content: this.client.emotes.error + " " + this.translate("errors:userGainedNoXp", { user: userData.user.toString() }),
 			});
 		}
 	}

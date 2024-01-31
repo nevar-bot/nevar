@@ -7,29 +7,36 @@ export default class UserinfoCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "userinfo",
-			description: "Zeigt Informationen über eine/n Nutzer/-in an",
+			description: "View information about a user",
+			localizedDescriptions: {
+				de: "Schau dir Informationen über einen Benutzer an"
+			},
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(false),
+					option
+						.setName("user")
+						.setNameLocalization("de", "mitglied")
+						.setDescription("Select a member")
+						.setDescriptionLocalization("de", "Wähle ein Mitglied aus")
+						.setRequired(false),
 				),
 			},
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.showUserInfo(interaction.options.getUser("mitglied"));
+		this.guild = interaction.guild;
+		this.data = data;
+		await this.showUserInfo(interaction.options.getMember("member"));
 	}
 
-	private async showUserInfo(member: any): Promise<void> {
-		if (member) {
-			member = await this.interaction.guild.members.fetch(member.id);
-		} else {
+	private async showUserInfo(member: any): Promise<any> {
+		if (!member) {
 			member = this.interaction.member;
 		}
 
@@ -46,19 +53,19 @@ export default class UserinfoCommand extends BaseCommand {
 		const userFlags: any[] = (await member.user.fetchFlags()).toArray();
 
 		const flags: any = {
-			ActiveDeveloper: "Aktiver Entwickler",
-			BugHunterLevel1: "Bug Hunter Level 1",
-			BugHunterLevel2: "Bug Hunter Level 2",
-			CertifiedModerator: "Zertifizierter Moderator",
-			HypeSquadOnlineHouse1: "Bravery-Hypesquad",
-			HypeSquadOnlineHouse2: "Brilliance-Hypesquad",
-			HypeSquadOnlineHouse3: "Balance-Hypesquad",
-			HypeSquadEvents: "Hypesquad-Events",
-			Partner: "Eigentümer eines Partner-Servers",
-			PremiumEarlySupporter: "Supporter der ersten Stunde",
-			Staff: "Discord-Mitarbeiter",
-			VerifiedBot: "Verifizierter Bot",
-			VerifiedDeveloper: "Verifizierter Bot-Entwickler der ersten Stunde",
+			ActiveDeveloper: this.translate("flags:ActiveDeveloper"),
+			BugHunterLevel1: this.translate("flags:BugHunterLevel1"),
+			BugHunterLevel2: this.translate("flags:BugHunterLevel2"),
+			CertifiedModerator: this.translate("flags:CertifiedModerator"),
+			HypeSquadOnlineHouse1: this.translate("flags:HypeSquadOnlineHouse1"),
+			HypeSquadOnlineHouse2: this.translate("flags:HypeSquadOnlineHouse2"),
+			HypeSquadOnlineHouse3: this.translate("flags:HypeSquadOnlineHouse3"),
+			HypeSquadEvents: this.translate("flags:HypeSquadEvents"),
+			Partner: this.translate("flags:Partner"),
+			PremiumEarlySupporter: this.translate("flags:PremiumEarlySupporter"),
+			Staff: this.translate("flags:Staff"),
+			VerifiedBot: this.translate("flags:VerifiedBot"),
+			VerifiedDeveloper: this.translate("flags:VerifiedDeveloper"),
 		};
 		// Badges
 		let badges: any[] = [];
@@ -66,63 +73,57 @@ export default class UserinfoCommand extends BaseCommand {
 		// Custom Badges
 		// Nevar staff
 		if (data.staff.state || this.client.config.general["OWNER_IDS"].includes(member.user.id))
-			badges.push(this.client.emotes.flags.Staff + " " + this.client.user!.username + "-Staff");
-		// Nevar partner
-		if (data.partner.state)
-			badges.push(this.client.emotes.flags.Partner + " " + this.client.user!.username + "-Partner");
-		// Nevar Bughunter
-		if (data.bughunter.state)
-			badges.push(this.client.emotes.flags.BugHunterLevel1 + " " + this.client.user!.username + "-Bughunter");
+			badges.push(this.client.emotes.flags.Staff + " " + this.client.user!.username + "-" + this.translate("flags:NevarStaff"));
 
 		// Discord badges
 		for (const flag of userFlags) {
 			if (flags[flag]) badges.push(this.client.emotes.flags[flag] + " " + flags[flag]);
 		}
 
-		if (badges.length === 0) badges = [this.client.emotes.arrow + " Keine Badges vorhanden"];
+		if (badges.length === 0) badges = [this.client.emotes.arrow + " " + this.translate("userDontHaveFlags")];
 
 		const text: string =
-			this.client.emotes.label +
-			" Displayname: **" +
+			this.client.emotes.label + " " +
+			this.translate("displayName") + ": **" +
 			displayName +
 			"**\n" +
-			this.client.emotes.label +
-			"Server-Displayname: **" +
+			this.client.emotes.label + " " +
+			this.translate("serverDisplayName") + ": **" +
 			memberDisplayName +
 			"**\n" +
-			this.client.emotes.user +
-			" Nutzername: **" +
+			this.client.emotes.user + " " +
+			this.translate("userName") + ": **" +
 			name +
 			"**\n" +
-			this.client.emotes.bot +
-			" Bot: **" +
+			this.client.emotes.bot + " " +
+			this.translate("bot") + ": **" +
 			bot +
 			"**\n\n" +
-			this.client.emotes.calendar +
-			" Account erstellt am: **" +
+			this.client.emotes.calendar + " " +
+			this.translate("accountCreatedAt") + ": **" +
 			createdAt +
 			"**\n" +
-			this.client.emotes.reminder +
-			" Account erstellt vor: **" +
+			this.client.emotes.reminder + " " +
+			this.translate("accountCreatedBefore") + ": **" +
 			createdDiff +
 			"**\n\n" +
-			this.client.emotes.calendar +
-			" Server betreten am: **" +
+			this.client.emotes.calendar + " " +
+			this.translate("userJoinedGuildAt") + ": **" +
 			joinedAt +
 			"**\n" +
-			this.client.emotes.reminder +
-			" Server betreten vor: **" +
+			this.client.emotes.reminder + " " +
+			this.translate("userJoinedGuildBefore") + ": **" +
 			joinedDiff +
 			"**\n\n### " +
-			this.client.emotes.shine +
-			" Badges:\n**" +
+			this.client.emotes.shine + " " +
+			this.translate("userFlags") + "\n**" +
 			badges.join("\n") +
 			"**";
 
-		const searchServerEmbed: EmbedBuilder = this.client.createEmbed(text, null, "normal");
-		searchServerEmbed.setTitle(this.client.emotes.information + " Informationen zu " + member.user.username);
-		searchServerEmbed.setThumbnail(member.user.displayAvatarURL());
+		const userEmbedTitle: EmbedBuilder = this.client.createEmbed(text, null, "normal");
+		userEmbedTitle.setTitle(this.client.emotes.information + " " + this.translate("title") + " " + member.user.displayName)
+		userEmbedTitle.setThumbnail(member.user.displayAvatarURL());
 
-		return this.interaction.followUp({ embeds: [searchServerEmbed] });
+		return this.interaction.followUp({ embeds: [userEmbedTitle] });
 	}
 }

@@ -1,0 +1,6 @@
+{
+  "errors": {
+    "levelsystemIsNotEnabled": "Das Levelsystem wurde noch nicht aktiviert.",
+    "userGainedNoXp": "{{user}} hat noch keine XP gesammelt."
+  }
+}

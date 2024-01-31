@@ -1,0 +1,77 @@
+{
+  "errors": {
+    "welcomeMessageIsNotEnabled": "Die Willkommensnachricht wurde noch nicht aktiviert.",
+    "welcomeTypeHasToBeEmbed": "Bitte setze den Typ der Willkommensnachricht zuerst auf Embed."
+  },
+
+  "status": {
+    "errors": {
+      "welcomeMessageIsAlreadyEnabled": "Die Willkommensnachricht wurde bereits aktiviert.",
+      "welcomeMessageIsAlreadyDisabled": "Die Willkommensnachricht wurde bereits deaktiviert."
+    },
+    "welcomeMessageEnabled": "Die Willkommensnachricht wurde aktiviert.",
+    "welcomeMessageDisabled": "Die Willkommensnachricht wurde deaktiviert."
+  },
+
+  "test": {
+    "errors": {
+      "noWelcomeChannelSet": "Bitte lege erst einen Kanal für die Willkommensnachricht fest.",
+      "noWelcomeMessageSet": "Bitte lege erst eine Willkommensnachricht fest.",
+      "noWelcomeTypeSet": "Bitte lege erst einen Typ für die Willkommensnachricht fest."
+    },
+    "testExecuted": "Die Willkommensnachricht wurde getestet."
+  },
+
+  "channel": {
+    "welcomeChannelSet": "Willkommensnachrichten werden ab jetzt in {{channel}} gesendet."
+  },
+
+  "type": {
+    "errors": {
+      "welcomeTypeIsAlreadyEmbed": "Willkommensnachrichten werden bereits als Embed gesendet.",
+      "welcomeTypeIsAlreadyText": "Willkommensnachrichten werden bereits als Textnachricht gesendet."
+    },
+    "welcomeTypeSetToEmbed": "Willkommensnachrichten werden ab jetzt als Embed gesendet.",
+    "welcomeTypeSetToText": "Willkommensnachrichten werden ab jetzt als Textnachricht gesendet."
+  },
+
+  "message": {
+    "welcomeMessageSet": "Die Willkommensnachricht wurde gespeichert."
+  },
+
+  "variables": {
+    "list": [
+      "{{e.arrow}} **%user** - Erwähnt das Mitglied",
+      "{{e.arrow}} **%user.name** - Der Nutzername des Mitglieds",
+      "{{e.arrow}} **%user.displayName** - Der Anzeigename des Mitglieds",
+      "{{e.arrow}} **%user.id** - ID des Mitglieds",
+      "{{e.arrow}} **%server** - Name des Servers",
+      "{{e.arrow}} **%server.id** - ID des Servers",
+      "{{e.arrow}} **%server.memberCount** - Anzahl an Mitgliedern des Servers",
+      "{{e.arrow}} **%inviter** - Erwähnt den Einladenden",
+      "{{e.arrow}} **%inviter.name** - Der Nutzername des Einladenden",
+      "{{e.arrow}} **%inviter.displayName** - Der Anzeigename des Einladenden",
+      "{{e.arrow}} **%inviter.id** - ID des Einladenden",
+      "{{e.arrow}} **%inviter.invites** - Anzahl der Einladungen des Einladenden",
+      "{{e.arrow}} **%newline** - Fügt eine neue Zeile ein"
+    ],
+    "title": "Verfügbare Variablen",
+    "noWelcomeVariables": "Es sind noch keine Variablen verfügbar."
+  },
+
+  "thumbnail": {
+    "errors": {
+      "welcomeThumbnailIsAlreadyEnabled": "Das Profilbild im Embed wurde bereits aktiviert.",
+      "welcomeThumbnailIsAlreadyDisabled": "Das Profilbild im Embed wurde bereits deaktiviert."
+    },
+    "welcomeThumbnailEnabled": "Das Profilbild im Embed wurde aktiviert.",
+    "welcomeThumbnailDisabled": "Das Profilbild im Embed wurde deaktiviert."
+  },
+
+  "color": {
+    "errors": {
+      "welcomeEmbedColorHasToBeHex": "Bitte gib eine gültige Farbe im Hex-Format an."
+    },
+    "welcomeEmbedColorSet": "Die Farbe des Embeds wurde auf {{color}} geändert."
+  }
+}

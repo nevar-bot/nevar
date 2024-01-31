@@ -1,0 +1,94 @@
+{
+  "errors": {
+    "levelsystemIsNotEnabled": "Das Levelsystem wurde noch nicht aktiviert."
+  },
+
+  "status": {
+    "errors": {
+      "levelsystemIsAlreadyEnabled": "Das Levelsystem wurde bereits aktiviert.",
+      "levelsystemIsAlreadyDisabled": "Das Levelsystem wurde bereits deaktiviert."
+    },
+    "levelsystemEnabled": "Das Levelsystem wurde aktiviert.",
+    "levelsystemDisabled": "Das Levelsystem wurde deaktiviert."
+  },
+
+  "channel": {
+    "levelsystemChannelSetToCurrent": "Level-Up Nachrichten werden im aktuellen Kanal gesendet.",
+    "levelsystemChannelSet": "Level-Up Nachrichten werden in {{channel}} gesendet."
+  },
+
+  "message": {
+    "levelupMessageSet": "Die Level-Up Nachricht wurde gespeichert."
+  },
+
+  "roles": {
+    "errors": {
+      "levelOrRoleIsMissing": "Bitte gib eine Rolle und ein Level an.",
+      "roleIsAlreadyAdded": "{{role}} wurde bereits als Levelrolle hinzugefügt.",
+      "roleIsNotAdded": "{{role}} wurde noch nicht als Levelrolle hinzugefügt."
+    },
+    "levelRoleAdded": "{{role}} wurde als Rolle für Level {{level}} hinzugefügt.",
+    "levelRoleRemoved": "{{role}} wurde als Levelrolle entfernt.",
+    "list": {
+      "title": "Levelrollen",
+      "noLevelrolesAdded": "Es wurden noch keine Levelrollen hinzugefügt."
+    }
+  },
+
+  "doublexp": {
+    "errors": {
+      "roleIsAlreadyAdded": "{{role}} wurde bereits als Doppel-XP Rolle hinzugefügt.",
+      "roleIsNotAdded": "{{role}} wurde noch nicht als Doppel-XP Rolle hinzugefügt.",
+      "notAdded": "{{role}} wurde noch nicht als Doppel-XP Rolle hinzugefügt."
+    },
+    "doublexpRoleAdded": "{{role}} wurde als Doppel-XP Rolle hinzugefügt.",
+    "doublexpRoleRemoved": "{{role}} wurde als Doppel-XP Rolle entfernt.",
+    "list": {
+      "title": "Doppel-XP Rollen",
+      "noDoublexpRoles": "Es wurden noch keine Doppel-XP Rollen hinzugefügt."
+    }
+  },
+
+  "xp": {
+    "errors": {
+      "minXpCannotBeHigherThanMaxXp": "Bitte gib einen Minimalwert an, welcher kleiner als der Maximalwert ist an."
+    },
+    "xpSet": "Der Minimalwert wurde auf {{min}} und der Maximalwert auf {{min}} gesetzt."
+  },
+
+  "variables": {
+    "list": [
+      "{{e.arrow}} **%level** - Zeigt das neue Level an",
+      "{{e.arrow}} **%user** - Erwähnt das Mitglied",
+      "{{e.arrow}}**%user.name** - Der Nutzername des Mitglieds",
+      "{{e.arrow}}**%user.displayName** - Der Anzeigename des Mitglieds",
+      "{{e.arrow}}**%user.id** - ID des Mitglieds",
+      "{{e.arrow}}**%server.name** - Name des Servers",
+      "{{e.arrow}}**%server.id** - ID des Servers",
+      "{{e.arrow}}**%server.memberCount** - Anzahl an Mitgliedern des Servers"
+    ],
+    "title": "Verfügbare Variablen",
+    "noLevelVariables": "Es sind noch keine Variablen verfügbar."
+  },
+
+  "test": {
+    "errors": {
+      "noLevelUpMessageSet": "Es wurde noch keine Level-Up Nachricht festgelegt."
+    },
+    "testExecuted": "Die Level-Up Nachricht wurde getestet."
+  },
+
+  "exclude": {
+    "errors": {
+      "channelOrRoleIsMissing": "Bitte gib einen Kanal oder eine Rolle an.",
+      "channelOrRoleIsAlreadyExcluded": "{{item}} wurde bereits zur Blacklist hinzugefügt.",
+      "channelOrRoleIsNotExcluded": "{{item}} wurde noch nicht zur Blacklist hinzugefügt."
+    },
+    "channelOrRoleAdded": "{{item}} wurde zur Blacklist hinzugefügt.",
+    "channelOrRoleRemoved": "{{item}} wurde von der Blacklist entfernt.",
+    "list": {
+      "title": "Level-Blacklist",
+      "noRoleOrChannelsAdded": "Es wurden noch keine Kanäle oder Rollen zur Blacklist hinzugefügt."
+    }
+  }
+}

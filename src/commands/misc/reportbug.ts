@@ -9,7 +9,7 @@ export default class ReportbugCommand extends BaseCommand {
 			name: "reportbug",
 			description: "Report a bug to our development team",
 			localizedDescriptions: {
-				de: "Meldet einen Fehler an unser Entwickler-Team",
+				de: "Melde einen Fehler an unser Entwickler-Team"
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -18,13 +18,9 @@ export default class ReportbugCommand extends BaseCommand {
 				data: new SlashCommandBuilder().addStringOption((option: any) =>
 					option
 						.setName("description")
-						.setNameLocalizations({
-							de: "beschreibung"
-						})
-						.setDescription("Please describe the bug as precisely as possible")
-						.setDescriptionLocalizations({
-							de: "Bitte beschreibe den Fehler so genau wie möglich"
-						})
+						.setNameLocalization("de", "beschreibung")
+						.setDescription("Describe the error as precisely as possible")
+						.setDescriptionLocalization("de", "Beschreibe den Fehler so genau wie möglich")
 						.setRequired(true),
 				),
 			},
@@ -35,6 +31,7 @@ export default class ReportbugCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.reportBug(this.interaction.options.getString("description"));
 	}
 
@@ -44,7 +41,7 @@ export default class ReportbugCommand extends BaseCommand {
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			this.client.emotes.flags.BugHunterLevel1 + " " +
-			this.translate("confirmation"),
+			this.translate("bugIsReported"),
 			null,
 			"success"
 		);
@@ -52,14 +49,10 @@ export default class ReportbugCommand extends BaseCommand {
 
 
 		const supportEmbed: EmbedBuilder = this.client.createEmbed(
-			supportGuild.translate("misc/reportbug:supportTitle", { user: this.interaction.user }) + "\n\n" +
-			this.client.emotes.bug + " " + bug,
-			"information",
+			supportGuild.translate("commands/misc/reportbug:internalBugEmbed", { user: this.interaction.user.username, server: this.interaction.guild.name, e: this.client.emotes, description: bug }),
+			null,
 			"warning"
 		);
-		supportEmbed.setFooter({
-			text: supportGuild.translate("misc/reportbug:guildId") + ": " + this.interaction.guild!.id + " | " + date,
-		});
 
 		const errorLogChannel: any = await supportGuild.channels.fetch(this.client.config.support["ERROR_LOG"]);
 		if (!errorLogChannel) return;

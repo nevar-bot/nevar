@@ -1,0 +1,6 @@
+{
+  "memorizeEmojis": "Merke dir die Reihenfolge der Emojis innerhalb von 5 Sekunden!",
+  "selectEmoji": "Finde {{emoji}}, bevor die Zeit endet!",
+  "youWonTheGame": "Du hast gewonnen! {{emoji}}",
+  "youLostTheGame": "Du hast verloren! {{emoji}}"
+}

@@ -18,7 +18,6 @@ const Schema = new mongoose.Schema({
 			reason: null,
 			date: null,
 			moderator: null,
-			name: null,
 		},
 	},
 	staff: {
@@ -27,21 +26,7 @@ const Schema = new mongoose.Schema({
 			state: false,
 			role: null,
 		},
-	},
-	partner: {
-		type: Object,
-		default: {
-			state: false,
-		},
-	},
-	bughunter: {
-		type: Object,
-		default: {
-			state: false,
-		},
-	},
-
-	voteCount: { type: Number, default: 0 },
+	}
 });
 
 const User: Model<any> = mongoose.model("User", Schema);

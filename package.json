@@ -1,7 +1,7 @@
 {
-  "name": "nevar-typescript",
-  "description": "Nevar is a simple, lightweight, and fast discord bot built with discord.js and typescript",
-  "version": "5.4.0",
+  "name": "nevar",
+  "description": "Nevar is a simple, lightweight, and fast discord bot built with typescript and discord.js",
+  "version": "5.5.0",
   "homepage": "https://nevar.eu",
   "main": "build/app.js",
   "type": "commonjs",
@@ -12,7 +12,8 @@
   },
   "author": "1887jonas <admin@nevar.eu> (https://github.com/1887jonas)",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.11.0",
+    "npm": ">=10.4.0"
   },
   "funding": {
     "type": "individual",
@@ -50,7 +51,6 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
     "discord.js": "^14.14.1",
     "enhanced-ms": "^2.3.0",
     "express": "^4.18.2",
@@ -65,7 +65,6 @@
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.44",
     "mongoose": "^8.0.3",
-    "node-emoji": "^2.1.3",
     "node-schedule": "^2.1.1",
     "pug": "^3.0.2",
     "toml": "^3.0.0",
@@ -78,5 +77,20 @@
     "open-source",
     "bot",
     "multipurpose"
-  ]
+  ],
+  "_moduleAliases": {
+    "@root": ".",
+    "@assets": "./assets",
+    "@src": "./build",
+    "@commands": "./build/commands",
+    "@contexts": "./build/contexts",
+    "@database": "./build/database",
+    "@events": "./build/events",
+    "@handlers": "./build/handlers",
+    "@helpers": "./build/helpers",
+    "@structures": "./build/structures",
+    "@schemas": "./build/database/schemas",
+    "@api": "./build/api",
+    "@dashboard": "./build/dashboard"
+  }
 }

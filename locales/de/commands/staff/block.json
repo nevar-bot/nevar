@@ -1,0 +1,20 @@
+{
+  "errors": {
+    "actionIsMissing": "Bitte wähle zwischen folgenden Aktionen: add, remove, list",
+    "targetNotFound": "Bitte gib die ID eines Servers oder Benutzers an.",
+    "cantBlockMySelf": "Ich kann mich nicht selber blockieren.",
+    "cantBlockYourself": "Du kannst dich nicht selber blockieren.",
+    "cantBlockSupportserver": "Du kannst den Supportserver nicht blockieren.",
+    "cantBlockBotOwner": "Du kannst den Bot-Eigentümer nicht blockieren.",
+    "targetIsAlreadyBlocked": "Dieser Server oder Benutzer ist bereits blockiert.",
+    "targetIsNotBlocked": "Dieser Server oder Benutzer ist nicht blockiert."
+  },
+  "blocked": "{{name}} wurde blockiert.",
+  "unblocked": "{{name}} wurde entblockiert.",
+  "noBlockReasonSpecified": "Kein Grund angegeben",
+  "blockedAt": "Blockiert am",
+  "list": {
+    "title": "Blockierte Benutzer und Server",
+    "noBlockedUsersOrGuilds": "Es wurden noch keine Benutzer oder Server blockiert.",
+  }
+}

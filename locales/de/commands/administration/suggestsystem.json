@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "suggestionSystemIsAlreadyEnabled": "Das Ideen-System wurde bereits aktiviert.",
+    "suggestionSystemIsAlreadyDisabled": "Das Ideen-System wurde bereits deaktiviert."
+  },
+
+  "suggestionSystemEnabled": "Das Ideen-System wurde aktiviert.",
+  "suggestionSystemDisabled": "Das Ideen-System wurde deaktiviert.",
+  "suggestionInputChannelSet": "Neu eingereichte Ideen werden ab jetzt in {{channel}} gesendet.",
+  "suggestionReviewChannelSet": "Neu eingereichte Ideen werden ab jetzt in {{channel}} bearbeitet."
+}

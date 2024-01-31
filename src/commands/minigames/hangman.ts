@@ -7,9 +7,9 @@ export default class HangmanCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "hangman",
-			description: "Guess the word in time",
+			description: "Guess the word before you are hanged",
 			localizedDescriptions: {
-				de: "Errate das Wort rechtzeitig",
+				de: "Errate das Wort, bevor du gehängt wirst",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -23,6 +23,7 @@ export default class HangmanCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.startGame();
 	}
 
@@ -49,12 +50,14 @@ class HangmanGame extends BaseGame {
 			hat: "🎩",
 			head: "😟",
 			shirt: "👕",
+			hand_left: "🫲",
+			hand_right: "🫱",
 			pants: "🩳",
 			boots_left: "👞",
 			boots_right: "👞",
 		};
 
-		const words: string[] = this.interaction.guild.translate("minigames/hangman:words");
+		const words: string[] = this.interaction.guild.translate("commands/minigames/hangman:wordList");
 		options.theme = Object.keys(words)[Math.floor(Math.random() * Object.keys(words).length)];
 
 		this.hangman = options.hangman;
@@ -102,11 +105,13 @@ class HangmanGame extends BaseGame {
 	private getBoardContent(): string {
 		let board: string = "```\n|‾‾‾‾‾‾| \n|      ";
 		board += (this.damage > 0 ? this.hangman.hat : " ") + " \n|      ";
-		board += (this.damage > 1 ? this.hangman.head : " ") + " \n|      ";
-		board += (this.damage > 2 ? this.hangman.shirt : " ") + " \n|      ";
-		board += (this.damage > 3 ? this.hangman.pants : " ") + " \n|     ";
-		board += (this.damage > 4 ? this.hangman.boots_left : " ") + "";
-		board += (this.damage > 5 ? this.hangman.boots_right : " ") +  "\n|     ";
+		board += (this.damage > 1 ? this.hangman.head : " ") + " \n|    ";
+		board += (this.damage > 2 ? this.hangman.hand_left : " ") + "";
+		board += (this.damage > 3 ? this.hangman.shirt : " ") + "";
+		board += (this.damage > 4 ? this.hangman.hand_right : " ") + " \n|      ";
+		board += (this.damage > 5 ? this.hangman.pants : " ") + " \n|     ";
+		board += (this.damage > 6 ? this.hangman.boots_left : " ") + "";
+		board += (this.damage > 7 ? this.hangman.boots_right : " ") +  "\n|     ";
 		board += "\n|__________                      ```";
 		return board;
 	}
@@ -117,7 +122,7 @@ class HangmanGame extends BaseGame {
 		const description: string =
 			this.getBoardContent() +
 			"\n" +
-			this.interaction.guild.translate("minigames/hangman:hint", {
+			this.interaction.guild.translate("commands/minigames/hangman:wordLengthText", {
 				e: this.client.emotes,
 				wordLength: this.word.length,
 			}) +
@@ -151,12 +156,12 @@ class HangmanGame extends BaseGame {
 			this.guessed.push(guess);
 
 			if (!this.word.toUpperCase().includes(guess)) this.damage += 1;
-			if (this.damage > 5 || this.foundWord()) return hangmanCollector.stop();
+			if (this.damage > 7 || this.foundWord()) return hangmanCollector.stop();
 
 			const description: string =
 				this.getBoardContent() +
 				"\n" +
-				this.interaction.guild.translate("minigames/hangman:guessedLetters", {
+				this.interaction.guild.translate("commands/minigames/hangman:alreadyGuessedLetters", {
 					e: this.client.emotes,
 				}) +
 				"\n" +
@@ -164,7 +169,7 @@ class HangmanGame extends BaseGame {
 				" " +
 				this.guessed.join(", ") +
 				"\n\n" +
-				this.interaction.guild.translate("minigames/hangman:hint", {
+				this.interaction.guild.translate("commands/minigames/hangman:wordLengthText", {
 					e: this.client.emotes,
 					wordLength: this.word.length,
 				}) +
@@ -187,14 +192,14 @@ class HangmanGame extends BaseGame {
 
 	private endGame(msg: any, result: any): any {
 		const GameOverMessage: string = result
-			? this.interaction.guild.translate("minigames/hangman:win", { word: this.word })
-			: this.interaction.guild.translate("minigames/hangman:lose", { word: this.word });
+			? this.interaction.guild.translate("commands/minigames/hangman:youWonTheGame", { word: this.word })
+			: this.interaction.guild.translate("commands/minigames/hangman:youLostTheGame", { word: this.word });
 
 		const description: string =
 			this.getBoardContent() +
 			"\n" +
 			(this.guessed.length
-				? this.interaction.guild.translate("minigames/hangman:guessedLetters", {
+				? this.interaction.guild.translate("commands/minigames/hangman:alreadyGuessedLetters", {
 						e: this.client.emotes,
 					}) +
 					"\n" +

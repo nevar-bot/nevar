@@ -9,7 +9,7 @@ export default class TopicCommand extends BaseCommand {
 			name: "topic",
 			description: "Sends a random topic for conversation",
 			localizedDescriptions: {
-				de: "Sendet ein zufälliges Thema für eine Unterhaltung",
+				de: "Starte eine Unterhaltung mit einem zufälligen Thema",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -27,8 +27,7 @@ export default class TopicCommand extends BaseCommand {
 	}
 
 	private async getTopic(): Promise<any> {
-		const json = JSON.parse(String(fs.readFileSync("./assets/topics.json")));
-		const topics: any[] = Object.values(json);
+		const topics: any = this.translate("topics");
 
 		const topicEmbed: EmbedBuilder = this.client.createEmbed(topics[Math.floor(Math.random() * topics.length)], "arrow", "normal");
 		return this.interaction.followUp({

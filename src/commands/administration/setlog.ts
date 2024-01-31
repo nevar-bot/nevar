@@ -6,9 +6,9 @@ export default class SetlogCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "setlog",
-			description: "Sets the different log channels",
+			description: "Monitor events on your Discord server",
 			localizedDescriptions: {
-				de: "Setzt die verschiedenen Log-Channel",
+				de: "Überwache Ereignisse auf deinem Discord-Server",
 			},
 			cooldown: 1000,
 			memberPermissions: ["ManageGuild"],
@@ -19,10 +19,8 @@ export default class SetlogCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("moderation")
-							.setDescription("Sets the channel in which moderation logs are sent")
-							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Moderations-Logs gesendet werden",
-							})
+							.setDescription("Select a channel for the moderation logs")
+							.setDescriptionLocalization("de", "Wähle einen Kanal für die Moderations-Logs")
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
@@ -33,13 +31,9 @@ export default class SetlogCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("members")
-							.setNameLocalizations({
-								de: "mitglieder",
-							})
-							.setDescription("Sets the channel in which member logs are sent")
-							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Logs zu Mitgliedern gesendet werden",
-							})
+							.setNameLocalization("de", "mitglieder")
+							.setDescription("Select a channel for the member logs")
+							.setDescriptionLocalization("de", "Wähle einen Kanal für die Mitglieder-Logs")
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
@@ -50,10 +44,8 @@ export default class SetlogCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("server")
-							.setDescription("Sets the channel in which general server logs are sent")
-							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem allgemeine Logs zum Server gesendet werden",
-							})
+							.setDescription("Select a channel for the server logs")
+							.setDescriptionLocalization("de", "Wähle einen Kanal für die Server-Logs")
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
@@ -64,13 +56,9 @@ export default class SetlogCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("roles")
-							.setNameLocalizations({
-								de: "rollen",
-							})
-							.setDescription("Sets the channel in which role logs are sent")
-							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Logs zu Rollen gesendet werden",
-							})
+							.setNameLocalization("de", "rollen")
+							.setDescription("Select a channel for the role logs")
+							.setDescriptionLocalization("de", "Wähle einen Kanal für die Rollen-Logs")
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
@@ -81,10 +69,8 @@ export default class SetlogCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("threads")
-							.setDescription("Sets the channel in which thread logs are sent")
-							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Logs zu Threads gesendet werden",
-							})
+							.setDescription("Select a channel for the thread logs")
+							.setDescriptionLocalization("de", "Wähle einen Kanal für die Thread-Logs")
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
@@ -95,10 +81,8 @@ export default class SetlogCommand extends BaseCommand {
 					.addChannelOption((option) =>
 						option
 							.setName("channel")
-							.setDescription("Sets the channel in which channel logs are sent")
-							.setDescriptionLocalizations({
-								de: "Setzt den Channel, in welchem Logs zu Channels gesendet werden",
-							})
+							.setDescription("Select a channel for the channel logs")
+							.setDescriptionLocalization("de", "Wähle einen Kanal für die Kanal-Logs")
 							.setRequired(false)
 							.addChannelTypes(
 								ChannelType.GuildText,
@@ -113,6 +97,7 @@ export default class SetlogCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 
 		if (!data.guild.settings.logs) {
 			data.guild.settings.logs = {
@@ -130,10 +115,10 @@ export default class SetlogCommand extends BaseCommand {
 			await data.guild.save();
 		}
 
-		await this.setLogs(data);
+		await this.setLogs();
 	}
 
-	private async setLogs(data: any): Promise<any> {
+	private async setLogs(): Promise<any> {
 		const moderation: any = this.interaction.options.getChannel("moderation");
 		const members: any = this.interaction.options.getChannel("members");
 		const server: any = this.interaction.options.getChannel("server");
@@ -141,17 +126,17 @@ export default class SetlogCommand extends BaseCommand {
 		const threads: any = this.interaction.options.getChannel("threads");
 		const channel: any = this.interaction.options.getChannel("channel");
 
-		if (moderation) data.guild.settings.logs.channels.moderation = moderation.id;
-		if (members) data.guild.settings.logs.channels.member = members.id;
-		if (server) data.guild.settings.logs.channels.guild = server.id;
-		if (roles) data.guild.settings.logs.channels.role = roles.id;
-		if (threads) data.guild.settings.logs.channels.thread = threads.id;
-		if (channel) data.guild.settings.logs.channels.channel = channel.id;
+		if (moderation) this.data.guild.settings.logs.channels.moderation = moderation.id;
+		if (members) this.data.guild.settings.logs.channels.member = members.id;
+		if (server) this.data.guild.settings.logs.channels.guild = server.id;
+		if (roles) this.data.guild.settings.logs.channels.role = roles.id;
+		if (threads) this.data.guild.settings.logs.channels.thread = threads.id;
+		if (channel) this.data.guild.settings.logs.channels.channel = channel.id;
 
-		data.guild.markModified("settings.logs");
-		await data.guild.save();
+		this.data.guild.markModified("settings.logs");
+		await this.data.guild.save();
 
-		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("set"), "success", "success");
+		const successEmbed: EmbedBuilder = this.client.createEmbed(this.translate("logChannelsSet"), "success", "success");
 		return this.interaction.followUp({ embeds: [successEmbed] });
 	}
 }

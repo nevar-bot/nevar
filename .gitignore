@@ -14,5 +14,4 @@ build/
 config.toml
 config-sample.toml
 assets/disabled.json
-assets/news.json
 assets/votes.json

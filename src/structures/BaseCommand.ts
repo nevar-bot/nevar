@@ -1,17 +1,18 @@
 import * as path from "path";
-import BaseClient from "@structures/BaseClient";
 import { CommandInteraction, Guild, Message } from "discord.js";
+import BaseClient from "@structures/BaseClient";
 
 export default class BaseCommand {
-	protected client: BaseClient;
+	protected guild!: Guild;
+	protected data!: any;
+	protected interaction!: any;
+	protected message!: Message;
+	public client: BaseClient;
 	public conf: any;
 	public help: any;
 	public slashCommand: any;
-	protected guild!: Guild;
-	protected interaction!: CommandInteraction;
-	protected message!: Message;
 
-	public constructor(client: BaseClient, options: any) {
+	constructor(client: BaseClient, options: any) {
 		const {
 			name = null,
 			description = null,
@@ -23,15 +24,10 @@ export default class BaseCommand {
 			ownerOnly = false,
 			staffOnly = false,
 			cooldown = 0,
-			slashCommand = {
-				addCommand: true,
-				data: [],
-			},
+			slashCommand = { addCommand: true, data: [] },
 		} = options;
 
-		const category: string = (dirname as string).split(path.sep)[
-			parseInt(String((dirname as string).split(path.sep).length - 1), 10)
-		];
+		const category: string = path.basename(dirname as string).toLowerCase();
 
 		this.client = client;
 		this.conf = { memberPermissions, botPermissions, nsfw, ownerOnly, staffOnly, cooldown };
@@ -39,10 +35,23 @@ export default class BaseCommand {
 		this.slashCommand = slashCommand;
 	}
 
-	protected translate(key: string, args?: object, isFullPath?: boolean): string {
-		let languageKey: string = key;
-		if (!isFullPath) languageKey = `${this.help.category.toLowerCase()}/${this.help.name}:${key}`;
-		if (!this.guild) return "Missing guild";
-		return this.guild.translate(languageKey, args);
+	protected translate(key: string, args?: object): string {
+		const requestedKey: string = "commands/" + this.help.category + "/" + this.help.name + ":" + key;
+		return this.guild ? this.guild.translate(requestedKey, args) : "Guild is missing in command structure";
+	}
+
+	protected getBasicTranslation(key: string, args?: object): string {
+		const requestedKey: string = "basics:" + key;
+		return this.guild ? this.guild.translate(requestedKey, args) : "Guild is missing in command structure";
+	}
+
+	protected getTimeUnitTranslation(key: string): string {
+		const requestedKey: string = "timeunits:" + key;
+		return this.guild ? this.guild.translate(requestedKey, null) : "Guild is missing in command structure";
+	}
+
+	protected getPermissionTranslation(key: string): string {
+		const requestedKey: string = "permissions:" + key;
+		return this.guild ? this.guild.translate(requestedKey, null) : "Guild is missing in command structure";
 	}
 }

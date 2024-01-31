@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "actionIsMissing": "Bitte wähle zwischen folgenden Aktionen: add, remove, list",
+    "typeIsMissing": "Bitte wähle zwischen folgenden Typen: head-staff, staff",
+    "memberIsNotStaff": "{{user}} ist kein Staff."
+  },
+  "userAddedAsStaff": "{{user}} wurde als Staff hinzugefügt.",
+  "userAddedAsHeadStaff": "{{user}} wurde als Head-Staff hinzugefügt.",
+  "userRemovedFromStaff": "{{user}} wurde aus dem Staff entfernt.",
+  "list": {
+    "title": "{{client}}-Staffs",
+    "noStaffs": "Es gibt noch keine Staffs."
+  }
+}

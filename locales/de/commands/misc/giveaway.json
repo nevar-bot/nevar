@@ -1,0 +1,19 @@
+{
+  "errors": {
+    "giveawayWasNotFound": "Bitte gib die Nachrichten-ID des Gewinnspiels an."
+  },
+
+  "giveawayStarted": "Das Gewinnspiel wurde gestartet.",
+  "giveawayStopped": "Das Gewinnspiel wurde beendet.",
+  "giveawayRerolled": "Das Gewinnspiel wurde neu ausgelost.",
+  "giveawayDeleted": "Das Gewinnspiel wurde gelöscht.",
+
+  "list": {
+    "title": "Gewinnspiele",
+    "noGiveawayCreated": "Es wurden noch keine Gewinnspiele erstellt",
+    "giveawayWinnerCount": "Gewinner",
+    "giveawayHostedBy": "Veranstaltet von",
+    "giveawayStartedAt": "Gestartet",
+    "giveawayEndsAt": "Endet"
+  }
+}

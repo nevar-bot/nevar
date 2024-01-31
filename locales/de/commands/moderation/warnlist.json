@@ -1,0 +1,8 @@
+{
+  "warning": "Verwarnung",
+  "warnedAt": "Verwarnt am",
+  "list": {
+    "title": "Verwarnungen von {{user}}",
+    "noWarningsYet": "{{user}} hat noch keine Verwarnungen erhalten."
+  }
+}

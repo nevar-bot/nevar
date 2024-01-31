@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "cantWarnMyself": "Ich kann mich nicht selber verwarnen.",
+    "cantWarnYourself": "Du kannst dich nicht selber verwarnen.",
+    "targetHasHigherRole": "Du kannst keine Mitglieder verwarnen, die eine höhere Rolle als du haben."
+  },
+
+  "noWarningReasonSpecified": "Kein Grund angegeben",
+  "privateInformationTitle": "Du wurdest auf {{guild}} verwarnt.",
+  "publicInformationTitle": "{{user}} wurde verwarnt"
+}

@@ -8,9 +8,9 @@ export default class AddemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "addemoji",
-			description: "Creates a new emoji based on a given emoji or a link to an image",
+			description: "Create a new emoji based on an emoji or link",
 			localizedDescriptions: {
-				de: "Erstellt einen neuen Emoji anhand eines gegebenen Emojis oder eines Links zu einem Bild",
+				de: "Erstelle einen neuen Emoji anhand eines Emojis oder Links",
 			},
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
@@ -23,19 +23,17 @@ export default class AddemojiCommand extends BaseCommand {
 						option
 							.setRequired(true)
 							.setName("emoji")
-							.setDescription("Enter an emoji or a link to an image")
-							.setDescriptionLocalizations({
-								de: "Gib einen Emoji oder einen Link zu einem Bild ein",
-							}),
+							.setNameLocalization("de", "emoji")
+							.setDescription("Enter an existing emoji or a link to an image")
+							.setDescriptionLocalization("de", "Gib einen bestehenden Emoji oder einen Link zu einem Bild an")
 					)
 					.addStringOption((option: any) =>
 						option
 							.setRequired(false)
 							.setName("name")
-							.setDescription("Enter what you want the new emoji to be called")
-							.setDescriptionLocalizations({
-								de: "Gib ein, wie der neue Emoji heißen soll",
-							})
+							.setNameLocalization("de", "name")
+							.setDescription("Choose a name for the new emoji")
+							.setDescriptionLocalization("de", "Wähle einen Namen für den neuen Emoji")
 							.setMaxLength(32),
 					),
 			},
@@ -45,6 +43,7 @@ export default class AddemojiCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 
 		await this.addEmoji(
 			interaction.options.getString("emoji"),
@@ -59,7 +58,7 @@ export default class AddemojiCommand extends BaseCommand {
 		/* No emoji or link given */
 		if (!stringIsCustomEmoji(emoji) && !stringIsUrl(emoji)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:invalidEmojiOrLink"),
+				this.translate("errors:emojiOrLinkIsInvalid"),
 				"error",
 				"error",
 			);
@@ -69,7 +68,7 @@ export default class AddemojiCommand extends BaseCommand {
 		/* Given link is not an image */
 		if (stringIsUrl(emoji) && !urlIsImage(emoji)) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:invalidLinkExtension"),
+				this.translate("errors:linkExtensionIsInvalid"),
 				"error",
 				"error",
 			);
@@ -79,7 +78,7 @@ export default class AddemojiCommand extends BaseCommand {
 		/* Image link given but no name */
 		if (stringIsUrl(emoji) && urlIsImage(emoji) && !name) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("errors:missingName"),
+				this.translate("errors:emojiNameIsMissing"),
 				"error",
 				"error",
 			);
@@ -105,7 +104,7 @@ export default class AddemojiCommand extends BaseCommand {
 			});
 			/* Created emoji */
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("created", {
+				this.translate("emojiCreated", {
 					emoji: createdEmote.toString(),
 				}),
 				"success",
@@ -115,7 +114,7 @@ export default class AddemojiCommand extends BaseCommand {
 		} catch (exception) {
 			/* Error while creating emoji */
 			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				this.translate("basics:errors:unexpected", { support: this.client.support }, true),
+				this.getBasicTranslation("errors:unexpected", { support: this.client.support }),
 				"error",
 				"error",
 			);

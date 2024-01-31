@@ -1,0 +1,17 @@
+{
+  "errors": {
+    "channelOrTimeIsMissing": "Bitte gib einen Kanal und eine Dauer an.",
+    "autodeleteAlreadyActiveInChannel": "In {{channel}} wurde bereits ein Autodelete eingerichtet.",
+    "autodeleteNotActiveInChannel": "In {{channel}} wurde noch kein Autodelete eingerichtet.",
+    "timeIsTooShort": "Bitte gib eine Dauer von mindestens einer Sekunde an.",
+    "timeIsTooLong": "Bitte gib eine Dauer von maximal einer Woche an."
+  },
+
+  "autodeleteAdded": "In {{channel}} werden neue Nachrichten ab jetzt nach {{time}} gelöscht.",
+  "autodeleteRemoved": "In {{channel}} werden neue Nachrichten ab jetzt nicht mehr gelöscht.",
+
+  "list": {
+    "title": "Autodelete",
+    "noAutodeleteSet": "Es wurde noch kein Autodelete eingerichtet."
+  }
+}

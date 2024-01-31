@@ -6,7 +6,10 @@ export default class LeaveserverCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "leaveserver",
-			description: "Verlässt einen Server",
+			description: "Let the bot leave a server",
+			localizedDescriptions: {
+				de: "Lasse den Bot einen Server verlassen"
+			},
 			ownerOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -16,17 +19,17 @@ export default class LeaveserverCommand extends BaseCommand {
 		});
 	}
 
-	private message: any;
-
 	public async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
 		await this.leaveServer(args[0]);
 	}
 
-	private async leaveServer(guildID: string): Promise<void> {
+	private async leaveServer(guildID: string): Promise<any> {
 		if (!guildID) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst eine Server-ID angeben.",
+				this.translate("errors:guildIdIsMissing"),
 				"error",
 				"error",
 			);
@@ -37,7 +40,7 @@ export default class LeaveserverCommand extends BaseCommand {
 
 		if (!guild) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Der Server konnte nicht gefunden werden.",
+				this.translate("errors:guildNotFound"),
 				"error",
 				"error",
 			);
@@ -46,7 +49,7 @@ export default class LeaveserverCommand extends BaseCommand {
 
 		if (guild.id === this.client.config.support["ID"]) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Ich kann den Support-Server nicht verlassen.",
+				this.translate("errors:cantLeaveSupportGuild"),
 				"error",
 				"error",
 			);
@@ -56,10 +59,9 @@ export default class LeaveserverCommand extends BaseCommand {
 		await guild.leave();
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"Ich habe {0} verlassen.",
+			this.translate("leftGuild", { guild: guild.name }),
 			"success",
-			"success",
-			guild.name,
+			"success"
 		);
 		return this.message.reply({ embeds: [successEmbed] });
 	}

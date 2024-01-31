@@ -1,0 +1,32 @@
+{
+  "flags": {
+    "ActiveDeveloper": "Aktiver Entwickler",
+    "BugHunterLevel1": "Bug Hunter Level 1",
+    "BugHunterLevel2": "Bug Hunter Level 2",
+    "CertifiedModerator": "Zertifizierter Moderator",
+    "HypeSquadOnlineHouse1": "Bravery-Hypesquad",
+    "HypeSquadOnlineHouse2": "Brilliance-Hypesquad",
+    "HypeSquadOnlineHouse3": "Balance-Hypesquad",
+    "HypeSquadEvents": "Hypesquad-Events",
+    "Partner": "Eigentümer eines Partner-Servers",
+    "PremiumEarlySupporter": "Supporter der ersten Stunde",
+    "Staff": "Discord-Mitarbeiter",
+    "VerifiedBot": "Verifizierter Bot",
+    "VerifiedDeveloper": "Verifizierter Bot-Entwickler der ersten Stunde",
+    "NevarStaff": "Staff",
+    "NevarPartner": "Partner",
+    "NevarBugHunter": "Bughunter"
+  },
+
+  "userDontHaveFlags": "Keine Badges vorhanden.",
+  "displayName": "Displayname",
+  "serverDisplayName": "Server-Displayname",
+  "userName": "Benutzername",
+  "bot": "Bot",
+  "accountCreatedAt": "Account erstellt am",
+  "accountCreatedBefore": "Account erstellt vor",
+  "userJoinedGuildAt": "Server betreten am",
+  "userJoinedGuildBefore": "Server betreten vor",
+  "userFlags": "Badges",
+  "title": "Information zu"
+}

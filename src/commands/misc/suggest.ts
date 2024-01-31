@@ -6,43 +6,57 @@ export default class SuggestCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "suggest",
-			description: "Reicht eine Idee ein",
+			description: "Submit an idea",
+			localizedDescriptions: {
+				de: "Reiche eine Idee ein",
+			},
 			cooldown: 2 * 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()
 					.addStringOption((option: any) =>
-						option.setName("idee").setDescription("Gib deine Idee ein").setRequired(true),
+						option
+							.setName("idea")
+							.setNameLocalization("de", "idee")
+							.setDescription("Enter your idea")
+							.setDescriptionLocalization("de", "Gib deine Idee ein")
+							.setRequired(true),
 					)
 					.addAttachmentOption((option: any) =>
-						option.setName("bild").setDescription("Füge ggf. ein Bild hinzu").setRequired(false),
+						option
+							.setName("image")
+							.setNameLocalization("de", "bild")
+							.setDescription("Add an image if you want")
+							.setDescriptionLocalization("de", "Wähle ggf. ein Bild aus")
+							.setRequired(false),
 					),
 			},
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.suggest(interaction.options.getString("idee"), interaction.options.getAttachment("bild"), data);
+		this.guild = interaction.guild;
+		this.data = data;
+		await this.suggest(interaction.options.getString("idea"), interaction.options.getAttachment("image"));
 	}
 
-	private async suggest(idea: string, image: any, data: any): Promise<any> {
-		if (!data.guild.settings.suggestions.enabled) {
+	private async suggest(idea: string, image: any): Promise<any> {
+		if (!this.data.guild.settings.suggestions.enabled) {
 			const isNotEnabledEmbed: EmbedBuilder = this.client.createEmbed(
-				"Da das Ideen-System nicht aktiviert ist, können keine Ideen eingereicht werden.",
+				this.translate("errors:suggestionSystemIsNotEnabled"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [isNotEnabledEmbed] });
 		}
 
-		const channel: any = this.client.channels.cache.get(data.guild.settings.suggestions.channel);
+		const channel: any = this.client.channels.cache.get(this.data.guild.settings.suggestions.channel);
 		if (!channel) {
 			const channelNotFoundEmbed: EmbedBuilder = this.client.createEmbed(
-				"Der Ideen-Channel wurde nicht gefunden.",
+				this.translate("errors:suggestionChannelNotFound"),
 				"error",
 				"error",
 			);
@@ -53,7 +67,7 @@ export default class SuggestCommand extends BaseCommand {
 
 		if (image && !image.contentType.startsWith("image/")) {
 			const notAnImageEmbed: EmbedBuilder = this.client.createEmbed(
-				"Die angehängte Datei muss ein Bild sein.",
+				this.translate("errors:attachmentMustBeImage"),
 				"error",
 				"error",
 			);
@@ -62,11 +76,11 @@ export default class SuggestCommand extends BaseCommand {
 		const url = image ? image.proxyURL : null;
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
-			"Deine Idee wurde eingereicht.",
+			this.translate("suggestionSubmitted"),
 			"success",
 			"success",
 		);
 		await this.interaction.followUp({ embeds: [successEmbed] });
-		return this.client.emit("SuggestionSubmitted", this.interaction, data, this.interaction.guild, idea, url);
+		return this.client.emit("SuggestionSubmitted", this.interaction, this.data, this.interaction.guild, idea, url);
 	}
 }

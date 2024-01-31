@@ -17,29 +17,28 @@ export default {
 				if (!guild) continue;
 
 				guild.members
-					.unban(memberData.id, "Ban-Dauer abgelaufen")
+					.unban(memberData.id, guild.translate("handlers/unbanMembers:unbanReason"))
 					.then(async (): Promise<void> => {
 						const user: any = await client.users.fetch(memberData.id).catch((): void => {});
 						const unbanMessage: string =
-							client.emotes.user +
-							" Nutzer/-in: " +
+							client.emotes.user + " " +
+							guild.translate("handlers/unbanMembers:user") + ": " +
 							(user ? user.username : memberData.id) +
 							"\n" +
-							client.emotes.arrow +
-							" Begründung: Ban-Dauer ist abgelaufen";
+							client.emotes.arrow + " " + guild.translate("handlers/unbanMembers:unbanReason");
 
 						const unbanEmbed: EmbedBuilder = client.createEmbed(unbanMessage, null, "success");
-						unbanEmbed.setTitle("Auto-Unban durchgeführt");
+						unbanEmbed.setTitle(guild.translate("handlers/unbanMembers:autoUnbanExecuted"));
 						unbanEmbed.setThumbnail(user!.displayAvatarURL());
 						await guild.logAction(unbanEmbed, "moderation");
 					})
 					.catch(async (e: any): Promise<void> => {
 						const user: any = await client.users.fetch(memberData.id).catch((): void => {});
 						const errorMessage: string =
-							client.emotes.user + " Nutzer/-in: " + (user ? user.username : memberData.id);
+							client.emotes.user + " " + guild.translate("handlers/unbanMembers:user") + ": " + (user ? user.username : memberData.id);
 
 						const errorEmbed: EmbedBuilder = client.createEmbed(errorMessage, null, "error");
-						errorEmbed.setTitle("Auto-Unban fehlgeschlagen");
+						errorEmbed.setTitle(guild.translate("handlers/unbanMembers:autoUnbanFailed"));
 						errorEmbed.setThumbnail(user.displayAvatarURL());
 						await guild.logAction(errorEmbed, "moderation");
 					});

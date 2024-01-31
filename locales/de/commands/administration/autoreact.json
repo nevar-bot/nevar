@@ -1,0 +1,17 @@
+{
+  "errors": {
+    "channelOrEmojiIsMissing": "Bitte gib einen Kanal und einen Emoji an.",
+    "emojiIsInvalid": "Bitte gib einen gültigen Standard- oder benutzerdefinierten Emoji an.",
+    "emojiIsNotUsable": "Ich kann diesen Emoji leider nicht benutzen.",
+    "emojiIsAlreadyAddedToAutoreact": "Dieser Emoji wurde in {{channel}} bereits zum Autoreact hinzugefügt.",
+    "emojiIsNotAddedToAutoreact": "Dieser Emoji wurde in {{channel}} noch nicht zum Autoreact hinzugefügt."
+  },
+
+  "emojiAddedToAutoreact": "Der Emoji {{emoji}} wurde in {{channel}} zum Autoreact hinzugefügt.",
+  "emojiRemovedFromAutoreact": "Der Emoji {{emoji}} wurde in {{channel}} vom Autoreact entfernt.",
+
+  "list": {
+    "title": "Autoreact",
+    "noEmojisAddedToAutoreact": "Es wurden noch keine Emojis zum Autoreact hinzugefügt."
+  }
+}

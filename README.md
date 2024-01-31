@@ -4,17 +4,18 @@
 [![Stars][stars-shield]][stars-url]
 
 ## 🚀 Nevar
-Nevar is a simple, lightweight, and fast discord bot built with discord.js and typescript
+Nevar is a simple, lightweight, and fast discord bot built with typescript and discord.js
 
 [![Banner][banner-url]][website-url]
 
 
 ## Authors
 - [@1887jonas](https://www.github.com/1887jonas)
+
 ## Run
 Clone the project
 ```bash
-  git clone https://github.com/nevar-bot/nevar-ts
+  git clone https://github.com/nevar-bot/nevar
 ```
 
 Go to the project directory
@@ -37,27 +38,7 @@ Rename the `config-sample.toml` to `config.toml` and fill in with your data
 Start the bot
 ```bash
   npm start // Run in production mode
-  npm run start:dev // Run in development mode
-```
-
-## Docker
-Clone the repository and build the docker image
-```bash
-git clone https://github.com/nevar-bot/nevar
-cd nevar
-docker build -t nevar-bot:latest .
-```
-
-Start the container. Make sure you have an config.toml in your project directory, to map it to the container's config.
-```bash
-docker run -d -p 8085:8085 -p 8075:8075 
--v ${PWD}/config.toml:/app/config.toml 
---restart unless-stopped nevar-bot:latest
-```
-
-If you want to use the prebuilt docker image, pull it from the Github Container Registry:
-```bash
-docker pull ghcr.io/nevar-bot/nevar:main
+  npm run start:dev // Run in development mode (registers all interactions on startup)
 ```
 
 ## Feedback
@@ -73,7 +54,7 @@ Distributed under the AGPLv3 License. See `LICENSE` for more information.
 
 [contributors-shield]: https://img.shields.io/github/contributors/nevar-bot/nevar.svg?style=for-the-badge
 [contributors-url]: https://github.com/nevar-bot/nevar/graphs/contributors
-[node-shield]:https://img.shields.io/badge/NODE-%3E%3D%2020.0.0-2?style=for-the-badge&color=c634f7
+[node-shield]:https://img.shields.io/badge/NODE-%3E%3D%2020.11.0-2?style=for-the-badge&color=c634f7
 [node-url]:https://node.js.org
 [license-shield]: https://img.shields.io/github/license/nevar-bot/nevar.svg?style=for-the-badge
 [license-url]:https://choosealicense.com/licenses/agpl-3.0/

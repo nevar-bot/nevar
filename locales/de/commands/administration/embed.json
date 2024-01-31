@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "colorIsNotHex": "Bitte gib eine Farbe im Hex-Format an.",
+    "authorIconIsNoImage": "Bitte wähle ein Bild als Autor-Avatar.",
+    "thumbnailIsNoImage": "Bitte wähle ein Bild als Thumbnail-Bild.",
+    "imageIsNoImage": "Bitte wähle ein Bild als Embed-Bild.",
+    "footerIconIsNoImage": "Bitte wähle ein Bild als Fußzeilen-Bild."
+  },
+
+  "embedCreatedAndSent": "Das Embed wurde erstellt und als Webhook gesendet."
+}

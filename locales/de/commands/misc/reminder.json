@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "nameOrDurationIsMissing": "Bitte gib einen Namen und eine Dauer an.",
+    "nameIsMissing": "Bitte gib den Namen einer Erinnerung an.",
+    "cantFindReminderWithThisName": "Du hast noch keine Erinnerung mit diesem Namen erstellt."
+  },
+  "reminderCreated": "In {{duration}} werde ich dich erinnern.",
+  "reminderDeleted": "Die Erinnerung {{reminder}} wurde gelöscht.",
+  "list": {
+    "title": "Erinnerungen",
+    "noRemindersCreated": "Du hast noch keine Erinnerungen erstellt.",
+    "reminderCreatedAt": "Erstellt am:",
+    "reminderEndsAt": "Endet am:",
+    "reminderEndsIn": "Endet in:"
+  }
+}

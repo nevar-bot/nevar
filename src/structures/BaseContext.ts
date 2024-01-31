@@ -3,8 +3,8 @@ import { CommandInteraction, Guild } from "discord.js";
 
 export default class BaseContext {
 	protected client: BaseClient;
-	public conf: object;
-	public help: object;
+	public conf: any;
+	public help: any;
 	protected interaction!: CommandInteraction;
 	protected guild!: Guild;
 
@@ -16,7 +16,8 @@ export default class BaseContext {
 		this.help = { name };
 	}
 
-	protected translate(key: string, args?: any): string {
-		return this.interaction.guild.translate(key, args);
+	protected translate(key: string, args?: object): string {
+		const requestedKey: string = "contexts/" + this.help.name + ":" + key;
+		return this.guild ? this.guild.translate(requestedKey, args) : "Guild is missing in context structure";
 	}
 }

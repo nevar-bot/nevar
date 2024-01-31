@@ -201,46 +201,33 @@ export default class Levels {
 	static async computeLeaderboard(client: any, leaderboard: any[], fetchUsers = false): Promise<any> {
 		if (leaderboard.length < 1) return [];
 
-		const computedArray = [];
+		const computedArray: any[] = [];
 
-		if (fetchUsers) {
-			for (const key of leaderboard) {
-				const user = (await client.users.fetch(key.userID)) || {
-					username: "Unbekannt",
-					displayName: "Unbekannt",
-				};
-				computedArray.push({
-					guildID: key.guildID,
-					userID: key.userID,
-					xp: key.xp,
-					level: key.level,
-					position:
-						leaderboard.findIndex(
-							(i: any): boolean => i.guildID === key.guildID && i.userID === key.userID,
-						) + 1,
+		for(const key of leaderboard){
+			let user: any = client.users.cache.get(key.userID);
+			if(!user && fetchUsers) user = await client.users.fetch(key.userID);
+			if(!user) continue;
+			if(user.username.includes("Deleted User")){
+				await this.deleteUser(key.userID, key.guildID);
+				continue;
+			}
+
+			computedArray.push({
+				user: {
+					id: key.userID,
 					username: user.username,
 					displayName: user.displayName,
-				});
-			}
-		} else {
-			leaderboard.forEach((key) => {
-				computedArray.push({
-					guildID: key.guildID,
-					userID: key.userID,
-					xp: key.xp,
-					level: key.level,
-					position:
-						leaderboard.findIndex(
-							(i: any): boolean => i.guildID === key.guildID && i.userID === key.userID,
-						) + 1,
-					username: client.users.cache.get(key.userID)
-						? client.users.cache.get(key.userID).username
-						: "Unbekannt",
-					displayName: client.users.cache.get(key.userID)
-						? client.users.cache.get(key.userID).displayName
-						: "Unbekannt",
-				});
+					avatar: user.displayAvatarURL()
+				},
+				guildId: key.guildID,
+				level: key.level,
+				xp: key.xp,
+				nextLevelXp: this.xpFor(key.level + 1),
+				cleanXp: key.xp - this.xpFor(key.level),
+				cleanNextLevelXp: this.xpFor(key.level + 1) - this.xpFor(key.level),
+				position: leaderboard.findIndex((i: any): boolean => i.guildID === key.guildID && i.userID === key.userID) + 1,
 			});
+
 		}
 
 		return computedArray;

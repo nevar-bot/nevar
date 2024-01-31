@@ -1,0 +1,7 @@
+{
+  "timeoutedUntil": "Getimeoutet bis",
+  "list": {
+    "title": "Getimeoutete Mitglieder",
+    "noTimeoutedUsers": "Es wurden noch keine Mitglieder getimeoutet."
+  }
+}

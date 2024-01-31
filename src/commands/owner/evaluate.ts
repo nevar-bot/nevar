@@ -6,55 +6,53 @@ export default class EvaluateCommand extends BaseCommand {
 	constructor(client: BaseClient) {
 		super(client, {
 			name: "evaluate",
-			description: "Führt gegebenen Code aus",
+			description: "Execute JavaScript code",
+			localizedDescriptions: {
+				de: "Führe JavaScript Code aus",
+			},
 			ownerOnly: true,
 			dirname: __dirname,
 			slashCommand: { addCommand: false, data: null },
 		});
 	}
 
-	async dispatch(message: any, args: any[]): Promise<void> {
+	async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
 		await this.evaluate(args.join(" "));
 	}
 
 	private async evaluate(code: string): Promise<any> {
-		const blacklist: string[] = ["require", "process", "child_process", "fs", "os", "path", "config", "token"];
-
-		if (blacklist.some((term: string) => code.includes(term))) {
-			const errorEmbed: EmbedBuilder = this.client.createEmbed(
-				"Der Code enthält nicht erlaubte Begriffe.",
-				"error",
-				"error",
-			);
+		if(this.guild.id !== this.client.config.support["ID"]){
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(this.translate("errors:guildHasToBeSupportGuild"), "error", "error");
 			return this.message.reply({ embeds: [errorEmbed] });
-		} else {
-			try {
-				const safeCode: string = code.replaceAll("```", "");
-				const response: any = await eval(safeCode);
+		}
+		try {
+			const safeCode: string = code.replaceAll("```", "");
+			const response: any = await eval(safeCode);
 
-				const deleteButton: ButtonBuilder = this.client.createButton(
-					"delete",
-					"Response löschen",
-					"Secondary",
-					this.client.emotes.delete,
-					false,
-				);
-				const buttonRow: any = this.client.createMessageComponentsRow(deleteButton);
-				const responseMessage: any = await this.message.channel.send({
-					content: `\`\`\`js\n${JSON.stringify(response, null, 2)}\`\`\``,
-					components: [buttonRow],
-				});
+			const deleteButton: ButtonBuilder = this.client.createButton(
+				"delete",
+				this.translate("deleteResponse"),
+				"Secondary",
+				this.client.emotes.delete,
+				false,
+			);
+			const buttonRow: any = this.client.createMessageComponentsRow(deleteButton);
+			const responseMessage: any = await this.message.channel.send({
+				content: `\`\`\`js\n${JSON.stringify(response, null, 2)}\`\`\``,
+				components: [buttonRow],
+			});
 
-				const buttonCollector = responseMessage.createMessageComponentCollector({
-					filter: (i: any): boolean => i.user.id === this.message.author.id,
-					time: 60000,
-				});
-				buttonCollector.on("collect", async (i: any): Promise<void> => i.message.delete());
-			} catch (e) {
-				const errorEmbed: EmbedBuilder = this.client.createEmbed(`${e}`, "error", "error");
-				return this.message.reply({ embeds: [errorEmbed] });
-			}
+			const buttonCollector = responseMessage.createMessageComponentCollector({
+				filter: (i: any): boolean => i.user.id === this.message.author.id,
+				time: 60000,
+			});
+			buttonCollector.on("collect", async (i: any): Promise<void> => i.message.delete());
+		} catch (e) {
+			const errorEmbed: EmbedBuilder = this.client.createEmbed(`${e}`, "error", "error");
+			return this.message.reply({ embeds: [errorEmbed] });
 		}
 	}
 }

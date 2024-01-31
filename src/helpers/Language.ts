@@ -1,30 +1,44 @@
 import i18next from "i18next";
 import i18nextBackend from "i18next-fs-backend";
 import * as path from "path";
-import fs from "fs";
+import fs from "fs/promises";
 
-async function walkDirectory(dir: any, namespaces: any[] = [], folderName = "") {
-	const files: string[] = await fs.readdirSync(dir);
+async function loadNamespaces(basePath: string): Promise<any> {
+	const namespaces = new Set<string>();
+	const languages: string[] = [];
 
-	const languages = [];
-	for (const file of files) {
-		const stat = await fs.statSync(path.join(dir, file));
-		if (stat.isDirectory()) {
-			const isLanguage: any = RegExp(/^[a-z]{2}(-[A-Z]{2})?$/).exec(file);
-			if (isLanguage) languages.push(file);
+	async function processDir(languagePath: string, parentNamespace: string = '') {
+		const files = await fs.readdir(languagePath);
 
-			const folder = await walkDirectory(path.join(dir, file), namespaces, isLanguage ? "" : file + "/");
+		for (const file of files) {
+			const filePath = path.join(languagePath, file);
+			const stats = await fs.stat(filePath);
 
-			namespaces = folder.namespaces;
-		} else {
-			namespaces.push(folderName + file.replace(".json", ""));
+			if (stats.isDirectory()) {
+				await processDir(filePath, parentNamespace);
+			} else if (path.extname(file) === '.json') {
+				const namespace = path.join(parentNamespace, path.relative(basePath, languagePath), path.parse(file).name);
+				namespaces.add(namespace.substring(3).replaceAll("\\", "/"));
+			}
 		}
 	}
-	return {
-		namespaces: [...new Set(namespaces)],
-		languages,
-	};
+
+	const languageDirs = await fs.readdir(basePath);
+	for (const languageDir of languageDirs) {
+		const languagePath = path.join(basePath, languageDir);
+		const stats = await fs.stat(languagePath);
+
+		if (stats.isDirectory()) {
+			await processDir(languagePath);
+			languages.push(languageDir);
+		}
+	}
+
+	return { namespaces: Array.from(namespaces), languages };
 }
+
+
+
 
 export async function languages() {
 	const options = {
@@ -32,7 +46,7 @@ export async function languages() {
 		loadPath: path.resolve(__dirname, "../../locales/{{lng}}//{{ns}}.json"),
 	};
 
-	const { namespaces, languages } = await walkDirectory(path.resolve(__dirname, "../../locales/"));
+	const { namespaces, languages } = await loadNamespaces(path.resolve(__dirname, '../../locales'));
 
 	i18next.use(i18nextBackend);
 

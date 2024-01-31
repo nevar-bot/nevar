@@ -7,38 +7,46 @@ export default class WarnlistCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "warnlist",
-			description: "Listet alle Verwarnungen eines Mitgliedes auf",
+			description: "Lists all warnings for a member",
+			localizedDescriptions: {
+				de: "Listet alle Verwarnungen eines Mitgliedes auf",
+			},
 			memberPermissions: ["KickMembers"],
 			cooldown: 1000,
 			dirname: __dirname,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>
-					option.setName("mitglied").setDescription("Wähle ein Mitglied").setRequired(true),
+					option
+						.setName("member")
+						.setNameLocalization("de", "mitglied")
+						.setDescription("Choose a member")
+						.setDescriptionLocalization("de", "Wähle ein Mitglied")
+						.setRequired(true),
 				),
 			},
 		});
 	}
 
-	private interaction: any;
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		await this.listWarnings(interaction.options.getUser("mitglied"));
+		this.guild = interaction.guild;
+		this.data = data;
+		await this.listWarnings(interaction.options.getMember("member"));
 	}
 
-	private async listWarnings(user: any): Promise<void> {
-		const member: any = await this.interaction.guild.resolveMember(user.id);
+	private async listWarnings(member: any): Promise<any> {
 		if (!member) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst ein Mitglied angeben.",
+				this.getBasicTranslation("errors:memberIsMissing"),
 				"error",
 				"error",
 			);
 			return this.interaction.followUp({ embeds: [invalidOptionsEmbed] });
 		}
 
-		const targetData: any = await this.client.findOrCreateMember(member.user.id, this.interaction.guild.id);
+		const targetData: any = await this.client.findOrCreateMember(member.user.id, this.interaction.guild!.id);
 
 		const warnList: any[] = [];
 		const warnings: any[] = [...targetData.warnings.list];
@@ -48,23 +56,14 @@ export default class WarnlistCommand extends BaseCommand {
 		for (const warn of warnings) {
 			indicator++;
 			const text: string =
-				"### " +
-				this.client.emotes.ban +
-				" Warn " +
-				indicator +
-				"\n" +
-				this.client.emotes.arrow +
-				" Moderator: " +
-				warn.moderator +
-				"\n" +
-				this.client.emotes.arrow +
-				" Begründung: " +
-				warn.reason +
-				"\n" +
-				this.client.emotes.arrow +
-				" Verwarnt am: " +
-				moment(warn.date).format("DD.MM.YYYY, HH:mm") +
-				"\n";
+				"### " + this.client.emotes.ban + " " +
+				this.translate("warning") + " " + indicator + "\n" +
+				this.client.emotes.arrow + " " +
+				this.getBasicTranslation("moderator") + ": " + warn.moderator + "\n" +
+				this.client.emotes.arrow + " " +
+				this.getBasicTranslation("reason") + ": " + warn.reason + "\n" +
+				this.client.emotes.arrow + " " +
+				this.translate("warnedAt") + ": " + this.client.utils.getDiscordTimestamp(warn.date, "F") + "\n";
 			warnList.push(text);
 		}
 
@@ -72,9 +71,8 @@ export default class WarnlistCommand extends BaseCommand {
 			this.interaction,
 			5,
 			warnList,
-			"Warns von " + member.user.username + " (" + warnCount + ")",
-			member.user.username + " hat keine Verwarnungen",
-			null,
+			this.translate("list:title", { user: member.toString() }),
+			this.translate("list:noWarningsYet", {user: member.toString() }),
 		);
 	}
 }

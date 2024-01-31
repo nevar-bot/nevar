@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "roleIsAlreadyAddedToAutoroles": "{{role}} wurde bereits als Autorolle eingerichtet.",
+    "roleIsNotAddedToAutoroles": "{{role}} wurde noch nicht als Autorolle eingerichtet."
+  },
+
+  "roleAddedToAutoroles": "Neue Mitglieder bekommen ab jetzt die {{role}} Rolle zugewiesen.",
+  "roleRemovedFromAutoroles": "Neuen Mitgliedern wird ab jetzt nicht mehr die {{role}} Rolle zugewiesen.",
+
+  "list": {
+    "title": "Autorollen",
+    "noAutorolesAdded": "Es wurden noch keine Autorollen eingerichtet."
+  }
+}

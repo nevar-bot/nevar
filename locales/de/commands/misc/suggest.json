@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "suggestionSystemIsNotEnabled": "Das Ideen-System wurde noch nicht aktiviert.",
+    "suggestionChannelNotFound": "Der Ideen-Kanal wurde nicht gefunden.",
+    "attachmentMustBeImage": "Bitte wähle ein Bild als angehängte Datei aus."
+  },
+  "suggestionSubmitted": "Deine Idee wurde eingereicht."
+}

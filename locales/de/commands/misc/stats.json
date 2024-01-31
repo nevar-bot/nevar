@@ -1,0 +1,18 @@
+{
+  "clientStaffs": "Staffs",
+  "statistics": "Statistiken",
+  "servers": "Server",
+  "users": "Nutzer/-innen",
+  "channels": "Kanäle",
+  "uptime": "Laufzeit",
+  "votes": "Votes diesen Monat",
+  "commands": "Befehle",
+  "commandsAvailable": "Verfügbar",
+  "commandsExecuted": "Insgesamt ausgeführt",
+  "commandsExecutedThisYear": "Dieses Jahr ausgeführt",
+  "commandsExecutedThisMonth": "Diesen Monat ausgeführt",
+  "commandsExecutedThisWeek": "Diese Woche ausgeführt",
+  "commandsExecutedToday": "Heute ausgeführt",
+  "versions": "Versionen",
+  "ping": "API Ping"
+}

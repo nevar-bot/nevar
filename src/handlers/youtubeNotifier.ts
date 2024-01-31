@@ -55,10 +55,8 @@ export default {
 										lastVideo.url,
 									);
 									announcementEmbed.setTitle(
-										client.emotes.arrow +
-											" " +
-											lastVideo.username +
-											" hat ein neues Video hochgeladen!",
+										client.emotes.arrow + " " +
+										guild.translate("handlers/youtubeNotifier:userUploadedNewVideo", { user: lastVideo.username }),
 									);
 									announcementEmbed.setImage(lastVideo.thumbnail);
 									announcementChannel.send({

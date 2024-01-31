@@ -9,7 +9,7 @@ const MEMBER_MENTION: RegExp = /<?@?!?(\d{17,20})>?/;
 
 declare module "discord.js" {
 	interface Guild {
-		translate(key: string, args: any): any;
+		translate(key: string, args?: object): any;
 		findMatchingChannels(query: string, type?: ChannelType[]): any;
 		findMatchingRoles(query: string): any;
 		resolveMember(query: string, exact?: boolean): Promise<any>;
@@ -21,7 +21,7 @@ declare module "discord.js" {
 	}
 }
 
-Guild.prototype.translate = function (key: string, args: any = null): any {
+Guild.prototype.translate = function (key: string, args?: object): any {
 	// @ts-ignore
 	let guildLocale: string = this.data?.locale || "de";
 	if (guildLocale.includes("-")) guildLocale = guildLocale.split("-")[0];

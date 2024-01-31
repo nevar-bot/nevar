@@ -6,9 +6,9 @@ export default class MyinvitesCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "myinvites",
-			description: "Shows statistics about your invitations",
+			description: "See a list of your own invitations",
 			localizedDescriptions: {
-				de: "Zeigt Statistiken zu deinen Einladungen",
+				de: "Sieh eine Liste deiner eigenen Einladungen",
 			},
 			cooldown: 3 * 1000,
 			dirname: __dirname,
@@ -22,10 +22,12 @@ export default class MyinvitesCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
-		await this.showInvites(data.member);
+		this.data = data;
+		await this.showInvites();
 	}
 
-	private async showInvites(memberData: any): Promise<any> {
+	private async showInvites(): Promise<any> {
+		const memberData: any = this.data.member;
 		const guildInvites: any = await this.interaction.guild!.invites.fetch().catch((): void => {});
 
 		const memberInvites: any = guildInvites.filter((i: any): boolean => i.inviterId === memberData.id);
@@ -57,7 +59,7 @@ export default class MyinvitesCommand extends BaseCommand {
 					"\n" +
 					this.client.emotes.users +
 					" " +
-					this.translate("usages") +
+					this.translate("inviteUsages") +
 					": **" +
 					invite.uses +
 					"**\n" +
@@ -69,7 +71,7 @@ export default class MyinvitesCommand extends BaseCommand {
 					"**\n" +
 					this.client.emotes.error +
 					" " +
-					this.translate("fake") +
+					this.translate("joinsFaked") +
 					": **" +
 					(invite.fake || 0) +
 					"**\n",
@@ -80,8 +82,8 @@ export default class MyinvitesCommand extends BaseCommand {
 			this.interaction,
 			3,
 			invitesData,
-			this.translate("yourInvites"),
-			this.translate("noInvites"),
+			this.translate("list:title"),
+			this.translate("list:noInviteLinksCreated"),
 		);
 	}
 }

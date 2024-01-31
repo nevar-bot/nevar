@@ -42,15 +42,6 @@ fs.writeFile('./assets/disabled.json', JSON.stringify(disabledCommands, null, 4)
     }
 });
 
-fs.writeFile('./assets/news.json', JSON.stringify(news, null, 4), function(e){
-    if(e){
-        Logger.error("Couldn't create assets/news.json")
-        console.error(new Error(e));
-    }else{
-        Logger.success("Successfully created assets/news.json")
-    }
-});
-
 fs.writeFile('./assets/votes.json', JSON.stringify(voteObject, null, 4), function(e){
     if(e){
         Logger.error("Couldn't create assets/votes.json")

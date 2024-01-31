@@ -8,6 +8,9 @@ export default class EnableCommand extends BaseCommand {
 		super(client, {
 			name: "enable",
 			description: "Aktiviert einen Befehl",
+			localizedDescriptions: {
+				de: "Activate a command"
+			},
 			ownerOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -17,17 +20,18 @@ export default class EnableCommand extends BaseCommand {
 		});
 	}
 
-	private message: any;
 
 	public async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
 		await this.enableCommand(args[0]);
 	}
 
-	private async enableCommand(cmd: string): Promise<void> {
+	private async enableCommand(cmd: string): Promise<any> {
 		if (!cmd) {
 			const invalidOptionsEmbed: EmbedBuilder = this.client.createEmbed(
-				"Du musst einen Befehl angeben.",
+				this.translate("errors:commandIsMissing"),
 				"error",
 				"error",
 			);
@@ -42,14 +46,14 @@ export default class EnableCommand extends BaseCommand {
 				fs.writeFileSync("./assets/disabled.json", JSON.stringify(disabledCommands, null, 4));
 
 				const enabledEmbed: EmbedBuilder = this.client.createEmbed(
-					"Der Befehl wurde aktiviert.",
+					this.translate("enabledCommand"),
 					"success",
 					"success",
 				);
 				return this.message.reply({ embeds: [enabledEmbed] });
 			} else {
 				const isNotDisabledEmbed: EmbedBuilder = this.client.createEmbed(
-					"Der Befehl ist nicht deaktiviert.",
+					this.translate("errors:commandIsNotDisabled"),
 					"error",
 					"error",
 				);
@@ -57,7 +61,7 @@ export default class EnableCommand extends BaseCommand {
 			}
 		} else {
 			const invalidCommandEmbed: EmbedBuilder = this.client.createEmbed(
-				"Der Befehl existiert nicht.",
+				this.translate("errors:commandNotFound"),
 				"error",
 				"error",
 			);

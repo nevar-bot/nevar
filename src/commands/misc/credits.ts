@@ -8,9 +8,9 @@ export default class CreditsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "credits",
-			description: "Displays the credits for this project",
+			description: "Without what would Nevar not have been possible?",
 			localizedDescriptions: {
-				de: "Zeigt die Credits für dieses Projekt an",
+				de: "Ohne was wäre Nevar nicht möglich gewesen?",
 			},
 			cooldown: 1000,
 			dirname: __dirname,
@@ -24,6 +24,7 @@ export default class CreditsCommand extends BaseCommand {
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
+		this.data = data;
 		await this.showCredits();
 	}
 
@@ -39,13 +40,13 @@ export default class CreditsCommand extends BaseCommand {
 			dependenciesArray
 				.map(
 					(dependency) =>
-						`${this.client.emotes.arrow} [${dependency.name}](https://npmjs.com/package/${dependency.name}) - ${dependency.version}`,
+						`${this.client.emotes.shine} [${dependency.name}](https://npmjs.com/package/${dependency.name}/v/${dependency.version}) - ${dependency.version}`,
 				)
-				.join("\n") + `\n${this.client.emotes.arrow} [icons](https://discord.gg/9AtkECMX2P)`;
+				.join("\n") + `\n${this.client.emotes.shine} [icons](https://discord.gg/9AtkECMX2P)`;
 
 		const creditsEmbed: EmbedBuilder = this.client.createEmbed(creditsString, null, "normal");
 		creditsEmbed.setThumbnail(this.client.user!.displayAvatarURL());
-		creditsEmbed.setTitle(this.translate("title", { name: this.client.user!.username }));
+		creditsEmbed.setTitle(this.translate("creditsEmbedTitle", { name: this.client.user!.username }));
 
 		return this.interaction.followUp({ embeds: [creditsEmbed] });
 	}

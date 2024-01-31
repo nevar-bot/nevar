@@ -1,0 +1,9 @@
+{
+  "inviteUsages": "Verwendungen",
+  "guildLeft": "Server verlassen",
+  "joinsFaked": "Gefälscht",
+  "list": {
+    "title": "Deine Einladungslinks",
+    "noInviteLinksCreated": "Du hast bisher keine Einladungslinks erstellt."
+  }
+}

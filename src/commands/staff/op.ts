@@ -5,7 +5,10 @@ export default class OpCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
 		super(client, {
 			name: "op",
-			description: "Krasser OP Command",
+			description: "Fierce OP Command",
+			localizedDescriptions: {
+				de: "Heftiger OP Command"
+			},
 			staffOnly: true,
 			dirname: __dirname,
 			slashCommand: {
@@ -15,15 +18,15 @@ export default class OpCommand extends BaseCommand {
 		});
 	}
 
-	private message: any;
-
 	public async dispatch(message: any, args: any[], data: any): Promise<void> {
 		this.message = message;
+		this.guild = message.guild;
+		this.data = data;
 		await this.op(args.join(" "));
 	}
 
-	private async op(user: string): Promise<void> {
-		const member: any = (await this.message.guild.resolveMember(user)) || this.message.member;
+	private async op(user: string): Promise<any> {
+		const member: any = (await this.message.guild!.resolveMember(user)) || this.message.member;
 		return this.message.reply({
 			content: "*Made " + member.user.username + " a server operator*",
 		});

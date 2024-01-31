@@ -1,0 +1,5 @@
+{
+  "deletedMessagesFromUser": "Ich habe {{count}} Nachrichten von {{user}} gelöscht.",
+  "deletedMessages": "Ich habe {{count}} Nachrichten gelöscht.",
+  "logTitle": "Nachrichten gelöscht"
+}

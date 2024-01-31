@@ -24,14 +24,14 @@ export default class {
 		if (channel.userLimit)
 			properties.push(
 				this.client.emotes.users +
-					" Userlimit: " +
-					(channel.userLimit === 0 ? "unbegrenzt" : channel.userLimit),
+				" Userlimit: " +
+				(channel.userLimit === 0 ? "unbegrenzt" : channel.userLimit),
 			);
 		if (channel.videoQualityMode)
 			properties.push(
 				this.client.emotes.monitor +
-					" Videoqualität: " +
-					(channel.videoQualityMode === 1 ? "automatisch" : "720p"),
+				" Videoqualität: " +
+				(channel.videoQualityMode === 1 ? "automatisch" : "720p"),
 			);
 		if (properties.length < 1) return;
 
