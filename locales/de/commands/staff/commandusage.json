@@ -10,5 +10,5 @@
   "executedMonth": "Dieser Monat: **{{month}}x**",
   "executedWeek": "Diese Woche: **{{week}}x**",
   "executedToday": "Heute: **{{day}}x**",
-  "executedHour": "Diese Stunde: **{{hour}}x**",
+  "executedHour": "Diese Stunde: **{{hour}}x**"
 }

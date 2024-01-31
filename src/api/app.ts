@@ -1,7 +1,12 @@
-import express, { Express } from "express";
+import express, {Express, NextFunction, Request, Response} from "express";
 import cors from "cors";
 import helmet from "helmet";
-import fs from "fs";
+import GuildsRouter from "@api/routes/GuildsRouter";
+import GeneralRouter from "@api/routes/GeneralRouter";
+import InteractionsRouter from "@api/routes/InteractionsRouter";
+import MessagesRouter from "@api/routes/MessagesRouter";
+import LevelsRouter from "@api/routes/LevelsRouter";
+import VotesRouter from "@api/routes/VotesRouter";
 
 export default {
 	async init(client: any): Promise<void> {
@@ -11,21 +16,19 @@ export default {
 		app.use(express.json());
 		app.use(cors());
 
-		const files: string[] = fs.readdirSync("./build/api/routes");
-
-		for (const file of files) {
-			if (!file.endsWith(".js")) {
-				if (file.endsWith(".map")) continue;
-				const nestedFiles: string[] = fs.readdirSync("./build/api/routes/" + file);
-				for (const nestedFile of nestedFiles) {
-					if (nestedFile.endsWith(".js")) {
-						new (await import("./routes/" + file + "/" + nestedFile)).default(app);
-					}
-				}
-			} else {
-				new (await import("./routes/" + file)).default(app);
+		app.use((error: SyntaxError, req: Request, res: Response, next: NextFunction): void => {
+			if(error instanceof SyntaxError && error.status === 400 && "body" in error) {
+				return res.status(400).send({ status: 400, status_message: error.message })
 			}
-		}
+			next();
+		})
+
+		app.use("/guilds", GuildsRouter);
+		app.use("/general", GeneralRouter);
+		app.use("/interactions", InteractionsRouter);
+		app.use("/messages", MessagesRouter);
+		app.use("/levels", LevelsRouter);
+		app.use("/votes", VotesRouter);
 
 		app.listen(client.config.api["PORT"], (): void => {
 			client.logger.log("API is running on port " + client.config.api["PORT"]);

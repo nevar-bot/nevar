@@ -217,7 +217,7 @@ export default class Levels {
 					id: key.userID,
 					username: user.username,
 					displayName: user.displayName,
-					avatar: user.avatarURL({ dynamic: true })
+					avatar: user.displayAvatarURL()
 				},
 				guildId: key.guildID,
 				level: key.level,

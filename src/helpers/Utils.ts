@@ -46,6 +46,15 @@ export default class Utils {
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 
+	static stringIsValidJson(str: string): boolean {
+		try {
+			JSON.parse(str);
+		}catch(error) {
+			return false;
+		}
+		return true;
+	}
+
 	static stringIsUrl(str: string): boolean {
 		const pattern: RegExp = new RegExp(
 			"^(https?:\\/\\/)?" + // protocol

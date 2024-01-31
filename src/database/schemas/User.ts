@@ -26,9 +26,7 @@ const Schema = new mongoose.Schema({
 			state: false,
 			role: null,
 		},
-	},
-
-	voteCount: { type: Number, default: 0 },
+	}
 });
 
 const User: Model<any> = mongoose.model("User", Schema);
