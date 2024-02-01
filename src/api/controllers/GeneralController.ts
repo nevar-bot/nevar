@@ -37,6 +37,7 @@ export default {
             };
 
             response.bot = {
+                invite: client.createInvite(),
                 version: require("@root/package.json").version,
                 guild_count: client.guilds.cache.size,
                 user_count: client.users.cache.size,
