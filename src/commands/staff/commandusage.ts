@@ -48,27 +48,37 @@ export default class CommandstatsCommand extends BaseCommand {
 			return this.message.reply({ embeds: [invalidCommandEmbed] });
 		}
 
-		const executedCommands: any = (
-			await (await mongoose.connection.db.collection("logs").find({ command: command.help.name })).toArray()
-		);
+		const commandLogs: any = await mongoose.connection.db.collection("logs").find({ command: command.help.name }).toArray();
 
-		const executedTotal: any = executedCommands.length;
-		const executedToday: any = executedCommands.filter((c: any) => c.date > Date.now() - 86400000).length;
-		const executedWeek: any = executedCommands.filter((c: any) => c.date > Date.now() - 604800000).length;
-		const executedMonth: any = executedCommands.filter((c: any) => c.date > Date.now() - 2592000000).length;
-		const executedYear: any = executedCommands.filter((c: any) => c.date > Date.now() - 31536000000).length;
-		const executedHour: any = executedCommands.filter((c: any) => c.date > Date.now() - 3600000).length;
-		// usage in current year
-		const executedThisYear: any = executedCommands.filter((c: any) => new Date(c.date).getFullYear() === new Date().getFullYear()).length;
+		/* Get stats */
+		const today: Date = new Date();
+		const currentYear: Number = today.getFullYear();
+		const currentMonth: Number = today.getMonth();
+		const currentDay: Number = today.getDay();
+		const currentHour: Number = today.getHours();
+
+		/* Executions total */
+		const executionsTotal: number = commandLogs.length;
+
+		/* Executions this year */
+		const executionsThisYear: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear).length;
+
+		/* Executions this month */
+		const executionsThisMonth: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear && new Date(log.date).getMonth() === currentMonth).length;
+
+		/* Executions today */
+		const executionsToday: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear && new Date(log.date).getMonth() === currentMonth && new Date(log.date).getDay() === currentDay).length;
+
+		/* Executions this hour */
+		const executionsThisHour: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear && new Date(log.date).getMonth() === currentMonth && new Date(log.date).getDay() === currentDay && new Date(log.date).getHours() === currentHour).length;
 
 		const statisticsString: string =
 			this.translate("statisticsTitle", { command: command.help.name }) + "\n\n" +
-			this.client.emotes.calendar + " " + this.translate("executedTotal", { total: executedTotal }) + "\n" +
-			this.client.emotes.calendar + " " + this.translate("executedYear", { year: executedThisYear }) + "\n" +
-			this.client.emotes.calendar + " " + this.translate("executedMonth", { month: executedMonth }) + "\n" +
-			this.client.emotes.calendar + " " + this.translate("executedWeek", { week: executedWeek }) + "\n" +
-			this.client.emotes.calendar + " " + this.translate("executedToday", { day: executedToday }) + "\n" +
-			this.client.emotes.calendar + " " + this.translate("executedHour", { hour: executedHour });
+			this.client.emotes.calendar + " " + this.translate("executedTotal", { total: executionsTotal }) + "\n" +
+			this.client.emotes.calendar + " " + this.translate("executedYear", { year: executionsThisYear }) + "\n" +
+			this.client.emotes.calendar + " " + this.translate("executedMonth", { month: executionsThisMonth }) + "\n" +
+			this.client.emotes.calendar + " " + this.translate("executedToday", { day: executionsToday }) + "\n" +
+			this.client.emotes.calendar + " " + this.translate("executedHour", { hour: executionsThisHour });
 		const statsEmbed: EmbedBuilder = this.client.createEmbed(
 			statisticsString,
 			"arrow",

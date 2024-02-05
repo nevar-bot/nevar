@@ -8,7 +8,6 @@
   "executedTotal": "Insgesamt: **{{total}}x**",
   "executedYear": "Dieses Jahr: **{{year}}x**",
   "executedMonth": "Dieser Monat: **{{month}}x**",
-  "executedWeek": "Diese Woche: **{{week}}x**",
   "executedToday": "Heute: **{{day}}x**",
   "executedHour": "Diese Stunde: **{{hour}}x**"
 }
