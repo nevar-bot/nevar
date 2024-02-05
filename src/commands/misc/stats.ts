@@ -67,24 +67,30 @@ export default class StatsCommand extends BaseCommand {
 		const commandCount: number = this.client.commands.filter(
 			(cmd) => !cmd.conf.ownerOnly && !cmd.conf.staffOnly,
 		).size;
-		const executedCommands: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray())
-			.length;
 
-		const executedCommandsThisYear: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).filter((log: any) => {
-			return moment(log.date).format("YYYY") === moment().format("YYYY")
-		}).length;
+		const commandLogs: any = await mongoose.connection.db.collection("logs").find().toArray();
 
-		const executedCommandsThisMonth: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).filter((log: any) => {
-			return moment(log.date).format("MMMM") === moment().format("MMMM")
-		}).length;
+		/* Get stats */
+		const today: Date = new Date();
+		const currentYear: Number = today.getFullYear();
+		const currentMonth: Number = today.getMonth();
+		const currentDay: Number = today.getDay();
+		const currentHour: Number = today.getHours();
 
-		const executedCommandsThisWeek: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).filter((log: any) => {
-			return moment(log.date).format("WW") === moment().format("WW") && moment(log.date).format("MMMM") === moment().format("MMMM")
-		}).length;
+		/* Executions total */
+		const executionsTotal: number = commandLogs.length;
 
-		const executedCommandsToday: number = (await (await mongoose.connection.db.collection("logs").find({})).toArray()).filter((log: any) => {
-			return moment(log.date).format("DD") === moment().format("DD") && moment(log.date).format("MMMM") === moment().format("MMMM")
-		}).length;
+		/* Executions this year */
+		const executionsThisYear: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear).length;
+
+		/* Executions this month */
+		const executionsThisMonth: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear && new Date(log.date).getMonth() === currentMonth).length;
+
+		/* Executions today */
+		const executionsToday: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear && new Date(log.date).getMonth() === currentMonth && new Date(log.date).getDay() === currentDay).length;
+
+		/* Executions this hour */
+		const executionsThisHour: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear && new Date(log.date).getMonth() === currentMonth && new Date(log.date).getDay() === currentDay && new Date(log.date).getHours() === currentHour).length;
 
 
 		const packageJson: any = require("../../../package.json");
@@ -144,23 +150,23 @@ export default class StatsCommand extends BaseCommand {
 			"**\n" +
 			this.client.emotes.growth_up + " " +
 			this.translate("commandsExecuted") + ": **" +
-			this.client.format(executedCommands) +
+			this.client.format(executionsTotal) +
 			"**\n" +
 			this.client.emotes.calendar + " " +
 			this.translate("commandsExecutedThisYear") + ": **" +
-			this.client.format(executedCommandsThisYear) +
+			this.client.format(executionsThisYear) +
 			"**\n" +
 			this.client.emotes.calendar + " " +
 			this.translate("commandsExecutedThisMonth") + ": **" +
-			this.client.format(executedCommandsThisMonth) +
-			"**\n" +
-			this.client.emotes.calendar + " " +
-			this.translate("commandsExecutedThisWeek") + ": **" +
-			this.client.format(executedCommandsThisWeek) +
+			this.client.format(executionsThisMonth) +
 			"**\n" +
 			this.client.emotes.calendar + " " +
 			this.translate("commandsExecutedToday") + ": **" +
-			this.client.format(executedCommandsToday) +
+			this.client.format(executionsToday) +
+			"**\n" +
+			this.client.emotes.calendar + " " +
+			this.translate("commandsExecutedThisHour") + ": **" +
+			this.client.format(executionsThisHour) +
 			"**\n\n" +
 			"### " +
 			this.client.emotes.code + " " +

@@ -47,11 +47,11 @@ export default class BaseCommand {
 
 	protected getTimeUnitTranslation(key: string): string {
 		const requestedKey: string = "timeunits:" + key;
-		return this.guild ? this.guild.translate(requestedKey, null) : "Guild is missing in command structure";
+		return this.guild ? this.guild.translate(requestedKey) : "Guild is missing in command structure";
 	}
 
 	protected getPermissionTranslation(key: string): string {
 		const requestedKey: string = "permissions:" + key;
-		return this.guild ? this.guild.translate(requestedKey, null) : "Guild is missing in command structure";
+		return this.guild ? this.guild.translate(requestedKey) : "Guild is missing in command structure";
 	}
 }

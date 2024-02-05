@@ -11,8 +11,8 @@
   "commandsExecuted": "Insgesamt ausgeführt",
   "commandsExecutedThisYear": "Dieses Jahr ausgeführt",
   "commandsExecutedThisMonth": "Diesen Monat ausgeführt",
-  "commandsExecutedThisWeek": "Diese Woche ausgeführt",
   "commandsExecutedToday": "Heute ausgeführt",
+  "commandsExecutedThisHour": "In dieser Stunde ausgeführt",
   "versions": "Versionen",
   "ping": "API Ping"
 }
