@@ -31,9 +31,9 @@ export default class {
 			const hasNewPermission: boolean = (newPermissions & value) === value;
 
 			if (hasOldPermission && !hasNewPermission) {
-				if (this.client.permissions[permission]) removedPermissions.push(this.client.permissions[permission]);
+				if(guild.translate("permissions")[permission]) removedPermissions.push(guild.translate("permissions")[permission]);
 			} else if (!hasOldPermission && hasNewPermission) {
-				if (this.client.permissions[permission]) addedPermissions.push(this.client.permissions[permission]);
+				if(guild.translate("permissions")[permission]) addedPermissions.push(guild.translate("permissions")[permission]);
 			}
 		}
 
