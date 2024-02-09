@@ -1,6 +1,7 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder } from "discord.js";
+import path from "path";
 
 export default class RebootCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -11,7 +12,7 @@ export default class RebootCommand extends BaseCommand {
 				de: "Starte den Bot neu"
 			},
 			ownerOnly: true,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: false,
 				data: null,

@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { SlashCommandBuilder, ChannelType, EmbedBuilder } from "discord.js";
 import { google } from "googleapis";
+import path from "path";
 
 export default class Youtubenotifier extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -13,7 +14,7 @@ export default class Youtubenotifier extends BaseCommand {
 			},
 			cooldown: 1000,
 			memberPermissions: ["ManageGuild"],
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()

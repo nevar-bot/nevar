@@ -1,6 +1,7 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import path from "path";
 
 export default class AvatarCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -11,7 +12,7 @@ export default class AvatarCommand extends BaseCommand {
 				de: "Schaue dir das Profilbild eines Mitglieds an",
 			},
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option) =>

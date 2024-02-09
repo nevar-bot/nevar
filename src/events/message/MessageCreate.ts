@@ -1,10 +1,7 @@
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import { ButtonBuilder, EmbedBuilder } from "discord.js";
 import ems from "enhanced-ms";
 const ms: any = ems("de");
-// @ts-ignore - Could not find a declaration file for module 'perspective-api-client'
-import Perspective from "perspective-api-client";
-import OpenAI from "openai";
 
 export default class {
 	private client: BaseClient;

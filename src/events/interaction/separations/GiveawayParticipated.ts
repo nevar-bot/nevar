@@ -1,5 +1,4 @@
-import BaseClient from "@structures/BaseClient";
-import { EmbedBuilder } from "discord.js";
+import BaseClient from "@structures/BaseClient.js";
 
 export default class {
 	private client: BaseClient;

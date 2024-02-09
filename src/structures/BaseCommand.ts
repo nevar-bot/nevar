@@ -1,6 +1,6 @@
 import * as path from "path";
 import { CommandInteraction, Guild, Message } from "discord.js";
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 
 export default class BaseCommand {
 	protected guild!: Guild;
@@ -27,7 +27,7 @@ export default class BaseCommand {
 			slashCommand = { addCommand: true, data: [] },
 		} = options;
 
-		const category: string = path.basename(dirname as string).toLowerCase();
+		const category: string = path.basename(path.dirname(dirname as string)).toLowerCase();
 
 		this.client = client;
 		this.conf = { memberPermissions, botPermissions, nsfw, ownerOnly, staffOnly, cooldown };

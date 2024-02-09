@@ -1,5 +1,5 @@
 import { EmbedBuilder, Guild } from "discord.js";
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import { google } from "googleapis";
 
 async function getLastVideo(youtubeInstance: any, channelId: string): Promise<object | null> {

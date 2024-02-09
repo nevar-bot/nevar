@@ -1,5 +1,6 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
+import path from "path";
 
 export default class ServerlistCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -10,7 +11,7 @@ export default class ServerlistCommand extends BaseCommand {
 				de: "Sendet die Serverliste",
 			},
 			staffOnly: true,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: false,
 				data: null,

@@ -1,4 +1,4 @@
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import { ActionRowBuilder, AnyComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 
 export default class {

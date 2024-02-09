@@ -1,6 +1,7 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { SlashCommandBuilder } from "discord.js";
+import path from "path";
 
 export default class MyinvitesCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -11,7 +12,7 @@ export default class MyinvitesCommand extends BaseCommand {
 				de: "Sieh eine Liste deiner eigenen Einladungen",
 			},
 			cooldown: 3 * 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder(),

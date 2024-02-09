@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 const router: Router = express.Router();
 
-import AuthController from "@dashboard/controllers/auth.controller";
+import AuthController from "@dashboard/controllers/auth.controller.js";
 
 router.get("/login", AuthController.login);
 router.get("/callback", AuthController.callback);

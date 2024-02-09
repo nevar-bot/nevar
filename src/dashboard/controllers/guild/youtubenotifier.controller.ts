@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { client } from "@src/app";
+import { client } from "@src/app.js";
 
-import AuthController from "@dashboard/controllers/auth.controller";
-import UserController from "@dashboard/controllers/user.controller";
-import ErrorController from "@dashboard/controllers/error.controller";
+import AuthController from "@dashboard/controllers/auth.controller.js";
+import UserController from "@dashboard/controllers/user.controller.js";
+import ErrorController from "@dashboard/controllers/error.controller.js";
 
 export default {
 	async get(req: Request, res: Response): Promise<void> {

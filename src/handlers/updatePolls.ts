@@ -1,4 +1,4 @@
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder, Guild } from "discord.js";
 
 export default {

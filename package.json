@@ -4,7 +4,7 @@
   "version": "5.5.0",
   "homepage": "https://nevar.eu",
   "main": "build/app.js",
-  "type": "commonjs",
+  "type": "module",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
@@ -56,6 +56,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "googleapis": "^130.0.0",
+    "hafas-client": "^6.2.1",
     "helmet": "^7.1.0",
     "i18next": "^23.7.16",
     "i18next-fs-backend": "^2.3.1",

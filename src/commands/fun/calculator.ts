@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
+import BaseCommand from "@structures/BaseCommand.js";
 import { ButtonBuilder, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import * as math from "mathjs";
+import path from "path";
 
 export default class CalculatorCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -12,7 +13,7 @@ export default class CalculatorCommand extends BaseCommand {
 				de: "Prüfe ob 1+1 wirklich 2 ergibt"
 			},
 			cooldown: 2 * 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder(),

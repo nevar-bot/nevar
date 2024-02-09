@@ -1,6 +1,7 @@
-import BaseCommand from "@structures/BaseCommand";
+import BaseCommand from "@structures/BaseCommand.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
+import path from "path";
 
 export default class AskCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -11,7 +12,7 @@ export default class AskCommand extends BaseCommand {
 				de: "Stelle eine Frage und du wirst 100% wahre Antworten erhalten",
 			},
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addStringOption((option: any) =>

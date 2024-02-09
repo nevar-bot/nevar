@@ -1,8 +1,9 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import { RankCardBuilder, Font } from "canvacord";
 import fs from "fs";
+import path from "path";
 
 export default class RankCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -13,7 +14,7 @@ export default class RankCommand extends BaseCommand {
 				de: "Sieh dir deine Levelkarte an",
 			},
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>

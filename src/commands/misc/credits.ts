@@ -1,5 +1,5 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import fs from "fs";
 import path from "path";
@@ -13,7 +13,7 @@ export default class CreditsCommand extends BaseCommand {
 				de: "Ohne was wäre Nevar nicht möglich gewesen?",
 			},
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder(),
@@ -29,7 +29,7 @@ export default class CreditsCommand extends BaseCommand {
 	}
 
 	private async showCredits() {
-		const { dependencies } = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../../../package.json"), "utf8"));
+		const { dependencies } = JSON.parse(fs.readFileSync(path.resolve("../../../package.json"), "utf8"));
 
 		const dependenciesArray: any[] = Object.entries(dependencies).map(([name, version]) => ({
 			name,

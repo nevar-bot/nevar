@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 const router: Router = express.Router();
 
-import PrivacyController from "@dashboard/controllers/privacy.controller";
+import PrivacyController from "@dashboard/controllers/privacy.controller.js";
 
 router.get("/", PrivacyController.get);
 

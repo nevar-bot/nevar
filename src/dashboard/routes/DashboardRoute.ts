@@ -4,31 +4,33 @@ import path from "path";
 
 const router: Router = express.Router();
 
-import DashboardController from "@dashboard/controllers/dashboard.controller";
-import OverviewController from "@dashboard/controllers/guild/overview.controller";
+import DashboardController from "@dashboard/controllers/dashboard.controller.js";
+import OverviewController from "@dashboard/controllers/guild/overview.controller.js";
 
 router.get("/", DashboardController.get);
 router.get("/:guildId", OverviewController.get);
 
-const controllerDirs: string[] = ["../controllers/guild/", "../controllers/guild/levelsystem/"];
-
+const controllerDirs = ["controllers/guild/", "controllers/guild/levelsystem/"];
+const baseDir: string = path.resolve(process.cwd(), "build/dashboard");
 const importController = async (dir: string, file: string): Promise<void> => {
-	const controller = await import(path.join(dir, file));
-	const trimmedDir: string = dir.replace("../controllers/guild/", "");
-	const routeBase: string = file.replace(".controller.js", "");
+	const controllerPath = path.join(baseDir, dir, file);
+	const cleanPath: string = controllerPath.split(path.sep).join(path.posix.sep).replace("C:", "");
+	const controller = await import(cleanPath);
+	const trimmedDir = dir.replace("controllers/guild/", "");
+	const routeBase = file.replace(".controller.js", "");
 
-	const basePath: string = `/:guildId/${trimmedDir}${routeBase}`;
+	const basePath = `/:guildId/${trimmedDir}${routeBase}`;
 	if (controller.default.get) router.get(basePath, controller.default.get);
 	if (controller.default.post) router.post(`${basePath}/save`, controller.default.post);
 };
 
-controllerDirs.forEach((dir: string): void => {
-	const totalPath: string = path.resolve(__dirname, dir);
-	const files: string[] = fs.readdirSync(totalPath);
+controllerDirs.forEach(async (dir) => {
+	const totalPath = path.resolve(baseDir, dir);
+	const files = await fs.promises.readdir(totalPath);
 
 	for (const file of files) {
 		if (file.endsWith(".controller.js")) {
-			importController(dir, file);
+			await importController(dir, file);
 		}
 	}
 });

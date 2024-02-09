@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { ChannelType, SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import ems from "enhanced-ms";
+import path from "path";
 const ms: any = ems("de");
 
 export default class GiveawayCommand extends BaseCommand {
@@ -14,7 +15,7 @@ export default class GiveawayCommand extends BaseCommand {
 			},
 			memberPermissions: ["ManageGuild"],
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()

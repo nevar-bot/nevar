@@ -2,7 +2,6 @@ import { lstatSync, readdirSync, Stats } from "fs";
 import { extname, join } from "path";
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from "discord.js";
 import moment from "moment";
-import BaseClient from "@structures/BaseClient";
 
 declare module "moment" {
 	interface Duration {

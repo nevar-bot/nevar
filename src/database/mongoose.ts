@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import Logger from "@helpers/Logger";
+import Logger from "@helpers/Logger.js";
 
 export default {
 	async init(client: any): Promise<void> {

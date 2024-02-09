@@ -1,5 +1,5 @@
 import { EmbedBuilder, Guild } from "discord.js";
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import { AppTokenAuthProvider } from "@twurple/auth";
 import { ApiClient, HelixUser, HelixStream } from "@twurple/api";
 

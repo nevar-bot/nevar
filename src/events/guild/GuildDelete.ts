@@ -1,4 +1,4 @@
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder } from "discord.js";
 import moment from "moment";
 

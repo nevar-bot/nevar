@@ -30,11 +30,12 @@
     "loose": true
   },
   "module": {
-    "type": "commonjs",
-    "strict": true,
+    "type": "es6",
+    "strict": false,
     "strictMode": true,
     "lazy": false,
-    "noInterop": false
+    "noInterop": false,
+    "ignoreDynamic":true
   },
   "sourceMaps": "inline",
 }

@@ -1,6 +1,6 @@
 /* @ts-ignore */
 import { Router } from "express";
-import VotesController from "@api/controllers/VotesController";
+import VotesController from "@api/controllers/VotesController.js";
 
 const router: Router = Router();
 

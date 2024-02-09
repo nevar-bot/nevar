@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
+import BaseCommand from "@structures/BaseCommand.js";
 import { ButtonBuilder, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import axios from "axios";
+import path from "path";
 
 export default class MemeCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -12,7 +13,7 @@ export default class MemeCommand extends BaseCommand {
 				de: "Sendet Memes aus r/ich_iel",
 			},
 			cooldown: 3 * 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder(),

@@ -1,4 +1,4 @@
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 
 async function processGiveaways(client: BaseClient): Promise<void> {
 	const giveaways: any[] = await client.giveawayManager.getGiveaways();

@@ -3,9 +3,9 @@ import * as util from "util";
 import * as path from "path";
 import { ApplicationCommandType, Events } from "discord.js";
 const readdir = util.promisify(fs.readdir);
-import Utils from "@helpers/Utils";
-import BaseClient from "@structures/BaseClient";
-import { languages } from "@helpers/Language";
+import Utils from "@helpers/Utils.js";
+import BaseClient from "@structures/BaseClient.js";
+import { languages } from "@helpers/Language.js";
 
 export default class Loader {
 	static async loadCommands(client: BaseClient): Promise<void> {
@@ -36,20 +36,21 @@ export default class Loader {
 		let success: number = 0;
 		let failed: number = 0;
 
-		for (const filePath of Utils.recursiveReadDirSync(directory)) {
+		for (let filePath of Utils.recursiveReadDirSync(directory)) {
 			const file: string = path.basename(filePath);
 			try {
+				const cleanPath: string = filePath.split(path.sep).join(path.posix.sep).replace("C:", "");
 				const eventName: string = path.basename(file, ".js");
-				const event = new (await import(filePath)).default(client);
+				const event = new (await import(cleanPath)).default(client);
 				// @ts-ignore - Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'typeof Events'
 				if (!Events[eventName]) Events[eventName] = eventName;
 				// @ts-ignore - Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'typeof Events'
 				client.on(Events[eventName], (...args) => event.dispatch(...args));
 				success++;
-				delete require.cache[require.resolve(filePath)];
 			} catch (e: any) {
 				failed++;
 				client.logger.error("Couldn't load event " + file + ": " + e);
+				console.log(e);
 			}
 		}
 		client.logger.log(

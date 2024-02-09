@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import moment from "moment";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import path from "path";
 
 export default class WarnlistCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -13,7 +14,7 @@ export default class WarnlistCommand extends BaseCommand {
 			},
 			memberPermissions: ["KickMembers"],
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder().addUserOption((option: any) =>

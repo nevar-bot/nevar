@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder } from "discord.js";
 import { exec } from "child_process";
+import path from "path";
 
 export default class UpdateCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -12,7 +13,7 @@ export default class UpdateCommand extends BaseCommand {
 				de: "Bringt den Code auf Stand des GitHub Repositories"
 			},
 			ownerOnly: true,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: false,
 				data: null,

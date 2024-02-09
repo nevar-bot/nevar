@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as toml from "toml";
-import Logger from "@helpers/Logger";
+import Logger from "@helpers/Logger.js";
 
 export default class Validator {
 	static checkMandatoryFields(config: any, sections: string[][]): void {

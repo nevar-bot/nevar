@@ -1,6 +1,6 @@
 /* @ts-ignore */
 import { Router } from "express";
-import LevelsController from "@api/controllers/LevelsController";
+import LevelsController from "@api/controllers/LevelsController.js";
 
 const router: Router = Router();
 

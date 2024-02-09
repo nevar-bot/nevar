@@ -1,5 +1,5 @@
-import BaseClient from "@structures/BaseClient";
-import Giveaway from "@schemas/Giveaway";
+import BaseClient from "@structures/BaseClient.js";
+import Giveaway from "@schemas/Giveaway.js";
 import { ButtonBuilder, EmbedBuilder, Guild } from "discord.js";
 
 export default class GiveawaysManager {

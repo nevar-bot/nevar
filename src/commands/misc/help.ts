@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { ActionRowBuilder, SlashCommandBuilder, ComponentType, StringSelectMenuBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import fs from "fs";
+import path from "path";
 
 function getKeyByValue(object: any, value: any): any {
 	return Object.keys(object).find((key: string): boolean => object[key] === value);
@@ -16,7 +17,7 @@ export default class HelpCommand extends BaseCommand {
 				de: "Sendet eine Übersicht aller Befehle, oder Hilfe zu einem bestimmten Befehl",
 			},
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			botPermissions: ["ReadMessageHistory"],
 			slashCommand: {
 				addCommand: true,

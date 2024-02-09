@@ -1,8 +1,9 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import moment from "moment";
 import ems from "enhanced-ms";
+import path from "path";
 const ms: any = ems("de");
 
 export default class BanCommand extends BaseCommand {
@@ -16,7 +17,7 @@ export default class BanCommand extends BaseCommand {
 			memberPermissions: ["BanMembers"],
 			botPermissions: ["BanMembers"],
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()

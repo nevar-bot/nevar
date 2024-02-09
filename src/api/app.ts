@@ -1,12 +1,12 @@
 import express, {Express, NextFunction, Request, Response} from "express";
 import cors from "cors";
 import helmet from "helmet";
-import GuildsRouter from "@api/routes/GuildsRouter";
-import GeneralRouter from "@api/routes/GeneralRouter";
-import InteractionsRouter from "@api/routes/InteractionsRouter";
-import MessagesRouter from "@api/routes/MessagesRouter";
-import LevelsRouter from "@api/routes/LevelsRouter";
-import VotesRouter from "@api/routes/VotesRouter";
+import GuildsRouter from "@api/routes/GuildsRouter.js";
+import GeneralRouter from "@api/routes/GeneralRouter.js";
+import InteractionsRouter from "@api/routes/InteractionsRouter.js";
+import MessagesRouter from "@api/routes/MessagesRouter.js";
+import LevelsRouter from "@api/routes/LevelsRouter.js";
+import VotesRouter from "@api/routes/VotesRouter.js";
 
 export default {
 	async init(client: any): Promise<void> {

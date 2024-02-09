@@ -1,9 +1,10 @@
-import BaseClient from "@structures/BaseClient";
-import BaseCommand from "@structures/BaseCommand";
+import BaseClient from "@structures/BaseClient.js";
+import BaseCommand from "@structures/BaseCommand.js";
 import moment from "moment";
 import fs from "fs";
 import mongoose from "mongoose";
 import { SlashCommandBuilder, EmbedBuilder } from "@discordjs/builders";
+import * as discord from "discord.js";
 
 export default class StatsCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -14,7 +15,7 @@ export default class StatsCommand extends BaseCommand {
 				de: "Wirf einen Blick auf Statistiken zu Nevar",
 			},
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder(),
@@ -93,11 +94,11 @@ export default class StatsCommand extends BaseCommand {
 		const executionsThisHour: number = commandLogs.filter((log: any): boolean => new Date(log.date).getFullYear() === currentYear && new Date(log.date).getMonth() === currentMonth && new Date(log.date).getDay() === currentDay && new Date(log.date).getHours() === currentHour).length;
 
 
-		const packageJson: any = require("../../../package.json");
+		const packageJson: any = JSON.parse(fs.readFileSync("./package.json").toString());
 		const botVersion: any = packageJson.version;
 		const nodeVer: string = process.version.replace("v", "");
-		const djsV: string = require("discord.js").version;
-		const tsV: string = require("typescript").version;
+		const djsV: string = discord.version;
+		const tsV: string = packageJson.devDependencies.typescript.replace("^", "");
 		const date: Date = new Date(Date.now());
 
 

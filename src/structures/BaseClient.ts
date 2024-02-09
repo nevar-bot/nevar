@@ -23,22 +23,22 @@ import {
 
 /* Import emojis */
 // @ts-ignore
-import * as emotes from "@assets/emojis.json";
+const emotes: any = JSON.parse(fs.readFileSync("./assets/emojis.json", "utf8"));
 
 /* Import helpers */
-import { ChannelTypes } from "@helpers/ChannelTypes";
+import { ChannelTypes } from "@helpers/ChannelTypes.js";
 
-import Logger from "@helpers/Logger";
-import Utils from "@helpers/Utils";
-import Levels from "@helpers/Levels";
-import GiveawaysManager from "@helpers/Giveaways";
+import Logger from "@helpers/Logger.js";
+import Utils from "@helpers/Utils.js";
+import Levels from "@helpers/Levels.js";
+import GiveawaysManager from "@helpers/Giveaways.js";
 
 /* Import database schemas */
-import logSchema from "@schemas/Log";
-import guildSchema from "@schemas/Guild";
-import userSchema from "@schemas/User";
-import memberSchema from "@schemas/Member";
-import giveawaySchema from "@schemas/Giveaway";
+import logSchema from "@schemas/Log.js";
+import guildSchema from "@schemas/Guild.js";
+import userSchema from "@schemas/User.js";
+import memberSchema from "@schemas/Member.js";
+import giveawaySchema from "@schemas/Giveaway.js";
 
 export default class BaseClient extends Client {
 	public wait: (ms: number) => Promise<void>;

@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import LevelSchema from "@schemas/Levels";
+import LevelSchema from "@schemas/Levels.js";
 let mongoUrl;
 
 export default class Levels {

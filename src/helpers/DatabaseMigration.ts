@@ -1,6 +1,6 @@
-import Guild from "@schemas/Guild";
-import User from "@schemas/User";
-import Member from "@schemas/Member";
+import Guild from "@schemas/Guild.js";
+import User from "@schemas/User.js";
+import Member from "@schemas/Member.js";
 import _ from "lodash";
 import mongoose from "mongoose";
 

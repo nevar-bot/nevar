@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder } from "discord.js";
-import DatabaseMigration from "@helpers/DatabaseMigration";
+import DatabaseMigration from "@helpers/DatabaseMigration.js";
+import path from "path";
 
 export default class MigrateCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -11,7 +12,7 @@ export default class MigrateCommand extends BaseCommand {
 			localizedDescriptions: {
 				de: "Migriert Datensätze an das aktuelle Datenbankschema",
 			},
-			dirname: __dirname,
+			dirname: import.meta.url,
 			ownerOnly: true,
 			slashCommand: {
 				addCommand: false,

@@ -3,18 +3,18 @@ import { scheduleJob } from "node-schedule";
 import moment from "moment";
 import { Collection, Guild, Invite } from "discord.js";
 
-import handlePresence from "@handlers/presence";
-import registerInteractions from "@handlers/registerInteractions";
-import TOPGG from "@helpers/Top.gg";
-import unbanMembers from "@handlers/unbanMembers";
-import remindMembers from "@handlers/remindMembers";
-import youtubeNotifier from "@handlers/youtubeNotifier";
-import twitchNotifier from "@handlers/twitchNotifier";
-import endGiveaways from "@handlers/endGiveaways";
-import updatePolls from "@handlers/updatePolls";
-import dashboard from "@dashboard/app";
-import api from "@api/app";
-import BaseClient from "@structures/BaseClient";
+import handlePresence from "@handlers/presence.js";
+import registerInteractions from "@handlers/registerInteractions.js";
+import TOPGG from "@helpers/Top.gg.js";
+import unbanMembers from "@handlers/unbanMembers.js";
+import remindMembers from "@handlers/remindMembers.js";
+import youtubeNotifier from "@handlers/youtubeNotifier.js";
+import twitchNotifier from "@handlers/twitchNotifier.js";
+import endGiveaways from "@handlers/endGiveaways.js";
+import updatePolls from "@handlers/updatePolls.js";
+import dashboard from "@dashboard/app.js";
+import api from "@api/app.js";
+import BaseClient from "@structures/BaseClient.js";
 
 export default class {
 	public client: BaseClient;

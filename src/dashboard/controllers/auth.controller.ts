@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { client } from "@src/app";
+import { client } from "@src/app.js";
 import axios, { AxiosResponse } from "axios";
 import * as crypto from "crypto";
 
-import UserController from "@dashboard/controllers/user.controller";
+import UserController from "@dashboard/controllers/user.controller.js";
 import { EmbedBuilder } from "discord.js";
 
 const BASE_API_URL: string = "https://discord.com/api";

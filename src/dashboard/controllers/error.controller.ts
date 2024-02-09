@@ -1,7 +1,7 @@
-import { client } from "@src/app";
+import { client } from "@src/app.js";
 import { Response } from "express";
 
-import UserController from "@dashboard/controllers/user.controller";
+import UserController from "@dashboard/controllers/user.controller.js";
 
 export default {
 	render404(res: Response, user: any): void {

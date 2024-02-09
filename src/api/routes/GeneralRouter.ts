@@ -1,6 +1,6 @@
 /* @ts-ignore */
 import { Router } from "express";
-import GeneralController from "@api/controllers/GeneralController";
+import GeneralController from "@api/controllers/GeneralController.js";
 
 const router: Router = Router();
 

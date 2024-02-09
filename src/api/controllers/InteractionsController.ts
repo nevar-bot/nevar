@@ -1,6 +1,6 @@
 /* @ts-ignore */
 import { Request, Response } from "express";
-import { client } from "@src/app";
+import { client } from "@src/app.js";
 import mongoose from "mongoose";
 
 export default {

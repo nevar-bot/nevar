@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import moment from "moment-timezone";
+import path from "path";
 
 export default class TimestampCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -12,7 +13,7 @@ export default class TimestampCommand extends BaseCommand {
 				de: "Erstelle einen Discord-Timestamp aus einem Datum",
 			},
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()

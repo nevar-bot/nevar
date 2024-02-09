@@ -1,11 +1,12 @@
-import "module-alias/register";
-import "source-map-support/register";
-import "@helpers/extenders/Guild";
+import "module-alias/register.js";
+import "source-map-support/register.js";
+import "@helpers/extenders/Guild.js";
 
-import BaseClient from "@structures/BaseClient";
-import mongoose from "@database/mongoose";
-import Validator from "@helpers/Validator";
-import Loader from "@helpers/Loader";
+
+import BaseClient from "@structures/BaseClient.js";
+import mongoose from "@database/mongoose.js";
+import Validator from "@helpers/Validator.js";
+import Loader from "@helpers/Loader.js";
 
 Validator.configValidator();
 

@@ -1,8 +1,9 @@
-import BaseCommand from "@structures/BaseCommand";
+import BaseCommand from "@structures/BaseCommand.js";
 import { EmbedBuilder, parseEmoji, SlashCommandBuilder } from "discord.js";
-import Utils from "@helpers/Utils";
+import Utils from "@helpers/Utils.js";
 const { stringIsCustomEmoji, stringIsUrl, urlIsImage } = Utils;
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
+import path from "path";
 
 export default class AddemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -15,7 +16,7 @@ export default class AddemojiCommand extends BaseCommand {
 			memberPermissions: ["ManageGuildExpressions"],
 			botPermissions: ["ManageGuildExpressions"],
 			cooldown: 5 * 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder()

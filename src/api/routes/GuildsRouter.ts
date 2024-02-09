@@ -1,6 +1,6 @@
 /* @ts-ignore */
 import { Router } from "express";
-import GuildsController from "@api/controllers/GuildsController";
+import GuildsController from "@api/controllers/GuildsController.js";
 
 const router: Router = Router();
 

@@ -1,6 +1,6 @@
 /* @ts-ignore */
 import { Router } from "express";
-import InteractionsController from "@api/controllers/InteractionsController";
+import InteractionsController from "@api/controllers/InteractionsController.js";
 
 const router: Router = Router();
 

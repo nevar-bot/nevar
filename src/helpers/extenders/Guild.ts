@@ -1,7 +1,4 @@
 import { Guild, ChannelType, Collection, GuildBasedChannel, Role, GuildMember, EmbedBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient";
-import i18next from "i18next";
-import guildDelete from "@events/guild/GuildDelete";
 
 const ROLE_MENTION: RegExp = /<?@?&?(\d{17,20})>?/;
 const CHANNEL_MENTION: RegExp = /<?#?(\d{17,20})>?/;

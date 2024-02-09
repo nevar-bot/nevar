@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
-import BaseGame from "@structures/BaseGame";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
+import BaseGame from "@structures/BaseGame.js";
 import { SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
+import path from "path";
 
 export default class FindemojiCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -12,7 +13,7 @@ export default class FindemojiCommand extends BaseCommand {
 				de: "Merke dir die Reihenfolge acht verschiedener Emojis, und wähle den Richtigen",
 			},
 			cooldown: 1000,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: true,
 				data: new SlashCommandBuilder(),

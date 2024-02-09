@@ -1,4 +1,4 @@
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 import { AuditLogEvent, EmbedBuilder, PermissionsBitField } from "discord.js";
 
 export default class {

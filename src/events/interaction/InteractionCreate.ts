@@ -1,6 +1,6 @@
-import { EmbedBuilder, GuildMember, PermissionsBitField } from "discord.js";
+import { EmbedBuilder, PermissionsBitField } from "discord.js";
 import * as fs from "fs";
-import BaseClient from "@structures/BaseClient";
+import BaseClient from "@structures/BaseClient.js";
 
 const interactionCooldowns: any = {};
 

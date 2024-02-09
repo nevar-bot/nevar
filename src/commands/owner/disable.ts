@@ -1,7 +1,8 @@
-import BaseCommand from "@structures/BaseCommand";
-import BaseClient from "@structures/BaseClient";
+import BaseCommand from "@structures/BaseCommand.js";
+import BaseClient from "@structures/BaseClient.js";
 import fs from "fs";
 import { EmbedBuilder } from "discord.js";
+import path from "path";
 
 export default class DisableCommand extends BaseCommand {
 	public constructor(client: BaseClient) {
@@ -12,7 +13,7 @@ export default class DisableCommand extends BaseCommand {
 				de: "Deaktiviere einen Befehl"
 			},
 			ownerOnly: true,
-			dirname: __dirname,
+			dirname: import.meta.url,
 			slashCommand: {
 				addCommand: false,
 				data: null,

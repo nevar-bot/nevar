@@ -1,6 +1,6 @@
 /* @ts-ignore */
 import { Router } from "express";
-import MessagesController from "@api/controllers/MessagesController";
+import MessagesController from "@api/controllers/MessagesController.js";
 
 const router: Router = Router();
 

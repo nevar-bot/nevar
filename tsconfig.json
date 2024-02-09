@@ -6,7 +6,7 @@
     "lib": ["es2022"],
     "skipLibCheck": true,
     /* Modules */
-    "module": "commonjs",
+    "module": "es2022",
     "rootDir": "src", /* Paths */
      "paths": {
        "@root/*": ["./*"],

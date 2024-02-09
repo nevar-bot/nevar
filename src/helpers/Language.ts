@@ -43,10 +43,10 @@ async function loadNamespaces(basePath: string): Promise<any> {
 export async function languages() {
 	const options = {
 		jsonIndent: 2,
-		loadPath: path.resolve(__dirname, "../../locales/{{lng}}//{{ns}}.json"),
+		loadPath: path.resolve(process.cwd(), "./locales/{{lng}}//{{ns}}.json"),
 	};
 
-	const { namespaces, languages } = await loadNamespaces(path.resolve(__dirname, '../../locales'));
+	const { namespaces, languages } = await loadNamespaces(path.resolve( process.cwd(), './locales'));
 
 	i18next.use(i18nextBackend);
 
