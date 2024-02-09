@@ -1,0 +1,15 @@
+{
+  "errors": {
+    "startOrDestinationIsMissing": "Bitte wähle eine Haltestelle aus den Vorschlägen aus."
+  },
+  "driveTo": "Mit **{{line}}** bis **{{dest}}** fahren",
+  "departureAt": "Abfahrt {{departure}} **+{{delay}}** an Gleis **{{platform}}**",
+  "arrivalAt": "Ankunft {{arrival}} **+{{delay}}** an Gleis **{{platform}}**",
+  "walkTo": "**{{distance}}m** bis **{{dest}}** laufen",
+  "youArriveAt": "Du erreichst dein Ziel **{{dest}}** voraussichtlich um **{{arrival}}**",
+  "list": {
+    "title": "Reiseverbindungen",
+    "noConnectionsFound": "Für deine Anfrage habe ich keine Verbindung gefunden."
+  }
+
+}

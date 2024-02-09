@@ -4,6 +4,9 @@ import BaseClient from "@structures/BaseClient.js";
 
 const interactionCooldowns: any = {};
 
+import { createClient } from "hafas-client";
+import { profile as dbProfile } from "hafas-client/p/db/index.js";
+
 export default class {
 	private client: BaseClient;
 
@@ -26,21 +29,43 @@ export default class {
 		member.data = data.member;
 		member.user.data = data.user;
 
-		/* Handle auto complete for help command */
+		/* Handle auto complete for help and rail command */
 		if(interaction.isAutocomplete()){
-			if(interaction.commandName !== "help") return;
+			if(interaction.commandName === "help"){
+				const searchInput: string = interaction.options.getFocused();
+				const matchingCommands: string[] = [];
+				for(const command of this.client.commands.values()){
+					if(command.help.name.includes(searchInput) && searchInput !== "" && matchingCommands.length < 25){
+						matchingCommands.push(command.help.name)
+					}
 
-			const searchInput: string = interaction.options.getFocused();
-			const matchingCommands: string[] = [];
-			for(const command of this.client.commands.values()){
-				if(command.help.name.includes(searchInput) && searchInput !== "" && matchingCommands.length < 25){
-					matchingCommands.push(command.help.name)
+				}
+				await interaction.respond(
+					matchingCommands.map((choice: string): any => ({ name: choice, value: choice })),
+				);
+			}
+
+			if(interaction.commandName === "transport"){
+				const searchInput: string = interaction.options.getFocused();
+				const matchingStations: any[] = [];
+				const userAgent: string = "hello@nevar.eu";
+				const dbClient: any = createClient(dbProfile, userAgent);
+
+				if(searchInput === "") return;
+				const stations: any = await dbClient.locations(searchInput, { results: 5 });
+
+				for(let station of stations){
+					if(station.type === "stop" && searchInput !== ""){
+						matchingStations.push({ name: station.name, id: station.id });
+					}
 				}
 
+				await interaction.respond(
+					matchingStations.map((choice: any): any => ({ name: choice.name, value: choice.id })),
+				);
 			}
-			await interaction.respond(
-				matchingCommands.map((choice: string): any => ({ name: choice, value: choice })),
-			);
+
+
 		}
 		/* Handle context menus */
 		if (interaction.isContextMenuCommand()) {
