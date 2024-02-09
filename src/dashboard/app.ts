@@ -31,8 +31,8 @@ export default {
 
 		// Set view engine and static files
 		app.set("view engine", "pug");
-		app.set("views", path.join(path.resolve(), "views"));
-		app.use(express.static(path.join(path.resolve(), "public")));
+		app.set("views", process.cwd() + "/build/dashboard/views");
+		app.use(express.static(process.cwd() + "/build/dashboard/public"));
 
 		// Routes
 		app.use("/", IndexRoute);
