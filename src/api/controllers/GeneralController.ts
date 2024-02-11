@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { client } from "@src/app.js";
 import mongoose from "mongoose";
+import fs from "fs";
 
 export default {
     /**
@@ -36,9 +37,10 @@ export default {
                 memory_usage: process.memoryUsage().heapUsed / 1024 / 1024
             };
 
+            const packageJson: any = JSON.parse(fs.readFileSync("./package.json", "utf-8").toString());
             response.bot = {
                 invite: client.createInvite(),
-                version: require("@root/package.json").version,
+                version: packageJson.version,
                 guild_count: client.guilds.cache.size,
                 user_count: client.users.cache.size,
                 channel_count: client.channels.cache.size,
