@@ -29,7 +29,7 @@ export default class CreditsCommand extends BaseCommand {
 	}
 
 	private async showCredits() {
-		const { dependencies } = JSON.parse(fs.readFileSync(path.resolve("../../../package.json"), "utf8"));
+		const { dependencies } = JSON.parse(fs.readFileSync("./package.json", "utf8"));
 
 		const dependenciesArray: any[] = Object.entries(dependencies).map(([name, version]) => ({
 			name,
