@@ -285,7 +285,7 @@ export default class WelcomeCommand extends BaseCommand {
 				.setColor(this.data.guild.settings.welcome.color || this.client.config.embeds["DEFAULT_COLOR"])
 				.setFooter({ text: this.client.config.embeds["FOOTER_TEXT"] });
 
-			if (this.data.guild.settings.welcome.thumbnail) {
+			if (this.data.guild.settings.welcome.profilePicture) {
 				previewEmbed.setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 512 }));
 			}
 
