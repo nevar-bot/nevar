@@ -53,7 +53,7 @@
     "errors": {
       "minXpCannotBeHigherThanMaxXp": "Bitte gib einen Minimalwert an, welcher kleiner als der Maximalwert ist an."
     },
-    "xpSet": "Der Minimalwert wurde auf {{min}} und der Maximalwert auf {{min}} gesetzt."
+    "xpSet": "Der Minimalwert wurde auf {{min}} und der Maximalwert auf {{max}} gesetzt."
   },
 
   "variables": {
