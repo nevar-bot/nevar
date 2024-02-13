@@ -205,8 +205,8 @@ export default class WelcomeCommand extends BaseCommand {
 		await this.data.guild.save();
 
 		const statusString: string = JSON.parse(status)
-			? this.translate("welcomeMessageEnabled")
-			: this.translate("welcomeMessageDisabled");
+			? this.translate("status:welcomeMessageEnabled")
+			: this.translate("status:welcomeMessageDisabled");
 
 		const successEmbed: EmbedBuilder = this.client.createEmbed(
 			statusString,
