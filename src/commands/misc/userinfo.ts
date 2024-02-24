@@ -33,7 +33,7 @@ export default class UserinfoCommand extends BaseCommand {
 		this.interaction = interaction;
 		this.guild = interaction.guild;
 		this.data = data;
-		await this.showUserInfo(interaction.options.getMember("member"));
+		await this.showUserInfo(interaction.options.getMember("user"));
 	}
 
 	private async showUserInfo(member: any): Promise<any> {
