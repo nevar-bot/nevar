@@ -120,7 +120,8 @@ export default class {
 
 		/* Send welcome message */
 		if (guildData.settings?.welcome.enabled) {
-			function parseMessage(str: string): string {
+			function parseMessage(str: string): string|null {
+				if(!str) return null;
 				return str
 					.replaceAll(/%user.name/g, member.user.username)
 					.replaceAll(/%user.displayName/g, member.user.displayName)
