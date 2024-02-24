@@ -12,10 +12,10 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                     h5
                         i.icon.fas.fa-check
                         | Daten übernommen
-                    | Die Einstellungen wurden erfolgreich gespeichert.
+                    | Deine Einstellungen wurden erfolgreich gespeichert.
             .callout.callout-info
-                h5 Erklärung
-                p Die Willkommensnachricht begrüßt neue Mitglieder.
+                h5 Zusammenfassung
+                p Begrüße neue Mitglieder auf deinem Server mit einer Willkommensnachricht.
             .card.card-default
                 .card-header
                     h3.card-title Einstellungen
@@ -50,37 +50,27 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                     label(data-toggle="tooltip" data-placement="top" title="Die Nachricht welche gesendet wird") Nachricht
                                     textarea.form-control(name='message' autocomplete='off' rows='3') #{guildData.settings.welcome ? guildData.settings.welcome.message : ""}
 
-                                .card.card-default.collapsed-card
-                                    .card-header
-                                        h3.card-title Variablen
-                                        .card-tools
-                                            button.btn.btn-tool(type='button', data-card-widget='collapse')
-                                                i.fas.fa-plus
-                                    .card-body
-                                        .row
-                                            .col-md-12
-                                                | Folgende Variablen können in der Nachricht verwendet werden:
-                                                -
-                                                    var variables = [
-                                                        { code: '{user}', description: 'erwähnt das Mitglied' },
-                                                        { code: '{user:username}', description: 'der Nutzername des Mitglieds' },
-                                                        { code: '{user:displayname}', description: 'der Anzeigename des Mitglieds' },
-                                                        { code: '{user:id}', description:'ID des Mitglieds' },
-                                                        { code: '{server:name}', description: 'Name des Servers' },
-                                                        { code: '{server:id}', description: 'ID des Servers' },
-                                                        { code: '{server:membercount}', description: 'Anzahl an Mitgliedern des Servers' },
-                                                        { code: '{inviter}', description: 'Erwähnt den Einladenden' },
-                                                        { code: '{inviter:username}', description: 'der Nutzername des Einladenden' },
-                                                        { code: '{inviter:displayname}', description: 'der Anzeigename des Einladenden' },
-                                                        { code: '{inviter:id}', description: 'ID des Einladenden' },
-                                                        { code: '{inviter:invites}', description: 'Anzahl der Einladungen des Einladenden' },
-                                                        { code: '{newline}', description: 'Fügt eine neue Zeile ein' }
-                                                    ]
-                                                each variable in variables
-                                                    div
-                                                        code= variable.code
-                                                        |  -
-                                                        |  #{variable.description}
+                                -
+                                    const variables = [
+                                        { name: "%user", description: "Erwähnt das Mitglied" },
+                                        { name: "%user.name", description: "Der Nutzername des Mitglieds" },
+                                        { name: "%user.displayName", description: "Der Anzeigename des Mitglieds" },
+                                        { name: "%user.id", description: "ID des Mitglieds" },
+                                        { name: "%server", description: "Name des Servers" },
+                                        { name: "%server.id", description: "ID des Servers" },
+                                        { name: "%server.memberCount", description: "Anzahl an Mitgliedern des Servers" },
+                                        { name: "%inviter", description: "Erwähnt den Einladenden" },
+                                        { name: "%inviter.name", description: "Der Nutzername des Einladenden" },
+                                        { name: "%inviter.displayName", description: "Der Anzeigename des Einladenden" },
+                                        { name: "%inviter.id", description: "ID des Einladenden" },
+                                        { name: "%inviter.invites", description: "Anzahl der Einladungen des Einladenden" },
+                                        { name: "%newline", description: "Fügt eine neue Zeile ein" }
+                                    ]
+                                .form-group
+                                    label Füge deine Variablen einfach per Klick hinzu:
+                                    br
+                                    each variable in variables
+                                        button.btn.btn-secondary.mr-2.mt-2.btn-variable(type="button" data-toggle="tooltip" data-placement="top" title=variable.description) #{variable.name}
 
                                 button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../templates/footer
@@ -93,4 +83,16 @@ script.
             embedOptions.style.display = typeSelector.value === 'embed' ? 'block' : 'none';
         });
         embedOptions.style.display = typeSelector.value === 'embed' ? 'block' : 'none';
+    });
+
+    $(".btn-variable").click(function() {
+        const textarea = $("textarea[name='message']"),
+            value = $(this).text(),
+            caretPos = textarea[0].selectionStart,
+            textAreaTxt = textarea.val();
+
+        textarea.val(textAreaTxt.substring(0, caretPos) + value + textAreaTxt.substring(caretPos))
+            .focus()
+            .prop('selectionStart', caretPos + value.length)
+            .prop('selectionEnd', caretPos + value.length);
     });
