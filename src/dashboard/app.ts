@@ -11,6 +11,7 @@ import AuthRoute from "@dashboard/routes/AuthRoute.js";
 import ErrorRoute from "@dashboard/routes/ErrorRoute.js";
 import ImprintRoute from "@dashboard/routes/ImprintRoute.js";
 import PrivacyRoute from "@dashboard/routes/PrivacyRoute.js";
+import FeedbackRoute from "@dashboard/routes/FeedbackRoute.js";
 
 export default {
 	init(client: BaseClient): void {
@@ -40,6 +41,7 @@ export default {
 		app.use("/auth", AuthRoute);
 		app.use("/imprint", ImprintRoute);
 		app.use("/privacy", PrivacyRoute);
+		app.use("/feedback", FeedbackRoute);
 		app.use("*", ErrorRoute);
 
 		// Start server
