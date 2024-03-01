@@ -19,21 +19,26 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4
                         i.nav-icon.fa-solid.fa-inbox
                         p
                             | Übersicht
+                li.nav-item
+                    a.nav-link(href="/feedback" class=module === "feedback" ? "active" : "")
+                        i.nav-icon.fa-solid.fa-star
+                        p
+                            | #{client.user.username} bewerten
                 li.nav-item(class=(module.startsWith('further_') ? 'menu-open' : ''))
                     a.nav-link(href='#')
                         i.nav-icon.fa-solid.fa-bars-staggered
                         p
-                            | Weiterführendes
+                            | Weiteres
                             i.fas.fa-angle-left.right
                     ul.nav.nav-treeview
                         li.nav-item
-                            a.nav-link(href='https://nevar.eu')
+                            a.nav-link(href='https://nevar.eu' target='_blank' rel='noopener')
                                 i.far.fa-circle.nav-icon
                                 p Website
                         li.nav-item
-                            a.nav-link(href='https://nevar.eu/support')
+                            a.nav-link(href='https://nevar.eu/support' target='_blank' rel='noopener')
                                 i.far.fa-circle.nav-icon
-                                p Discord
+                                p Support
                         li.nav-item
                             a.nav-link(href='/privacy' class=module === "further_privacy" ? 'active' : '')
                                 i.far.fa-circle.nav-icon
@@ -44,12 +49,12 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4
                                 p Impressum
                 li.nav-header Systemnachrichten
                 li.nav-item
-                    a.nav-link(href=`/dashboard/${guild.id}/welcome` class=module === "welcome" ? 'active' : '')
+                    a.nav-link(href=`/dashboard/${guild.id}/welcome` up-follow class=module === "welcome" ? 'active' : '')
                         i.nav-icon.fa.solid.fa-right-to-bracket
                         p
                             | Willkommen
                 li.nav-item
-                    a.nav-link(href=`/dashboard/${guild.id}/farewell` class=module === "farewell" ? 'active' : '')
+                    a.nav-link(href=`/dashboard/${guild.id}/farewell` up-follow class=module==="farewell" ? 'active' : '')
                         i.nav-icon.fa-solid.fa-right-from-bracket
                         p
                             | Verabschiedung
