@@ -6,13 +6,20 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
         include ../templates/breadcrumbs
         section.content.container-fluid
             include ../templates/cookieBanner
-            if saved === true
-                .alert.alert-success.alert-dismissible
+            if saved
+                .alert.alert-success.alert
                     button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
                     h5
                         i.icon.fas.fa-check
                         | Daten übernommen
                     | Deine Einstellungen wurden erfolgreich gespeichert.
+            if saveFailure
+                .alert.alert-danger.alert
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-times
+                        | Fehler beim Speichern
+                    | Deine Einstellungen konnten nicht gespeichert werden. Bitte versuche es erneut, oder kontaktiere den Support.
             .callout.callout-info
                 h5 Zusammenfassung
                 p Begrüße neue Mitglieder auf deinem Server mit einer Willkommensnachricht.
@@ -28,66 +35,63 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                             form(action=`/dashboard/${guild.id}/welcome/save` method='post')
                                 .form-check
                                     input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.welcome ? guildData.settings.welcome.enabled : false))
-                                    label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Ob die Willkommensnachricht aktiviert oder deaktiviert ist") Aktiviert
+                                    label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Aktiviere oder deaktiviere die Willkommensnachricht") Aktiviert
                                 br
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Willkommensnachricht gesendet wird") Begrüßungskanal
+                                    label(data-toggle="tooltip" data-placement="top" title="Wähle den Kanal, wo die Willkommensnachricht gesendet wird") Begrüßungskanal
                                     select.form-control(name="channel" autocomplete='off' class='selectpicker' data-live-search="true")
                                         each channel in [...guild.channels.cache]
                                             if channel[1].type === 0
                                                 option(value=channel[1].id, selected=(guildData.settings.welcome ? channel[1].id === guildData.settings.welcome.channel : false)) #{channel[1].name}
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Ob die Willkommensnachricht als Text oder Embed gesendet wird") Typ
+                                    label(data-toggle="tooltip" data-placement="top" title="Entscheide, ob die Willkommensnachricht als Textnachricht oder Embed gesendet werden soll") Typ
                                     select.form-control(name="type" id="typeSelect" autocomplete="off" class="selectpicker")
                                         option(value="embed", selected=(guildData.settings.welcome ? guildData.settings.welcome.type === "embed" : false)) Embed
                                         option(value="text", selected=(guildData.settings.welcome ? guildData.settings.welcome.type === "text" : false)) Text
 
                                 .form-group.form-check(id="profilepicture")
                                     input.form-check-input(type='checkbox', autocomplete='off' name='profilepicture' id='profilepictureCheck' data-form-type='other', checked=(guildData.settings.welcome ? guildData.settings.welcome.profilePicture : false))
-                                    label.form-check-label(for='profilepictureCheck' data-toggle="tooltip" data-placement="top" title="Ob im Embed das Profilbild des Nutzers angezeigt wird") Profilbild im Embed anzeigen
+                                    label.form-check-label(for='profilepictureCheck' data-toggle="tooltip" data-placement="top" title="Lege fest, ob im Embed das Profilbild des Benutzers angezeigt wird") Profilbild im Embed anzeigen
 
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Die Nachricht welche gesendet wird") Nachricht
+                                    label(data-toggle="tooltip" data-placement="top" title="Schreibe die Willkommensnachricht") Nachricht
                                     textarea.form-control(name='message' autocomplete='off' rows='3') #{guildData.settings.welcome ? guildData.settings.welcome.message : ""}
 
                                 -
                                     const variables = [
-                                        { name: "%user", description: "Erwähnt das Mitglied" },
-                                        { name: "%user.name", description: "Der Nutzername des Mitglieds" },
-                                        { name: "%user.displayName", description: "Der Anzeigename des Mitglieds" },
-                                        { name: "%user.id", description: "ID des Mitglieds" },
-                                        { name: "%server", description: "Name des Servers" },
-                                        { name: "%server.id", description: "ID des Servers" },
-                                        { name: "%server.memberCount", description: "Anzahl an Mitgliedern des Servers" },
-                                        { name: "%inviter", description: "Erwähnt den Einladenden" },
-                                        { name: "%inviter.name", description: "Der Nutzername des Einladenden" },
-                                        { name: "%inviter.displayName", description: "Der Anzeigename des Einladenden" },
-                                        { name: "%inviter.id", description: "ID des Einladenden" },
-                                        { name: "%inviter.invites", description: "Anzahl der Einladungen des Einladenden" },
-                                        { name: "%newline", description: "Fügt eine neue Zeile ein" }
+                                        { name: "Mitglied", value: "%user", description: "Erwähnt das Mitglied" },
+                                        { name: "Nutzername Mitglied", value: "%user.name", description: "Der Nutzername des Mitglieds" },
+                                        { name: "Anzeigename Mitglied", value: "%user.displayName", description: "Der Anzeigename des Mitglieds" },
+                                        { name: "ID Mitglied", value: "%user.id", description: "ID des Mitglieds" },
+                                        { name: "Servername", value: "%server", description: "Name des Servers" },
+                                        { name: "Server ID", value: "%server.id", description: "ID des Servers" },
+                                        { name: "Server Mitgliederzahl", value: "%server.memberCount", description: "Anzahl an Mitgliedern des Servers" },
+                                        { name: "Einladender", value: "%inviter", description: "Erwähnt den Einladenden" },
+                                        { name: "Nutzername Einladender", value: "%inviter.name", description: "Der Nutzername des Einladenden" },
+                                        { name: "Anzeigename Einladender", value: "%inviter.displayName", description: "Der Anzeigename des Einladenden" },
+                                        { name: "ID Einladender", value: "%inviter.id", description: "ID des Einladenden" },
+                                        { name: "Einladungen Einladender", value: "%inviter.invites", description: "Anzahl der Einladungen des Einladenden" },
+                                        { name: "Neue Zeile", value: "%newline", description: "Fügt eine neue Zeile ein" }
                                     ]
                                 .form-group
-                                    label Füge deine Variablen einfach per Klick hinzu:
+                                    label Füge deine gewünschten Variablen einfach per Klick hinzu:
                                     br
                                     each variable in variables
-                                        button.btn.btn-secondary.mr-2.mt-2.btn-variable(type="button" data-toggle="tooltip" data-placement="top" title=variable.description) #{variable.name}
+                                        button.btn.btn-secondary.mr-2.mt-2.btn-variable(type="button" data-toggle="tooltip" data-placement="top" title=variable.description data-variable=variable.value) #{variable.name}
 
                                 button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../templates/footer
 
 script.
-    document.addEventListener('DOMContentLoaded', () => {
-        const typeSelector = document.getElementById('typeSelect');
-        const embedOptions = document.getElementById('profilepicture');
-        typeSelector.addEventListener('change', () => {
-            embedOptions.style.display = typeSelector.value === 'embed' ? 'block' : 'none';
-        });
-        embedOptions.style.display = typeSelector.value === 'embed' ? 'block' : 'none';
+    $(document).ready(function () {
+        $('#typeSelect').change(function () {
+            $('#profilepicture').toggle($(this).val() === 'embed');
+        }).change();
     });
 
     $(".btn-variable").click(function() {
         const textarea = $("textarea[name='message']"),
-            value = $(this).text(),
+            value = $(this).data("variable"),
             caretPos = textarea[0].selectionStart,
             textAreaTxt = textarea.val();
 
