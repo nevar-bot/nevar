@@ -5,21 +5,22 @@ import UserController from "@dashboard/controllers/user.controller.js";
 import { client } from "@src/app.js";
 
 export default {
+	/* Handle get request */
 	async get(req: Request, res: Response): Promise<void> {
+		/* Get access token */
 		const access_token: string | null = AuthController.getAccessToken(req);
 
-		/* if user is not logged in, redirect to website imprint */
+		/* Check if request is logged in */
 		const isLoggedIn: boolean | string = await AuthController.isLoggedIn(req, res);
 		if (!isLoggedIn) {
+			return res.redirect("https://nevar.eu/imprint");
 			return AuthController.renderLogin(res);
-		} else if (isLoggedIn === "refreshed_token") {
-			return res.redirect("back");
 		}
 
-		/* get user info */
+		/* Get user data */
 		const user: any = await UserController.getUser(access_token);
 
-		/* render page */
+		/* Render page */
 		res.render("imprint", {
 			client: client,
 			title: "Impressum",

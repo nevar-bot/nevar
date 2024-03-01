@@ -5,7 +5,7 @@ import UserController from "@dashboard/controllers/user.controller.js";
 
 export default {
 	render404(res: Response, user: any): void {
-		/* render page */
+		/* Render page */
 		return res.status(404).render("error/404", {
 			client: client,
 			title: "Fehler 404",
@@ -18,7 +18,7 @@ export default {
 	},
 
 	render401(res: Response, user: any): void {
-		/* render page */
+		/* Render page */
 		return res.status(401).render("error/401", {
 			client: client,
 			title: "Fehler 401",

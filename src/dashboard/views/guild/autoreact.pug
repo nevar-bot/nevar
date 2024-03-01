@@ -6,21 +6,28 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
         include ../templates/breadcrumbs
         section.content.container-fluid
             include ../templates/cookieBanner
-            if saved === true
+            if saved
                 .alert.alert-success.alert-dismissible
                     button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
                     h5
                         i.icon.fas.fa-check
                         | Daten übernommen
-                    | Die Einstellungen wurden erfolgreich gespeichert.
+                    | Deine Einstellungen wurden erfolgreich gespeichert.
+            if saveFailure
+                .alert.alert-danger.alert-dismissible
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-times
+                        | Fehler beim Speichern
+                    | Deine Einstellungen konnten nicht gespeichert werden. Bitte versuche es erneut, oder kontaktiere den Support.
             .callout.callout-info
-                h5 Erklärung
-                p Autoreact dient dazu, auf neue Nachrichten in einem festgelegten Kanal automatisch mit einem bestimmten Emoji zu reagieren.
+                h5 Zusammenfassung
+                p Reagiere auf neue Nachrichten mit von dir festgelegten Emojis.
             .alert.alert-danger.alert
                 h5
                     i.icon.fas.fa-ban
                     |  Hinweis
-                | Das Ändern von Autoreact-Einstellungen im Web-Dashboard ist derzeit noch nicht möglich.
+                | Derzeit ist es nicht möglich, Autoreact im Web-Dashboard zu verwalten. Diese Funktion wird in Kürze hinzugefügt.
                 br
-                | Bitte nutze dafür den Discord-Bot.
+                | Bitte nutze solange den Discord-Bot.
 include ../templates/footer

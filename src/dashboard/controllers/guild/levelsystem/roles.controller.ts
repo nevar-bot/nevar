@@ -6,36 +6,41 @@ import UserController from "@dashboard/controllers/user.controller.js";
 import ErrorController from "@dashboard/controllers/error.controller.js";
 
 export default {
+	/* Handle get request */
 	async get(req: Request, res: Response): Promise<void> {
+		/* Get access token */
 		const access_token: string | null = AuthController.getAccessToken(req);
 
-		/* get guild id */
+		/* Get guild id */
 		const guildId: string = req.params.guildId;
 
-		/* check if user is logged in */
-		if (!(await AuthController.isLoggedIn(req, res))) {
+		/* Check if request is logged in */
+		const isLoggedIn: boolean | string = await AuthController.isLoggedIn(req, res);
+		if (!isLoggedIn){
 			return AuthController.renderLogin(res);
 		}
 
-		/* get user info */
+		/* Get user data */
 		const user: any = await UserController.getUser(access_token);
 
-		/* bot is not in guild */
+		/* Bot is not in requested guild */
 		if (!client.guilds.cache.get(guildId)) {
 			return ErrorController.render404(res, user);
 		}
 
-		/* user is not authorized to view this guild */
+		/* User is not authorized to manage requested guild */
 		const guilds: any = await UserController.getGuilds(access_token);
 		if (!(await AuthController.isAuthorizedInGuild(guilds.find((guild: any): boolean => guild.id === guildId)))) {
 			return ErrorController.render401(res, user);
 		}
 
-		/* check if data was saved */
-		const dataSaved: boolean = !!(req as any).session.saved;
-		delete (req as any).session.saved;
+		/* Check if data was saved */
+		const dataSaved: boolean = !!req.session.saved;
+		const saveFailure: boolean = !!req.session.saveFailure;
+		delete req.session.saved;
+		delete req.session.saveFailure;
 
-		/* render page */
+		/* Render page */
 		res.render("guild/levelsystem/roles", {
 			client: client,
 			title: "Level-Rollen",
@@ -47,46 +52,57 @@ export default {
 
 			/* extra data */
 			saved: dataSaved,
+			saveFailure: saveFailure,
 		});
 	},
 
+	/* Handle post request */
 	async post(req: Request, res: Response): Promise<void> {
-		/* get access token */
+		/* Get access token */
 		const access_token: string | null = AuthController.getAccessToken(req);
 
-		/* get guild id */
+		/* Get guild id */
 		const guildId: string = req.params.guildId;
 
-		/* check if user is logged in */
-		if (!(await AuthController.isLoggedIn(req, res))) {
+		/* Check if request is logged in */
+		const isLoggedIn: boolean | string = await AuthController.isLoggedIn(req, res);
+		if (!isLoggedIn) {
 			return AuthController.renderLogin(res);
 		}
 
-		/* get user info */
+		/* Get user data */
 		const user: any = await UserController.getUser(access_token);
 
-		/* user is not authorized to view this guild */
+		/* User is not authorized to manage requested guild */
 		const guilds: any = await UserController.getGuilds(access_token);
 		if (!(await AuthController.isAuthorizedInGuild(guilds.find((guild: any): boolean => guild.id === guildId)))) {
 			return ErrorController.render401(res, user);
 		}
 
-		/* get guild data */
+		/* Get guild data */
 		const guildData: any = await client.findOrCreateGuild(guildId);
 
-		/* update guild data */
-		// TODO
+		/* Update guild data */
+		try{
+			/**
+			 * TODO
+			 * Levelrollen durchgehen, bei Änderungen updaten
+			 */
 
-		/* save guild data */
-		guildData.markModified("");
-		await guildData.save();
+			/* Save modified guild data */
+			guildData.markModified("settings.levels.roles");
+			await guildData.save();
 
-		(req as any).session.saved = true;
+			/* Set session data */
+			req.session.saved = true;
+		}catch(error: any){
+			req.session.saveFailure = true;
+		}
 
-		/* avoid rate limits */
+		/* Avoid rate limits */
 		await client.wait(500);
 
-		/* redirect */
+		/* Redirect */
 		res.status(200).redirect("/dashboard/" + req.params.guildId + "/levelsystem/roles");
 	},
 };

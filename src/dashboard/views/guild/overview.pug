@@ -14,14 +14,14 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                 i.fa-solid.fa-terminal
                             .info-box-content
                                 span.info-box-text Befehle genutzt
-                                span.info-box-number #{executedCommandsCount}
+                                span.info-box-number #{client.format(executedCommandsCount)}
                     .col-12.col-sm-6.col-md-3
                         .info-box
                             span.info-box-icon.bg-info.elevation-1
                                 i.fa-solid.fa-users
                             .info-box-content
                                 span.info-box-text Mitglieder
-                                span.info-box-number #{guild.memberCount}
+                                span.info-box-number #{client.format(guild.memberCount)}
                     .clearfix.hidden-md-up
                     .col-12.col-sm-6.col-md-3
                         .info-box.mb-3
@@ -29,12 +29,44 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                                 i.fa-solid.fa-hashtag
                             .info-box-content
                                 span.info-box-text Channel
-                                span.info-box-number #{guild.channels.cache.size}
+                                span.info-box-number #{client.format(guild.channels.cache.size)}
                     .col-12.col-sm-6.col-md-3
                         .info-box.mb-3
                             span.info-box-icon.bg-warning.elevation-1
                                 i.fa-solid.fa-flag
                             .info-box-content
                                 span.info-box-text Rollen
-                                span.info-box-number #{guild.roles.cache.size}
+                                span.info-box-number #{client.format(guild.roles.cache.size)}
+                if saved
+                    .alert.alert-success.alert
+                        button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                        h5
+                            i.icon.fas.fa-check
+                            | Daten übernommen
+                        | Deine Einstellungen wurden erfolgreich gespeichert.
+                if saveFailure
+                    .alert.alert-danger.alert
+                        button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                        h5
+                            i.icon.fas.fa-times
+                            | Fehler beim Speichern
+                        | Deine Einstellungen konnten nicht gespeichert werden. Bitte versuche es erneut, oder kontaktiere den Support.
+                .card.card-default
+                    .card-header
+                        h3.card-title Einstellungen
+                        .card-tools
+                            button.btn.btn-tool(type='button', data-card-widget='collapse')
+                                i.fas.fa-minus
+                    .card-body
+                        .row
+                            .col-md-6
+                                form(action=`/dashboard/${guild.id}/save` method='post')
+                                    .form-group
+                                        label(data-toggle="tooltip" data-placement="top" title="Wähle die Sprache, auf welcher du " + client.user.username + " verwenden möchtest") Sprache
+                                        select.form-control(name="locale" autocomplete='off' class='selectpicker')
+                                            each locale in locales
+                                                option(value=locale.code selected=guildData.locale === locale.code) #{locale.flag} #{locale.name}
+
+
+                                    button.btn.btn-block.btn-primary(type='submit') Speichern
 include ../templates/footer

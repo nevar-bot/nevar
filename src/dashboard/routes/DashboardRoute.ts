@@ -9,8 +9,9 @@ import OverviewController from "@dashboard/controllers/guild/overview.controller
 
 router.get("/", DashboardController.get);
 router.get("/:guildId", OverviewController.get);
+router.post("/:guildId/save", OverviewController.post);
 
-const controllerDirs = ["controllers/guild/", "controllers/guild/levelsystem/"];
+const controllerDirs: string[] = ["controllers/guild/", "controllers/guild/levelsystem/"];
 const baseDir: string = path.resolve(process.cwd(), "build/dashboard");
 const importController = async (dir: string, file: string): Promise<void> => {
 	const controllerPath = path.join(baseDir, dir, file);

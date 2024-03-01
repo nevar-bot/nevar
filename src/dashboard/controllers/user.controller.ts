@@ -3,10 +3,10 @@ const BASE_API_URL: string = "https://discord.com/api";
 
 export default {
 	async getUser(access_token: string | null): Promise<any> {
-		/* check if access token is set */
+		/* Check access token availability */
 		if (!access_token) return null;
 
-		/* get user data */
+		/* Get user data */
 		const user: AxiosResponse = await axios.get(BASE_API_URL + "/users/@me", {
 			headers: { authorization: `Bearer ${access_token}` },
 			validateStatus: (status: number): boolean => true,
@@ -16,10 +16,10 @@ export default {
 	},
 
 	async getGuilds(access_token: string | null): Promise<any> {
-		/* check if access token is set */
+		/* Check access token availability */
 		if (!access_token) return null;
 
-		/* get user guilds */
+		/* Get user guilds */
 		const userGuilds: AxiosResponse = await axios.get(BASE_API_URL + "/users/@me/guilds", {
 			headers: { authorization: `Bearer ${access_token}` },
 			validateStatus: (status: number): boolean => true,

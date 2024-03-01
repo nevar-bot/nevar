@@ -5,35 +5,35 @@ import AuthController from "@dashboard/controllers/auth.controller.js";
 import UserController from "@dashboard/controllers/user.controller.js";
 
 export default {
+	/* Handle get request */
 	async get(req: Request, res: Response): Promise<void> {
+		/* Get access token */
+		const access_token: string | null = AuthController.getAccessToken(req);
+
+		/* Check if request is logged in */
 		const isLoggedIn: boolean | string = await AuthController.isLoggedIn(req, res);
 		if (!isLoggedIn) {
 			return AuthController.renderLogin(res);
-		} else if (isLoggedIn === "refreshed_token") {
-			return res.redirect("back");
 		}
 
-		/* get access token */
-		const access_token: string | null = AuthController.getAccessToken(req);
-
-		/* get user and user guilds */
+		/* Get user data and user guilds */
 		const [user, userGuilds] = await Promise.all([
 			UserController.getUser(access_token),
 			UserController.getGuilds(access_token),
 		]);
 
-		/* differentiates between guilds where bot is in where bot isn't in */
+		/* Sort guilds with bot in and bot not in */
 		const botIsIn: any[] = [];
 		const botIsNotIn: any[] = [];
 
 		for (const guild of userGuilds) {
-			/* check if user is authorized in guild */
+			/* Check if user is authorized to manage guild */
 			if (await AuthController.isAuthorizedInGuild(guild)) {
 				client.guilds.cache.get(guild.id) ? botIsIn.push(guild) : botIsNotIn.push(guild);
 			}
 		}
 
-		/* render page */
+		/* Render page */
 		res.render("guilds", {
 			client: client,
 			title: "Server wählen",
