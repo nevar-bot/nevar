@@ -1,0 +1,62 @@
+include ./templates/head
+body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed.wrapper
+    include ./templates/topbar
+    include ./templates/sidebar-main
+    .content-wrapper
+        .content-header
+            .container-fluid
+                .row.mb-2.col-sm-6
+        section.content.container-fluid
+            include ./templates/cookieBanner
+            if saved
+                .alert.alert-success.alert
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-check
+                        | Feedback gesendet
+                    | Vielen Dank für dein Feedback! Deine Meinung ist uns wichtig.
+            if saveFailure
+                .alert.alert-danger.alert
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-times
+                        | Fehler beim Senden
+                    | Dein Feedback konnte leider nicht gesendet werden. Bitte versuche es erneut, oder kontaktiere den Support.
+            .callout.callout-info
+                h5 Zusammenfassung
+                p Deine Meinung ist uns wichtig: Teile uns mit, wie zufrieden du bist und was wir verbessern können.
+            .card.card-default
+                .card-header
+                    h3.card-title Feedback
+                    .card-tools
+                        button.btn.btn-tool(type='button', data-card-widget='collapse')
+                            i.fas.fa-minus
+                .card-body
+                    .row
+                        .col-md-6
+                            form(action=`/feedback/save` method='post')
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Wähle deine Zufriedenheit") Wie zufrieden bist du insgesamt mit #{client.user.username}?
+                                    select.form-control(name="satisfaction" autocomplete='off' class='selectpicker')
+                                        option(value="4") Sehr zufrieden
+                                        option(value="3") Zufrieden
+                                        option(value="2" selected) Neutral
+                                        option(value="1") Unzufrieden
+                                        option(value="0") Sehr unzufrieden
+
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Teile uns deine Meinung mit") Was findest du gut? Was können wir verbessern?
+                                    textarea.form-control(name='message' autocomplete='off' rows='3')
+
+                                .form-control-range-wrapper
+                                    label(data-toggle='tooltip' data-placement='top' title='Wähle einen Wert von 1 bis 10') Wie wahrscheinlich ist es, dass du #{client.user.username} weiterempfiehlst?
+                                    br
+                                    span 0 - Extrem unwahrscheinlich
+                                    br
+                                    span 10 - Extrem wahrscheinlich
+                                    input.form-control-range(type='range', name='recommendation', min='0', max='10', step='1', value='5')
+
+                                br
+                                button.btn.btn-block.btn-primary(type='submit') Feedback absenden
+
+include ./templates/footer
