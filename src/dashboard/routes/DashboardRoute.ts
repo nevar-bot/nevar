@@ -14,20 +14,20 @@ router.post("/:guildId/save", OverviewController.post);
 const controllerDirs: string[] = ["controllers/guild/", "controllers/guild/levelsystem/"];
 const baseDir: string = path.resolve(process.cwd(), "build/dashboard");
 const importController = async (dir: string, file: string): Promise<void> => {
-	const controllerPath = path.join(baseDir, dir, file);
+	const controllerPath: string = path.join(baseDir, dir, file);
 	const cleanPath: string = controllerPath.split(path.sep).join(path.posix.sep).replace("C:", "");
 	const controller = await import(cleanPath);
-	const trimmedDir = dir.replace("controllers/guild/", "");
-	const routeBase = file.replace(".controller.js", "");
+	const trimmedDir: string = dir.replace("controllers/guild/", "");
+	const routeBase: string = file.replace(".controller.js", "");
 
-	const basePath = `/:guildId/${trimmedDir}${routeBase}`;
+	const basePath: string = `/:guildId/${trimmedDir}${routeBase}`;
 	if (controller.default.get) router.get(basePath, controller.default.get);
 	if (controller.default.post) router.post(`${basePath}/save`, controller.default.post);
 };
 
 controllerDirs.forEach(async (dir) => {
-	const totalPath = path.resolve(baseDir, dir);
-	const files = await fs.promises.readdir(totalPath);
+	const totalPath: string = path.resolve(baseDir, dir);
+	const files: string[] = await fs.promises.readdir(totalPath);
 
 	for (const file of files) {
 		if (file.endsWith(".controller.js")) {
