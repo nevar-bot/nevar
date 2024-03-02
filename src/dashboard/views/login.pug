@@ -1,18 +1,18 @@
 include ./templates/head
-body.login-page.dark-mode
+body.login-page.dark-mode(style='background-image: url("/img/background.webp"); background-size:cover; background-position:center;')
     include ./templates/cookieBanner
     .login-box
-        .card.card-outline.card-primary
+        .card(style="border-radius:20px;")
             .card-header.text-center
                 h1
                     b #{client.user.username}
                     | Dash
             .card-body
-                p.login-box-msg Melde dich an, um loszulegen
+                p.login-box-msg Bitte melde dich an, um #{client.user.username} auf deinen Discord-Servern zu verwalten.
                 .social-auth-links.text-center.mt-2.mb-3
-                    a.btn.btn-block.btn-primary(href='/auth/login')
+                    a.btn.btn-block.btn-primary(href='/auth/login' style='border-radius: 15px;')
                         i.fa-brands.fa-discord
-                        |  Mit Discord anmelden
+                        |  Mit Discord fortfahren
 
 // JS
 script(src='/js/jquery.min.js')

@@ -6,16 +6,23 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
         include ../../templates/breadcrumbs
         section.content.container-fluid
             include ../../templates/cookieBanner
-            if saved === true
-                .alert.alert-success.alert-dismissible
+            if saved
+                .alert.alert-success.alert
                     button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
                     h5
                         i.icon.fas.fa-check
                         | Daten übernommen
-                    | Die Einstellungen wurden erfolgreich gespeichert.
+                    | Deine Einstellungen wurden erfolgreich gespeichert.
+            if saveFailure
+                .alert.alert-danger.alert
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-times
+                        | Fehler beim Speichern
+                    | Deine Einstellungen konnten nicht gespeichert werden. Bitte versuche es erneut, oder kontaktiere den Support.
             .callout.callout-info
-                h5 Erklärung
-                p Channel oder Rollen die vom Levelsystem nicht berücksichtigt werden sollen, können hier ausgeschlossen werden.
+                h5 Zusammenfassung
+                p Entscheide, welche Kanäle und Rollen vom Levelsystem ausgeschlossen werden sollen.
             .card.card-default
                 .card-header
                     h3.card-title Einstellungen

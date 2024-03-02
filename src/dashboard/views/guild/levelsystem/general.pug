@@ -6,16 +6,23 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
         include ../../templates/breadcrumbs
         section.content.container-fluid
             include ../../templates/cookieBanner
-            if saved === true
-                .alert.alert-success.alert-dismissible
+            if saved
+                .alert.alert-success.alert
                     button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
                     h5
                         i.icon.fas.fa-check
                         | Daten übernommen
-                    | Die Einstellungen wurden erfolgreich gespeichert.
+                    | Deine Einstellungen wurden erfolgreich gespeichert.
+            if saveFailure
+                .alert.alert-danger.alert
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-times
+                        | Fehler beim Speichern
+                    | Deine Einstellungen konnten nicht gespeichert werden. Bitte versuche es erneut, oder kontaktiere den Support.
             .callout.callout-info
-                h5 Erklärung
-                p Konfiguriert allgemeine Einstellungen des Levelsystems.
+                h5 Zusammenfassung
+                p Konfiguriere allgemeine Einstellungen des Levelsystems.
             .card.card-default
                 .card-header
                     h3.card-title Einstellungen
@@ -28,50 +35,73 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                             form(action=`/dashboard/${guild.id}/levelsystem/general/save` method='post')
                                 .form-check
                                     input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.levels ? guildData.settings.levels.enabled : false))
-                                    label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Ob das Levelsystem aktiviert oder deaktiviert ist") Aktiviert
+                                    label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Aktiviere oder deaktiviere das Levelsystem") Aktiviert
                                 br
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="In welchem Kanal die Level-UP Nachricht gesendet wird") Kanal
+                                    label(data-toggle="tooltip" data-placement="top" title="Wähle den Kanal, in dem die Level-Up-Nachricht gesendet wird") Kanal
                                     select.form-control(name="channel" autocomplete='off' class="selectpicker" data-live-search="true")
                                         option(value="current" selected=(guildData.settings.levels ? guildData.settings.levels.channel === null : false)) Aktueller Kanal
                                         each channel in [...guild.channels.cache]
                                             if channel[1].type === 0
                                                 option(value=channel[1].id, selected=(guildData.settings.levels ? channel[1].id === guildData.settings.levels.channel : false)) #{channel[1].name}
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Die Nachricht welche beim Level-Aufstieg gesendet wird") Nachricht
+                                    label(data-toggle="tooltip" data-placement="top" title="Schreibe die Level-Up-Nachricht, die gesendet wird") Nachricht
                                     input.form-control(name='message' autocomplete='off' type='text' value=(guildData.settings.levels.message ? guildData.settings.levels.message : ''))
 
-                                .card.card-default.collapsed-card
-                                    .card-header
-                                        h3.card-title Variablen
-                                        .card-tools
-                                            button.btn.btn-tool(type='button', data-card-widget='collapse')
-                                                i.fas.fa-plus
-                                    .card-body
-                                        .row
-                                            .col-md-12
-                                                | Folgende Variablen können im Namen verwendet werden:
-                                                -
-                                                    var variables = [
-                                                        { code: '{user}', description: 'Erwähnt das Mitglied' },
-                                                        { code: '{user:username}', description: 'der Nutzername des Mitglieds' },
-                                                        { code: '{user:displayname}', description: 'der Anzeigename des Mitglieds' },
-                                                        { code: '{user:id}', description: 'ID des Mitglieds' },
-                                                        { code: '{server:name}', description: 'Name des Servers' },
-                                                        { code: '{server:id}', description: 'ID des Servers' },
-                                                        { code: '{server:membercount}', description: 'Anzahl an Mitgliedern des Servers' },
-                                                        { code: '{level}', description: 'Zeigt das neue Level an' },
-                                                    ]
-                                                each variable in variables
-                                                    div
-                                                        code= variable.code
-                                                        |  -
-                                                        |  #{variable.description}
+                                -
+                                    const variables = [
+                                        {
+                                            name: "Mitglied",
+                                            value: "%user",
+                                            description: "Erwähnt das Mitglied"
+                                        },
+                                        {
+                                            name: "Nutzername Mitglied",
+                                            value: "%user.name",
+                                            description: "Der Nutzername des Mitglieds"
+                                        },
+                                        {
+                                            name: "Anzeigename Mitglied",
+                                            value: "%user.displayName",
+                                            description: "Der Anzeigename des Mitglieds"
+                                        },
+                                        {
+                                            name: "ID Mitglied",
+                                            value: "%user.id",
+                                            description: "ID des Mitglieds"
+                                        },
+                                        {
+                                            name: "Servername",
+                                            value: "%server",
+                                            description: "Name des Servers"
+                                        },
+                                        {
+                                            name: "Server ID",
+                                            value: "%server.id",
+                                            description: "ID des Servers"
+                                        },
+                                        {
+                                            name: "Server Mitgliederzahl",
+                                            value: "%server.memberCount",
+                                            description: "Anzahl an Mitgliedern des Servers"
+                                        },
+                                        {
+                                            name: "Level",
+                                            value: "%level",
+                                            description: "Gibt das neue Level aus"
+                                        },
+                                    ]
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Minimale XP die vergeben werden können") Minimale XP
+                                    label Füge deine gewünschten Variablen einfach per Klick hinzu:
+                                    br
+                                    each variable in variables
+                                        button.btn.btn-secondary.mr-2.mt-2.btn-variable(type="button" data-toggle="tooltip" data-placement="top" title=variable.description data-variable=variable.value) #{variable.name}
+
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Entscheide, wie viele XP mindestens pro Nachricht vergeben werden können") Minimale XP
                                     input.form-control(name='minxp' autocomplete='off' type='text' value=(guildData.settings.levels.xp.min ? guildData.settings.levels.xp.min : 1))
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Maximale XP die vergeben werden können") Maximale XP
+                                    label(data-toggle="tooltip" data-placement="top" title="Entscheide, wie viele XP maximal pro Nachricht vergeben werden können") Maximale XP
                                     input.form-control(name='maxxp' autocomplete='off' type='text' value=(guildData.settings.levels.xp.max ? guildData.settings.levels.xp.max : 30))
                                 button.btn.btn-block.btn-primary(type='submit') Speichern
 
@@ -104,4 +134,16 @@ script.
         if (maxVal <= minVal) {
             minInput.val(maxVal - 1).trigger('change');
         }
+    });
+
+    $(".btn-variable").click(function () {
+        const textarea = $("input[name='message']"),
+            value = $(this).data("variable"),
+            caretPos = textarea[0].selectionStart,
+            textAreaTxt = textarea.val();
+
+        textarea.val(textAreaTxt.substring(0, caretPos) + value + textAreaTxt.substring(caretPos))
+            .focus()
+            .prop('selectionStart', caretPos + value.length)
+            .prop('selectionEnd', caretPos + value.length);
     });

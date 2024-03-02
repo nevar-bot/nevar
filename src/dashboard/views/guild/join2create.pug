@@ -6,16 +6,23 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
         include ../templates/breadcrumbs
         section.content.container-fluid
             include ../templates/cookieBanner
-            if saved === true
-                .alert.alert-success.alert-dismissible
+            if saved
+                .alert.alert-success.alert
                     button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
                     h5
                         i.icon.fas.fa-check
                         | Daten übernommen
-                    | Die Einstellungen wurden erfolgreich gespeichert.
+                    | Deine Einstellungen wurden erfolgreich gespeichert.
+            if saveFailure
+                .alert.alert-danger.alert
+                    button(type="button", class="close", data-dismiss="alert", aria-hidden="true") ×
+                    h5
+                        i.icon.fas.fa-times
+                        | Fehler beim Speichern
+                    | Deine Einstellungen konnten nicht gespeichert werden. Bitte versuche es erneut, oder kontaktiere den Support.
             .callout.callout-info
-                h5 Erklärung
-                p Join2Create erstellt automatisch einen Channel, wenn ein Nutzer einem bestimmten Sprachkanal beitritt.
+                h5 Zusammenfassung
+                p Erstelle temporäre Sprachkanäle für deine Mitglieder
             .card.card-default
                 .card-header
                     h3.card-title Einstellungen
@@ -28,53 +35,41 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                             form(action=`/dashboard/${guild.id}/join2create/save` method='post')
                                 .form-check
                                     input.form-check-input(type='checkbox', autocomplete='off' name='status' id='statusCheck' data-form-type='other', checked=(guildData.settings.joinToCreate ? guildData.settings.joinToCreate.enabled : false))
-                                    label.form-check-label(for='statusCheck') Aktiviert
+                                    label.form-check-label(for='statusCheck' data-toggle="tooltip" data-placement="top" title="Aktiviere oder deaktiviere Join2Create") Aktiviert
                                 br
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Wie der Kanal standardmäßig genannt wird") Standard-Name
+                                    label(data-toggle="tooltip" data-placement="top" title="Lege den Standard-Namen der Sprachkanäle fest") Standard-Name
                                     input.form-control(name='name' autocomplete='off' type='text' value=(guildData.settings.joinToCreate.defaultName ? guildData.settings.joinToCreate.defaultName : ''))
 
-                                .card.card-default.collapsed-card
-                                    .card-header
-                                        h3.card-title Variablen
-                                        .card-tools
-                                            button.btn.btn-tool(type='button', data-card-widget='collapse')
-                                                i.fas.fa-plus
-                                    .card-body
-                                        .row
-                                            .col-md-12
-                                                | Folgende Variablen können im Namen verwendet werden:
-                                                -
-                                                    var variables = [
-                                                        {code: '{user}', description: 'Name des Mitglieds'},
-                                                        {
-                                                            code: '{count}',
-                                                            description: 'Anzahl der insgesamten Join2Create-Kanälen'
-                                                        },
-                                                    ]
-                                                each variable in variables
-                                                    div
-                                                        code= variable.code
-                                                        |  -
-                                                        |  #{variable.description}
+                                -
+                                    const variables = [
+                                        { name: "Mitglied", value: "%user", description: "Der Nutzername des Mitglieds" },
+                                        { name: "Anzahl", value: "%count",  description: "Anzahl aller derzeitigen temporären Sprachkanäle"},
+                                    ]
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="In welcher Kategorie die Kanäle erstellt werden") Kategorie
+                                    label Füge deine gewünschten Variablen einfach per Klick hinzu:
+                                    br
+                                    each variable in variables
+                                        button.btn.btn-secondary.mr-2.mt-2.btn-variable(type="button" data-toggle="tooltip" data-placement="top" title=variable.description data-variable=variable.value) #{variable.name}
+
+                                .form-group
+                                    label(data-toggle="tooltip" data-placement="top" title="Wähle, unter welcher Kategorie die temporären Sprachkanäle erstellt werden") Kategorie
                                     select.form-control(name="category" autocomplete='off' class='selectpicker' data-live-search="true")
                                         each channel in [...guild.channels.cache]
                                             if channel[1].type === 4
                                                 option(value=channel[1].id, selected=(guildData.settings.joinToCreate ? channel[1].id === guildData.settings.joinToCreate.category : false)) #{channel[1].name}
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Welchem Kanal man für einen eigenen Kanal beitreten muss") Channel
+                                    label(data-toggle="tooltip" data-placement="top" title="Lege fest, welcher Kanal zur Erstellung temporärer Sprachkanäle dient") Channel
                                     select.form-control(name="channel" autocomplete='off' class='selectpicker' data-live-search="true")
                                         each channel in [...guild.channels.cache]
                                             if channel[1].type === 2
                                                 option(value=channel[1].id, selected=(guildData.settings.joinToCreate ? channel[1].id === guildData.settings.joinToCreate.channel : false)) #{channel[1].name}
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Wieviele Nutzer den Kanälen maximal beitreten dürfen") Nutzerlimit (0 = unbegrenzt)
+                                    label(data-toggle="tooltip" data-placement="top" title="Setze das standardmäßige Nutzerlimit") Nutzerlimit (0 = unbegrenzt)
                                     input.form-control(name='userlimit' autocomplete='off' type='text' value=(guildData.settings.joinToCreate.userLimit ? guildData.settings.joinToCreate.userLimit : 0))
 
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Die Bitrate der Kanäle in kbps") Bitrate
+                                    label(data-toggle="tooltip" data-placement="top" title="Lege die standardmäßige Bitrate fest") Bitrate
                                     input.form-control(name='bitrate' autocomplete='off' type='text' value=(guildData.settings.joinToCreate.bitrate ? guildData.settings.joinToCreate.bitrate : 64))
 
                                 button.btn.btn-block.btn-primary(type='submit') Speichern
@@ -96,4 +91,16 @@ script.
         step: 1,
         decimals: 0,
         postfix: "kbps"
+    });
+
+    $(".btn-variable").click(function () {
+        const textarea = $("input[name='name']"),
+            value = $(this).data("variable"),
+            caretPos = textarea[0].selectionStart,
+            textAreaTxt = textarea.val();
+
+        textarea.val(textAreaTxt.substring(0, caretPos) + value + textAreaTxt.substring(caretPos))
+            .focus()
+            .prop('selectionStart', caretPos + value.length)
+            .prop('selectionEnd', caretPos + value.length);
     });

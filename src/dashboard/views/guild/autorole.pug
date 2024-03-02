@@ -34,7 +34,7 @@ body.dark-mode.sidebar-mini.layout-fixed.layout-navbar-fixed.layout-footer-fixed
                         .col-md-6
                             form(action=`/dashboard/${guild.id}/autorole/save` method='post')
                                 .form-group
-                                    label(data-toggle="tooltip" data-placement="top" title="Rollen welche beim Beitritt automatisch vergeben werden") Autorollen
+                                    label(data-toggle="tooltip" data-placement="top" title="Wähle, welche Rollen neuen Mitgliedern zugewiesen werden sollen") Autorollen
                                     select.form-control(name="autoroles" autocomplete="off" class="selectpicker" multiple data-live-search="true")
                                         each role in [...guild.roles.cache]
                                             if role[1].id !== guild.id && !role[1].managed
