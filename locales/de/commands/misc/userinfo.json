@@ -27,6 +27,7 @@
   "accountCreatedBefore": "Account erstellt vor",
   "userJoinedGuildAt": "Server betreten am",
   "userJoinedGuildBefore": "Server betreten vor",
+  "invitedBy": "Eingeladen von",
   "userFlags": "Badges",
   "title": "Information zu"
 }

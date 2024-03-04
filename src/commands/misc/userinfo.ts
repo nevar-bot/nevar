@@ -42,6 +42,7 @@ export default class UserinfoCommand extends BaseCommand {
 		}
 
 		const data: any = await this.client.findOrCreateUser(member.user.id);
+		const memberData: any = await this.client.findOrCreateMember(member.user.id, member.guild.id);
 
 		const name: string = member.user.username;
 		const displayName: string = member.user.displayName;
@@ -81,6 +82,14 @@ export default class UserinfoCommand extends BaseCommand {
 			if (flags[flag]) badges.push(this.client.emotes.flags[flag] + " " + flags[flag]);
 		}
 
+		// Invited by
+		let inviter: string;
+		if(memberData.inviteUsed){
+			const guildInvites: any = await this.interaction.guild!.invites.fetch().catch((): void => {});
+			const usedInvite: any = guildInvites.find((i: any): boolean => i.code === memberData.inviteUsed);
+			if(usedInvite && usedInvite.inviter) inviter = usedInvite.inviter.toString();
+		}
+
 		if (badges.length === 0) badges = [this.client.emotes.arrow + " " + this.translate("userDontHaveFlags")];
 
 		const text: string =
@@ -115,6 +124,10 @@ export default class UserinfoCommand extends BaseCommand {
 			this.client.emotes.reminder + " " +
 			this.translate("userJoinedGuildBefore") + ": **" +
 			joinedDiff +
+			(inviter ? "**\n" +
+			this.client.emotes.invite + " " +
+			this.translate("invitedBy") + ": **" +
+			inviter : "") +
 			"**\n\n### " +
 			this.client.emotes.shine + " " +
 			this.translate("userFlags") + "\n**" +
