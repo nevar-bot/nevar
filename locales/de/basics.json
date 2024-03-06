@@ -30,5 +30,6 @@
   "pagination": "Seite {{pages.current}} von {{pages.total}}",
   "number": "Anzahl",
   "id": "ID",
-  "name": "Name"
+  "name": "Name",
+  "description": "Beschreibung"
 }

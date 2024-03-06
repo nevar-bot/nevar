@@ -10,56 +10,40 @@ export default class {
 	}
 
 	public async dispatch(scheduledEvent: any): Promise<void> {
+		/* Check if event or guild is null */
 		if (!scheduledEvent || !scheduledEvent.guild) return;
+		/* Destructure guild from event */
 		const { guild } = scheduledEvent;
 
+		/* Fetch audit logs to get moderator */
+		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["GuildScheduledEventDelete"], limit: 1 }).catch((): void => {});
+		const moderator: any = auditLogs?.entries.first()?.executor;
+
+		/* Create properties array */
 		const properties: Array<string> = [];
-		if (scheduledEvent.name) properties.push(this.client.emotes.edit + " Name: " + scheduledEvent.name);
-		if (scheduledEvent.id) properties.push(this.client.emotes.id + " ID: " + scheduledEvent.id);
-		if (scheduledEvent.description)
-			properties.push(this.client.emotes.text + " Beschreibung: " + scheduledEvent.description);
-		if (scheduledEvent.scheduledStartTimestamp)
-			properties.push(
-				this.client.emotes.reminder +
-					" Startzeit: " +
-					moment(scheduledEvent.scheduledStartTimestamp).format("DD.MM.YYYY HH:mm"),
-			);
-		if (scheduledEvent.scheduledEndTimestamp)
-			properties.push(
-				this.client.emotes.reminder +
-					" Endzeit: " +
-					moment(scheduledEvent.scheduledEndTimestamp).format("DD.MM.YYYY HH:mm"),
-			);
 
-		let scheduledEventLogMessage: string = properties.join("\n");
+		/* Push event properties to properties array */
+		if(scheduledEvent.name) properties.push(this.client.emotes.edit + " " + guild.translate("basics:name") + ": " + scheduledEvent.name);
+		if(moderator) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString());
+		if(scheduledEvent.id) properties.push(this.client.emotes.id + " " + guild.translate("basics:id") + ": " + scheduledEvent.id);
+		if(scheduledEvent.description) properties.push(this.client.emotes.text + " " + guild.translate("basics:description") + ": " + scheduledEvent.description);
+		if(scheduledEvent.scheduledStartTimestamp) properties.push(this.client.emotes.reminder + " " + guild.translate("events/events/GuildScheduledEventDelete:start") + ": " + this.client.utils.getDiscordTimestamp(scheduledEvent.scheduledStartTimestamp, "F"))
+		if(scheduledEvent.scheduledEndTimestamp) properties.push(this.client.emotes.reminder + " " + guild.translate("events/events/GuildScheduledEventDelete:end") + ": " + this.client.utils.getDiscordTimestamp(scheduledEvent.scheduledEndTimestamp, "F"))
 
-		const auditLogs: any = await guild
-			.fetchAuditLogs({
-				type: AuditLogEvent["GuildScheduledEventDelete"],
-				limit: 1,
-			})
-			.catch((e: any): void => {});
-		if (auditLogs) {
-			const auditLogEntry: any = auditLogs.entries.first();
-			if (auditLogEntry) {
-				const moderator: any = auditLogEntry.executor;
-				if (moderator)
-					scheduledEventLogMessage +=
-						"\n\n" +
-						this.client.emotes.user +
-						" Nutzer/-in: " +
-						"**" +
-						moderator.displayName +
-						"** (@" +
-						moderator.username +
-						")";
-			}
-		}
+		/* If there are no properties, return */
+		if (properties.length < 1) return;
 
+
+		/* Prepare message for log embed */
+		const scheduledEventLogMessage: string =
+			" ### " + this.client.emotes.events.event.delete + " " + guild.translate("events/events/GuildScheduledEventDelete:deleted")+ "\n\n" +
+			properties.join("\n");
+
+		/* Create embed */
 		const scheduledEventLogEmbed: EmbedBuilder = this.client.createEmbed(scheduledEventLogMessage, null, "error");
-		scheduledEventLogEmbed.setTitle(this.client.emotes.events.event.delete + "Event gelöscht");
-		scheduledEventLogEmbed.setThumbnail(guild.iconURL());
+		scheduledEventLogEmbed.setThumbnail(moderator.displayAvatarURL() || guild.iconURL());
 
+		/* Log action */
 		await guild.logAction(scheduledEventLogEmbed, "guild");
 	}
 }
