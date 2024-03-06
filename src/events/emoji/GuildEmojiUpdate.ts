@@ -9,37 +9,37 @@ export default class {
 	}
 
 	public async dispatch(oldEmoji: any, newEmoji: any): Promise<any> {
+		/* Check if emojis or guild is null */
 		if (!newEmoji || !oldEmoji || !newEmoji.guild) return;
+		/* Return if the name is the same */
 		if (oldEmoji.name === newEmoji.name) return;
-
+		/* Destructure guild from emoji */
 		const { guild } = newEmoji;
-		let emojiLogMessage: string =
-			this.client.emotes.edit + " Name: ~~" + oldEmoji.name + "~~ **" + newEmoji.name + "**";
 
-		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent["EmojiUpdate"], limit: 1 })
-			.catch((e: any): void => {});
-		if (auditLogs) {
-			const auditLogEntry: any = auditLogs.entries.first();
-			if (auditLogEntry) {
-				const moderator: any = auditLogEntry.executor;
-				if (moderator)
-					emojiLogMessage +=
-						"\n\n" +
-						this.client.emotes.user +
-						" Nutzer/-in: " +
-						"**" +
-						moderator.displayName +
-						"** (@" +
-						moderator.username +
-						")";
-			}
-		}
+		/* Fetch audit logs to get moderator */
+		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["EmojiUpdate"], limit: 1 }).catch((): void => {});
+		const moderator: any = auditLogs?.entries.first()?.executor;
 
-		const emojiLogEmbed: EmbedBuilder = this.client.createEmbed(emojiLogMessage, null, "warning");
-		emojiLogEmbed.setTitle(this.client.emotes.events.emoji.update + " Emoji bearbeitet");
-		emojiLogEmbed.setThumbnail(newEmoji.url);
+		/* Create properties array */
+		const properties: Array<string> = [];
 
+		/* Push channel properties to properties array */
+		if(oldEmoji.name !== newEmoji.name) properties.push(this.client.emotes.edit + " " + guild.translate("basics:name") + ": " + oldEmoji.name + " **➜** " + newEmoji.name);
+		if(moderator) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString());
+
+		/* If there are no properties, return */
+		if (properties.length < 1) return;
+
+		/* Prepare message for log embed */
+		const emojiLogMessage: string =
+			" ### " + this.client.emotes.events.emoji.update + " " + guild.translate("events/emoji/GuildEmojiUpdate:updated")+ "\n\n" +
+			properties.join("\n");
+
+		/* Create embed */
+		const emojiLogEmbed: EmbedBuilder = this.client.createEmbed(emojiLogMessage, null, "normal");
+		emojiLogEmbed.setThumbnail(newEmoji.imageURL());
+
+		/* Log action */
 		await guild.logAction(emojiLogEmbed, "guild");
 	}
 }
