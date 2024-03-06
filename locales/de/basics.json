@@ -28,5 +28,7 @@
   "back": "Zurück",
   "further": "Weiter",
   "pagination": "Seite {{pages.current}} von {{pages.total}}",
-  "number": "Anzahl"
+  "number": "Anzahl",
+  "id": "ID",
+  "name": "Name"
 }

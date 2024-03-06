@@ -8,106 +8,43 @@ export default class {
 	}
 
 	public async dispatch(oldChannel: any, newChannel: any): Promise<any> {
+		/* Check if channels or guild is null */
 		if (!oldChannel || !newChannel || !newChannel.guild) return;
+		/* Destructure guild from channel */
 		const { guild } = newChannel;
 
+		/* Fetch audit logs to get moderator */
+		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["ChannelUpdate"], limit: 1 }).catch((): void => {});
+		const moderator: any = auditLogs?.entries.first()?.executor;
+
+		/* Create properties array */
 		const properties: Array<string> = [];
-		if (oldChannel.name !== newChannel.name)
-			properties.push(this.client.emotes.edit + " Name: ~~" + oldChannel.name + "~~ **" + newChannel.name + "**");
-		if (oldChannel.topic !== newChannel.topic)
-			properties.push(
-				this.client.emotes.quotes +
-					" Thema: ~~" +
-					(oldChannel.topic ? oldChannel.topic : "Kein Thema") +
-					"~~ **" +
-					(newChannel.topic ? newChannel.topic : "Kein Thema") +
-					"**",
-			);
-		if (oldChannel.nsfw !== newChannel.nsfw)
-			properties.push(
-				this.client.emotes.underage +
-					" Altersbegrenzung: ~~" +
-					(oldChannel.nsfw ? "aktiv" : "inaktiv") +
-					"~~ **" +
-					(newChannel.nsfw ? "aktiv" : "inaktiv") +
-					"**",
-			);
-		if (oldChannel.parentId !== newChannel.parentId)
-			properties.push(
-				this.client.emotes.list +
-					" Kategorie: ~~" +
-					(oldChannel.parent?.name ? oldChannel.parent.name : "/") +
-					"~~ **" +
-					(newChannel.parent?.name ? newChannel.parent.name : "/") +
-					"**",
-			);
-		if (oldChannel.rateLimitPerUser !== newChannel.rateLimitPerUser)
-			properties.push(
-				this.client.emotes.timeout +
-					" Slow-Modus: ~~" +
-					(oldChannel.rateLimitPerUser ? oldChannel.rateLimitPerUser + " Sekunde(n)" : "Kein Limit") +
-					"~~ **" +
-					(newChannel.rateLimitPerUser ? newChannel.rateLimitPerUser + " Sekunde(n)" : "Kein Limit") +
-					"**",
-			);
-		if (oldChannel.bitrate !== newChannel.bitrate)
-			properties.push(
-				this.client.emotes.latency.good +
-					" Bitrate: ~~" +
-					oldChannel.bitrate / 1000 +
-					"kbps~~ **" +
-					newChannel.bitrate / 1000 +
-					"kbps**",
-			);
-		if (oldChannel.userLimit !== newChannel.userLimit)
-			properties.push(
-				this.client.emotes.users +
-					" Userlimit: ~~" +
-					(oldChannel.userLimit === 0 ? "unbegrenzt" : oldChannel.userLimit) +
-					"~~ **" +
-					(newChannel.userLimit === 0 ? "unbegrenzt" : newChannel.userLimit) +
-					"**",
-			);
-		if (oldChannel.videoQualityMode !== newChannel.videoQualityMode)
-			properties.push(
-				this.client.emotes.monitor +
-					" Videoqualität: ~~" +
-					(oldChannel.videoQualityMode === 1 ? "automatisch" : "720p") +
-					"~~ **" +
-					(newChannel.videoQualityMode === 1 ? "automatisch" : "720p") +
-					"**",
-			);
-		if (properties.length < 1) return;
 
-		let channelLogMessage: string =
-			this.client.emotes.channel + " Kanal: " + newChannel.toString() + "\n" + properties.join("\n");
+		/* Push channel properties to properties array */
+		if(newChannel.toString()) properties.push(this.client.emotes.channel + " " + guild.translate("basics:channel") + ": " + newChannel.toString());
+		if(moderator) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString());
+		if(oldChannel.name !== newChannel.name) properties.push(this.client.emotes.edit + " " + guild.translate("basics:name") + ": " + oldChannel.name + " **➜** " + newChannel.name);
+		if(oldChannel.topic !== newChannel.topic && (newChannel.topic || oldChannel.topic)) properties.push(this.client.emotes.quotes + " " + guild.translate("events/channel/ChannelUpdate:channelTopic") + ": " + (oldChannel.topic || "/") + " **➜** " + (newChannel.topic || "/"));
+		if(oldChannel.nsfw !== newChannel.nsfw) properties.push(this.client.emotes.underage + " " + guild.translate("events/channel/ChannelUpdate:nsfw") + ": " + (oldChannel.nsfw ? guild.translate("basics:enabled") : guild.translate("basics:disabled")) + " **➜** " + (newChannel.nsfw ? guild.translate("basics:enabled") : guild.translate("basics:disabled")));
+		if(oldChannel.parentId !== newChannel.parentId) properties.push(this.client.emotes.list + " " + guild.translate("events/channel/ChannelUpdate:category") + ": " + (oldChannel.parent?.name ? oldChannel.parent.name : "/") + " **➜** " + (newChannel.parent?.name ? newChannel.parent.name : "/"));
+		if(oldChannel.rateLimitPerUser !== newChannel.rateLimitPerUser) properties.push(this.client.emotes.timeout + " " + guild.translate("events/channel/ChannelUpdate:slowmode") + ": " + (oldChannel.rateLimitPerUser ? oldChannel.rateLimitPerUser + "s" : guild.translate("basics:disabled")) + " **➜** " + (newChannel.rateLimitPerUser ? newChannel.rateLimitPerUser + "s" : guild.translate("basics:disabled")));
+		if(oldChannel.bitrate !== newChannel.bitrate) properties.push(this.client.emotes.latency.good + " " + guild.translate("events/channel/ChannelUpdate:bitrate") + ": " + oldChannel.bitrate / 1000 + "kbps **➜** " + newChannel.bitrate / 1000 + "kbps");
+		if(oldChannel.userLimit !== newChannel.userLimit) properties.push(this.client.emotes.users + " " + guild.translate("events/channel/ChannelUpdate:userlimit") + ": " + (oldChannel.userLimit === 0 ? guild.translate("events/channel/ChannelUpdate:unlimitedUsers") : oldChannel.userLimit) + " **➜** " + (newChannel.userLimit === 0 ? guild.translate("events/channel/ChannelUpdate:unlimitedUsers") : newChannel.userLimit))
+		if(oldChannel.videoQualityMode !== newChannel.videoQualityMode) properties.push(this.client.emotes.monitor + " " + guild.translate("events/channel/ChannelUpdate:videoQuality") + ": " + (oldChannel.videoQualityMode === 1 ? guild.translate("events/channel/ChannelUpdate:videoQualityAuto") : "720p") + " **➜** " + (newChannel.videoQualityMode === 1 ? guild.translate("events/channel/ChannelUpdate:videoQualityAuto") : "720p"))
 
-		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent["ChannelUpdate"], limit: 1 })
-			.catch((e: any): void => {});
-		if (auditLogs) {
-			const auditLogEntry: any = auditLogs.entries.first();
-			if (auditLogEntry) {
-				const moderator: any = auditLogEntry.executor;
-				if (moderator)
-					channelLogMessage +=
-						"\n\n" +
-						this.client.emotes.user +
-						" Nutzer/-in: " +
-						"**" +
-						moderator.displayName +
-						"** (@" +
-						moderator.username +
-						")";
-			}
-		}
+		/* If there are no properties, return */
+		if (properties.length < 3) return;
 
-		const channelLogEmbed: EmbedBuilder = this.client.createEmbed(channelLogMessage, null, "warning");
-		channelLogEmbed.setTitle(
-			this.client.emotes.events.channel.update + " " + this.client.channelTypes[newChannel.type] + " bearbeitet",
-		);
-		channelLogEmbed.setThumbnail(guild.iconURL());
+		/* Prepare message for log embed */
+		const channelLogMessage: string =
+			" ### " + this.client.emotes.events.channel.update + " " + guild.translate("ChannelTypes:" + newChannel.type) + " " + guild.translate("events/channel/ChannelUpdate:updated")+ "\n\n" +
+			properties.join("\n");
 
+		/* Create embed */
+		const channelLogEmbed: EmbedBuilder = this.client.createEmbed(channelLogMessage, null, "normal");
+		channelLogEmbed.setThumbnail(moderator?.displayAvatarURL() || guild.iconURL());
+
+		/* Log action */
 		await guild.logAction(channelLogEmbed, "channel");
 	}
 }
