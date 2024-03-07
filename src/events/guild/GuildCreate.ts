@@ -1,6 +1,5 @@
 import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder, ChannelType, PermissionsBitField, ButtonBuilder } from "discord.js";
-import moment from "moment";
 
 export default class {
 	private client: BaseClient;
@@ -10,18 +9,16 @@ export default class {
 	}
 
 	public async dispatch(guild: any): Promise<any> {
+		/* Fetch guild */
 		await guild.fetch().catch((e: any): void => {});
+		/* Check if guild is null or not available */
 		if (!guild || !guild.available || !guild.id) return;
 
 		/* Add guild invites to invite cache */
-		guild.invites
-			.fetch()
+		guild.invites.fetch()
 			.then((invites: any): void => {
 				this.client.invites.set(
-					guild.id,
-					new Map(
-						invites.map((invite: any) => [invite.code, { uses: invite.uses, inviterId: invite.inviterId }]),
-					),
+					guild.id, new Map(invites.map((invite: any) => [invite.code, { uses: invite.uses, inviterId: invite.inviterId }])),
 				);
 			})
 			.catch((e: any): void => {});
@@ -34,35 +31,28 @@ export default class {
 		);
 
 		const welcomeMessage: string =
-			this.client.emotes.arrow +
-			" Eine **Übersicht meiner Befehle** erhältst du mit {0}\n" +
-			this.client.emotes.arrow +
-			" Unten sind zusätzlich einige **hilfreiche Links** zu finden.\n\n" +
-			this.client.emotes.arrow +
-			" Bei Fragen oder Problemen stehen wir jederzeit gerne zur Verfügung.";
+			this.client.emotes.arrow + " " + guild.translate("events/guild/GuildCreate:commandsList") + "\n" +
+			this.client.emotes.arrow + " " + guild.translate("events/guild/GuildCreate:helpfulLinks") + "\n\n" +
+			this.client.emotes.arrow + " " + guild.translate("events/guild/GuildCreate:questionsOrProblems");
 
-		const helpCommand: any = (await this.client.application!.commands.fetch()).find((cmd) => cmd.name === "help")
-			?.id;
-		const welcomeMessageEmbed: EmbedBuilder = this.client.createEmbed(
-			welcomeMessage,
-			null,
-			"normal",
-			helpCommand ? "</help:" + helpCommand + ">" : "/help",
-		);
-		welcomeMessageEmbed.setTitle(this.client.emotes.shine + " Danke, dass ich hier sein darf!");
+
+		const helpCommandId: any = (await this.client.application!.commands.fetch()).find((cmd: any): boolean => cmd.name === "help")?.id;
+		const helpCommand: string = helpCommandId ? "</help:" + helpCommandId + ">" : "/help";
+		const welcomeMessageEmbed: EmbedBuilder = this.client.createEmbed(welcomeMessage, null, "normal", helpCommand);
+		welcomeMessageEmbed.setTitle(this.client.emotes.shine + " " + guild.translate("events/guild/GuildCreate:thanksForInviting"));
 		welcomeMessageEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
 		const buttonInvite: ButtonBuilder = this.client.createButton(
 			null,
-			"Einladen",
+			guild.translate("events/guild/GuildCreate:buttons:invite"),
 			"Link",
-			"growth_up",
+			this.client.emotes.logo.icon,
 			false,
 			this.client.createInvite(),
 		);
 		const buttonSupport: ButtonBuilder = this.client.createButton(
 			null,
-			"Support",
+			guild.translate("events/guild/GuildCreate:buttons:support"),
 			"Link",
 			"discord",
 			false,
@@ -70,23 +60,23 @@ export default class {
 		);
 		const buttonWebsite: ButtonBuilder = this.client.createButton(
 			null,
-			"Website",
+			guild.translate("events/guild/GuildCreate:buttons:web"),
 			"Link",
 			"globe",
-			true,
+			false,
 			this.client.config.general["WEBSITE"],
 		);
 		const buttonVote: ButtonBuilder = this.client.createButton(
 			null,
-			"Voten",
+			guild.translate("events/guild/GuildCreate:buttons:vote"),
 			"Link",
 			"heart",
 			false,
-			"https://discordbotlist.com/bots/" + this.client.user!.id + "/upvote",
+			"https://top.gg/bot/" + this.client.user!.id + "/vote",
 		);
 		const buttonDonate: ButtonBuilder = this.client.createButton(
 			null,
-			"Unterstützen",
+			guild.translate("events/guild/GuildCreate:buttons:donate"),
 			"Link",
 			"gift",
 			false,
@@ -115,39 +105,18 @@ export default class {
 		const createdDiff: string = this.client.utils.getDiscordTimestamp(guild.createdTimestamp, "R");
 
 		const supportGuildLogMessage: string =
-			"Name: **" +
-			guild.name +
-			"**\n" +
-			this.client.emotes.crown +
-			" Eigentümer: **" +
-			owner.user.displayName +
-			" (@" +
-			owner.user.username +
-			")" +
-			"**\n" +
-			this.client.emotes.id +
-			" ID: **" +
-			guild.id +
-			"**\n" +
-			this.client.emotes.users +
-			" Mitglieder: **" +
-			guild.memberCount +
-			"**\n" +
-			this.client.emotes.calendar +
-			" Erstellt am: **" +
-			createdAt +
-			"**\n" +
-			this.client.emotes.reminder +
-			" Erstellt vor: **" +
-			createdDiff +
-			"**";
+			" ### " + this.client.emotes.discord + " " + supportGuild.translate("events/guild/GuildCreate:invited", { client: this.client.user!.username }) + "\n\n" +
+			this.client.emotes.edit + " " + supportGuild.translate("basics:name") + ": ** " + guild.name + " **\n" +
+			this.client.emotes.crown + " " + supportGuild.translate("events/guild/GuildCreate:owner") + ": ** " + owner.user.username + " **\n" +
+			this.client.emotes.users + " " + supportGuild.translate("events/guild/GuildCreate:members") + ": ** " + guild.memberCount + " **\n" +
+			this.client.emotes.calendar + " " + supportGuild.translate("events/guild/GuildCreate:createdAt") + ": ** " + createdAt + " **\n" +
+			this.client.emotes.reminder + " " + supportGuild.translate("events/guild/GuildCreate:createdAgo") + ": ** " + createdDiff + " **";
 
 		const supportGuildLogEmbed: EmbedBuilder = this.client.createEmbed(
 			supportGuildLogMessage,
-			"discord",
+			null,
 			"success",
 		);
-		supportGuildLogEmbed.setTitle(this.client.user!.username + " wurde einem neuen Server hinzugefügt");
 		supportGuildLogEmbed.setThumbnail(guild.iconURL({ dynamic: true, size: 512 }));
 
 		await supportLogChannel.send({ embeds: [supportGuildLogEmbed] }).catch((e: any): void => {});

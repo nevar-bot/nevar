@@ -1,0 +1,7 @@
+{
+  "kicked": "{{client}} wurde von einem Server gekickt",
+  "owner": "Eigentümer",
+  "members": "Mitglieder",
+  "createdAt": "Erstellt am",
+  "createdAgo": "Erstellt vor"
+}

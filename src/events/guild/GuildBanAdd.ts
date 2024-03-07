@@ -9,48 +9,28 @@ export default class {
 	}
 
 	public async dispatch(ban: any): Promise<void> {
+		/* Fetch ban */
 		await ban.fetch().catch((e: any): void => {});
+		/* Check if ban or guild is null */
 		if (!ban || !ban.guild) return;
+		/* Destructure guild from ban */
 		const { guild } = ban;
 
-		let banLogMessage: string =
-			this.client.emotes.user +
-			" Nutzer/-in: " +
-			ban.user.displayName +
-			" (@" +
-			ban.user.username +
-			")" +
-			" (" +
-			ban.user.id +
-			")\n" +
-			this.client.emotes.text +
-			" Begründung: " +
-			(ban.reason ? ban.reason : "N/A");
+		/* Fetch audit logs to get moderator */
+		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["MemberBanAdd"], limit: 1 }).catch((): void => {});
+		const moderator: any = auditLogs?.entries.first()?.executor;
 
-		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent["MemberBanAdd"], limit: 1 })
-			.catch((e: any): void => {});
-		if (auditLogs) {
-			const auditLogEntry: any = auditLogs.entries.first();
-			if (auditLogEntry) {
-				const moderator: any = auditLogEntry.executor;
-				if (moderator)
-					banLogMessage +=
-						"\n\n" +
-						this.client.emotes.user +
-						" Nutzer/-in: " +
-						"**" +
-						moderator.displayName +
-						"** (@" +
-						moderator.username +
-						")";
-			}
-		}
+		const banLogMessage: string =
+			"### " + guild.translate("events/guild/GuildBanAdd:banned") + "\n\n" +
+			this.client.emotes.user + " " + guild.translate("basics:user") + ": " + ban.user.toString() + "\n" +
+			this.client.emotes.text + " " + guild.translate("basics:reason") + ": " + (ban.reason ? ban.reason : "N/A") + "\n" +
+			(moderator ? this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString() : "");
 
+		/* Create embed */
 		const banLogEmbed: EmbedBuilder = this.client.createEmbed(banLogMessage, null, "error");
-		banLogEmbed.setTitle(this.client.emotes.events.member.ban + " Nutzer/-in gebannt");
-		banLogEmbed.setThumbnail(ban.user.displayAvatarURL());
+		banLogEmbed.setThumbnail(ban.user.displayAvatarURL() || guild.iconURL());
 
+		/* Log action */
 		await guild.logAction(banLogEmbed, "moderation");
 	}
 }

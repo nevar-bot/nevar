@@ -1,0 +1,19 @@
+{
+  "commandsList": "Eine **Übersicht meiner Befehle** erhältst du mit {0}",
+  "helpfulLinks": "Unten sind zusätzlich einige **hilfreiche Links** zu finden.",
+  "questionsOrProblems": "Bei Fragen oder Problemen stehen wir jederzeit gerne zur Verfügung.",
+  "thanksForInviting": "Danke, dass ich hier sein darf!",
+  "buttons": {
+    "invite": "Einladen",
+    "support": "Support",
+    "web": "Webseite",
+    "vote": "Vote für mich",
+    "donate": "Unterstützen"
+  },
+  "invited": "{{client}} wurde auf einen Server eingeladen",
+  "owner": "Eigentümer",
+  "members": "Mitglieder",
+  "createdAt": "Erstellt am",
+  "createdAgo": "Erstellt vor"
+
+}

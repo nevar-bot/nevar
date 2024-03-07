@@ -1,6 +1,5 @@
 import BaseClient from "@structures/BaseClient.js";
 import { EmbedBuilder } from "discord.js";
-import moment from "moment";
 
 export default class {
 	private client: BaseClient;
@@ -10,6 +9,7 @@ export default class {
 	}
 
 	public async dispatch(guild: any): Promise<any> {
+		/* Check if guild is null */
 		if (!guild || !guild.ownerId || !guild.id) return;
 
 		/* Delete guild invites from invite cache */
@@ -23,37 +23,18 @@ export default class {
 		if (!supportLogChannel) return;
 
 		const owner: any = await this.client.users.fetch(guild.ownerId).catch((e: any): void => {});
-		//const createdAt: string = moment(guild.createdTimestamp).format("DD.MM.YYYY, HH:mm");
 		const createdAt: string = this.client.utils.getDiscordTimestamp(guild.createdTimestamp, "f");
 		const createdDiff: string = this.client.utils.getDiscordTimestamp(guild.createdTimestamp, "R");
 
 		const supportGuildLogMessage: string =
-			"Name: **" +
-			guild.name +
-			"**\n" +
-			this.client.emotes.crown +
-			" Eigentümer: **" +
-			(owner ? owner.displayName + " (@" + owner.username + ")" : "N/A") +
-			"**\n" +
-			this.client.emotes.id +
-			" ID: **" +
-			guild.id +
-			"**\n" +
-			this.client.emotes.users +
-			" Mitglieder: **" +
-			guild.memberCount +
-			"**\n" +
-			this.client.emotes.calendar +
-			" Erstellt am: **" +
-			createdAt +
-			"**\n" +
-			this.client.emotes.reminder +
-			" Erstellt vor: **" +
-			createdDiff +
-			"**";
+			" ### " + this.client.emotes.discord + " " + supportGuild.translate("events/guild/GuildDelete:kicked", { client: this.client.user!.username }) + "\n\n" +
+			this.client.emotes.edit + " " + supportGuild.translate("basics:name") + ": ** " + guild.name + " **\n" +
+			this.client.emotes.crown + " " + supportGuild.translate("events/guild/GuildDelete:owner") + ": ** " + owner.username + " **\n" +
+			this.client.emotes.users + " " + supportGuild.translate("events/guild/GuildDelete:members") + ": ** " + guild.memberCount + " **\n" +
+			this.client.emotes.calendar + " " + supportGuild.translate("events/guild/GuildDelete:createdAt") + ": ** " + createdAt + " **\n" +
+			this.client.emotes.reminder + " " + supportGuild.translate("events/guild/GuildDelete:createdAgo") + ": ** " + createdDiff + " **";
 
-		const supportGuildLogEmbed: EmbedBuilder = this.client.createEmbed(supportGuildLogMessage, "discord", "error");
-		supportGuildLogEmbed.setTitle(this.client.user!.username + " wurde von einem Server entfernt");
+		const supportGuildLogEmbed: EmbedBuilder = this.client.createEmbed(supportGuildLogMessage, null, "error");
 		supportGuildLogEmbed.setThumbnail(guild.iconURL({ dynamic: true, size: 512 }));
 
 		await supportLogChannel.send({ embeds: [supportGuildLogEmbed] }).catch((e: any): void => {});
