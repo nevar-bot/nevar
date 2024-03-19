@@ -19,6 +19,7 @@
   "channel": "Kanal",
   "duration": "Dauer",
   "reason": "Begründung",
+  "noReason": "Keine Begründung",
   "emojis": "Emojis",
   "moderator": "Moderator",
   "user": "Benutzer",

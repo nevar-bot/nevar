@@ -1,52 +1,43 @@
-require("module-alias/register");
-const fs = require("fs");
-const moment = require("moment");
-const Logger = require("@helpers/Logger").default;
+import "module-alias/register.js";
+import * as fs from "fs";
+import moment from "moment";
+import { bgGreen, cyan, bgBlue, bgYellow, bgRed, bgMagenta, gray, black, bold } from "colorette";
 
-/* Installs all the files necessary for the bot */
+/* Install all necessary files for the bot */
+const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
 
+console.log(cyan("Installation started..."));
 
-Logger.log("Installation started..");
-
-/* Config.toml */
-const configText = fs.readFileSync('./assets/config.txt', 'utf8').toString()
-    .replace('{version}', require('@root/package.json').version)
-
-fs.writeFile('config-sample.toml', configText, function(e){
-    if(e){
-        Logger.error("Couldn't create config-sample.toml")
-        console.error(new Error(e));
+/* Create config-sample.toml */
+const configText = fs.readFileSync("./assets/config.txt", "utf8").toString().replace("{version}", packageJson.version);
+fs.writeFile("config-sample.toml", configText, function(Error){
+    if(Error){
+        console.log(bgRed("ERROR") + " " + cyan("Couldn't create config-sample.toml"));
+        console.error(Error);
     }else{
-        Logger.success("Successfully created config-sample.toml")
+        console.log(bgGreen("SUCCESS") + " " + cyan("Created config-sample.toml"));
+    }
+});
+
+/* assets/disabled.json */
+fs.writeFile("./assets/disabled.json", JSON.stringify([]), function(Error){
+    if(Error){
+        console.log(bgRed("ERROR") + " " + cyan("Couldn't create assets/disabled.json"));
+        console.error(Error);
+    }else{
+        console.log(bgGreen("SUCCESS") + " " + cyan("Created assets/disabled.json"));
+    }
+});
+
+/* assets/votes.json */
+const voteObject = Object.fromEntries(moment.months().map(month => [month.toLowerCase(), 0]));
+fs.writeFile("./assets/votes.json", JSON.stringify(voteObject, null, 4), function(Error){
+    if(Error){
+        console.log(bgRed("ERROR") + " " + cyan("Couldn't create assets/votes.json"));
+        console.error(Error);
+    }else{
+        console.log(bgGreen("SUCCESS") + " " + cyan("Created assets/votes.json"));
     }
 });
 
 
-/* Assets */
-
-const disabledCommands = [];
-const news = {
-    "timestamp": Date.now(),
-    "text": "Installed the bot"
-}
-const months = moment.months();
-const voteObject = {};
-for(let i = 1; i <= 12; i++) voteObject[months[i-1].toLowerCase()] = 0;
-
-fs.writeFile('./assets/disabled.json', JSON.stringify(disabledCommands, null, 4), function(e){
-    if(e){
-        Logger.error("Couldn't create assets/disabled.json")
-        console.error(new Error(e));
-    }else{
-        Logger.success("Successfully created assets/disabled.json")
-    }
-});
-
-fs.writeFile('./assets/votes.json', JSON.stringify(voteObject, null, 4), function(e){
-    if(e){
-        Logger.error("Couldn't create assets/votes.json")
-        console.error(new Error(e));
-    }else{
-        Logger.success("Successfully created assets/votes.json")
-    }
-});

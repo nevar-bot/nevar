@@ -15,11 +15,13 @@ export default class {
 	}
 
 	public async dispatch(interaction: any): Promise<any> {
+		/* Check if interaction, type, member or guildId is null */
 		if (!interaction || !interaction.type || !interaction.member || !interaction.guildId) return;
 
-		/* Basic information */
+		/* Destructure interaction */
 		const { guild, member, channel }: any = interaction;
 
+		/* Create data object */
 		const data: any = {
 			guild: await this.client.findOrCreateGuild(guild.id),
 			member: await this.client.findOrCreateMember(member.id, guild.id),
@@ -29,60 +31,49 @@ export default class {
 		member.data = data.member;
 		member.user.data = data.user;
 
-		/* Handle auto complete for help and rail command */
+		/* Handle autocomplete commands */
 		if(interaction.isAutocomplete()){
-			if(interaction.commandName === "help"){
-				const searchInput: string = interaction.options.getFocused();
-				const matchingCommands: string[] = [];
-				for(const command of this.client.commands.values()){
-					if(command.help.name.includes(searchInput) && searchInput !== "" && matchingCommands.length < 25){
-						matchingCommands.push(command.help.name)
-					}
+			const searchInput: string = interaction.options.getFocused();
+			const matchingItems: any[] = [];
 
-				}
-				await interaction.respond(
-					matchingCommands.map((choice: string): any => ({ name: choice, value: choice })),
-				);
+			if(searchInput === "") return;
+			switch(interaction.commandName){
+				case "help":
+					this.client.commands.forEach((command: any): void => {
+						if(command.help.name.includes(searchInput) && matchingItems.length < 26){
+							matchingItems.push({ name: command.help.name, value: command.help.name });
+						}
+					});
+					break;
+				case "transport":
+					const deutscheBahnClient: any = createClient(dbProfile, "hello@nevar.eu");
+					const stations: any = await deutscheBahnClient.locations(searchInput, { results: 5 });
+					stations.forEach((station: any): void => {
+						if(station.type === "stop"){
+							matchingItems.push({ name: station.name, value: station.id });
+						}
+					});
+					break;
 			}
 
-			if(interaction.commandName === "transport"){
-				const searchInput: string = interaction.options.getFocused();
-				const matchingStations: any[] = [];
-				const userAgent: string = "hello@nevar.eu";
-				const dbClient: any = createClient(dbProfile, userAgent);
-
-				if(searchInput === "") return;
-				const stations: any = await dbClient.locations(searchInput, { results: 5 });
-
-				for(let station of stations){
-					if(station.type === "stop" && searchInput !== ""){
-						matchingStations.push({ name: station.name, id: station.id });
-					}
-				}
-
-				await interaction.respond(
-					matchingStations.map((choice: any): any => ({ name: choice.name, value: choice.id })),
-				);
-			}
-
-
+			await interaction.respond(matchingItems);
 		}
+
 		/* Handle context menus */
 		if (interaction.isContextMenuCommand()) {
 			const contextMenu: any = this.client.contextMenus.get(interaction.commandName);
 			if (!contextMenu) {
 				const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+					guild.translate("basics:errors:unexpected", { support: this.client.support }),
 					"error",
 					"error",
-					this.client.support,
 				);
 				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
 				return this.client.alertException(
 					"Context menu " + interaction.commandName + " not found",
 					guild.name,
 					member.user,
-					'<Client>.contextMenus.get("' + interaction.commandName + '")',
+					"<BaseClient>.contextMenus.get()"
 				);
 			}
 
@@ -90,26 +81,24 @@ export default class {
 				await interaction.deferReply();
 			} catch (e: any) {
 				const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+					guild.translate("basics:errors:unexpected", { support: this.client.support }),
 					"error",
 					"error",
-					this.client.support,
 				);
 				await interaction.reply({ embeds: [errorMessageEmbed], ephemeral: true }).catch((e: any): void => {});
 				return this.client.alertException(e, guild.name, member.user, "<ContextInteraction>.deferReply()");
 			} finally {
 				if (!interaction.deferred) {
 					const errorMessageEmbed: EmbedBuilder = this.client.createEmbed(
-						"Ein unerwarteter Fehler ist aufgetreten, bitte kontaktiere den [Support]{0}.",
+						guild.translate("basics:errors:unexpected", { support: this.client.support }),
 						"error",
 						"error",
-						this.client.support,
 					);
 					await interaction
 						.reply({ embeds: [errorMessageEmbed], ephemeral: true })
 						.catch((e: any): void => {});
 					await this.client.alertException(
-						"ContextInteraction is not deferred",
+						"ContextInteraction cannot be deferred",
 						guild.name,
 						member.user,
 						"<ContextInteraction>.deferReply()",
@@ -119,13 +108,15 @@ export default class {
 
 			/* User is blocked */
 			if (data.user.blocked.state) {
-				const reason = data.user.blocked.reason || "Kein Grund angegeben";
+				const reason = data.user.blocked.reason || guild.translate("basics:noReason");
+
+				const blockMessage: string =
+					this.client.emotes.error + " " + guild.translate("events/interaction/InteractionCreate:userIsBlocked", { client: this.client.user!.username }) + "\n" +
+					this.client.emotes.arrow + " " + guild.translate("basics:reason") + ": " + reason;
 				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					"Du wurdest von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}",
+					blockMessage,
 					"error",
 					"error",
-					this.client.emotes.arrow,
-					reason,
 				);
 				return interaction.followUp({
 					embeds: [blockedMessageEmbed],
@@ -135,13 +126,15 @@ export default class {
 
 			/* Guild is blocked */
 			if (data.guild.blocked.state) {
-				const reason = data.guild.blocked.reason || "Kein Grund angegeben";
+				const reason = data.guild.blocked.reason || guild.translate("basics:noReason");
+
+				const blockMessage: string =
+					this.client.emotes.error + " " + guild.translate("events/interaction/InteractionCreate:guildIsBlocked", { client: this.client.user!.username }) + "\n" +
+					this.client.emotes.arrow + " " + guild.translate("basics:reason") + ": " + reason;
 				const blockedMessageEmbed: EmbedBuilder = this.client.createEmbed(
-					"Dieser Server wurde von der Nutzung des Bots ausgeschlossen.\n{0} Begründung: {1}",
+					blockMessage,
 					"error",
 					"error",
-					this.client.emotes.arrow,
-					reason,
 				);
 				return interaction.followUp({ embeds: [blockedMessageEmbed] });
 			}
