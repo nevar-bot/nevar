@@ -14,5 +14,5 @@
   "confirmRequestedBan": "Bist du sicher, dass du {{user}} bannen möchtest?",
   "privateInformationTitle": "Du wurdest auf {{guild}} gebannt.",
   "publicInformationTitle": "{{user}} wurde gebannt.",
-  "banConfirmationRejected": "{{user}} wurde nicht gebannt.",
+  "banConfirmationRejected": "{{user}} wurde nicht gebannt."
 }

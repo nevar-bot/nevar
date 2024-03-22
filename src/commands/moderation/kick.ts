@@ -41,7 +41,7 @@ export default class KickCommand extends BaseCommand {
 
 	public async dispatch(interaction: any, data: any): Promise<void> {
 		this.interaction = interaction;
-		this.guild = interaction;
+		this.guild = interaction.guild;
 		this.data = data;
 		await this.kick(interaction.options.getMember("member"), interaction.options.getString("reason"));
 	}

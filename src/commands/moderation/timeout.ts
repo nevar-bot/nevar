@@ -62,6 +62,7 @@ export default class TimeoutCommand extends BaseCommand {
 	}
 
 	private async timeout(targetMember: any, givenReason: string, duration: string): Promise<any> {
+		await targetMember.fetch().catch((): void => {});
 		const moderator: any = this.interaction.member;
 		const reason: string = givenReason || this.translate("noTimeoutReasonSpecified");
 		const durationInMs: string|undefined = ms(duration);
@@ -103,7 +104,7 @@ export default class TimeoutCommand extends BaseCommand {
 		}
 
 		/* Target is already timeouted */
-		if(targetMember.communicationDisabledUntil){
+		if(targetMember.isCommunicationDisabled()){
 			const timeoutedUntilString: string = this.client.utils.getDiscordTimestamp(targetMember.communicationDisabledUntilTimestamp, "R");
 			const alreadyTimeoutedEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:targetIsAlreadyInTimeout", { user: targetMember.user.toString(), date: timeoutedUntilString }),
