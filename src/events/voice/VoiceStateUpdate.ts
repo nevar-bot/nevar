@@ -1,10 +1,10 @@
 import { ChannelType, EmbedBuilder, VoiceState } from "discord.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 
 export default class {
-	private client: BaseClient;
+	private client: NevarClient;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: NevarClient) {
 		this.client = client;
 	}
 
@@ -17,6 +17,18 @@ export default class {
 		const guildData: any = await this.client.findOrCreateGuild(guild.id);
 		const { joinToCreate: joinToCreateSettings } = guildData.settings;
 
+		/* Delete join2create channels */
+		if (oldChannel) {
+			if(joinToCreateSettings?.channels.includes(oldChannel.id) && oldChannel.members.size < 1) {
+				await oldChannel.delete().catch((): void => {});
+
+				guildData.settings.joinToCreate.channels = guildData.settings.joinToCreate.channels.filter((c: any): boolean => c !== oldChannel.id);
+				guildData.markModified("settings.joinToCreate");
+				await guildData.save();
+			}
+		}
+
+		/* Create join2create channels */
 		if (newChannel && joinToCreateSettings?.enabled && joinToCreateSettings?.channel) {
 			const channelName: string = joinToCreateSettings.defaultName
 				.replaceAll("%count", joinToCreateSettings.channels?.length || 1)
@@ -75,25 +87,6 @@ export default class {
 				.catch((): void => {
 					createdTempChannel.delete().catch((): void => {});
 				});
-		}
-
-		if (oldChannel) {
-			if (!joinToCreateSettings?.channels.includes(oldChannel.id)) return;
-			if (oldChannel.members.size >= 1) return;
-
-			/* Delete channel */
-			await oldChannel.delete().catch((): void => {
-				const errorText: string = this.client.emotes.channel + " Nutzer/-in: " + newMember;
-				const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-				errorEmbed.setTitle(this.client.emotes.error + " Löschen von Join2Create-Channel fehlgeschlagen");
-				guild.logAction(errorEmbed, "guild");
-			});
-
-			guildData.settings.joinToCreate.channels = guildData.settings.joinToCreate.channels.filter(
-				(c: any): boolean => c !== oldChannel.id,
-			);
-			guildData.markModified("settings.joinToCreate");
-			await guildData.save();
 		}
 	}
 }
