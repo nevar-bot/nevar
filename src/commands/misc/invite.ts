@@ -1,10 +1,10 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import path from "path";
 
-export default class InviteCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class InviteCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "invite",
 			description: "See a list of links that might interest you",

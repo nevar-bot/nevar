@@ -9,7 +9,8 @@ const Schema = new mongoose.Schema({
 	user: {
 		type: Object,
 		default: {
-			tag: "Unknown#0000",
+			username: "Unknown",
+			displayName: "Unknown",
 			id: null,
 			createdAt: { type: Number, default: Date.now() },
 		},
@@ -32,5 +33,5 @@ const Schema = new mongoose.Schema({
 	},
 });
 
-const Log: Model<any> = mongoose.model("Log", Schema);
-export default Log;
+const LogModel: Model<any> = mongoose.model("Log", Schema);
+export { LogModel };

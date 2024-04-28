@@ -1,11 +1,10 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import fs from "fs";
-import path from "path";
 
-export default class CreditsCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class CreditsCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "credits",
 			description: "Without what would Nevar not have been possible?",

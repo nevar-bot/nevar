@@ -1,11 +1,11 @@
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import { AuditLogEvent, EmbedBuilder } from "discord.js";
 import moment from "moment";
 
 export default class {
-	private client: BaseClient;
+	private client: NevarClient;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: NevarClient) {
 		this.client = client;
 	}
 

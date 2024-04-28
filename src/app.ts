@@ -1,40 +1,34 @@
 /* Import required modules */
 import "module-alias/register.js";
 import "source-map-support/register.js";
-import "@helpers/extenders/Guild.js";
+import "@helpers/DiscordGuildExtender.js";
 
 /* Import classes */
-import BaseClient from "@structures/BaseClient.js";
-import mongoose from "@database/mongoose.js";
-import Validator from "@helpers/Validator.js";
-import Loader from "@helpers/Loader.js";
+import { NevarClient } from "@core/NevarClient.js";
+import { NevarLoader } from "@helpers/NevarLoader.js";
+import { NevarValidator } from "@helpers/NevarValidator.js";
 
-const client: BaseClient = new BaseClient();
-async function main(): Promise<void> {
+const nevar: NevarClient = new NevarClient();
+
+/* Initiate Nevar */
+async function initiate(): Promise<NevarClient> {
 	try {
-		Validator.configValidator();
+		const validator: NevarValidator = new NevarValidator();
+		await validator.validateConfigFile();
 
-		process.on("unhandledRejection", (e: Error): void => {
-			console.error(e);
-			return client.alertException(e);
-		});
-
-		await mongoose.init(client);
-		
-		const loader: Loader = new Loader(client);
+		const loader: NevarLoader = new NevarLoader(nevar);
+		await loader.loadDatabase();
 		await loader.loadCommands();
-		await loader.loadContexts();
+		await loader.loadContextMenus();
 		await loader.loadEvents();
 		await loader.loadLanguages();
-		await client.login(client.config.general["BOT_TOKEN"]);
+		await loader.login();
 	}catch(error: any){
 		console.error("Error while initializing the bot: ", error);
 	}
+
+	return nevar;
 }
 
-main();
-
-export { client };
-
-
-
+(async (): Promise<NevarClient> => await initiate())();
+export { nevar as client };

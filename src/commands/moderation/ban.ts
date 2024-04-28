@@ -1,13 +1,12 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
-import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import moment from "moment";
 import ems from "enhanced-ms";
-import path from "path";
 const ms: any = ems("de");
 
-export default class BanCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class BanCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "ban",
 			description: "Ban members for a time specified by you",
@@ -133,147 +132,105 @@ export default class BanCommand extends BaseCommand {
 			unbanDate = "/";
 		}
 
-		const areYouSureEmbed: EmbedBuilder = this.client.createEmbed(
-			this.translate("confirmRequestedBan", { user: member.toString() }),
-			"arrow",
-			"warning",
+		const privateText: string =
+			"### " +
+			this.client.emotes.ban + " " +
+			this.translate("privateInformationTitle", { guild: this.interaction.guild!.name }) + "\n\n" +
+			this.client.emotes.arrow + " " +
+			this.getBasicTranslation("reason") + ": " +
+			ban.reason +
+			"\n" +
+			this.client.emotes.arrow + " " +
+			this.getBasicTranslation("duration") + ": " +
+			relativeTime +
+			"\n" +
+			this.client.emotes.arrow + " " +
+			this.getBasicTranslation("moderator") + ": " +
+			this.interaction.user.toString() +
+			"\n" +
+			this.client.emotes.arrow + " " +
+			this.translate("unbanIsAt") + ": " +
+			unbanDate;
+
+		const privateBanEmbed: EmbedBuilder = this.client.createEmbed(
+			privateText,
+			null,
+			"error"
 		);
-		const buttonYes: ButtonBuilder = this.client.createButton("confirm", this.getBasicTranslation("yes"), "Secondary", "success");
-		const buttonNo: ButtonBuilder = this.client.createButton("decline", this.getBasicTranslation("no"), "Secondary", "error");
-		const buttonRow: any = this.client.createMessageComponentsRow(buttonYes, buttonNo);
+		const privateMessage = await ban.victim.send({ embeds: [privateBanEmbed] }).catch((): void => {});
+		try {
+			await ban.victim.ban({
+				reason:
+					this.getBasicTranslation("moderator") + ": " +
+					this.interaction.user.username + ", " +
+					this.getBasicTranslation("reason") + ": " +
+					ban.reason
+			});
+			const victimData = await this.client.findOrCreateMember(
+				ban.victim.user.id,
+				this.interaction.guild!.id,
+			);
 
-		const confirmationAskMessage: any = await this.interaction.followUp({
-			embeds: [areYouSureEmbed],
-			components: [buttonRow],
-		});
+			victimData.banned = {
+				state: true,
+				reason: ban.reason,
+				moderator: {
+					name: this.interaction.user.username,
+					id: this.interaction.user.id,
+				},
+				duration: ban.duration,
+				bannedAt: Date.now(),
+				bannedUntil: Date.now() + ban.duration,
+			};
+			victimData.markModified("banned");
+			await victimData.save();
+			this.client.databaseCache.bannedUsers.set(
+				ban.victim.user.id + this.interaction.guild!.id,
+				victimData,
+			);
 
-		const confirmationButtonCollector = confirmationAskMessage.createMessageComponentCollector({
-			filter: (i: any): boolean => i.user.id === this.interaction.user.id,
-			time: 1000 * 60 * 5,
-			max: 1,
-		});
-		confirmationButtonCollector.on("collect", async (clicked: any): Promise<void> => {
-			const confirmation = clicked.customId;
-
-			switch (confirmation) {
-				case "confirm":
-					const privateText: string =
-						"### " +
-						this.client.emotes.ban + " " +
-						this.translate("privateInformationTitle", { guild: this.interaction.guild!.name }) + "\n\n" +
-						this.client.emotes.arrow + " " +
-						this.getBasicTranslation("reason") + ": " +
-						ban.reason +
-						"\n" +
-						this.client.emotes.arrow + " " +
-						this.getBasicTranslation("duration") + ": " +
-						relativeTime +
-						"\n" +
-						this.client.emotes.arrow + " " +
-						this.getBasicTranslation("moderator") + ": " +
-						this.interaction.user.username +
-						"\n" +
-						this.client.emotes.arrow + " " +
-						this.translate("unbanIsAt") + ": " +
-						unbanDate;
-
-					const privateBanEmbed: EmbedBuilder = this.client.createEmbed(
-						privateText,
-						null,
-						"error"
-					);
-					const privateMessage = await ban.victim.send({ embeds: [privateBanEmbed] }).catch((): void => {});
-					try {
-						await ban.victim.ban({
-							reason:
-								this.getBasicTranslation("duration") + ": " +
-								relativeTime + " | " +
-								this.getBasicTranslation("reason") + ": " +
-								ban.reason + " | " +
-								this.getBasicTranslation("moderator") + ": " +
-								this.interaction.user.username + " | " +
-								this.translate("unbanIsAt") + ": " +
-								unbanDate,
-						});
-						const victimData = await this.client.findOrCreateMember(
-							ban.victim.user.id,
-							this.interaction.guild!.id,
-						);
-
-						victimData.banned = {
-							state: true,
-							reason: ban.reason,
-							moderator: {
-								name: this.interaction.user.username,
-								id: this.interaction.user.id,
-							},
-							duration: ban.duration,
-							bannedAt: Date.now(),
-							bannedUntil: Date.now() + ban.duration,
-						};
-						victimData.markModified("banned");
-						await victimData.save();
-						this.client.databaseCache.bannedUsers.set(
-							ban.victim.user.id + this.interaction.guild!.id,
-							victimData,
-						);
-
-						const publicText: string =
-							"### " +
-							this.client.emotes.ban + " " +
-							this.translate("publicInformationTitle", { user: ban.victim.user.username }) + "\n\n" +
-							this.client.emotes.arrow + " " +
-							this.getBasicTranslation("reason") + ": " +
-							ban.reason +
-							"\n" +
-							this.client.emotes.arrow + " " +
-							this.getBasicTranslation("duration") + ": " +
-							relativeTime +
-							"\n" +
-							this.client.emotes.arrow + " " +
-							this.getBasicTranslation("moderator") + ": " +
-							this.interaction.user.username +
-							"\n" +
-							this.client.emotes.arrow + " " +
-							this.translate("unbanIsAt") + ": " +
-							unbanDate;
-						const publicBanEmbed: EmbedBuilder = this.client.createEmbed(
-							publicText,
-							null,
-							"error",
-							ban.victim.user.username,
-						);
-						publicBanEmbed.setImage("https://media4.giphy.com/media/H99r2HtnYs492/giphy.gif");
-						await clicked.update({
-							embeds: [publicBanEmbed],
-							components: [],
-						});
-					} catch (exc) {
-						//console.log(exc);
-						privateMessage.delete().catch((): void => {});
-						const cantBanEmbed: EmbedBuilder = this.client.createEmbed(
-							this.translate("errors:banFailed", { user: ban.victim.user.toString() }),
-							"error",
-							"error",
-						);
-						await clicked.update({
-							embeds: [cantBanEmbed],
-							components: [],
-						});
-					}
-					break;
-				case "decline":
-					const declineEmbed: EmbedBuilder = this.client.createEmbed(
-						this.translate("banConfirmationRejected", { user: ban.victim.user.toString() }),
-						"error",
-						"error",
-					);
-					await clicked.update({
-						embeds: [declineEmbed],
-						components: [],
-					});
-					break;
-			}
-		});
+			const publicText: string =
+				"### " +
+				this.client.emotes.ban + " " +
+				this.translate("publicInformationTitle", { user: ban.victim.user.username }) + "\n\n" +
+				this.client.emotes.arrow + " " +
+				this.getBasicTranslation("reason") + ": " +
+				ban.reason +
+				"\n" +
+				this.client.emotes.arrow + " " +
+				this.getBasicTranslation("duration") + ": " +
+				relativeTime +
+				"\n" +
+				this.client.emotes.arrow + " " +
+				this.getBasicTranslation("moderator") + ": " +
+				this.interaction.user.toString() +
+				"\n" +
+				this.client.emotes.arrow + " " +
+				this.translate("unbanIsAt") + ": " +
+				unbanDate;
+			const publicBanEmbed: EmbedBuilder = this.client.createEmbed(
+				publicText,
+				null,
+				"error",
+				ban.victim.user.username,
+			);
+			publicBanEmbed.setImage("https://media4.giphy.com/media/H99r2HtnYs492/giphy.gif");
+			await this.interaction.followUp({
+				embeds: [publicBanEmbed],
+				components: [],
+			});
+		} catch (exc) {
+			//console.log(exc);
+			privateMessage.delete().catch((): void => {});
+			const cantBanEmbed: EmbedBuilder = this.client.createEmbed(
+				this.translate("errors:banFailed", { user: ban.victim.user.toString() }),
+				"error",
+				"error",
+			);
+			await this.interaction.followUp({
+				embeds: [cantBanEmbed],
+				components: [],
+			});
+		}
 	}
 }

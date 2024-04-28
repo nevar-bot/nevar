@@ -1,12 +1,12 @@
-import BaseCommand from "@structures/BaseCommand.js";
+import { NevarCommand } from "@core/NevarCommand.js";
 import { EmbedBuilder, parseEmoji, SlashCommandBuilder } from "discord.js";
-import Utils from "@helpers/Utils.js";
-const { stringIsCustomEmoji, stringIsUrl, urlIsImage } = Utils;
-import BaseClient from "@structures/BaseClient.js";
+import { Utils } from "@helpers/Utils.js";
+const { stringIsCustomEmoji, stringIsUrl, urlIsImage } = new Utils();
+import { NevarClient } from "@core/NevarClient";
 import path from "path";
 
-export default class AddemojiCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class AddemojiCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "addemoji",
 			description: "Create a new emoji based on an emoji or link",

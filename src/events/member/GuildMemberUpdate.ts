@@ -1,10 +1,10 @@
 import { EmbedBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 
 export default class {
-	private client: BaseClient;
+	private client: NevarClient;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: NevarClient) {
 		this.client = client;
 	}
 
@@ -15,43 +15,38 @@ export default class {
 		const { guild } = newMember;
 		if (!guild.members.cache.find((m: any): boolean => m.id === oldMember.id)) return;
 
+
+		/* Create properties array */
 		const properties: Array<string> = [];
 
-		if (oldMember.displayName !== newMember.displayName)
-			properties.push(
-				this.client.emotes.edit +
-					" Anzeigename: ~~" +
-					oldMember.displayName +
-					"~~ **" +
-					newMember.displayName +
-					"**",
-			);
+		if(newMember) properties.push(this.client.emotes.user + " " + guild.translate("basics:user") + ": " + newMember.toString());
+		if(oldMember.displayName !== newMember.displayName) properties.push(this.client.emotes.edit + " " + guild.translate("events/member/GuildMemberUpdate:displayName") + ": " + oldMember.displayName + " **➜** " + newMember.displayName);
 
 		newMember.roles.cache.forEach((role: any): void => {
-			if (!oldMember.roles.cache.has(role.id))
-				properties.push(this.client.emotes.events.role.create + " Rolle hinzugefügt: " + role.toString());
+			if (!oldMember.roles.cache.has(role.id)){
+				properties.push(this.client.emotes.events.role.create + " " + role.toString() + " " + guild.translate("events/member/GuildMemberUpdate:added"));
+			}
+
 		});
 
 		oldMember.roles.cache.forEach((role: any): void => {
-			if (!newMember.roles.cache.has(role.id))
-				properties.push(this.client.emotes.events.role.delete + " Rolle entfernt: " + role.toString());
+			if (!newMember.roles.cache.has(role.id)){
+				properties.push(this.client.emotes.events.role.delete + " " + role.toString() + " " + guild.translate("events/member/GuildMemberUpdate:removed"));
+			}
 		});
+
 		if (properties.length < 1) return;
 
-		const memberUpdateText: string = properties.join("\n");
+		/* Prepare message for log embed */
+		const memberLogMessage: string =
+			" ### " + this.client.emotes.events.member.update + " " + guild.translate("events/member/GuildMemberUpdate:updated")+ "\n\n" +
+			properties.join("\n");
 
-		const memberUpdateEmbed: EmbedBuilder = this.client.createEmbed(memberUpdateText, null, "warning");
-		memberUpdateEmbed.setTitle(
-			this.client.emotes.events.member.update +
-				" " +
-				newMember.user.displayName +
-				" (@" +
-				newMember.user.username +
-				")" +
-				" wurde aktualisiert",
-		);
-		memberUpdateEmbed.setThumbnail(newMember.user.displayAvatarURL());
+		/* Create embed */
+		const memberLogEmbed: EmbedBuilder = this.client.createEmbed(memberLogMessage, null, "normal");
+		memberLogEmbed.setThumbnail(newMember?.displayAvatarURL() || guild.iconURL());
 
-		await guild.logAction(memberUpdateEmbed, "member");
+		/* Log action */
+		await guild.logAction(memberLogEmbed, "member");
 	}
 }

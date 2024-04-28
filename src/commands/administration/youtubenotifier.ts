@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, ChannelType, EmbedBuilder } from "discord.js";
 import { google } from "googleapis";
 import path from "path";
 
-export default class Youtubenotifier extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class Youtubenotifier extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "youtubenotifier",
 			description: "Receive notifications when a YouTube channel publishes a new video",

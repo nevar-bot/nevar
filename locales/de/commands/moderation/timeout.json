@@ -12,6 +12,5 @@
   "confirmRequestedTimeout": "Bist du sicher, dass du {{user}} timeouten möchtest?",
   "privateInformationTitle": "Du wurdest auf {{guild}} getimeoutet.",
   "timeoutEndsAt": "Timeout endet am",
-  "publicInformationTitle": "{{user}} wurde getimeoutet.",
-  "requestedTimeoutDeclined": "{{user}} wurde nicht getimeoutet."
+  "publicInformationTitle": "{{user}} wurde getimeoutet."
 }

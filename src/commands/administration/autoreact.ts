@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, ChannelType, EmbedBuilder } from "discord.js";
-import Utils from "@helpers/Utils.js";
+import { Utils } from "@helpers/Utils.js";
 import path from "path";
 
-export default class AutoreactCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class AutoreactCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "autoreact",
 			description: "Automatically react to new messages with your favourite emojis",
@@ -113,7 +113,7 @@ export default class AutoreactCommand extends BaseCommand {
 		}
 
 		/* Invalid emoji */
-		const { stringIsEmoji, stringIsCustomEmoji } = Utils;
+		const { stringIsEmoji, stringIsCustomEmoji } = new Utils();
 		if (!stringIsEmoji(emote) && !stringIsCustomEmoji(emote)) {
 			const invalidEmojiEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:emojiIsInvalid"),
@@ -177,7 +177,7 @@ export default class AutoreactCommand extends BaseCommand {
 		}
 
 		/* Invalid emoji */
-		const { stringIsEmoji, stringIsCustomEmoji } = Utils;
+		const { stringIsEmoji, stringIsCustomEmoji } = new Utils();
 		if (!stringIsEmoji(emote) && !stringIsCustomEmoji(emote)) {
 			const invalidEmojiEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("errors:emojiIsInvalid"),

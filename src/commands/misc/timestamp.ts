@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import moment from "moment-timezone";
 import path from "path";
 
-export default class TimestampCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class TimestampCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "timestamp",
 			description: "Create a Discord timestamp from a date",

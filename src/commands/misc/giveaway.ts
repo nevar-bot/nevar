@@ -1,12 +1,12 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { ChannelType, SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import ems from "enhanced-ms";
 import path from "path";
 const ms: any = ems("de");
 
-export default class GiveawayCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class GiveawayCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "giveaway",
 			description: "Manage giveaways on your server",

@@ -5,47 +5,28 @@ import * as fs from "fs";
 import * as util from "util";
 
 /* Import discord.js classes */
-import {
-	ActionRowBuilder,
-	AnyComponentBuilder,
-	ButtonBuilder,
-	ButtonStyle,
-	Client,
-	Collection,
-	EmbedBuilder,
-	GatewayIntentBits,
-	Guild,
-	OAuth2Scopes,
-	Partials,
-	PermissionsBitField,
-	User,
-} from "discord.js";
+import { ActionRowBuilder, AnyComponentBuilder, ButtonBuilder, ButtonStyle, Client as DiscordClient, Collection, EmbedBuilder, GatewayIntentBits, Guild, OAuth2Scopes, Partials, PermissionsBitField, User } from "discord.js";
 
 /* Import emojis */
-// @ts-ignore
 const emotes: any = JSON.parse(fs.readFileSync("./assets/emojis.json", "utf8"));
 
-/* Import helpers */
-import { ChannelTypes } from "@helpers/ChannelTypes.js";
-
-import Logger from "@helpers/Logger.js";
-import Utils from "@helpers/Utils.js";
-import Levels from "@helpers/Levels.js";
-import GiveawaysManager from "@helpers/Giveaways.js";
+import { Logger } from "@helpers/Logger.js";
+import { Utils } from "@helpers/Utils.js";
+import { LevelsManager } from "@helpers/LevelsManager.js";
+import { GiveawaysManager } from "@helpers/GiveawaysManager.js";
 
 /* Import database schemas */
-import logSchema from "@schemas/Log.js";
-import guildSchema from "@schemas/Guild.js";
-import userSchema from "@schemas/User.js";
-import memberSchema from "@schemas/Member.js";
-import giveawaySchema from "@schemas/Giveaway.js";
+import { LogModel } from "@schemas/Log.js";
+import { GuildModel } from "@schemas/Guild.js";
+import { UserModel } from "@schemas/User.js";
+import { MemberModel } from "@schemas/Member.js";
+import { GiveawayModel } from "@schemas/Giveaway.js";
 
-export default class BaseClient extends Client {
+export class NevarClient extends DiscordClient {
 	public wait: (ms: number) => Promise<void>;
 	public config: any;
 	public emotes: any;
 	public support: string;
-	public channelTypes: any;
 	public locales: any;
 	public commands: Collection<string, any>;
 	public contextMenus: Collection<string, any>;
@@ -70,28 +51,8 @@ export default class BaseClient extends Client {
 
 	constructor() {
 		super({
-			intents: [
-				GatewayIntentBits.Guilds,
-				GatewayIntentBits.GuildMembers,
-				GatewayIntentBits.GuildMessageReactions,
-				GatewayIntentBits.GuildVoiceStates,
-				GatewayIntentBits.GuildModeration,
-				GatewayIntentBits.GuildMessages,
-				GatewayIntentBits.GuildMessageTyping,
-				GatewayIntentBits.GuildEmojisAndStickers,
-				GatewayIntentBits.GuildScheduledEvents,
-				GatewayIntentBits.GuildInvites,
-				GatewayIntentBits.MessageContent,
-			],
-			partials: [
-				Partials.User,
-				Partials.Channel,
-				Partials.GuildMember,
-				Partials.Message,
-				Partials.Reaction,
-				Partials.GuildScheduledEvent,
-				Partials.ThreadMember,
-			],
+			intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.GuildScheduledEvents, GatewayIntentBits.GuildInvites, GatewayIntentBits.MessageContent ],
+			partials: [ Partials.User, Partials.Channel, Partials.GuildMember, Partials.Message, Partials.Reaction, Partials.GuildScheduledEvent, Partials.ThreadMember ],
 			allowedMentions: {
 				parse: ["users"],
 			},
@@ -101,21 +62,20 @@ export default class BaseClient extends Client {
 		this.config = toml.parse(fs.readFileSync("./config.toml", "utf8"));
 		this.emotes = emotes;
 		this.support = this.config.support["INVITE"];
-		this.channelTypes = ChannelTypes;
 
 		this.commands = new Collection();
 		this.contextMenus = new Collection();
 
 		this.giveawayManager = new GiveawaysManager(this);
-		this.logger = Logger;
-		this.utils = Utils;
-		this.levels = Levels;
+		this.logger = new Logger();
+		this.utils = new Utils();
+		this.levels = new LevelsManager();
 
-		this.logs = logSchema;
-		this.guildsData = guildSchema;
-		this.usersData = userSchema;
-		this.membersData = memberSchema;
-		this.giveawaysData = giveawaySchema;
+		this.logs = LogModel;
+		this.guildsData = GuildModel;
+		this.usersData = UserModel;
+		this.membersData = MemberModel;
+		this.giveawaysData = GiveawayModel;
 
 		this.databaseCache = {
 			users: new Collection(),
@@ -135,22 +95,23 @@ export default class BaseClient extends Client {
 	}
 
 	async findOrCreateUser(userID: string, isLean: boolean = false): Promise<any> {
-		if (this.databaseCache.users.get(userID)) {
-			return isLean ? this.databaseCache.users.get(userID).toJSON() : this.databaseCache.users.get(userID);
-		} else {
-			let userData: any = isLean
-				? await this.usersData.findOne({ id: userID }).lean()
-				: await this.usersData.findOne({ id: userID });
-			if (userData) {
-				if (!isLean) this.databaseCache.users.set(userID, userData);
-				return userData;
-			} else {
-				userData = new this.usersData({ id: userID });
-				await userData.save();
-				this.databaseCache.users.set(userID, userData);
-				return isLean ? userData.toJSON() : userData;
-			}
+		const cachedUser = this.databaseCache.users.get(userID);
+
+		if (cachedUser) {
+			return isLean ? cachedUser.toJSON() : cachedUser;
 		}
+
+		let userData = isLean
+			? await this.usersData.findOne({ id: userID }).lean()
+			: await this.usersData.findOne({ id: userID });
+
+		if (!userData) {
+			userData = await this.usersData.create({ id: userID });
+		}
+
+		this.databaseCache.users.set(userID, userData);
+
+		return isLean ? userData.toJSON() : userData;
 	}
 
 	async findUser(userID: string): Promise<any> {
@@ -160,99 +121,76 @@ export default class BaseClient extends Client {
 
 	async deleteUser(userID: string): Promise<any> {
 		if (this.databaseCache.users.get(userID)) {
-			await this.usersData.findOneAndDelete({ id: userID }).catch((e: any) => {
-				this.alertException(e, null, null, '<BaseClient>.deleteUser("' + userID + '")');
-			});
+			await this.usersData.findOneAndDelete({ id: userID }).catch((): void => {});
 			this.databaseCache.users.delete(userID);
 		}
 	}
 
 	async findOrCreateMember(memberID: string, guildID: string, isLean: boolean = false): Promise<any> {
-		if (this.databaseCache.members.get(`${memberID}${guildID}`)) {
-			return isLean
-				? this.databaseCache.members.get(`${memberID}${guildID}`).toJSON()
-				: this.databaseCache.members.get(`${memberID}${guildID}`);
-		} else {
-			let memberData: any = isLean
-				? await this.membersData.findOne({ guildID, id: memberID }).lean()
-				: await this.membersData.findOne({ guildID, id: memberID });
-			if (memberData) {
-				if (!isLean) this.databaseCache.members.set(`${memberID}${guildID}`, memberData);
-				return memberData;
-			} else {
-				memberData = new this.membersData({
-					id: memberID,
-					guildID: guildID,
-				});
-				await memberData.save();
-				const guild: any = await this.findOrCreateGuild(guildID);
-				if (guild) {
-					guild.members.push(memberData._id);
-					await guild.save().catch((e: any) => {
-						this.alertException(e, null, null, "<GuildData>.save()");
-					});
-				}
-				this.databaseCache.members.set(`${memberID}${guildID}`, memberData);
+		const cachedMember = this.databaseCache.members.get(`${memberID}${guildID}`);
+		if (cachedMember) {
+			return isLean ? cachedMember.toJSON() : cachedMember;
+		}
+
+		let memberData = isLean
+			? await this.membersData.findOne({ guildID, id: memberID }).lean()
+			: await this.membersData.findOne({ guildID, id: memberID });
+
+		if (!memberData) {
+			memberData = new this.membersData({ id: memberID, guildID: guildID });
+			await memberData.save();
+
+			this.databaseCache.members.set(`${memberID}${guildID}`, memberData);
+
+			const guild = await this.findOrCreateGuild(guildID);
+			if (guild) {
+				guild.members.push(memberData._id);
+				await guild.save().catch((): void => {});
 			}
 		}
+
+		return isLean ? memberData.toJSON() : memberData;
 	}
 
 	async findMember(memberID: string, guildID: string): Promise<any> {
 		const cachedMember: any = this.databaseCache.members.get(`${memberID}${guildID}`);
-		return cachedMember
-			? cachedMember
-			: await this.membersData.findOne({
-					id: memberID,
-					guildID: guildID,
-				});
+		return cachedMember || await this.membersData.findOne({ id: memberID, guildID: guildID });
 	}
 
 	async deleteMember(memberID: string, guildID: string): Promise<any> {
 		if (this.databaseCache.members.get(`${memberID}${guildID}`)) {
-			await this.membersData
-				.findOne({ id: memberID, guildID: guildID })
-				.deleteOne()
-				.exec()
-				.catch((e: Error) => {
-					this.alertException(e, null, null, '<Client>.deleteMember("' + memberID + '", ' + guildID + '")');
-				});
+			await this.membersData.findOne({ id: memberID, guildID: guildID }).deleteOne().exec().catch((): void => {});
 			this.databaseCache.members.delete(`${memberID}${guildID}`);
 		}
 	}
 
 	async findOrCreateGuild(guildID: string, isLean: boolean = false): Promise<any> {
-		if (this.databaseCache.guilds.get(guildID)) {
-			return isLean ? this.databaseCache.guilds.get(guildID).toJSON() : this.databaseCache.guilds.get(guildID);
-		} else {
-			let guildData: any = isLean
-				? await this.guildsData.findOne({ id: guildID }).populate("members").lean()
-				: await this.guildsData.findOne({ id: guildID }).populate("members");
-			if (guildData) {
-				if (!isLean) this.databaseCache.guilds.set(guildID, guildData);
-				return guildData;
-			} else {
-				guildData = new this.guildsData({ id: guildID });
-				await guildData.save();
-				this.databaseCache.guilds.set(guildID, guildData);
-				return isLean ? guildData.toJSON() : guildData;
-			}
+		const cachedGuild = this.databaseCache.guilds.get(guildID);
+		if (cachedGuild) {
+			return isLean ? cachedGuild.toJSON() : cachedGuild;
 		}
+
+		let guildData = isLean
+			? await this.guildsData.findOne({ id: guildID }).populate("members").lean()
+			: await this.guildsData.findOne({ id: guildID }).populate("members");
+
+		if (!guildData) {
+			guildData = new this.guildsData({ id: guildID });
+			await guildData.save();
+			this.databaseCache.guilds.set(guildID, guildData);
+		}
+
+		return isLean ? guildData.toJSON() : guildData;
 	}
 
 	async findGuild(guildID: string): Promise<any> {
 		const cachedGuild: any = this.databaseCache.guilds.get(guildID);
-		return cachedGuild ? cachedGuild : await this.guildsData.findOne({ id: guildID });
+		return cachedGuild || await this.guildsData.findOne({id: guildID});
 	}
 
 	async deleteGuild(guildID: string): Promise<any> {
 		if (this.databaseCache.guilds.get(guildID)) {
-			await this.guildsData
-				.findOne({ id: guildID })
-				.deleteOne()
-				.exec()
-				.catch((e: Error) => {
-					this.alertException(e, null, null, '<Client>.deleteGuild("' + guildID + '")');
-				});
+			await this.guildsData.findOne({ id: guildID }).deleteOne().exec().catch((): void => {});
 			this.databaseCache.guilds.delete(guildID);
 		}
 	}
@@ -285,12 +223,7 @@ export default class BaseClient extends Client {
 		return new Intl.NumberFormat("de-DE").format(integer);
 	}
 
-	createEmbed(
-		message: string | null,
-		emote: string | null,
-		type: "normal" | "success" | "warning" | "error" | "transparent",
-		...args: any
-	): EmbedBuilder {
+	createEmbed(message: string | null, emote: string | null, type: "normal" | "success" | "warning" | "error" | "transparent", ...args: any): EmbedBuilder {
 		const color: any = type
 			.replace("normal", this.config.embeds["DEFAULT_COLOR"])
 			.replace("success", this.config.embeds["SUCCESS_COLOR"])
@@ -304,26 +237,14 @@ export default class BaseClient extends Client {
 		}
 
 		return new EmbedBuilder()
-			//.setAuthor({
-			//	name: this.user!.username,
-			//	iconURL: this.user!.displayAvatarURL(),
-			//	url: this.config.general["WEBSITE"],
-			//})
-			.setDescription((emote ? this.emotes[emote] + " " : " ") + (formattedMessage ? formattedMessage : " "))
+			.setDescription((emote ? this.emotes[emote] + " " : " ") + (formattedMessage || " "))
 			.setColor(color)
 			.setFooter({ text: this.config.embeds["FOOTER_TEXT"] });
 	}
 
-	createButton(
-		customId: string | null,
-		label: string | null,
-		style: string,
-		emote: string | null = null,
-		disabled: boolean = false,
-		url: string | null = null,
-	): ButtonBuilder {
+	createButton(customId: string|null, label: string|null, style: string, emote: string|null = null, disabled: boolean = false, url: string|null = null): ButtonBuilder {
 		const button: ButtonBuilder = new ButtonBuilder()
-			.setLabel(label ? label : " ")
+			.setLabel(label || " ")
 			// @ts-ignore - Element implicitly has an 'any' type because index expression is not of type 'number'
 			.setStyle(ButtonStyle[style])
 			.setDisabled(disabled);
@@ -344,32 +265,19 @@ export default class BaseClient extends Client {
 		return this.generateInvite({
 			scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
 			permissions: [
-				PermissionsBitField.Flags.ViewAuditLog,
-				PermissionsBitField.Flags.ManageRoles,
-				PermissionsBitField.Flags.ManageChannels,
-				PermissionsBitField.Flags.KickMembers,
-				PermissionsBitField.Flags.BanMembers,
-				PermissionsBitField.Flags.ManageGuildExpressions,
-				PermissionsBitField.Flags.ManageWebhooks,
-				PermissionsBitField.Flags.ViewChannel,
-				PermissionsBitField.Flags.SendMessages,
-				PermissionsBitField.Flags.ManageMessages,
-				PermissionsBitField.Flags.AttachFiles,
-				PermissionsBitField.Flags.EmbedLinks,
-				PermissionsBitField.Flags.ReadMessageHistory,
-				PermissionsBitField.Flags.UseExternalEmojis,
-				PermissionsBitField.Flags.AddReactions,
-				PermissionsBitField.Flags.ManageGuild,
+				PermissionsBitField.Flags.ViewAuditLog, PermissionsBitField.Flags.ManageRoles,
+				PermissionsBitField.Flags.ManageChannels, PermissionsBitField.Flags.KickMembers,
+				PermissionsBitField.Flags.BanMembers, PermissionsBitField.Flags.ManageGuildExpressions,
+				PermissionsBitField.Flags.ManageWebhooks, PermissionsBitField.Flags.ViewChannel,
+				PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ManageMessages,
+				PermissionsBitField.Flags.AttachFiles, PermissionsBitField.Flags.EmbedLinks,
+				PermissionsBitField.Flags.ReadMessageHistory, PermissionsBitField.Flags.UseExternalEmojis,
+				PermissionsBitField.Flags.AddReactions, PermissionsBitField.Flags.ManageGuild,
 			],
 		});
 	}
 
-	alertException(
-		exception: any,
-		guild: string | null = null,
-		user: User | null = null,
-		action: string | null = null,
-	): any {
+	alertException(exception: any, guild: string|null = null, user: User|null = null, action: string|null = null): any {
 		const supportGuild: Guild | undefined = this.guilds.cache.get(this.config.support["ID"]);
 		const errorLogChannel: any = supportGuild?.channels.cache.get(this.config.support["ERROR_LOG"]);
 		if (!supportGuild || !errorLogChannel) return;
@@ -387,13 +295,13 @@ export default class BaseClient extends Client {
 		return errorLogChannel.send({ embeds: [exceptionEmbed] }).catch(() => {});
 	}
 
-	alert(text: string, color: "normal" | "success" | "warning" | "error" | "transparent"): any {
+	alert(text: string, color: "normal"|"success"|"warning"|"error"|"transparent"): any {
 		const supportGuild: Guild | undefined = this.guilds.cache.get(this.config.support["ID"]);
 		if (!supportGuild) return;
 		const logChannel: any = supportGuild.channels.cache.get(this.config.support["BOT_LOG"]);
 		if (!logChannel) return;
 
-		const embed = this.createEmbed(text, "information", color);
+		const embed: EmbedBuilder = this.createEmbed(text, "information", color);
 		embed.setThumbnail(this.user!.displayAvatarURL());
 		return logChannel.send({ embeds: [embed] });
 	}

@@ -1,6 +1,5 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
-import moment from "moment";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import {
 	EmbedBuilder,
 	ActionRowBuilder,
@@ -9,10 +8,9 @@ import {
 	TextInputStyle,
 	ButtonBuilder,
 } from "discord.js";
-import path from "path";
 
-export default class ChangelogCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class ChangelogCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "changelog",
 			description: "Send a changelog as a clear message",

@@ -1,10 +1,10 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import path from "path";
 
-export default class EmbedCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class EmbedCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "embed",
 			description: "Send your personalised embed",

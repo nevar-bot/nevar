@@ -3,17 +3,20 @@ import * as util from "util";
 import * as path from "path";
 import { ApplicationCommandType, Events } from "discord.js";
 const readdir = util.promisify(fs.readdir);
-import Utils from "@helpers/Utils.js";
-import BaseClient from "@structures/BaseClient.js";
-import { languages } from "@helpers/Language.js";
+import { Utils } from "@helpers/Utils.js";
+import { NevarClient } from "@core/NevarClient.js";
+import { Languages } from "@helpers/Languages.js";
+import mongoose from "@database/mongoose.js";
 
-export default class Loader {
-	private client: BaseClient;
-	public constructor(client: BaseClient) {
+export class NevarLoader {
+	private client: NevarClient;
+	private utils: Utils;
+	public constructor(client: NevarClient) {
 		this.client = client;
+		this.utils = new Utils();
 	}
 
-	public async loadCommands(): Promise<void> {
+	public async loadCommands(): Promise<NevarLoader> {
 		/* Load commands */
 		let success: number = 0;
 		let failed: number = 0;
@@ -45,9 +48,11 @@ export default class Loader {
 		}else{
 			this.client.logger.success("Attempted to load " + (success + failed) + " commands. Success (" + success + ") Failed (" + failed + ")");
 		}
+
+		return this;
 	}
 
-	public async loadContexts(): Promise<void> {
+	public async loadContextMenus(): Promise<NevarLoader> {
 		/* Load context menus */
 		let success: number = 0;
 		let failed: number = 0;
@@ -92,16 +97,18 @@ export default class Loader {
 		}else{
 			this.client.logger.success("Attempted to load " + (success + failed) + " context menus (" + userContexts + " user, " + messageContexts + " message). Success (" + success + ") Failed (" + failed + ")");
 		}
+
+		return this;
 	}
 
-	public async loadEvents(): Promise<void> {
+	public async loadEvents(): Promise<NevarLoader> {
 		/* Load events */
 		let success: number = 0;
 		let failed: number = 0;
 		this.client.logger.log("Trying to load events...");
 
 		/* Loop through all files in the events folder */
-		for (const filePath of Utils.recursiveReadDirSync("build/events")) {
+		for (const filePath of this.utils.recursiveReadDirSync("build/events")) {
 			/* Get the file name */
 			const file: string = path.basename(filePath);
 
@@ -138,12 +145,27 @@ export default class Loader {
 		}else{
 			this.client.logger.success("Attempted to load " + (success + failed) + " events. Success (" + success + ") Failed (" + failed + ")");
 		}
+
+		return this;
 	}
 
-	public async loadLanguages(): Promise<void> {
+	public async loadLanguages(): Promise<NevarLoader> {
 		this.client.logger.log("Trying to load languages...");
-		this.client.locales = await languages();
+		const languages: Languages = new Languages();
+		this.client.locales = await languages.load();
 		const locales: string = Array.from(this.client.locales.keys()).join(", ");
 		this.client.logger.log("Attempted to load " + this.client.locales.size + " languages (" + locales + ")");
+
+		return this;
+	}
+
+	public async loadDatabase(): Promise<NevarLoader> {
+		await mongoose.init(this.client);
+		return this;
+	}
+
+	public async login(): Promise<NevarLoader> {
+		await this.client.login(this.client.config.general["BOT_TOKEN"]);
+		return this;
 	}
 }

@@ -1,5 +1,5 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { ActionRowBuilder, SlashCommandBuilder, ComponentType, StringSelectMenuBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import fs from "fs";
 import path from "path";
@@ -8,8 +8,8 @@ function getKeyByValue(object: any, value: any): any {
 	return Object.keys(object).find((key: string): boolean => object[key] === value);
 }
 
-export default class HelpCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class HelpCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "help",
 			description: "Sends an overview of all commands, or help for a specific command",

@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import session from "express-session";
 import path from "path";
 import cookieParser from "cookie-parser";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import compression from "compression";
 
 import IndexRoute from "@dashboard/routes/IndexRoute.js";
@@ -13,9 +13,15 @@ import ImprintRoute from "@dashboard/routes/ImprintRoute.js";
 import PrivacyRoute from "@dashboard/routes/PrivacyRoute.js";
 import FeedbackRoute from "@dashboard/routes/FeedbackRoute.js";
 
-export default {
-	init(client: BaseClient): void {
-		const { SESSION_SECRET, PORT } = client.config.dashboard;
+export class Dashboard {
+	private client: NevarClient;
+
+	public constructor(client: NevarClient) {
+		this.client = client;
+	}
+
+	public init(): void {
+		const { SESSION_SECRET, PORT } = this.client.config.dashboard;
 		const app: Express = express();
 
 		// Middleware
@@ -46,7 +52,7 @@ export default {
 
 		// Start server
 		app.listen(PORT, (): void => {
-			client.logger.log(`Dashboard is running on port ${PORT}`);
+			this.client.logger.log(`Dashboard is running on port ${PORT}`);
 		});
-	},
-};
+	}
+}

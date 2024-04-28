@@ -1,10 +1,10 @@
-import BaseCommand from "@structures/BaseCommand.js";
+import { NevarCommand } from "@core/NevarCommand.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import path from "path";
 
-export default class AskCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class AskCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "ask",
 			description: "Ask a question and you will get 100% true answers",

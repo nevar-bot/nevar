@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
-import BaseGame from "@structures/BaseGame.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
+import { NevarGame } from "@core/NevarGame.js";
 import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import path from "path";
 
-export default class FloodCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class FloodCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "flood",
 			description: "Fill the entire playing field with one colour",
@@ -38,7 +38,7 @@ export default class FloodCommand extends BaseCommand {
 	}
 }
 
-class FloodGame extends BaseGame {
+class FloodGame extends NevarGame {
 	public length: number;
 	public gameBoard: any[];
 	public maxTurns: number;

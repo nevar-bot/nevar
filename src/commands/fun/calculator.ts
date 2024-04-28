@@ -1,11 +1,10 @@
-import BaseCommand from "@structures/BaseCommand.js";
+import { NevarCommand } from "@core/NevarCommand.js";
 import { ButtonBuilder, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import * as math from "mathjs";
-import path from "path";
 
-export default class CalculatorCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class CalculatorCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "calculator",
 			description: "Check whether 1+1 really equals 2",

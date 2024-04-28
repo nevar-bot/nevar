@@ -1,12 +1,12 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import { RankCardBuilder, Font } from "canvacord";
 import fs from "fs";
 import path from "path";
 
-export default class RankCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class RankCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "rank",
 			description: "Take a look at your level card",

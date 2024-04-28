@@ -19,7 +19,7 @@
        "@events/*": ["./src/events/*"],
        "@handlers/*": ["./src/handlers/*"],
        "@helpers/*": ["./src/helpers/*"],
-       "@structures/*": ["./src/structures/*"],
+       "@core/*": ["./src/core/*"],
        "@schemas/*": ["./src/database/schemas/*"],
        "@api/*": ["./src/api/*"],
        "@dashboard/*": ["./src/dashboard/*"]

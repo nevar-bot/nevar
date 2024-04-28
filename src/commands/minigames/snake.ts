@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
-import BaseGame from "@structures/BaseGame.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
+import { NevarGame } from "@core/NevarGame.js";
 import { SlashCommandBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import path from "path";
 
-export default class SnakeCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class SnakeCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "snake",
 			description: "Get as long as possible by eating apples",
@@ -37,7 +37,7 @@ export default class SnakeCommand extends BaseCommand {
 	}
 }
 
-class SnakeGame extends BaseGame {
+class SnakeGame extends NevarGame {
 	public snake: any[];
 	public apple: any;
 	public snakeLength: number;

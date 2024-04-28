@@ -1,18 +1,18 @@
 import * as path from "path";
-import { CommandInteraction, Guild, Message } from "discord.js";
-import BaseClient from "@structures/BaseClient.js";
+import { Guild, Message } from "discord.js";
+import { NevarClient } from "@core/NevarClient";
 
-export default class BaseCommand {
+export class NevarCommand {
 	protected guild!: Guild;
 	protected data!: any;
 	protected interaction!: any;
 	protected message!: Message;
-	public client: BaseClient;
+	public client: NevarClient;
 	public conf: any;
 	public help: any;
 	public slashCommand: any;
 
-	constructor(client: BaseClient, options: any) {
+	constructor(client: NevarClient, options: any) {
 		const {
 			name = null,
 			description = null,
@@ -20,17 +20,15 @@ export default class BaseCommand {
 			dirname = null,
 			botPermissions = [],
 			memberPermissions = [],
-			nsfw = false,
 			ownerOnly = false,
 			staffOnly = false,
-			cooldown = 0,
 			slashCommand = { addCommand: true, data: [] },
 		} = options;
 
 		const category: string = path.basename(path.dirname(dirname as string)).toLowerCase();
 
 		this.client = client;
-		this.conf = { memberPermissions, botPermissions, nsfw, ownerOnly, staffOnly, cooldown };
+		this.conf = { memberPermissions, botPermissions, ownerOnly, staffOnly };
 		this.help = { name, category, description, localizedDescriptions };
 		this.slashCommand = slashCommand;
 	}

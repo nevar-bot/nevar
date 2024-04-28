@@ -1,17 +1,20 @@
 import { EmbedBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 
 export default class {
-	private client: BaseClient;
+	private client: NevarClient;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: NevarClient) {
 		this.client = client;
 	}
 
 	public async dispatch(member: any): Promise<any> {
+		/* Check if event or guild is null */
 		if (!member || !member.id || !member.guild) return;
+		/* Destructure guild from member */
 		const { guild } = member;
 
+		/* Guild and member data */
 		const guildData = await this.client.findOrCreateGuild(guild.id);
 		const memberData = await this.client.findOrCreateMember(member.id, guild.id);
 
@@ -28,24 +31,30 @@ export default class {
 		}
 
 		/* Send log */
-		const memberLeaveText: string =
-			this.client.emotes.edit +
-			" Anzeigename: " +
-			member.user.displayName +
-			"\n" +
-			this.client.emotes.user +
-			" Nutzername: " +
-			member.user.username +
-			"\n" +
-			this.client.emotes.id +
-			" ID: " +
-			member.id;
+		const createdAt: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "f");
+		const createdDiff: string = this.client.utils.getDiscordTimestamp(member.user.createdTimestamp, "R");
 
-		const memberLeaveEmbed: EmbedBuilder = this.client.createEmbed(memberLeaveText, null, "error");
-		memberLeaveEmbed.setTitle(this.client.emotes.events.member.ban + "Mitglied hat den Server verlassen");
-		memberLeaveEmbed.setThumbnail(member.user.displayAvatarURL());
+		/* Create properties array */
+		const properties: Array<string> = [];
 
-		await guild.logAction(memberLeaveEmbed, "member");
+		/* Push invite properties to properties array */
+		if(member) properties.push(this.client.emotes.user + " " + guild.translate("basics:user") + ": " + member.toString());
+		if(member.user.createdTimestamp) properties.push(this.client.emotes.calendar + " " + guild.translate("events/member/GuildMemberRemove:createdAt") + ": " + createdAt);
+		if(member.user.createdTimestamp) properties.push(this.client.emotes.reminder + " " + guild.translate("events/member/GuildMemberRemove:createdAgo") + ": " + createdDiff);
+
+		if(properties.length > 0){
+			/* Prepare message for log embed */
+			const memberLogMessage: string =
+				" ### " + this.client.emotes.events.member.ban + " " + guild.translate("events/member/GuildMemberRemove:left")+ "\n\n" +
+				properties.join("\n");
+
+			/* Create embed */
+			const memberLogEmbed: EmbedBuilder = this.client.createEmbed(memberLogMessage, null, "error");
+			memberLogEmbed.setThumbnail(member.displayAvatarURL() || guild.iconURL());
+
+			/* Log action */
+			await guild.logAction(memberLogEmbed, "member");
+		}
 
 		/* Send farewell message */
 		if (guildData.settings?.farewell.enabled) {
@@ -62,73 +71,19 @@ export default class {
 					.replaceAll(/%newline/g, "\n");
 			}
 
-			const farewellMessage: string = parseMessage(guildData.settings.farewell.message);
+			const farewellMessage: string|null = parseMessage(guildData.settings.farewell.message);
 			const farewellChannel: any =
 				guild.channels.cache.get(guildData.settings.farewell.channel) ||
-				(await guild.channels.fetch(guildData.settings.farewell.channel).catch((e: any): void => {
-					const errorText: string =
-						this.client.emotes.user +
-						" Mitglied: " +
-						member.user.displayName +
-						" (@" +
-						member.user.username +
-						")" +
-						"\n" +
-						this.client.emotes.arrow +
-						" Kanal: " +
-						guildData.settings.welcome.channel;
-
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-					errorEmbed.setTitle(this.client.emotes.error + " Verabschiedungsnachricht fehlgeschlagen");
-					errorEmbed.setThumbnail(member.user.displayAvatarURL());
-
-					guild.logAction(errorEmbed, "guild");
-				}));
+				(await guild.channels.fetch(guildData.settings.farewell.channel).catch((): void => {}));
 
 			if (guildData.settings.farewell.type === "embed") {
 				const farewellEmbed: EmbedBuilder = this.client.createEmbed(farewellMessage, null, "normal");
 				farewellEmbed.setColor(guildData.settings.farewell.color || this.client.config.embeds["DEFAULT_COLOR"]);
 				if (guildData.settings.farewell?.profilePicture)
 					farewellEmbed.setThumbnail(member.user.displayAvatarURL());
-				return farewellChannel?.send({ embeds: [farewellEmbed] }).catch((e: any): void => {
-					const errorText: string =
-						this.client.emotes.user +
-						" Mitglied: " +
-						member.user.displayName +
-						" (@" +
-						member.user.username +
-						")" +
-						"\n" +
-						this.client.emotes.arrow +
-						" Kanal: " +
-						farewellChannel.toString();
-
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-					errorEmbed.setTitle(this.client.emotes.error + " Verabschiedungsnachricht fehlgeschlagen");
-					errorEmbed.setThumbnail(member.user.displayAvatarURL());
-
-					return guild.logAction(errorEmbed, "guild");
-				});
+				return farewellChannel?.send({ embeds: [farewellEmbed] }).catch((): void => {});
 			} else if (guildData.settings.welcome.type === "text") {
-				return farewellChannel.send({ content: farewellMessage }).catch((e: any): void => {
-					const errorText: string =
-						this.client.emotes.user +
-						" Mitglied: " +
-						member.user.displayName +
-						" (@" +
-						member.user.username +
-						")" +
-						"\n" +
-						this.client.emotes.arrow +
-						" Kanal: " +
-						farewellChannel.toString();
-
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-					errorEmbed.setTitle(this.client.emotes.error + " Verabschiedungsnachricht fehlgeschlagen");
-					errorEmbed.setThumbnail(member.user.displayAvatarURL());
-
-					return guild.logAction(errorEmbed, "guild");
-				});
+				return farewellChannel.send({ content: farewellMessage }).catch((): void => {});
 			}
 		}
 	}

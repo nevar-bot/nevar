@@ -1,11 +1,10 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { EmbedBuilder } from "discord.js";
-import registerInteractions from "@handlers/registerInteractions.js";
-import path from "path";
+import { InteractionManager } from "@handlers/InteractionManager.js";
 
-export default class UpdateinteractionsCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class UpdateinteractionsCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "updateinteractions",
 			description: "Update slash commands and context menus",
@@ -29,7 +28,8 @@ export default class UpdateinteractionsCommand extends BaseCommand {
 	}
 
 	private async updateInteractions(): Promise<any> {
-		const res: any = await registerInteractions(this.client);
+		const iManager: InteractionManager = new InteractionManager(this.client);
+		const res: any = await iManager.register();
 		if (res.success) {
 			const successEmbed: EmbedBuilder = this.client.createEmbed(
 				this.translate("updatedInteractions", { count: res.interactionsRegistered }),

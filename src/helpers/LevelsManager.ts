@@ -1,21 +1,21 @@
 import * as mongoose from "mongoose";
-import LevelSchema from "@schemas/Levels.js";
-let mongoUrl;
+import { LevelsModel } from "@schemas/Levels.js";
 
-export default class Levels {
-	static async setURL(dbUrl: string): Promise<any> {
-		mongoUrl = dbUrl;
+export class LevelsManager {
+	public constructor() {};
+
+	public setURL(dbUrl: string): Promise<any> {
 		return mongoose.connect(dbUrl);
 	}
 
-	static async createUser(userId: string, guildId: string): Promise<any> {
-		const isUser: any = await LevelSchema.findOne({
+	public async createUser(userId: string, guildId: string): Promise<any> {
+		const isUser: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
 		if (isUser) return false;
 
-		const newUser = new LevelSchema({
+		const newUser = new LevelsModel({
 			userID: userId,
 			guildID: guildId,
 		});
@@ -26,14 +26,14 @@ export default class Levels {
 		return newUser;
 	}
 
-	static async deleteUser(userId: string, guildId: string): Promise<any> {
-		const user: any = await LevelSchema.findOne({
+	public async deleteUser(userId: string, guildId: string): Promise<any> {
+		const user: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
 		if (!user) return false;
 
-		await LevelSchema.findOneAndDelete({
+		await LevelsModel.findOneAndDelete({
 			userID: userId,
 			guildID: guildId,
 		}).catch((e: any): boolean => {
@@ -42,15 +42,15 @@ export default class Levels {
 		return user;
 	}
 
-	static async appendXp(userId: string, guildId: string, xp: number): Promise<any> {
+	public async appendXp(userId: string, guildId: string, xp: number): Promise<any> {
 		if (xp <= 0 || !xp || isNaN(parseInt(String(xp)))) return false;
 
-		const user: any = await LevelSchema.findOne({
+		const user: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
 		if (!user) {
-			const newUser: any = new LevelSchema({
+			const newUser: any = new LevelsModel({
 				userID: userId,
 				guildID: guildId,
 				xp: xp,
@@ -74,8 +74,8 @@ export default class Levels {
 		return Math.floor(0.1 * Math.sqrt((user.xp -= xp))) < user.level;
 	}
 
-	static async appendLevel(userId: string, guildId: string, levels: number): Promise<any> {
-		const user: any = await LevelSchema.findOne({
+	public async appendLevel(userId: string, guildId: string, levels: number): Promise<any> {
+		const user: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
@@ -92,10 +92,10 @@ export default class Levels {
 		return user;
 	}
 
-	static async setXp(userId: string, guildId: string, xp: number): Promise<any> {
+	public async setXp(userId: string, guildId: string, xp: number): Promise<any> {
 		if (xp <= 0 || !xp || isNaN(parseInt(String(xp)))) return false;
 
-		const user: any = await LevelSchema.findOne({
+		const user: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
@@ -112,8 +112,8 @@ export default class Levels {
 		return user;
 	}
 
-	static async setLevel(userId: string, guildId: string, level: number): Promise<any> {
-		const user: any = await LevelSchema.findOne({
+	public async setLevel(userId: string, guildId: string, level: number): Promise<any> {
+		const user: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
@@ -130,15 +130,15 @@ export default class Levels {
 		return user;
 	}
 
-	static async fetch(userId: string, guildId: string, fetchPosition: boolean = false): Promise<any> {
-		const user: any = await LevelSchema.findOne({
+	public async fetch(userId: string, guildId: string, fetchPosition: boolean = false): Promise<any> {
+		const user: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
 		if (!user) return false;
 
 		if (fetchPosition) {
-			const leaderboard: any[] = await LevelSchema.find({
+			const leaderboard: any[] = await LevelsModel.find({
 				guildID: guildId,
 			})
 				.sort([["xp", "descending"]])
@@ -153,10 +153,10 @@ export default class Levels {
 		return user;
 	}
 
-	static async substractXp(userId: string, guildId: string, xp: number): Promise<any> {
+	public async substractXp(userId: string, guildId: string, xp: number): Promise<any> {
 		if (xp <= 0 || !xp || isNaN(parseInt(String(xp)))) return false;
 
-		const user: any = await LevelSchema.findOne({
+		const user: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
@@ -173,8 +173,8 @@ export default class Levels {
 		return user;
 	}
 
-	static async substractLevel(userId: string, guildId: string, levels: number): Promise<any> {
-		const user: any = await LevelSchema.findOne({
+	public async substractLevel(userId: string, guildId: string, levels: number): Promise<any> {
+		const user: any = await LevelsModel.findOne({
 			userID: userId,
 			guildID: guildId,
 		});
@@ -191,14 +191,14 @@ export default class Levels {
 		return user;
 	}
 
-	static async fetchLeaderboard(guildId: string, limit: number = 10): Promise<any> {
-		return await LevelSchema.find({ guildID: guildId })
+	public async fetchLeaderboard(guildId: string, limit: number = 10): Promise<any> {
+		return await LevelsModel.find({ guildID: guildId })
 			.sort([["xp", "descending"]])
 			.limit(limit)
 			.exec();
 	}
 
-	static async computeLeaderboard(client: any, leaderboard: any[], fetchUsers = false): Promise<any> {
+	public async computeLeaderboard(client: any, leaderboard: any[], fetchUsers = false): Promise<any> {
 		if (leaderboard.length < 1) return [];
 
 		const computedArray: any[] = [];
@@ -237,17 +237,17 @@ export default class Levels {
 		return computedArray;
 	}
 
-	static xpFor(level: number): any {
+	public xpFor(level: number): any {
 		if (level < 0) return false;
 
 		return level * level * 100;
 	}
 
-	static async deleteGuild(guildId: string): Promise<any> {
-		const guild: any = await LevelSchema.findOne({ guildID: guildId });
+	public async deleteGuild(guildId: string): Promise<any> {
+		const guild: any = await LevelsModel.findOne({ guildID: guildId });
 		if (!guild) return false;
 
-		await LevelSchema.deleteMany({ guildID: guildId }).catch((e: any): boolean => {
+		await LevelsModel.deleteMany({ guildID: guildId }).catch((e: any): boolean => {
 			return false;
 		});
 

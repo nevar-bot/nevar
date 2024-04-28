@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
+import { NevarCommand } from "@core/NevarCommand.js";
 import { ButtonBuilder, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import axios from "axios";
 import path from "path";
 
-export default class MemeCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class MemeCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "meme",
 			description: "Sends memes from r/ich_iel",

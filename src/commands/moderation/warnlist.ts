@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import moment from "moment";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import path from "path";
 
-export default class WarnlistCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class WarnlistCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "warnlist",
 			description: "Lists all warnings for a member",

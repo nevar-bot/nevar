@@ -1,9 +1,8 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
-import path from "path";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 
-export default class ServerlistCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class ServerlistCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "serverlist",
 			description: "Sends the server list",

@@ -1,8 +1,8 @@
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 
-export default class BaseGame {
+export class NevarGame {
 	protected options: any;
-	protected client: BaseClient;
+	protected client: NevarClient;
 	protected interaction: any;
 
 	protected constructor(options: any = {}) {

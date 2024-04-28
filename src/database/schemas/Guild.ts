@@ -43,14 +43,6 @@ const GuildSchema: Schema = new mongoose.Schema({
 				defaultName: null,
 				channels: [],
 			},
-			suggestions: {
-				enabled: false,
-				channel: null,
-				review_channel: null,
-			},
-			invites: {
-				enabled: false,
-			},
 			levels: {
 				enabled: false,
 				channel: null,
@@ -100,5 +92,5 @@ const GuildSchema: Schema = new mongoose.Schema({
 	},
 });
 
-const Guild: Model<any> = model("Guild", GuildSchema);
-export default Guild;
+const GuildModel: Model<any> = model("Guild", GuildSchema);
+export { GuildModel };

@@ -1,11 +1,9 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import {EmbedBuilder, SlashCommandBuilder} from "discord.js";
-import fs from "fs";
-import path from "path";
 
-export default class TopicCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class TopicCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "topic",
 			description: "Sends a random topic for conversation",

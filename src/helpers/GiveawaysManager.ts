@@ -1,33 +1,33 @@
-import BaseClient from "@structures/BaseClient.js";
-import Giveaway from "@schemas/Giveaway.js";
+import { NevarClient } from "@core/NevarClient";
+import { GiveawayModel } from "@schemas/Giveaway.js";
 import { ButtonBuilder, EmbedBuilder, Guild } from "discord.js";
 
-export default class GiveawaysManager {
-	private client: BaseClient;
+export class GiveawaysManager {
+	private client: NevarClient;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: NevarClient) {
 		this.client = client;
 	}
 
 	/* Return giveaway by messageId */
-	public async getGiveaway(giveawayId: string): Promise<typeof Giveaway | null> {
-		const giveaway: any = await Giveaway.findOne({ messageId: giveawayId });
+	public async getGiveaway(giveawayId: string): Promise<typeof GiveawayModel | null> {
+		const giveaway: any = await GiveawayModel.findOne({ messageId: giveawayId });
 		return giveaway ?? null;
 	}
 
 	/* Return all giveaways */
-	public async getGiveaways(): Promise<(typeof Giveaway)[]> {
-		return Giveaway.find();
+	public async getGiveaways(): Promise<(typeof GiveawayModel)[]> {
+		return GiveawayModel.find();
 	}
 
 	/* Creates a new giveaway */
-	public async createGiveaway(giveawayData: any): Promise<typeof Giveaway | Error> {
+	public async createGiveaway(giveawayData: any): Promise<typeof GiveawayModel | Error> {
 		/* Send main embed */
 		const message: any = await this.sendMainEmbed(giveawayData);
 
 		/* Save giveaway */
 		giveawayData.messageId = message.messageId;
-		const giveaway: any = new Giveaway(giveawayData);
+		const giveaway: any = new GiveawayModel(giveawayData);
 		await giveaway.save().catch((err: Error): Error => {
 			return err;
 		});
@@ -41,7 +41,7 @@ export default class GiveawaysManager {
 		if (!giveaway) return false;
 
 		/* Delete giveaway */
-		await Giveaway.findOneAndDelete({ messageId: giveawayId }).catch((err: Error): boolean => {
+		await GiveawayModel.findOneAndDelete({ messageId: giveawayId }).catch((err: Error): boolean => {
 			return false;
 		});
 

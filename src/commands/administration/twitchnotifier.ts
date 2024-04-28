@@ -1,12 +1,12 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, ChannelType, EmbedBuilder } from "discord.js";
 import { AppTokenAuthProvider } from "@twurple/auth";
 import { ApiClient, HelixUser } from "@twurple/api";
 import path from "path";
 
-export default class TwitchnotifierCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class TwitchnotifierCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "twitchnotifier",
 			description: "Receive notifications when a Twitch channel goes live",

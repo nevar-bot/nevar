@@ -54,29 +54,19 @@ PORT = 8075
 AUTHORIZATION = ""
 
 [ channels ]
-# ID and design of the channel where the current number of servers is displayed (the already existing variable in {} is automatically replaced)
-SERVER_COUNT_ID = ""
-SERVER_COUNT_NAME = "💻 ➜ {count} servers"
-
-# ID and design of the channel where the current number of votes is displayed (the already existing variable in {} is automatically replaced)
-USER_COUNT_ID = ""
-USER_COUNT_NAME = "👥 ➜ {count} users"
-
-# ID and design of the channel where the current number of votes is displayed (the already existing variable in {} is automatically replaced)
-VOTE_COUNT_ID = ""
-VOTE_COUNT_NAME = "🤍 ➜ {count} votes"
 # ID of the channel where new votes get announced
 VOTE_ANNOUNCEMENT_ID = ""
 
 [ apikeys ]
-# Most of the following APIs offer a free API key and no paid subscription is required, but some, such as openai.com, require a paid subscription.
+# All the following APIs offer a free API key and no paid subscription is required
 # top.gg
 TOP_GG = ""
+TOP_GG_AUTH = ""
 # openweathermap.org/api
 WEATHER = ""
-# perspectiveapi.com
+# console.cloud.google.com
 GOOGLE = ""
-# dev.twitch.tv/console/apps
+# dev.twitch.tv
 TWITCH_CLIENT_ID = ""
 TWITCH_CLIENT_SECRET = ""
 

@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import axios from "axios";
 import path from "path";
 
-export default class WeatherCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class WeatherCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "weather",
 			description: "View the weather for a specific location",

@@ -1,13 +1,13 @@
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import { ButtonBuilder, EmbedBuilder } from "discord.js";
 import ems from "enhanced-ms";
 const ms: any = ems("de");
 
 export default class {
-	private client: BaseClient;
+	private client: NevarClient;
 	private timeouts: any;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: NevarClient) {
 		this.client = client;
 		this.timeouts = new Set();
 	}

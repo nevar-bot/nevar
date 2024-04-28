@@ -1,4 +1,8 @@
 {
   "userIsBlocked": "Du wurdest von der Nutzung von {{client}} ausgeschlossen.",
   "guildIsBlocked": "Dieser Server wurde von der Nutzung von {{client}} ausgeschlossen.",
+  "missingBotPermissions": "Folgende Berechtigungen fehlen mir, um den Befehl ausführen zu können:\n\n{{e.arrow}} {{permissions}}",
+  "commandIsDisabled": "Dieser Befehl ist derzeit deaktiviert. Für mehr Informationen, schau gerne auf unserem [Support-Server]({{support}) vorbei.",
+  "giveawayParticipationAdded": "Du nimmst absofort an dem Gewinnspiel teil!",
+  "giveawayParticipationRemoved": "Du nimmst nicht mehr an dem Gewinnspiel teil."
 }

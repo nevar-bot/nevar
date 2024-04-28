@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import path from "path";
 
 
-export default class XpForCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class XpForCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "xpfor",
 			description: "Erfahre, wieviel XP du für ein bestimmtes Level benötigst",

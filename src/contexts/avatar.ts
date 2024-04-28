@@ -1,9 +1,9 @@
 import { ApplicationCommandType, EmbedBuilder } from "discord.js";
-import BaseContext from "@structures/BaseContext.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarContext } from "@core/NevarContext.js";
+import { NevarClient } from "@core/NevarClient";
 
-export default class AvatarContext extends BaseContext {
-	constructor(client: BaseClient) {
+export default class AvatarContext extends NevarContext {
+	constructor(client: NevarClient) {
 		super(client, {
 			name: "avatar",
 			type: ApplicationCommandType.User,

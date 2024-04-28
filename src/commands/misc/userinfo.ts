@@ -1,11 +1,9 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
-import moment from "moment";
-import path from "path";
 
-export default class UserinfoCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class UserinfoCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "userinfo",
 			description: "View information about a user",
@@ -124,6 +122,7 @@ export default class UserinfoCommand extends BaseCommand {
 			this.client.emotes.reminder + " " +
 			this.translate("userJoinedGuildBefore") + ": **" +
 			joinedDiff +
+			// @ts-ignore
 			(inviter ? "**\n" +
 			this.client.emotes.invite + " " +
 			this.translate("invitedBy") + ": **" +

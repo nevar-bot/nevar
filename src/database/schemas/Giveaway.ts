@@ -23,5 +23,5 @@ const Schema = new mongoose.Schema(
 	},
 );
 
-const Giveaway: Model<any> = mongoose.model("Giveaway", Schema);
-export default Giveaway;
+const GiveawayModel: Model<any> = mongoose.model("Giveaway", Schema);
+export { GiveawayModel };

@@ -15,6 +15,6 @@
   "blockedAt": "Blockiert am",
   "list": {
     "title": "Blockierte Benutzer und Server",
-    "noBlockedUsersOrGuilds": "Es wurden noch keine Benutzer oder Server blockiert.",
+    "noBlockedUsersOrGuilds": "Es wurden noch keine Benutzer oder Server blockiert."
   }
 }

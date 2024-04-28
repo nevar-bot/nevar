@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import moment from "moment";
 import path from "path";
 
-export default class ReportbugCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class ReportbugCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "reportbug",
 			description: "Report a bug to our development team",

@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { EmbedBuilder } from "discord.js";
-import DatabaseMigration from "@helpers/DatabaseMigration.js";
+import { DatabaseMigration } from "@helpers/DatabaseMigration.js";
 import path from "path";
 
-export default class MigrateCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class MigrateCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "migrate",
 			description: "Migrates datasets to the current database schema",
@@ -46,7 +46,8 @@ export default class MigrateCommand extends BaseCommand {
 	}
 
 	private async migrateUsers(): Promise<any> {
-		const count: number = await DatabaseMigration.migrateUsers();
+		const migration: DatabaseMigration = new DatabaseMigration();
+		const count: number = await migration.migrateUsers();
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("migratedUsers", { count }),
 			"success",
@@ -56,7 +57,8 @@ export default class MigrateCommand extends BaseCommand {
 	}
 
 	private async migrateGuilds(): Promise<any> {
-		const count: number = await DatabaseMigration.migrateGuilds();
+		const migration: DatabaseMigration = new DatabaseMigration();
+		const count: number = await migration.migrateGuilds();
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("migratedGuilds", { count }),
 			"success",
@@ -66,7 +68,8 @@ export default class MigrateCommand extends BaseCommand {
 	}
 
 	private async migrateMembers(): Promise<any> {
-		const count: number = await DatabaseMigration.migrateMembers();
+		const migration: DatabaseMigration = new DatabaseMigration();
+		const count: number = await migration.migrateMembers();
 		const embed: EmbedBuilder = this.client.createEmbed(
 			this.translate("migratedMembers", { count }),
 			"success",

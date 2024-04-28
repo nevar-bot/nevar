@@ -1,29 +1,49 @@
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import { EmbedBuilder, Collection, AuditLogEvent } from "discord.js";
 import moment from "moment";
 
 export default class {
-	private client: BaseClient;
+	private client: NevarClient;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: NevarClient) {
 		this.client = client;
 	}
 
 	public async dispatch(invite: any): Promise<any> {
+		/* Check if event or guild is null */
 		if (!invite || !invite.guild || !invite.inviter) return;
+		/* Destructure guild from event */
 		const { guild, inviter } = invite;
+
+		/* Create properties array */
+		const properties: Array<string> = [];
+
+		/* Push invite properties to properties array */
+		if(invite.url) properties.push(this.client.emotes.link + " " + guild.translate("events/invite/InviteCreate:link") + ": " + invite.url);
+		if(invite.inviter) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + invite.inviter.toString());
+		if(invite.channel) properties.push(this.client.emotes.channel + " " + guild.translate("basics:channel") + ": " + invite.channel.toString());
+		if(invite.maxUses) properties.push(this.client.emotes.reload + " " + guild.translate("events/invite/InviteCreate:maxUses") + ": " + (invite.maxUses === 0 ? guild.translate("events/invite/InviteCreate:unlimited") : invite.maxUses));
+		if(invite.expiresTimestamp) properties.push(this.client.emotes.reminder + " " + guild.translate("events/invite/InviteCreate:expires") + ": " + this.client.utils.getDiscordTimestamp(invite.expiresTimestamp, "R"));
+
+		if(properties.length > 0){
+			/* Prepare message for log embed */
+			const inviteLogMessage: string =
+				" ### " + this.client.emotes.invite + " " + guild.translate("events/invite/InviteCreate:created")+ "\n\n" +
+				properties.join("\n");
+
+			/* Create embed */
+			const inviteLogEmbed: EmbedBuilder = this.client.createEmbed(inviteLogMessage, null, "success");
+			inviteLogEmbed.setThumbnail(invite.inviter.displayAvatarURL() || guild.iconURL());
+
+			/* Log action */
+			await guild.logAction(inviteLogEmbed, "guild");
+		}
 
 		/* Update invite cache */
 		if (this.client.invites.get(guild.id)) {
 			this.client.invites.get(guild.id).set(invite.code, { uses: invite.uses, inviterId: invite.inviterId });
 		} else {
-			this.client.invites.set(
-				guild.id,
-				new Collection().set(invite.code, {
-					uses: invite.uses,
-					inviterId: invite.inviterId,
-				}),
-			);
+			this.client.invites.set(guild.id, new Collection().set(invite.code, { uses: invite.uses, inviterId: invite.inviterId }));
 		}
 
 		/* Add invite to user */
@@ -38,47 +58,5 @@ export default class {
 		});
 		memberData.markModified("invites");
 		await memberData.save();
-
-		let inviteCreateText: string =
-			this.client.emotes.link +
-			" Link: " +
-			invite.url +
-			"\n" +
-			this.client.emotes.reload +
-			" Max. Verwendungen: " +
-			(invite.maxUses === 0 ? "Unbegrenzt" : invite.maxUses) +
-			"\n" +
-			(invite.expiresTimestamp
-				? this.client.emotes.reminder +
-					" Ablaufdatum: **" +
-					moment(invite.expiresTimestamp).format("DD.MM.YYYY HH:mm") +
-					"**"
-				: "");
-
-		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent["InviteCreate"], limit: 1 })
-			.catch((e: any): void => {});
-		if (auditLogs) {
-			const auditLogEntry: any = auditLogs.entries.first();
-			if (auditLogEntry) {
-				const moderator: any = auditLogEntry.executor;
-				if (moderator)
-					inviteCreateText +=
-						"\n\n" +
-						this.client.emotes.user +
-						" Nutzer/-in: " +
-						"**" +
-						moderator.displayName +
-						"** (@" +
-						moderator.username +
-						")";
-			}
-		}
-
-		const inviteCreateEmbed: EmbedBuilder = this.client.createEmbed(inviteCreateText, null, "success");
-		inviteCreateEmbed.setTitle(this.client.emotes.invite + " Einladung erstellt");
-		inviteCreateEmbed.setThumbnail(guild.iconURL());
-
-		await guild.logAction(inviteCreateEmbed, "guild");
 	}
 }

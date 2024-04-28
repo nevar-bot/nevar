@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder } from "discord.js";
 import moment from "moment";
 import path from "path";
 
-export default class BanlistCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class BanlistCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "banlist",
 			description: "Lists all banned members",

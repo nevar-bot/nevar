@@ -1,7 +1,7 @@
 import "module-alias/register.js";
 import * as fs from "fs";
 import moment from "moment";
-import { bgGreen, cyan, bgBlue, bgYellow, bgRed, bgMagenta, gray, black, bold } from "colorette";
+import { bgGreen, cyan, bgRed } from "colorette";
 
 /* Install all necessary files for the bot */
 const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));

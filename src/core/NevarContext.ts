@@ -1,14 +1,14 @@
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import { CommandInteraction, Guild } from "discord.js";
 
-export default class BaseContext {
-	protected client: BaseClient;
+export class NevarContext {
+	protected client: NevarClient;
 	public conf: any;
 	public help: any;
 	protected interaction!: CommandInteraction;
 	protected guild!: Guild;
 
-	public constructor(client: BaseClient, options: any) {
+	public constructor(client: NevarClient, options: any) {
 		const { name = null, type = null, memberPermissions = [], botPermissions = [], cooldown = 0 } = options;
 
 		this.client = client;

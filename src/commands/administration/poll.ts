@@ -1,10 +1,10 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { SlashCommandBuilder, ChannelType, EmbedBuilder } from "discord.js";
 import path from "path";
 
-export default class PollCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class PollCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "poll",
 			description: "Get the opinion of the users",

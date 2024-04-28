@@ -9,5 +9,5 @@ const Schema = new mongoose.Schema({
 	lastUpdated: { type: Number, default: new Date() },
 });
 
-const Levels: Model<any> = mongoose.model("Levels", Schema);
-export default Levels;
+const LevelsModel: Model<any> = mongoose.model("Levels", Schema);
+export { LevelsModel };

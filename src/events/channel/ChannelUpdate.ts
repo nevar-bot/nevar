@@ -1,9 +1,9 @@
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 import { AuditLogEvent, EmbedBuilder } from "discord.js";
 
 export default class {
-	private client: BaseClient;
-	public constructor(client: BaseClient) {
+	private client: NevarClient;
+	public constructor(client: NevarClient) {
 		this.client = client;
 	}
 

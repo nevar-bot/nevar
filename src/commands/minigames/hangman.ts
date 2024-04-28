@@ -1,11 +1,11 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
-import BaseGame from "@structures/BaseGame.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
+import { NevarGame } from "@core/NevarGame.js";
 import { SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, ButtonBuilder } from "discord.js";
 import path from "path";
 
-export default class HangmanCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class HangmanCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "hangman",
 			description: "Guess the word before you are hanged",
@@ -38,7 +38,7 @@ export default class HangmanCommand extends BaseCommand {
 	}
 }
 
-class HangmanGame extends BaseGame {
+class HangmanGame extends NevarGame {
 	public hangman: any;
 	public word: string;
 	public buttonPage: number;

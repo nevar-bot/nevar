@@ -1,9 +1,9 @@
-import BaseClient from "@structures/BaseClient.js";
+import { NevarClient } from "@core/NevarClient";
 
 export default class {
-	private client: BaseClient;
+	private client: NevarClient;
 
-	public constructor(client: BaseClient) {
+	public constructor(client: NevarClient) {
 		this.client = client;
 	}
 
@@ -14,13 +14,13 @@ export default class {
 
 		if (giveaway.entrantIds.includes(interaction.user.id)) {
 			await interaction.reply({
-				content: "### " + this.client.emotes.tada + " Du nimmst absofort nicht mehr an dem Gewinnspiel teil!",
+				content: "### " + this.client.emotes.tada + " " + guild.translate("events/interaction/InteractionCreate:giveawayParticipationRemoved"),
 				ephemeral: true,
 			});
 			await this.client.giveawayManager.removeEntrant(interaction.message.id, interaction.user.id);
 		} else {
 			await interaction.reply({
-				content: "### " + this.client.emotes.tada + " Du nimmst absofort an dem Gewinnspiel teil!",
+				content: "### " + this.client.emotes.tada + " " + guild.translate("events/interaction/InteractionCreate:giveawayParticipationAdded"),
 				ephemeral: true,
 			});
 			await this.client.giveawayManager.addEntrant(interaction.message.id, interaction.user.id);

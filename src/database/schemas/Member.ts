@@ -25,10 +25,6 @@ const Schema = new mongoose.Schema({
 			bannedUntil: null,
 		},
 	},
-	suggestions: {
-		type: Array,
-		default: [],
-	},
 	reminders: [],
 	invites: [],
 	inviteUsed: {
@@ -37,5 +33,5 @@ const Schema = new mongoose.Schema({
 	},
 });
 
-const Member: Model<any> = mongoose.model("Member", Schema);
-export default Member;
+const MemberModel: Model<any> = mongoose.model("Member", Schema);
+export { MemberModel };

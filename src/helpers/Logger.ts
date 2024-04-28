@@ -1,7 +1,9 @@
 import { bgGreen, cyan, bgBlue, bgYellow, bgRed, bgMagenta, gray, black, bold} from "colorette";
 
-export default class Logger {
-	private static getDate(): string {
+export class Logger {
+	public constructor(){};
+
+	private getDate(): string {
 		return new Date(Date.now()).toLocaleString("de-DE", {
 			year: "numeric",
 			month: "2-digit",
@@ -12,29 +14,29 @@ export default class Logger {
 		});
 	}
 
-	static success(content: string): void {
-		console.log(gray("[" + Logger.getDate() + "] ") + bgGreen(black(bold("SUCCESS"))) + ": " + cyan(content));
+	public success(content: string): void {
+		console.log(gray("[" + this.getDate() + "] ") + bgGreen(black(bold("SUCCESS"))) + ": " + cyan(content));
 	}
 
-	static log(content: string): void {
-		console.log(gray("[" + Logger.getDate() + "] ") + bgBlue(black(bold("INFO"))) + ": " + cyan(content));
+	public log(content: string): void {
+		console.log(gray("[" + this.getDate() + "] ") + bgBlue(black(bold("INFO"))) + ": " + cyan(content));
 	}
 
-	static warn(content: string): void {
-		console.log(gray("[" + Logger.getDate() + "] ") + bgYellow(black(bold("WARN"))) + ": " + cyan(content));
+	public warn(content: string): void {
+		console.log(gray("[" + this.getDate() + "] ") + bgYellow(black(bold("WARN"))) + ": " + cyan(content));
 	}
 
-	static error(content: string, ex: any = null): void {
+	public error(content: string, ex: any = null): void {
 		if (ex) {
 			console.log(
-				gray("[" + Logger.getDate() + "] ") + bgRed(black(bold("ERROR"))) + ": " + cyan(content + ": " + ex?.message),
+				gray("[" + this.getDate() + "] ") + bgRed(black(bold("ERROR"))) + ": " + cyan(content + ": " + ex?.message),
 			);
 		} else {
-			console.log(gray("[" + Logger.getDate() + "] ") + bgRed(black(bold("ERROR"))) + ": " + cyan(content));
+			console.log(gray("[" + this.getDate() + "] ") + bgRed(black(bold("ERROR"))) + ": " + cyan(content));
 		}
 	}
 
-	static debug(content: string): void {
-		console.log(gray("[" + Logger.getDate() + "] ") + bgMagenta(black(bold("DEBUG"))) + ": " + cyan(content));
+	public debug(content: string): void {
+		console.log(gray("[" + this.getDate() + "] ") + bgMagenta(black(bold("DEBUG"))) + ": " + cyan(content));
 	}
 }

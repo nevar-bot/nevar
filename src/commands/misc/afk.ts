@@ -1,10 +1,9 @@
-import BaseCommand from "@structures/BaseCommand.js";
-import BaseClient from "@structures/BaseClient.js";
+import { NevarCommand } from "@core/NevarCommand.js";
+import { NevarClient } from "@core/NevarClient";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import path from "path";
 
-export default class AfkCommand extends BaseCommand {
-	public constructor(client: BaseClient) {
+export default class AfkCommand extends NevarCommand {
+	public constructor(client: NevarClient) {
 		super(client, {
 			name: "afk",
 			description: "In case you are not there for once",
