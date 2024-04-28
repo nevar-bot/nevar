@@ -262,17 +262,17 @@ export class NevarClient extends DiscordClient {
 	}
 
 	createInvite(): string {
+		const { Flags } = PermissionsBitField;
 		return this.generateInvite({
 			scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
 			permissions: [
-				PermissionsBitField.Flags.ViewAuditLog, PermissionsBitField.Flags.ManageRoles,
-				PermissionsBitField.Flags.ManageChannels, PermissionsBitField.Flags.KickMembers,
-				PermissionsBitField.Flags.BanMembers, PermissionsBitField.Flags.ManageGuildExpressions,
-				PermissionsBitField.Flags.ManageWebhooks, PermissionsBitField.Flags.ViewChannel,
-				PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ManageMessages,
-				PermissionsBitField.Flags.AttachFiles, PermissionsBitField.Flags.EmbedLinks,
-				PermissionsBitField.Flags.ReadMessageHistory, PermissionsBitField.Flags.UseExternalEmojis,
-				PermissionsBitField.Flags.AddReactions, PermissionsBitField.Flags.ManageGuild,
+				Flags.AddReactions, Flags.AttachFiles, Flags.BanMembers, Flags.ManageEmojisAndStickers,
+				Flags.EmbedLinks, Flags.KickMembers, Flags.ManageChannels,
+				Flags.ManageMessages, Flags.ManageWebhooks, Flags.ModerateMembers, Flags.MoveMembers,
+				Flags.ReadMessageHistory, Flags.SendMessages, Flags.SendMessagesInThreads, Flags.UseExternalEmojis,
+				Flags.ViewAuditLog, Flags.ViewChannel, Flags.ManageRoles,
+				// TODO: --- sobald Discord API endlich mal CreateGuildExpressions beinhaltet
+				// TODO: --- ManageEmojisAndStickers removen, CreateGuildExpressions und ManageGuildExpressions adden
 			],
 		});
 	}
