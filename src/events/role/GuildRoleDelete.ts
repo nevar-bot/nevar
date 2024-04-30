@@ -9,37 +9,35 @@ export default class {
 	}
 
 	public async dispatch(role: any): Promise<any> {
+		/* Check if event or guild is null */
 		if (!role || !role.guild) return;
-
+		/* Destructure guild from event */
 		const { guild } = role;
 
-		let roleLogMessage: string =
-			this.client.emotes.edit + " Name: " + role.name + "\n" + this.client.emotes.id + " ID: " + role.id;
+		/* Fetch audit logs to get moderator */
+		const auditLogs: any = await guild.fetchAuditLogs({ type: AuditLogEvent["GuildRoleDelete"], limit: 1 }).catch((): void => {});
+		const moderator: any = auditLogs?.entries.first()?.executor;
 
-		const auditLogs: any = await guild
-			.fetchAuditLogs({ type: AuditLogEvent["RoleDelete"], limit: 1 })
-			.catch((e: any): void => {});
-		if (auditLogs) {
-			const auditLogEntry: any = auditLogs.entries.first();
-			if (auditLogEntry) {
-				const moderator: any = auditLogEntry.executor;
-				if (moderator)
-					roleLogMessage +=
-						"\n\n" +
-						this.client.emotes.user +
-						" Nutzer/-in: " +
-						"**" +
-						moderator.displayName +
-						"** (@" +
-						moderator.username +
-						")";
-			}
-		}
+		/* Create properties array */
+		const properties: Array<string> = [];
 
+		/* Push event properties to properties array */
+		if(role.name) properties.push(this.client.emotes.edit + " " + guild.translate("basics:name") + ": " + role.name);
+		if(moderator) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString());
+
+		/* If there are no properties, return */
+		if (properties.length < 1) return;
+
+		/* Prepare message for log embed */
+		const roleLogMessage: string =
+			" ### " + this.client.emotes.events.event.delete + " " + guild.translate("events/role/GuildRoleDelete:deleted")+ "\n\n" +
+			properties.join("\n");
+
+		/* Create embed */
 		const roleLogEmbed: EmbedBuilder = this.client.createEmbed(roleLogMessage, null, "error");
-		roleLogEmbed.setTitle(this.client.emotes.events.role.delete + " Rolle gelöscht");
-		roleLogEmbed.setThumbnail(guild.iconURL());
+		roleLogEmbed.setThumbnail(moderator.displayAvatarURL() || guild.iconURL());
 
+		/* Log action */
 		await guild.logAction(roleLogEmbed, "role");
 	}
 }
