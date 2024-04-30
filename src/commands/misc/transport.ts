@@ -4,7 +4,7 @@ import {EmbedBuilder, SlashCommandBuilder} from "discord.js";
 import { createClient } from "hafas-client";
 import { profile as dbProfile } from "hafas-client/p/db/index.js";
 
-export default class AfkCommand extends NevarCommand {
+export default class TransportCommand extends NevarCommand {
     public constructor(client: NevarClient) {
         super(client, {
             name: "transport",

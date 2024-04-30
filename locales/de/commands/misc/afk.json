@@ -1,5 +1,0 @@
-{
-  "noAbsenceReasonSpecified": "Kein Grund angegeben",
-  "absenceIsEnded": "Willkommen zurück! Du warst AFK seit {{time}} ({{reason}}).",
-  "absenceIsStarted": "Bis später! Du bist jetzt abwesend: {{reason}}"
-}

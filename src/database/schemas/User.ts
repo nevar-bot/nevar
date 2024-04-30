@@ -3,14 +3,6 @@ import { Model } from "mongoose";
 
 const Schema = new mongoose.Schema({
 	id: { type: String },
-	afk: {
-		type: Object,
-		default: {
-			state: false,
-			reason: null,
-			since: null,
-		},
-	},
 	blocked: {
 		type: Object,
 		default: {

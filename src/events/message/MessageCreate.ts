@@ -27,17 +27,6 @@ export default class {
 		member.data = data.member;
 		member.user.data = data.user;
 
-		/* Afk system */
-		/* Author mentions afk user */
-		if ((message.mentions.repliedUser || message.mentions.users) && !message.author.bot) {
-			this.client.emit("MemberIsAway", message, data, guild);
-		}
-
-		/* Author is afk */
-		if (data.user.afk.state) {
-			this.client.emit("MemberIsBack", message, data, guild);
-		}
-
 		/* Author mentioned bot */
 		if (message.content.match(new RegExp(`^<@!?${this.client.user!.id}>( |)$`)) && !message.author.bot) {
 			const currentHour: number = new Date().getHours();
