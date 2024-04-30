@@ -1,3 +1,11 @@
 {
-
+  "greetings": {
+    "morning": "Guten Morgen, {{user}}!",
+    "noon": "Mahlzeit, {{user}}!",
+    "afternoon": "Hey, {{user}}!",
+    "evening": "Guten Abend, {{user}}!",
+    "night": "Schlaf schön, {{user}}!"
+  },
+  "mentionIntroduction": "Ich bin {{client}} und unterstütze derzeit über **{{guilds}} Server** bei Moderation und Verwaltung.",
+  "mentionHelp": "Mit **{{help}}** erhältst du eine Übersicht meiner verfügbaren Befehle."
 }

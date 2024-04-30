@@ -1,7 +1,5 @@
 import { NevarClient } from "@core/NevarClient";
 import { ButtonBuilder, EmbedBuilder } from "discord.js";
-import ems from "enhanced-ms";
-const ms: any = ems("de");
 
 export default class {
 	private client: NevarClient;
@@ -31,92 +29,61 @@ export default class {
 		if (message.content.match(new RegExp(`^<@!?${this.client.user!.id}>( |)$`)) && !message.author.bot) {
 			const currentHour: number = new Date().getHours();
 			const greetings: (number | string)[][] = [
-				[0, 5, "Gute Nacht"],
-				[5, 10, "Guten Morgen"],
-				[11, 13, "Guten Mittag"],
-				[14, 17, "Guten Tag"],
-				[18, 23, "Guten Abend"],
+				[0, 5, guild.translate("events/message/MessageCreate:greetings:night", { user: message.author.toString() })],
+				[6, 10, guild.translate("events/message/MessageCreate:greetings:morning", { user: message.author.toString() })],
+				[11, 13, guild.translate("events/message/MessageCreate:greetings:noon", { user: message.author.toString() })],
+				[14, 17, guild.translate("events/message/MessageCreate:greetings:afternoon", { user: message.author.toString() })],
+				[18, 23, guild.translate("events/message/MessageCreate:greetings:evening", { user: message.author.toString() })],
 			];
 
 			let greeting;
-			for (const element of greetings) {
-				// @ts-ignore - Operator '>=' cannot be applied to types 'number' and 'string | number'
-				if (currentHour >= element[0] && currentHour <= element[1]) {
-					greeting = element[2] + " " + message.author.displayName + "!";
-				}
-			}
+			greetings.forEach(([start, end, message]: any): void => {
+				if(currentHour >= start && currentHour <= end) greeting = message;
+			});
 
-			const helpCommand: any = (await this.client.application!.commands.fetch()).find(
-				(command: any): boolean => command.name === "help",
-			);
+			const helpCommand: any = (await this.client.application!.commands.fetch()).find((command: any): boolean => command.name === "help");
+			const helpString: string = helpCommand ? "</help:" + helpCommand.id + ">" : "/help";
+			const flooredGuildCount: number = Math.floor(this.client.guilds.cache.size / 10) * 10;
+
 			const greetingText: string =
-				"**{0}**" +
-				"\n\n{1} Ich bin {2} und helfe dir bei der Verwaltung deines Servers." +
-				"\n{1} Eine Übersicht meiner Befehle erhältst du durch folgenden Befehl: {3}";
+				"### " + this.client.emotes.wave + " " + greeting + "\n\n\n" +
+				this.client.emotes.shine + " " + guild.translate("events/message/MessageCreate:mentionIntroduction", { client: this.client.user!.toString(), guilds: flooredGuildCount }) + "\n" +
+				this.client.emotes.question + "  " + guild.translate("events/message/MessageCreate:mentionHelp", { help: helpString });
 
-			const helpEmbed: EmbedBuilder = this.client.createEmbed(
-				greetingText,
-				"wave",
-				"normal",
-				greeting,
-				this.client.emotes.arrow,
-				this.client.user!.username,
-				helpCommand ? "</" + helpCommand.name + ":" + helpCommand.id + ">" : "/help",
-			);
+			const helpEmbed: EmbedBuilder = this.client.createEmbed(greetingText, null, "normal");
 			helpEmbed.setThumbnail(this.client.user!.displayAvatarURL());
 
-			const inviteButton: ButtonBuilder = this.client.createButton(
-				null,
-				"Einladen",
-				"Link",
-				null,
-				false,
-				this.client.createInvite(),
-			);
-			const buttonRow: any = this.client.createMessageComponentsRow(inviteButton);
+			const inviteButton: ButtonBuilder = this.client.createButton(null, "Einladen", "Link", this.client.emotes.logo.icon, false, this.client.createInvite());
+			const supportButton: ButtonBuilder = this.client.createButton(null, "Support", "Link", this.client.emotes.discord, false, this.client.config.support["INVITE"]);
+			const websiteButton: ButtonBuilder = this.client.createButton(null, "Website", "Link", this.client.emotes.globe, false, this.client.config.general["WEBSITE"])
+			const buttonRow: any = this.client.createMessageComponentsRow(inviteButton, supportButton, websiteButton);
 
-			return message.reply({
-				embeds: [helpEmbed],
-				components: [buttonRow],
-			});
+			return message.reply({ embeds: [helpEmbed], components: [buttonRow] });
 		} else if (message.content) {
-			/* split message into parts */
+			/* Split messages by spaces */
 			const splittedMessage: string[] = message.content.split(" ");
 
-			/* check bot mention */
+			/* Check if message starts with mentioning the bot */
 			if (RegExp(new RegExp(`^<@!?${this.client.user!.id}>( |)$`)).exec(splittedMessage[0])) {
-				/* remove bot mention */
+				/* Remove first element from array */
 				splittedMessage.shift();
 
-				/* seperate command from arguments */
+				/* Seperate command from arguments */
 				const command: any = splittedMessage.shift();
-
-				/* define arguments */
 				const args: string[] = splittedMessage;
 
-				/* only execute if command is a staff or owner command */
+				/* Check if command exists and if user is permitted to use it */
 				const clientCommand: any = this.client.commands.get(command);
 				if (clientCommand && (clientCommand.conf.staffOnly || clientCommand.conf.ownerOnly)) {
 					/* check if user is staff or owner */
-					if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(message.author.id))
-						return;
-					if (
-						clientCommand.help.category === "owner" &&
-						data.user.staff.role !== "head-staff" &&
-						!this.client.config.general["OWNER_IDS"].includes(message.author.id)
-					)
-						return;
+					if (!data.user.staff.state && !this.client.config.general["OWNER_IDS"].includes(message.author.id)) return;
+					if (clientCommand.help.category === "owner" && data.user.staff.role !== "head-staff" && !this.client.config.general["OWNER_IDS"].includes(message.author.id)) return;
 
-					/* execute command */
+					/* Execute command */
 					try {
 						clientCommand.dispatch(message, args, data);
 					} catch (e: any) {
-						return this.client.alertException(
-							e,
-							message.guild,
-							message.member,
-							"<ClientMessageCommand>.dispatch(<message>, <args>, <data>)",
-						);
+						return this.client.alertException(e, message.guild, message.member, "<ClientMessageCommand>.dispatch(<message>, <args>, <data>)");
 					}
 				}
 			}
@@ -129,36 +96,14 @@ export default class {
 				const time: any = autodelete.time;
 				if (
 					(channelId !== message.channel.id && message.channel.type !== 11) ||
-					(message.channel.type === 11 &&
-						message.channel.parentId !== channelId &&
-						message.channel.id !== channelId)
-				)
-					continue;
+					(message.channel.type === 11 && message.channel.parentId !== channelId && message.channel.id !== channelId)
+				) continue;
 
-				this.client
-					.wait(Number(time))
-					.then((): void => {
-						if (!message.pinned) {
-							message.delete().catch((e: any): void => {
-								const errorText: string =
-									this.client.emotes.channel +
-									" Channel: " +
-									message.channel +
-									"\n" +
-									this.client.emotes.reminder +
-									" Löschen nach: " +
-									ms(Number(time));
-
-								const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-								errorEmbed.setTitle(
-									this.client.emotes.error + " Löschen von Nachricht durch Autodelete fehlgeschlagen",
-								);
-
-								guild.logAction(errorEmbed, "guild");
-							});
-						}
-					})
-					.catch((e: any): void => {});
+				this.client.wait(Number(time)).then((): void => {
+					if (!message.pinned) {
+						message.delete().catch((e: any): void => {});
+					}
+				}).catch((e: any): void => {});
 			}
 		}
 
@@ -169,28 +114,9 @@ export default class {
 				const emoji = autoreact.emoji;
 				if (
 					(channelId !== message.channel.id && message.channel.type !== 11) ||
-					(message.channel.type === 11 &&
-						message.channel.parentId !== channelId &&
-						message.channel.id !== channelId)
-				)
-					continue;
-				message.react(emoji).catch((e: any): void => {
-					const errorText: string =
-						this.client.emotes.channel +
-						" Channel: " +
-						message.channel +
-						"\n" +
-						this.client.emotes.reminder +
-						" Emoji: " +
-						emoji;
-
-					const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-					errorEmbed.setTitle(
-						this.client.emotes.error + " Reagieren auf Nachricht durch Autoreact fehlgeschlagen",
-					);
-
-					guild.logAction(errorEmbed, "guild");
-				});
+					(message.channel.type === 11 && message.channel.parentId !== channelId && message.channel.id !== channelId)
+				) continue;
+				message.react(emoji).catch((e: any): void => {});
 			}
 		}
 
@@ -198,13 +124,13 @@ export default class {
 		if (message.author.bot) return;
 
 		if (data.guild.settings.levels.enabled) {
-			/* get xp amount */
+			/* Get xp amount */
 			const minXp = data.guild.settings.levels.xp.min || 1;
 			const maxXp = data.guild.settings.levels.xp.max || 30;
 
 			let xp: number = this.client.utils.getRandomInt(minXp, maxXp);
 
-			/* excluded roles and channels */
+			/* Check if channel is excluded or user has excluded roles */
 			if (data.guild.settings.levels.exclude) {
 				for (const excludedRoleId of data.guild.settings.levels.exclude.roles) {
 					if (message.member.roles.cache.get(excludedRoleId)) return;
@@ -214,7 +140,7 @@ export default class {
 				}
 			}
 
-			/* double xp roles */
+			/* Check for double xp roles */
 			if (data.guild.settings.levels.doubleXP && data.guild.settings.levels.doubleXP.length > 0) {
 				for (const doubleXP of data.guild.settings.levels.doubleXP) {
 					if (message.member.roles.cache.get(doubleXP)) {
@@ -223,46 +149,25 @@ export default class {
 				}
 			}
 
-			// check if user leveled up
+			/* Check if user leveled up */
 			if (!this.timeouts.has(message.author.id)) {
-				const hasLeveledUp: boolean = await this.client.levels.appendXp(
-					message.author.id,
-					message.guild.id,
-					xp,
-				);
+				const hasLeveledUp: boolean = await this.client.levels.appendXp(message.author.id, message.guild.id, xp);
 				const levelUser: any = await this.client.levels.fetch(message.author.id, message.guild.id, true);
 
 				if (hasLeveledUp) {
 					const newLevel: number = Number(levelUser.level);
-					/* Level roles */
+					/* Check for new level roles */
 					if (data.guild.settings.levels.roles && data.guild.settings.levels.roles.length > 0) {
 						for (const levelRole of data.guild.settings.levels.roles) {
 							const roleId: any = levelRole.role;
 							const level: any = levelRole.level;
 							if (Number(level) === newLevel || Number(level) < newLevel) {
-								message.member.roles.add(roleId).catch((e: any): void => {
-									const errorText: string =
-										this.client.emotes.strike +
-										" Level: " +
-										level +
-										"\n" +
-										this.client.emotes.ping +
-										" Rolle: <@&" +
-										roleId +
-										">";
-
-									const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-									errorEmbed.setTitle(
-										this.client.emotes.error + " Vergeben von Levelrolle fehlgeschlagen",
-									);
-
-									guild.logAction(errorEmbed, "guild");
-								});
+								message.member.roles.add(roleId).catch((e: any): void => {});
 							}
 						}
 					}
 
-					/* send level up message */
+					/* Send level up message */
 					function parseMessage(str: string): string {
 						return str
 							.replaceAll(/%level/g, String(newLevel))
@@ -277,18 +182,10 @@ export default class {
 
 					const parsedMessage: string = parseMessage(data.guild.settings.levels.message);
 
-					const channel: any =
-						message.guild.channels.cache.get(data.guild.settings.levels.channel) || message.channel;
+					const channel: any = message.guild.channels.cache.get(data.guild.settings.levels.channel) || message.channel;
 					if (!channel) return;
 
-					channel.send({ content: parsedMessage }).catch((e: any): void => {
-						const errorText: string = this.client.emotes.channel + " Channel: " + channel;
-
-						const errorEmbed: EmbedBuilder = this.client.createEmbed(errorText, null, "error");
-						errorEmbed.setTitle(this.client.emotes.error + " Senden von Level-Up-Nachricht fehlgeschlagen");
-
-						guild.logAction(errorEmbed, "guild");
-					});
+					channel.send({ content: parsedMessage }).catch((e: any): void => {});
 				}
 				this.timeouts.add(message.author.id);
 				setTimeout((): void => this.timeouts.delete(message.author.id), 15000);
