@@ -21,14 +21,8 @@ export default class {
 		const properties: Array<string> = [];
 
 		/* Push channel properties to properties array */
-		if(channel.toString()) properties.push(this.client.emotes.channel + " " + guild.translate("basics:name") + ": " + channel.name);
+		if(channel.name) properties.push(this.client.emotes.channel + " " + guild.translate("basics:name") + ": " + channel.name);
 		if(moderator) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString());
-		if(channel.topic) properties.push(this.client.emotes.quotes + " " + guild.translate("events/channel/ChannelDelete:channelTopic") + ": " + channel.topic);
-		if(channel.nsfw) properties.push(this.client.emotes.underage + " " + guild.translate("events/channel/ChannelDelete:nsfw") + ": " + guild.translate("basics:enabled"));
-		if(channel.bitrate) properties.push(this.client.emotes.latency.good + " " + guild.translate("events/channel/ChannelDelete:bitrate") + ": " + channel.bitrate / 1000 + "kbps");
-		if(channel.userLimit) properties.push(this.client.emotes.users + " " + guild.translate("events/channel/ChannelDelete:userlimit") + ": " + (channel.userLimit === 0 ? guild.translate("events/channel/ChannelDelete:unlimitedUsers") : channel.userLimit))
-		if(channel.videoQualityMode) properties.push(this.client.emotes.monitor + " " + guild.translate("events/channel/ChannelDelete:videoQuality") + ": " + (channel.videoQualityMode === 1 ? guild.translate("events/channel/ChannelDelete:videoQualityAuto") : "720p"))
-
 		/* If there are no properties, return */
 		if (properties.length < 1) return;
 

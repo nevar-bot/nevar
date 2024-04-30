@@ -23,7 +23,6 @@ export default class {
 
 		/* Push emoji properties to properties array */
 		if(emoji.name) properties.push(this.client.emotes.edit + " " + guild.translate("basics:name") + ": " + emoji.name);
-		if(emoji.id) properties.push(this.client.emotes.id + " " + guild.translate("basics:id") + ": " + emoji.id);
 		if(moderator) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString());
 
 		/* If there are no properties, return */

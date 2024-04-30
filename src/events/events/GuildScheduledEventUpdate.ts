@@ -22,6 +22,7 @@ export default class {
 		const properties: Array<string> = [];
 
 		/* Push event properties to properties array */
+		if(newScheduledEvent.name) properties.push(this.client.emotes.calendar + " "  + guild.translate("basics:event") + ": " + newScheduledEvent.name);
 		if(oldScheduledEvent.name !== newScheduledEvent.name) properties.push(this.client.emotes.edit + " " + guild.translate("basics:name") + ": " + oldScheduledEvent.name + " **➜** " + newScheduledEvent.name);
 		if(moderator) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString());
 		if(oldScheduledEvent.description !== newScheduledEvent.description) properties.push(this.client.emotes.text + " " + guild.translate("basics:description") + ": " + oldScheduledEvent.description + " **➜** " + newScheduledEvent.description);

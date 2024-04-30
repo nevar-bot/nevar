@@ -25,10 +25,6 @@ export default class {
 		/* Push event properties to properties array */
 		if(scheduledEvent.name) properties.push(this.client.emotes.edit + " " + guild.translate("basics:name") + ": " + scheduledEvent.name);
 		if(moderator) properties.push(this.client.emotes.user + " " + guild.translate("basics:moderator") + ": " + moderator.toString());
-		if(scheduledEvent.id) properties.push(this.client.emotes.id + " " + guild.translate("basics:id") + ": " + scheduledEvent.id);
-		if(scheduledEvent.description) properties.push(this.client.emotes.text + " " + guild.translate("basics:description") + ": " + scheduledEvent.description);
-		if(scheduledEvent.scheduledStartTimestamp) properties.push(this.client.emotes.reminder + " " + guild.translate("events/events/GuildScheduledEventDelete:start") + ": " + this.client.utils.getDiscordTimestamp(scheduledEvent.scheduledStartTimestamp, "F"))
-		if(scheduledEvent.scheduledEndTimestamp) properties.push(this.client.emotes.reminder + " " + guild.translate("events/events/GuildScheduledEventDelete:end") + ": " + this.client.utils.getDiscordTimestamp(scheduledEvent.scheduledEndTimestamp, "F"))
 
 		/* If there are no properties, return */
 		if (properties.length < 1) return;
