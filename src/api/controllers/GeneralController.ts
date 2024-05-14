@@ -40,6 +40,7 @@ export default {
             const packageJson: any = JSON.parse(fs.readFileSync("./package.json", "utf-8").toString());
             response.bot = {
                 invite: client.createInvite(),
+                support: client.support,
                 version: packageJson.version,
                 guild_count: client.guilds.cache.size,
                 user_count: client.users.cache.size,
