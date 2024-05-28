@@ -124,7 +124,7 @@ export class NevarValidator {
 
 	private checkMandatoryFields(config: any, sections: string[][]): void {
 		for (const [section, field] of sections) {
-			if (!config[section]?.[field]) {
+			if (typeof config[section]?.[field] === "undefined") {
 				this.logger.error("TOML: " + section + "." + field + " cannot be empty");
 				process.exit();
 			}
