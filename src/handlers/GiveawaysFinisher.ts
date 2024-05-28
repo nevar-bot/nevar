@@ -6,7 +6,7 @@ export class GiveawaysFinisher {
 		this.client = client;
 		setInterval((): void => {
 			this.finishGiveaways().catch((): void => {});
-		}, 1000);
+		}, 10 * 1000);
 	}
 
 	private async finishGiveaways(): Promise<void> {

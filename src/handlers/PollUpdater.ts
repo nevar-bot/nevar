@@ -8,7 +8,7 @@ export class PollUpdater {
 		this.client = client;
 		setInterval((): void => {
 			this.updatePolls();
-		}, 4 * 1000);
+		}, 10 * 1000);
 	}
 
 	private updatePolls(): void {

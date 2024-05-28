@@ -53,6 +53,6 @@ export class UnbanManager {
 				await memberData.save();
 				this.client.databaseCache.bannedUsers.delete(memberData.id + memberData.guildID);
 			}
-		}, 1000);
+		}, 10 * 1000);
 	}
 }

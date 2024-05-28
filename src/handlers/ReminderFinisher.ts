@@ -40,6 +40,6 @@ export class ReminderFinisher {
 					}
 				});
 			}
-		}, 1000);
+		}, 10 * 1000);
 	}
 }
