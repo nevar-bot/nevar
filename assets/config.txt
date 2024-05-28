@@ -94,7 +94,7 @@ TYPE = "Competing" # Status type for the bot [Playing | Listening | Watching | C
 MESSAGE = "{guilds} Servern" # The message that is displayed
 URL = "" # Only needed for streaming
 
-[[ presence]]
+[[ presence ]]
 STATUS = "online"
 TYPE = "Playing"
 MESSAGE = "mit {users} Nutzern"
